@@ -1,0 +1,6 @@
+{
+  "name": "What If Your Shadow Quit? — AI Animation Studio",
+  "description": "Interactive 10-second 2D minimalist comedy animation player, director studio, and video prompt generator.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

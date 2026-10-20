@@ -1,9 +1,12 @@
 import React from 'react';
-import { Video, Sparkles, Download, Volume2, VolumeX } from 'lucide-react';
+import { Sparkles, Download, Volume2, VolumeX, ChevronDown } from 'lucide-react';
+import { ProjectId, PROJECTS } from '../types';
 
 interface HeaderProps {
   activeTab: 'player' | 'timeline' | 'prompts' | 'audio';
   setActiveTab: (tab: 'player' | 'timeline' | 'prompts' | 'audio') => void;
+  activeProject: ProjectId;
+  setActiveProject: (p: ProjectId) => void;
   isMuted: boolean;
   setIsMuted: (muted: boolean) => void;
   onExportVideo: () => void;
@@ -13,6 +16,8 @@ interface HeaderProps {
 export const Header: React.FC<HeaderProps> = ({
   activeTab,
   setActiveTab,
+  activeProject,
+  setActiveProject,
   isMuted,
   setIsMuted,
   onExportVideo,
@@ -20,14 +25,22 @@ export const Header: React.FC<HeaderProps> = ({
 }) => {
   return (
     <header className="flex items-center justify-between gap-8 px-6 py-4 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 sticky top-0 z-50">
-      {/* Zone 1: Single text element wordmark */}
+      {/* Zone 1: Single text element wordmark with clean project switch */}
       <div className="flex items-center gap-3 shrink-0">
         <div className="w-8 h-8 rounded-lg bg-rose-600 flex items-center justify-center text-white font-bold text-sm shadow-sm">
-          SQ
+          2D
         </div>
-        <span className="text-base font-bold tracking-tight text-white whitespace-nowrap shrink-0">
-          Shadow Quit Studio
-        </span>
+        <div className="relative">
+          <select
+            value={activeProject}
+            onChange={(e) => setActiveProject(e.target.value as ProjectId)}
+            className="appearance-none bg-slate-950 hover:bg-slate-800 text-white font-bold text-sm pl-3 pr-8 py-1.5 rounded-lg border border-slate-700 focus:outline-none focus:border-rose-500 cursor-pointer transition-colors"
+          >
+            <option value="paper-ball">The Paper Ball Ricochet</option>
+            <option value="shadow-quit">What If Your Shadow Quit?</option>
+          </select>
+          <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+        </div>
       </div>
 
       {/* Zone 2: 4 clean single-line text navigation links */}

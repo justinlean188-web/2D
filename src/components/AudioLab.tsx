@@ -10,33 +10,65 @@ interface AudioLabProps {
 
 export const AudioLab: React.FC<AudioLabProps> = ({ config, setConfig }) => {
   const soundEffects = [
+    // Paper Ball Ricochet Effects
     {
-      name: 'Footstep Pop',
-      time: 'Scene 1 (0.4s, 0.8s)',
-      desc: 'Soft damped frequency drop (310Hz -> 90Hz) mimicking rubber cartoon shoe contact.',
-      trigger: () => soundEngine.playFootstep(false),
+      name: 'Paper Toss Whoosh',
+      time: 'Paper Ball (2.2s)',
+      desc: 'Snappy cartoon air release (420Hz -> 140Hz) as stickman flings the paper ball.',
+      trigger: () => soundEngine.playWhoosh(),
     },
     {
-      name: 'Cheerful Skip Pop',
-      time: 'Scene 1 (1.2s)',
-      desc: 'Bright triangle blip (580Hz -> 280Hz) on the mid-air skip hop.',
-      trigger: () => soundEngine.playFootstep(true),
+      name: 'Trash Rim Clink',
+      time: 'Paper Ball (3.8s)',
+      desc: 'Metallic high-frequency rim clip (1850Hz -> 800Hz triangle).',
+      trigger: () => soundEngine.playRimClink(),
     },
+    {
+      name: 'Table Lamp Brass Ding',
+      time: 'Paper Ball (4.6s)',
+      desc: '3-harmonic resonant brass bell ring (1100Hz, 1650Hz, 2200Hz) as lamp wobbles.',
+      trigger: () => soundEngine.playLampDing(),
+    },
+    {
+      name: 'Ceiling Fan WHACK',
+      time: 'Paper Ball (6.0s)',
+      desc: 'Heavy impact filtered noise slap + low 260Hz body thump from the spinning blade.',
+      trigger: () => soundEngine.playFanWhack(),
+    },
+    {
+      name: 'Wall Bounce Pop',
+      time: 'Paper Ball (7.0s)',
+      desc: 'Elastic 520Hz rebound pop off the right wall.',
+      trigger: () => soundEngine.playWallBounce(),
+    },
+    {
+      name: 'Forehead Cartoon Bonk',
+      time: 'Paper Ball (7.7s)',
+      desc: 'Classic hollow skull cartoon "dook" with 950Hz click + 380Hz resonant head bonk.',
+      trigger: () => soundEngine.playHeadBonk(),
+    },
+    {
+      name: 'Desk Paper Plop',
+      time: 'Paper Ball (8.1s)',
+      desc: 'Damped 220Hz low plop as crumpled paper settles on the wooden desk.',
+      trigger: () => soundEngine.playDeskPlop(),
+    },
+    // Shadow Quit Effects
     {
       name: 'Record Scratch',
-      time: 'Scene 2 (2.0s)',
+      time: 'Shadow Quit (2.0s)',
       desc: 'Sharp comedic vinyl needle rip as the shadow stops dead in its tracks.',
       trigger: () => soundEngine.playRecordScratch(),
     },
     {
       name: 'Clipboard Paper Slap',
-      time: 'Scene 3 (4.5s)',
+      time: 'Shadow Quit (4.5s)',
       desc: 'Filtered high-frequency friction burst as the shadow pulls the clipboard.',
       trigger: () => soundEngine.playPaperSlap(),
     },
     {
       name: 'Clipboard Double Tap',
-      time: 'Scene 3 (5.05s, 5.25s)',
+      time: 'Shadow Quit (5.05s, 5.25s)',
       desc: 'Two dry, bureaucratic finger taps (1350Hz click) on the grievance page.',
       trigger: () => {
         soundEngine.playClipboardTap();
@@ -44,20 +76,8 @@ export const AudioLab: React.FC<AudioLabProps> = ({ config, setConfig }) => {
       },
     },
     {
-      name: 'Floor Contact Thump',
-      time: 'Scene 4 (6.1s)',
-      desc: 'Low dull contact pop (140Hz -> 38Hz) as shadow drops cross-legged.',
-      trigger: () => soundEngine.playFloorThump(),
-    },
-    {
-      name: 'Arm Cross Squeak',
-      time: 'Scene 4 (6.3s)',
-      desc: 'High pitch bend (750Hz -> 980Hz) conveying stubborn refusal.',
-      trigger: () => soundEngine.playArmCrossSqueak(),
-    },
-    {
       name: 'Sad Trombone (Wah-wah-waaah)',
-      time: 'Scene 5 (8.0s - 9.2s)',
+      time: 'Shadow Quit (8.0s - 9.2s)',
       desc: 'Iconic 4-note mournful brass glide (Eb3 -> D3 -> Db3 -> C3 drooping to B2) during thumbs down.',
       trigger: () => soundEngine.playSadTrombone(),
     },

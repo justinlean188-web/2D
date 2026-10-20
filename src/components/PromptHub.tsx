@@ -1,10 +1,18 @@
 import React, { useState } from 'react';
-import { Copy, Check, Sparkles, Film, Mic, Volume2 } from 'lucide-react';
-import { SCENES, MASTER_PROMPT } from '../types';
+import { Copy, Check, Film, Mic, Volume2 } from 'lucide-react';
+import { ProjectId, PROJECTS } from '../types';
 
-export const PromptHub: React.FC = () => {
+interface PromptHubProps {
+  activeProject: ProjectId;
+}
+
+export const PromptHub: React.FC<PromptHubProps> = ({ activeProject }) => {
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
   const [copiedMaster, setCopiedMaster] = useState(false);
+
+  const currentProject = PROJECTS[activeProject];
+  const scenes = currentProject.scenes;
+  const masterPrompt = currentProject.masterPrompt;
 
   const copyToClipboard = (text: string, index?: number) => {
     navigator.clipboard.writeText(text);
@@ -21,6 +29,11 @@ export const PromptHub: React.FC = () => {
     <div className="max-w-6xl mx-auto px-4 py-8 space-y-8">
       {/* Intro */}
       <div className="space-y-2">
+        <div className="flex items-center gap-2 text-xs font-mono text-rose-400">
+          <span>Active Project</span>
+          <span>·</span>
+          <span>{currentProject.title}</span>
+        </div>
         <h2 className="text-2xl font-bold tracking-tight text-white">
           AI Video Generation Prompts & Production Deck
         </h2>
@@ -35,10 +48,10 @@ export const PromptHub: React.FC = () => {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Film className="w-5 h-5 text-rose-500" />
-            <h3 className="text-lg font-semibold text-white">Master Style & Global Constraints Prompt</h3>
+            <h3 className="text-lg font-semibold text-white">Master Prompt & Constraints</h3>
           </div>
           <button
-            onClick={() => copyToClipboard(MASTER_PROMPT)}
+            onClick={() => copyToClipboard(masterPrompt)}
             className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-slate-200 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg transition-colors cursor-pointer"
           >
             {copiedMaster ? (
@@ -56,7 +69,7 @@ export const PromptHub: React.FC = () => {
         </div>
 
         <pre className="p-4 bg-slate-950 border border-slate-800/80 rounded-lg text-xs font-mono text-slate-300 leading-relaxed whitespace-pre-wrap max-h-72 overflow-y-auto">
-          {MASTER_PROMPT}
+          {masterPrompt}
         </pre>
       </div>
 
@@ -64,11 +77,11 @@ export const PromptHub: React.FC = () => {
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-semibold text-white">Scene-by-Scene Shot Prompts (0.0s – 10.0s)</h3>
-          <span className="text-xs text-slate-500">5 individual shots with exact camera & pantomime timing</span>
+          <span className="text-xs text-slate-500">5 individual shots with exact camera & timing</span>
         </div>
 
         <div className="grid grid-cols-1 gap-4">
-          {SCENES.map((scene, idx) => (
+          {scenes.map((scene, idx) => (
             <div key={scene.id} className="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
               <div className="flex items-start justify-between gap-4">
                 <div>
@@ -107,12 +120,16 @@ export const PromptHub: React.FC = () => {
                   <div className="text-slate-300">{scene.characterAction}</div>
                 </div>
                 <div className="p-2.5 bg-slate-950/60 rounded-lg border border-slate-800/40">
-                  <div className="text-slate-400 font-medium mb-1">Shadow Action</div>
-                  <div className="text-slate-300">{scene.shadowAction}</div>
+                  <div className="text-slate-400 font-medium mb-1">
+                    {activeProject === 'paper-ball' ? 'Prop & Physics Action' : 'Shadow Action'}
+                  </div>
+                  <div className="text-slate-300">
+                    {activeProject === 'paper-ball' ? scene.propAction : scene.shadowAction}
+                  </div>
                 </div>
                 <div className="p-2.5 bg-slate-950/60 rounded-lg border border-slate-800/40">
-                  <div className="text-slate-400 font-medium mb-1">Sound & Voice Cue</div>
-                  <div className="text-slate-300">{scene.soundDesc} {scene.voiceOverText ? `("${scene.voiceOverText}")` : ''}</div>
+                  <div className="text-slate-400 font-medium mb-1">Sound Cue & Punchline</div>
+                  <div className="text-slate-300">{scene.soundDesc} · {scene.punchline}</div>
                 </div>
               </div>
             </div>
@@ -122,33 +139,65 @@ export const PromptHub: React.FC = () => {
 
       {/* Editing & Sound Specs */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
-        <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-3">
-          <div className="flex items-center gap-2">
-            <Mic className="w-4 h-4 text-rose-500" />
-            <h4 className="text-sm font-semibold text-white">Voice-Over Direction</h4>
-          </div>
-          <ul className="text-xs text-slate-300 space-y-2 leading-relaxed">
-            <li><strong className="text-white">0.0–2.0s:</strong> "What if your shadow quit?"</li>
-            <li><strong className="text-white">8.0–9.5s:</strong> "HR has been notified."</li>
-            <li><strong className="text-white">Voice characteristics:</strong> Neutral adult voice, calm documentary delivery, slightly bored, deadpan, zero laughter or dramatic hype.</li>
-            <li><strong className="text-white">Pacing:</strong> Keep the middle scenes (2.0s to 8.0s) completely silent of dialogue so the pantomime comedy carries the story.</li>
-          </ul>
-        </div>
+        {activeProject === 'paper-ball' ? (
+          <>
+            <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-3">
+              <div className="flex items-center gap-2">
+                <Film className="w-4 h-4 text-rose-500" />
+                <h4 className="text-sm font-semibold text-white">Visual & Animation Constraints</h4>
+              </div>
+              <ul className="text-xs text-slate-300 space-y-2 leading-relaxed">
+                <li><strong className="text-white">Strict rule:</strong> No dialogue, no captions, no text, no watermark.</li>
+                <li><strong className="text-white">Colors:</strong> Flat colors only, no gradients, no realistic textures, no 3D rendering.</li>
+                <li><strong className="text-white">Props:</strong> Crumpled white paper ball, small black trash can, table lamp, ceiling fan.</li>
+                <li><strong className="text-white">Physics:</strong> Exaggerated cartoon physics, snappy timing, elastic motion, fast ball tracking, satisfying ricochets, deadpan comedic expressions.</li>
+              </ul>
+            </div>
 
-        <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-3">
-          <div className="flex items-center gap-2">
-            <Volume2 className="w-4 h-4 text-rose-500" />
-            <h4 className="text-sm font-semibold text-white">Audio & Editing Design</h4>
-          </div>
-          <ul className="text-xs text-slate-300 space-y-2 leading-relaxed">
-            <li><strong className="text-white">Footstep pops:</strong> Two soft pops + one cheerful blip for the skip.</li>
-            <li><strong className="text-white">Record scratch:</strong> Sharp comedic needle rip exactly at 2.0s.</li>
-            <li><strong className="text-white">Clipboard & taps:</strong> Paper snap, two crisp clicks at 5.05s & 5.25s.</li>
-            <li><strong className="text-white">Sad trombone:</strong> Mournful wah-wah-wah-waaah during the slow thumbs-down.</li>
-            <li><strong className="text-white">Aspect & Output:</strong> 1080 × 1920 (9:16 vertical), 24 fps, clean typography.</li>
-          </ul>
-        </div>
+            <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-3">
+              <div className="flex items-center gap-2">
+                <Volume2 className="w-4 h-4 text-rose-500" />
+                <h4 className="text-sm font-semibold text-white">Acoustic Cartoon Timing</h4>
+              </div>
+              <ul className="text-xs text-slate-300 space-y-2 leading-relaxed">
+                <li><strong className="text-white">2.2s:</strong> Snappy toss release whoosh.</li>
+                <li><strong className="text-white">3.8s:</strong> Metallic trash can rim clink.</li>
+                <li><strong className="text-white">4.6s:</strong> Resonant brass table lamp ding.</li>
+                <li><strong className="text-white">6.0s:</strong> Violent ceiling fan blade WHACK.</li>
+                <li><strong className="text-white">7.7s:</strong> Classic hollow forehead cartoon bonk (*dook*).</li>
+                <li><strong className="text-white">8.1s–10.0s:</strong> Soft desk plop followed by total deadpan silence.</li>
+              </ul>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-3">
+              <div className="flex items-center gap-2">
+                <Mic className="w-4 h-4 text-rose-500" />
+                <h4 className="text-sm font-semibold text-white">Voice-Over Direction</h4>
+              </div>
+              <ul className="text-xs text-slate-300 space-y-2 leading-relaxed">
+                <li><strong className="text-white">0.0–2.0s:</strong> "What if your shadow quit?"</li>
+                <li><strong className="text-white">8.0–9.5s:</strong> "HR has been notified."</li>
+                <li><strong className="text-white">Voice:</strong> Neutral adult voice, calm documentary delivery, slightly bored, deadpan.</li>
+              </ul>
+            </div>
+
+            <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-3">
+              <div className="flex items-center gap-2">
+                <Volume2 className="w-4 h-4 text-rose-500" />
+                <h4 className="text-sm font-semibold text-white">Audio & Editing Design</h4>
+              </div>
+              <ul className="text-xs text-slate-300 space-y-2 leading-relaxed">
+                <li><strong className="text-white">Footstep pops:</strong> Two soft pops + one cheerful skip blip.</li>
+                <li><strong className="text-white">Record scratch:</strong> Sharp comedic needle rip at 2.0s.</li>
+                <li><strong className="text-white">Sad trombone:</strong> Mournful wah-wah-wah-waaah during thumbs-down.</li>
+              </ul>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
 };
+

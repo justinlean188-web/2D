@@ -1,16 +1,20 @@
 import React from 'react';
 import { Play, Clock, Sparkles } from 'lucide-react';
-import { SCENES, SceneDef } from '../types';
+import { ProjectId, PROJECTS, SceneDef } from '../types';
 
 interface SceneTimelineProps {
+  activeProject: ProjectId;
   currentTime: number;
   onSelectScene: (scene: SceneDef) => void;
 }
 
 export const SceneTimeline: React.FC<SceneTimelineProps> = ({
+  activeProject,
   currentTime,
   onSelectScene,
 }) => {
+  const currentProject = PROJECTS[activeProject];
+  const scenes = currentProject.scenes;
   return (
     <div className="max-w-6xl mx-auto px-4 py-8 space-y-6">
       <div className="flex items-center justify-between">
@@ -23,7 +27,7 @@ export const SceneTimeline: React.FC<SceneTimelineProps> = ({
       </div>
 
       <div className="relative border-l border-slate-800 ml-4 pl-6 space-y-8">
-        {SCENES.map((scene) => {
+        {scenes.map((scene) => {
           const isActive =
             currentTime >= scene.timeRange[0] && currentTime < scene.timeRange[1];
 
@@ -77,16 +81,18 @@ export const SceneTimeline: React.FC<SceneTimelineProps> = ({
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 text-xs">
                 <div className="p-3 bg-slate-950 rounded-lg border border-slate-800/60 space-y-1.5">
                   <div className="text-slate-400 font-semibold uppercase tracking-wider text-[10px]">
-                    Main Character (Stick Figure)
+                    Main Character (Stickman)
                   </div>
                   <div className="text-slate-200 leading-relaxed">{scene.characterAction}</div>
                 </div>
 
                 <div className="p-3 bg-slate-950 rounded-lg border border-slate-800/60 space-y-1.5">
                   <div className="text-slate-400 font-semibold uppercase tracking-wider text-[10px]">
-                    Shadow Character (Silhouette)
+                    {activeProject === 'paper-ball' ? 'Prop & Physics Action' : 'Shadow Silhouette'}
                   </div>
-                  <div className="text-slate-200 leading-relaxed">{scene.shadowAction}</div>
+                  <div className="text-slate-200 leading-relaxed">
+                    {activeProject === 'paper-ball' ? scene.propAction : scene.shadowAction}
+                  </div>
                 </div>
               </div>
 

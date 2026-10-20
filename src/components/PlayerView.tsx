@@ -11,10 +11,12 @@ import {
   Grid,
   Volume2,
   VolumeX,
+  Download,
 } from 'lucide-react';
 import { CanvasRenderer } from '../animation/canvasRenderer';
+import { PaperBallRenderer } from '../animation/paperBallRenderer';
 import { soundEngine, speakVoiceOver, stopVoiceOver } from '../audio/soundEngine';
-import { StudioConfig, SCENES, SceneDef } from '../types';
+import { StudioConfig, PROJECTS, SceneDef } from '../types';
 
 interface PlayerViewProps {
   config: StudioConfig;
@@ -23,6 +25,7 @@ interface PlayerViewProps {
   setCurrentTime: React.Dispatch<React.SetStateAction<number>>;
   isPlaying: boolean;
   setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>;
+  onOpenExport?: () => void;
 }
 
 export const PlayerView: React.FC<PlayerViewProps> = ({
@@ -32,105 +35,159 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
   setCurrentTime,
   isPlaying,
   setIsPlaying,
+  onOpenExport,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const rendererRef = useRef<CanvasRenderer>(new CanvasRenderer());
+  const shadowRendererRef = useRef<CanvasRenderer>(new CanvasRenderer());
+  const paperBallRendererRef = useRef<PaperBallRenderer>(new PaperBallRenderer());
   const [speed, setSpeed] = useState<number>(1.0);
   const [isLooping, setIsLooping] = useState<boolean>(true);
   const lastTimeRef = useRef<number>(performance.now());
   const triggeredAudioCues = useRef<Set<string>>(new Set());
 
+  const currentProject = PROJECTS[config.activeProject];
+  const projectScenes = currentProject.scenes;
+
   // Current active scene
-  const activeScene = SCENES.find(
-    (s) => currentTime >= s.timeRange[0] && currentTime < s.timeRange[1]
-  ) || SCENES[SCENES.length - 1];
+  const activeScene =
+    projectScenes.find(
+      (s) => currentTime >= s.timeRange[0] && currentTime < s.timeRange[1]
+    ) || projectScenes[projectScenes.length - 1];
 
   // Reset audio cues when seeking or starting over
   const resetAudioCues = useCallback((toTime: number) => {
     const cues = triggeredAudioCues.current;
-    // Remove cues that are ahead of toTime
-    if (toTime < 0.3) cues.delete('step1');
-    if (toTime < 0.7) cues.delete('step2');
-    if (toTime < 1.1) cues.delete('skip');
-    if (toTime < 1.9) cues.delete('scratch');
-    if (toTime < 4.4) cues.delete('paper');
-    if (toTime < 5.0) cues.delete('tap1');
-    if (toTime < 5.2) cues.delete('tap2');
-    if (toTime < 6.0) cues.delete('thump');
-    if (toTime < 6.2) cues.delete('squeak');
-    if (toTime < 7.9) cues.delete('trombone');
-    if (toTime < 0.1) cues.delete('vo1');
-    if (toTime < 7.9) cues.delete('vo2');
-  }, []);
+    if (config.activeProject === 'paper-ball') {
+      if (toTime < 1.9) cues.delete('toss');
+      if (toTime < 4.3) cues.delete('rim');
+      if (toTime < 5.9) cues.delete('lamp');
+      if (toTime < 7.4) cues.delete('fan');
+      if (toTime < 8.5) cues.delete('wall');
+      if (toTime < 9.3) cues.delete('bonk');
+      if (toTime < 9.5) cues.delete('plop');
+    } else {
+      if (toTime < 0.3) cues.delete('step1');
+      if (toTime < 0.7) cues.delete('step2');
+      if (toTime < 1.1) cues.delete('skip');
+      if (toTime < 1.9) cues.delete('scratch');
+      if (toTime < 4.4) cues.delete('paper');
+      if (toTime < 5.0) cues.delete('tap1');
+      if (toTime < 5.2) cues.delete('tap2');
+      if (toTime < 6.0) cues.delete('thump');
+      if (toTime < 6.2) cues.delete('squeak');
+      if (toTime < 7.9) cues.delete('trombone');
+      if (toTime < 0.1) cues.delete('vo1');
+      if (toTime < 7.9) cues.delete('vo2');
+    }
+  }, [config.activeProject]);
 
   // Audio triggering checks during playback
-  const checkAudioTriggers = useCallback((t: number) => {
-    if (!config.enableSFX && !config.enableVoiceOver) return;
+  const checkAudioTriggers = useCallback(
+    (t: number) => {
+      if (!config.enableSFX && !config.enableVoiceOver) return;
+      const cues = triggeredAudioCues.current;
 
-    const cues = triggeredAudioCues.current;
+      if (config.activeProject === 'paper-ball') {
+        if (!config.enableSFX) return;
+        if (t >= 2.0 && !cues.has('toss')) {
+          soundEngine.playWhoosh();
+          cues.add('toss');
+        }
+        if (t >= 4.4 && !cues.has('rim')) {
+          soundEngine.playRimClink();
+          cues.add('rim');
+        }
+        if (t >= 6.0 && !cues.has('lamp')) {
+          soundEngine.playLampDing();
+          cues.add('lamp');
+        }
+        if (t >= 7.5 && !cues.has('fan')) {
+          soundEngine.playFanWhack();
+          cues.add('fan');
+        }
+        if (t >= 8.6 && !cues.has('wall')) {
+          soundEngine.playWallBounce();
+          cues.add('wall');
+        }
+        if (t >= 9.4 && !cues.has('bonk')) {
+          soundEngine.playHeadBonk();
+          cues.add('bonk');
+        }
+        if (t >= 9.6 && !cues.has('plop')) {
+          soundEngine.playDeskPlop();
+          cues.add('plop');
+        }
+        return;
+      }
 
-    if (config.enableSFX) {
-      if (t >= 0.4 && !cues.has('step1')) {
-        soundEngine.playFootstep(false);
-        cues.add('step1');
+      // Shadow Quit project audio
+      if (config.enableSFX) {
+        if (t >= 0.4 && !cues.has('step1')) {
+          soundEngine.playFootstep(false);
+          cues.add('step1');
+        }
+        if (t >= 0.8 && !cues.has('step2')) {
+          soundEngine.playFootstep(false);
+          cues.add('step2');
+        }
+        if (t >= 1.2 && !cues.has('skip')) {
+          soundEngine.playFootstep(true);
+          cues.add('skip');
+        }
+        if (t >= 2.0 && !cues.has('scratch')) {
+          soundEngine.playRecordScratch();
+          cues.add('scratch');
+        }
+        if (t >= 4.5 && !cues.has('paper')) {
+          soundEngine.playPaperSlap();
+          cues.add('paper');
+        }
+        if (t >= 5.05 && !cues.has('tap1')) {
+          soundEngine.playClipboardTap();
+          cues.add('tap1');
+        }
+        if (t >= 5.25 && !cues.has('tap2')) {
+          soundEngine.playClipboardTap();
+          cues.add('tap2');
+        }
+        if (t >= 6.1 && !cues.has('thump')) {
+          soundEngine.playFloorThump();
+          cues.add('thump');
+        }
+        if (t >= 6.3 && !cues.has('squeak')) {
+          soundEngine.playArmCrossSqueak();
+          cues.add('squeak');
+        }
+        if (t >= 8.0 && !cues.has('trombone')) {
+          soundEngine.playSadTrombone();
+          cues.add('trombone');
+        }
       }
-      if (t >= 0.8 && !cues.has('step2')) {
-        soundEngine.playFootstep(false);
-        cues.add('step2');
-      }
-      if (t >= 1.2 && !cues.has('skip')) {
-        soundEngine.playFootstep(true);
-        cues.add('skip');
-      }
-      if (t >= 2.0 && !cues.has('scratch')) {
-        soundEngine.playRecordScratch();
-        cues.add('scratch');
-      }
-      if (t >= 4.5 && !cues.has('paper')) {
-        soundEngine.playPaperSlap();
-        cues.add('paper');
-      }
-      if (t >= 5.05 && !cues.has('tap1')) {
-        soundEngine.playClipboardTap();
-        cues.add('tap1');
-      }
-      if (t >= 5.25 && !cues.has('tap2')) {
-        soundEngine.playClipboardTap();
-        cues.add('tap2');
-      }
-      if (t >= 6.1 && !cues.has('thump')) {
-        soundEngine.playFloorThump();
-        cues.add('thump');
-      }
-      if (t >= 6.3 && !cues.has('squeak')) {
-        soundEngine.playArmCrossSqueak();
-        cues.add('squeak');
-      }
-      if (t >= 8.0 && !cues.has('trombone')) {
-        soundEngine.playSadTrombone();
-        cues.add('trombone');
-      }
-    }
 
-    if (config.enableVoiceOver) {
-      if (t >= 0.1 && t < 0.3 && !cues.has('vo1')) {
-        speakVoiceOver(config.customVO1, {
-          rate: config.voiceRate,
-          pitch: config.voicePitch,
-          volume: config.voiceVolume,
-        });
-        cues.add('vo1');
+      if (config.enableVoiceOver) {
+        if (t >= 0.1 && t < 0.3 && !cues.has('vo1')) {
+          speakVoiceOver(config.customVO1, {
+            rate: config.voiceRate,
+            pitch: config.voicePitch,
+            volume: config.voiceVolume,
+          });
+          cues.add('vo1');
+        }
+        if (t >= 8.0 && t < 8.3 && !cues.has('vo2')) {
+          speakVoiceOver(config.customVO2, {
+            rate: config.voiceRate,
+            pitch: config.voicePitch,
+            volume: config.voiceVolume,
+          });
+          cues.add('vo2');
+        }
       }
-      if (t >= 8.0 && t < 8.3 && !cues.has('vo2')) {
-        speakVoiceOver(config.customVO2, {
-          rate: config.voiceRate,
-          pitch: config.voicePitch,
-          volume: config.voiceVolume,
-        });
-        cues.add('vo2');
-      }
-    }
-  }, [config]);
+    },
+    [config]
+  );
+
+  const currentTimeRef = useRef<number>(currentTime);
+  currentTimeRef.current = currentTime;
 
   // Main animation render loop
   useEffect(() => {
@@ -141,20 +198,20 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
       lastTimeRef.current = now;
 
       if (isPlaying) {
-        setCurrentTime((prev) => {
-          let nextTime = prev + delta * speed;
-          if (nextTime >= 10.0) {
-            if (isLooping) {
-              nextTime = 0.0;
-              resetAudioCues(0.0);
-            } else {
-              nextTime = 10.0;
-              setIsPlaying(false);
-            }
+        const prev = currentTimeRef.current;
+        let nextTime = prev + delta * speed;
+        if (nextTime >= 10.0) {
+          if (isLooping) {
+            nextTime = 0.0;
+            resetAudioCues(0.0);
+          } else {
+            nextTime = 10.0;
+            setIsPlaying(false);
           }
-          checkAudioTriggers(nextTime);
-          return nextTime;
-        });
+        }
+        currentTimeRef.current = nextTime;
+        setCurrentTime(nextTime);
+        checkAudioTriggers(nextTime);
       }
 
       // Render to canvas
@@ -162,13 +219,17 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
       if (canvas) {
         const ctx = canvas.getContext('2d');
         if (ctx) {
-          // Calculate time for rendering
-          let renderTime = currentTime;
+          const t = currentTimeRef.current;
+          let renderTime = t;
           if (config.fpsMode === 24) {
-            // Quantize to 24fps frames for authentic animated frame feel
-            renderTime = Math.floor(currentTime * 24) / 24;
+            renderTime = Math.floor(t * 24) / 24;
           }
-          rendererRef.current.render(ctx, renderTime, config);
+
+          if (config.activeProject === 'paper-ball') {
+            paperBallRendererRef.current.render(ctx, renderTime, config);
+          } else {
+            shadowRendererRef.current.render(ctx, renderTime, config);
+          }
         }
       }
 
@@ -179,7 +240,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
     animId = requestAnimationFrame(renderLoop);
 
     return () => cancelAnimationFrame(animId);
-  }, [isPlaying, speed, isLooping, currentTime, config, checkAudioTriggers, resetAudioCues, setCurrentTime, setIsPlaying]);
+  }, [isPlaying, speed, isLooping, config, checkAudioTriggers, resetAudioCues, setCurrentTime, setIsPlaying]);
 
   // Spacebar toggle play/pause
   useEffect(() => {
@@ -218,8 +279,9 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
   const takeSnapshot = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+    const prefix = config.activeProject === 'paper-ball' ? 'paper-ball' : 'shadow-quit';
     const link = document.createElement('a');
-    link.download = `shadow-quit-${currentTime.toFixed(2)}s.png`;
+    link.download = `${prefix}-${currentTime.toFixed(2)}s.png`;
     link.href = canvas.toDataURL('image/png');
     link.click();
   };
@@ -232,7 +294,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
       <div className="flex flex-wrap items-center justify-between gap-4 bg-slate-900 border border-slate-800 rounded-xl p-4">
         {/* Scene Selector Pills */}
         <div className="flex items-center gap-1.5 overflow-x-auto py-1">
-          {SCENES.map((s) => {
+          {projectScenes.map((s) => {
             const isCur = currentTime >= s.timeRange[0] && currentTime < s.timeRange[1];
             return (
               <button
@@ -280,6 +342,17 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
             <Camera className="w-3.5 h-3.5" />
             <span>Snapshot</span>
           </button>
+
+          {onOpenExport && (
+            <button
+              onClick={onOpenExport}
+              className="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold bg-rose-600 hover:bg-rose-500 text-white rounded-lg shadow-sm transition-colors cursor-pointer"
+              title="Export 1080x1920 MP4/WebM with custom speed & synchronized audio"
+            >
+              <Download className="w-3.5 h-3.5" />
+              <span>Export Video</span>
+            </button>
+          )}
         </div>
       </div>
 
@@ -428,13 +501,22 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
 
               {/* Playback speed selector */}
               <div className="flex items-center gap-1 bg-slate-950 p-1 rounded-lg border border-slate-800">
-                {[0.25, 0.5, 1.0, 1.5, 2.0].map((s) => (
+                {[0.5, 0.75, 1.0, 1.25, 1.5].map((s) => (
                   <button
                     key={s}
                     onClick={() => setSpeed(s)}
-                    className={`px-2 py-1 text-xs font-mono rounded transition-colors cursor-pointer ${
-                      speed === s ? 'bg-rose-600 text-white font-bold' : 'text-slate-400 hover:text-slate-200'
+                    className={`px-2.5 py-1 text-xs font-mono rounded transition-colors cursor-pointer ${
+                      speed === s
+                        ? 'bg-rose-600 text-white font-bold'
+                        : 'text-slate-400 hover:text-slate-200'
                     }`}
+                    title={
+                      s === 0.5
+                        ? 'Slow-Mo Comedy (0.5x)'
+                        : s === 0.75
+                        ? 'Relaxed Comedy (0.75x)'
+                        : `${s}x Speed`
+                    }
                   >
                     {s}x
                   </button>
@@ -458,8 +540,12 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
                 <div className="text-slate-200 mt-0.5">{activeScene.characterAction}</div>
               </div>
               <div className="p-2.5 bg-slate-950 rounded-lg border border-slate-800/60">
-                <div className="text-slate-400 font-medium">Shadow Behavior</div>
-                <div className="text-slate-200 mt-0.5">{activeScene.shadowAction}</div>
+                <div className="text-slate-400 font-medium">
+                  {config.activeProject === 'paper-ball' ? 'Prop & Physics Action' : 'Shadow Behavior'}
+                </div>
+                <div className="text-slate-200 mt-0.5">
+                  {config.activeProject === 'paper-ball' ? activeScene.propAction : activeScene.shadowAction}
+                </div>
               </div>
             </div>
           </div>
@@ -467,19 +553,36 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
           {/* Quick Audio & Caption Toggles */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
             <button
-              onClick={() => setConfig({ ...config, enableVoiceOver: !config.enableVoiceOver })}
-              className={`p-3 rounded-xl border flex items-center justify-between transition-colors cursor-pointer ${
-                config.enableVoiceOver
-                  ? 'bg-slate-900 border-slate-700 text-white'
-                  : 'bg-slate-950 border-slate-800 text-slate-500'
+              onClick={() => {
+                if (currentProject.hasAudioDialogue) {
+                  setConfig({ ...config, enableVoiceOver: !config.enableVoiceOver });
+                }
+              }}
+              disabled={!currentProject.hasAudioDialogue}
+              className={`p-3 rounded-xl border flex items-center justify-between transition-colors ${
+                !currentProject.hasAudioDialogue
+                  ? 'bg-slate-950/50 border-slate-900 text-slate-600 cursor-not-allowed opacity-60'
+                  : config.enableVoiceOver
+                  ? 'bg-slate-900 border-slate-700 text-white cursor-pointer'
+                  : 'bg-slate-950 border-slate-800 text-slate-500 cursor-pointer'
               }`}
             >
               <div className="text-left">
                 <div className="text-xs font-semibold">Voice-Over</div>
-                <div className="text-[11px] text-slate-400">Deadpan narrator</div>
+                <div className="text-[11px] text-slate-400">
+                  {currentProject.hasAudioDialogue ? 'Deadpan narrator' : 'No dialogue film'}
+                </div>
               </div>
-              <span className={`text-xs font-mono ${config.enableVoiceOver ? 'text-emerald-400' : 'text-slate-600'}`}>
-                {config.enableVoiceOver ? 'ON' : 'OFF'}
+              <span
+                className={`text-xs font-mono ${
+                  !currentProject.hasAudioDialogue
+                    ? 'text-slate-600'
+                    : config.enableVoiceOver
+                    ? 'text-emerald-400'
+                    : 'text-slate-600'
+                }`}
+              >
+                {!currentProject.hasAudioDialogue ? 'N/A' : config.enableVoiceOver ? 'ON' : 'OFF'}
               </span>
             </button>
 
@@ -493,7 +596,9 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
             >
               <div className="text-left">
                 <div className="text-xs font-semibold">Cartoon SFX</div>
-                <div className="text-[11px] text-slate-400">Scratch, taps, trombone</div>
+                <div className="text-[11px] text-slate-400">
+                  {config.activeProject === 'paper-ball' ? 'Whack, bonk, clink' : 'Scratch, taps, horn'}
+                </div>
               </div>
               <span className={`text-xs font-mono ${config.enableSFX ? 'text-emerald-400' : 'text-slate-600'}`}>
                 {config.enableSFX ? 'ON' : 'OFF'}
@@ -501,19 +606,36 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
             </button>
 
             <button
-              onClick={() => setConfig({ ...config, showCaptions: !config.showCaptions })}
-              className={`p-3 rounded-xl border flex items-center justify-between transition-colors cursor-pointer ${
-                config.showCaptions
-                  ? 'bg-slate-900 border-slate-700 text-white'
-                  : 'bg-slate-950 border-slate-800 text-slate-500'
+              onClick={() => {
+                if (currentProject.hasCaptions) {
+                  setConfig({ ...config, showCaptions: !config.showCaptions });
+                }
+              }}
+              disabled={!currentProject.hasCaptions}
+              className={`p-3 rounded-xl border flex items-center justify-between transition-colors ${
+                !currentProject.hasCaptions
+                  ? 'bg-slate-950/50 border-slate-900 text-slate-600 cursor-not-allowed opacity-60'
+                  : config.showCaptions
+                  ? 'bg-slate-900 border-slate-700 text-white cursor-pointer'
+                  : 'bg-slate-950 border-slate-800 text-slate-500 cursor-pointer'
               }`}
             >
               <div className="text-left">
                 <div className="text-xs font-semibold">In-Video Captions</div>
-                <div className="text-[11px] text-slate-400">Opening & End-card</div>
+                <div className="text-[11px] text-slate-400">
+                  {currentProject.hasCaptions ? 'Opening & End-card' : 'No text constraint'}
+                </div>
               </div>
-              <span className={`text-xs font-mono ${config.showCaptions ? 'text-emerald-400' : 'text-slate-600'}`}>
-                {config.showCaptions ? 'ON' : 'OFF'}
+              <span
+                className={`text-xs font-mono ${
+                  !currentProject.hasCaptions
+                    ? 'text-slate-600'
+                    : config.showCaptions
+                    ? 'text-emerald-400'
+                    : 'text-slate-600'
+                }`}
+              >
+                {!currentProject.hasCaptions ? 'NONE' : config.showCaptions ? 'ON' : 'OFF'}
               </span>
             </button>
           </div>

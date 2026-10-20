@@ -6,7 +6,7 @@ import { PromptHub } from './components/PromptHub';
 import { AudioLab } from './components/AudioLab';
 import { StudioConfig, DEFAULT_CONFIG, SCENES, SceneDef } from './types';
 import { soundEngine, stopVoiceOver } from './audio/soundEngine';
-import { exportVideo } from './utils/exportVideo';
+import { ExportModal } from './components/ExportModal';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<'player' | 'timeline' | 'prompts' | 'audio'>('player');
@@ -14,8 +14,7 @@ export default function App() {
   const [currentTime, setCurrentTime] = useState<number>(0.0);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isMuted, setIsMuted] = useState<boolean>(false);
-  const [isExporting, setIsExporting] = useState<boolean>(false);
-  const [exportProgress, setExportProgress] = useState<number>(0);
+  const [isExportModalOpen, setIsExportModalOpen] = useState<boolean>(false);
 
   const handleMuteToggle = (muted: boolean) => {
     setIsMuted(muted);
@@ -31,22 +30,9 @@ export default function App() {
     setIsPlaying(true);
   };
 
-  const handleExport = async () => {
-    if (isExporting) return;
+  const handleOpenExport = () => {
     setIsPlaying(false);
-    setIsExporting(true);
-    setExportProgress(0);
-
-    try {
-      await exportVideo(config, (progress) => {
-        setExportProgress(progress);
-      });
-    } catch (err) {
-      console.error('Export failed:', err);
-    } finally {
-      setIsExporting(false);
-      setExportProgress(0);
-    }
+    setIsExportModalOpen(true);
   };
 
   return (
@@ -55,10 +41,16 @@ export default function App() {
       <Header
         activeTab={activeTab}
         setActiveTab={setActiveTab}
+        activeProject={config.activeProject}
+        setActiveProject={(p) => {
+          setIsPlaying(false);
+          setCurrentTime(0);
+          setConfig({ ...config, activeProject: p });
+        }}
         isMuted={isMuted}
         setIsMuted={handleMuteToggle}
-        onExportVideo={handleExport}
-        isExporting={isExporting}
+        onExportVideo={handleOpenExport}
+        isExporting={isExportModalOpen}
       />
 
       {/* Main Content Area */}
@@ -71,54 +63,46 @@ export default function App() {
             setCurrentTime={setCurrentTime}
             isPlaying={isPlaying}
             setIsPlaying={setIsPlaying}
+            onOpenExport={handleOpenExport}
           />
         )}
 
         {activeTab === 'timeline' && (
           <SceneTimeline
+            activeProject={config.activeProject}
             currentTime={currentTime}
             onSelectScene={handleSelectScene}
           />
         )}
 
-        {activeTab === 'prompts' && <PromptHub />}
+        {activeTab === 'prompts' && <PromptHub activeProject={config.activeProject} />}
 
         {activeTab === 'audio' && (
           <AudioLab config={config} setConfig={setConfig} />
         )}
       </main>
 
-      {/* Exporting Progress Toast */}
-      {isExporting && (
-        <div className="fixed bottom-6 right-6 z-50 bg-slate-900 border border-rose-500 rounded-xl p-4 shadow-2xl flex items-center gap-4 max-w-sm">
-          <div className="w-10 h-10 rounded-full bg-rose-950 flex items-center justify-center text-rose-400 font-mono text-xs font-bold shrink-0">
-            {exportProgress}%
-          </div>
-          <div className="space-y-1">
-            <div className="text-xs font-semibold text-white">Rendering 10s MP4 Animation</div>
-            <div className="w-48 bg-slate-800 rounded-full h-1.5 overflow-hidden">
-              <div
-                className="bg-rose-500 h-full transition-all duration-150"
-                style={{ width: `${exportProgress}%` }}
-              />
-            </div>
-            <div className="text-[10px] text-slate-400">1080 × 1920 · 240 frames @ 24 fps</div>
-          </div>
-        </div>
-      )}
+      {/* Interactive Export Studio Modal with Speed, Format & Preview */}
+      <ExportModal
+        isOpen={isExportModalOpen}
+        onClose={() => setIsExportModalOpen(false)}
+        config={config}
+      />
 
       {/* Clean, Non-slop Footer */}
       <footer className="border-t border-slate-800 py-6 px-6 text-center text-xs text-slate-500">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <p>
-            What If Your Shadow Quit? · 2D Minimalist Comedy Animation Studio · 9:16 Vertical Safe
+            {config.activeProject === 'paper-ball'
+              ? 'The Paper Ball Ricochet · Minimalist 2D Vector Stickman Comedy · 1080×1920 (9:16)'
+              : 'What If Your Shadow Quit? · 2D Minimalist Comedy Animation Studio · 9:16 Vertical Safe'}
           </p>
           <div className="flex items-center gap-4 text-slate-400">
             <span>24 fps</span>
             <span>·</span>
-            <span>Pure Black & White with Soft Red Accent</span>
+            <span>Pure Black & White Vector Art</span>
             <span>·</span>
-            <span>Absurd Workplace Comedy</span>
+            <span>Exaggerated Cartoon Physics</span>
           </div>
         </div>
       </footer>

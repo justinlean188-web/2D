@@ -1,0 +1,123 @@
+{
+  "version": 1,
+  "generatedAt": "2026-10-21T03:52:58.695Z",
+  "source": {
+    "url": "C:\\Users\\olive\\AppData\\Local\\Temp\\opencode\\ranking-reel.webm",
+    "title": "Best Trick Shots",
+    "duration": 46,
+    "fps": 24,
+    "width": 1080,
+    "height": 1920
+  },
+  "style": "flat vector illustration, bold clean outlines, vivid accent lighting, full body character, centered, plain light background, no text, no watermark",
+  "voice": "cinematic",
+  "title": "Best Trick Shots",
+  "subtitle": "POWER RANKING",
+  "category": "trick-shots",
+  "introNarration": "8 contenders enter the countdown. Stay until number one.",
+  "introCaption": "8 CONTENDERS. WHO TAKES NUMBER ONE?",
+  "outroNarration": "That is the countdown. Who would you crown?",
+  "outroCaption": "WHO DESERVES THE TOP SPOT? COMMENT BELOW.",
+  "secondsPerItem": 5.75,
+  "introSeconds": 5.75,
+  "outroSeconds": 5.75,
+  "titleCardSeconds": 1.2,
+  "items": [
+    {
+      "id": "challenger-08",
+      "rank": 8,
+      "name": "CHALLENGER 08",
+      "category": "RANKED CONTENDER",
+      "score": 99,
+      "caption": "A NEW CONTENDER ENTERS THE COUNTDOWN.",
+      "narration": "At number 8, challenger 8 enters the countdown.",
+      "visualPrompt": "an original ranked contender number 8, a unique silhouette",
+      "image": "characters/challenger-08.svg",
+      "accent": "#ff6b4a"
+    },
+    {
+      "id": "challenger-07",
+      "rank": 7,
+      "name": "CHALLENGER 07",
+      "category": "RANKED CONTENDER",
+      "score": 93,
+      "caption": "A NEW CONTENDER ENTERS THE COUNTDOWN.",
+      "narration": "At number 7, challenger 7 enters the countdown.",
+      "visualPrompt": "an original ranked contender number 7, a unique silhouette",
+      "image": "characters/challenger-07.svg",
+      "accent": "#a78bfa"
+    },
+    {
+      "id": "challenger-06",
+      "rank": 6,
+      "name": "CHALLENGER 06",
+      "category": "RANKED CONTENDER",
+      "score": 87,
+      "caption": "A NEW CONTENDER ENTERS THE COUNTDOWN.",
+      "narration": "At number 6, challenger 6 enters the countdown.",
+      "visualPrompt": "an original ranked contender number 6, a unique silhouette",
+      "image": "characters/challenger-06.svg",
+      "accent": "#38bdf8"
+    },
+    {
+      "id": "challenger-05",
+      "rank": 5,
+      "name": "CHALLENGER 05",
+      "category": "RANKED CONTENDER",
+      "score": 81,
+      "caption": "A NEW CONTENDER ENTERS THE COUNTDOWN.",
+      "narration": "At number 5, challenger 5 enters the countdown.",
+      "visualPrompt": "an original ranked contender number 5, a unique silhouette",
+      "image": "characters/challenger-05.svg",
+      "accent": "#fb7185"
+    },
+    {
+      "id": "challenger-04",
+      "rank": 4,
+      "name": "CHALLENGER 04",
+      "category": "RANKED CONTENDER",
+      "score": 75,
+      "caption": "A NEW CONTENDER ENTERS THE COUNTDOWN.",
+      "narration": "At number 4, challenger 4 enters the countdown.",
+      "visualPrompt": "an original ranked contender number 4, a unique silhouette",
+      "image": "characters/challenger-04.svg",
+      "accent": "#c084fc"
+    },
+    {
+      "id": "challenger-03",
+      "rank": 3,
+      "name": "CHALLENGER 03",
+      "category": "RANKED CONTENDER",
+      "score": 68,
+      "caption": "A NEW CONTENDER ENTERS THE COUNTDOWN.",
+      "narration": "At number 3, challenger 3 enters the countdown.",
+      "visualPrompt": "an original ranked contender number 3, a unique silhouette",
+      "image": "characters/challenger-03.svg",
+      "accent": "#fbbf24"
+    },
+    {
+      "id": "challenger-02",
+      "rank": 2,
+      "name": "CHALLENGER 02",
+      "category": "RANKED CONTENDER",
+      "score": 62,
+      "caption": "A NEW CONTENDER ENTERS THE COUNTDOWN.",
+      "narration": "At number 2, challenger 2 enters the countdown.",
+      "visualPrompt": "an original ranked contender number 2, a unique silhouette",
+      "image": "characters/challenger-02.svg",
+      "accent": "#818cf8"
+    },
+    {
+      "id": "challenger-01",
+      "rank": 1,
+      "name": "CHALLENGER 01",
+      "category": "RANKED CONTENDER",
+      "score": 56,
+      "caption": "A NEW CONTENDER ENTERS THE COUNTDOWN.",
+      "narration": "At number 1, challenger 1 enters the countdown.",
+      "visualPrompt": "an original ranked contender number 1, a unique silhouette",
+      "image": "characters/challenger-01.svg",
+      "accent": "#f97316"
+    }
+  ]
+}

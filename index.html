@@ -3,18 +3,71 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>What If Your Shadow Quit? — AI Animation Studio</title>
-    <meta name="description" content="Interactive 10-second 2D minimalist comedy animation player, director studio, and video prompt generator." />
-    <meta property="og:title" content="What If Your Shadow Quit? — AI Animation Studio" />
+    <title>2D Animation Studio — Minimalist Stickman Comedy</title>
+    <meta name="description" content="Interactive 10-second 2D minimalist comedy animation player, director studio, and video prompt generator for Paper Ball Ricochet and What If Your Shadow Quit." />
+    <meta property="og:title" content="2D Animation Studio — Minimalist Stickman Comedy" />
     <meta property="og:description" content="Interactive 10-second 2D minimalist comedy animation player, director studio, and video prompt generator." />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23e11d48'/%3E%3Ccircle cx='32' cy='21' r='9' fill='white'/%3E%3Cpath d='M32 30v17M22 40l10-8 10 8M24 57l8-10 8 10' stroke='white' stroke-width='4' stroke-linecap='round' fill='none'/%3E%3C/svg%3E" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   </head>
   <body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-rose-500 selection:text-white">
     <div id="root"></div>
+    <script>
+      // The dev server restarts when the plugin or the config changes. The
+      // browser then cannot reconnect to the hot-reload socket and the page
+      // keeps running the old code, so say so instead of failing quietly.
+      (function () {
+        // The Vite client is only injected in dev, so this never runs in a
+        // production build.
+        if (!document.querySelector('script[src*="@vite/client"]')) return;
+
+        var shown = false;
+        var show = function () {
+          if (shown || document.getElementById('dev-reload-hint')) return;
+          shown = true;
+          var bar = document.createElement('div');
+          bar.id = 'dev-reload-hint';
+          bar.setAttribute(
+            'style',
+            'position:fixed;top:0;left:0;right:0;z-index:9999;background:#f59e0b;color:#111827;font:600 13px/1.4 system-ui,-apple-system,Segoe UI,sans-serif;padding:9px 14px;display:flex;gap:14px;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(0,0,0,.35)'
+          );
+          var text = document.createElement('span');
+          text.textContent =
+            'The dev server restarted, so this page still runs the old code.';
+          var button = document.createElement('button');
+          button.textContent = 'Reload';
+          button.setAttribute(
+            'style',
+            'background:#111827;color:#fbbf24;border:0;border-radius:6px;padding:5px 12px;font:inherit;cursor:pointer'
+          );
+          button.onclick = function () {
+            location.reload();
+          };
+          bar.appendChild(text);
+          bar.appendChild(button);
+          document.body.appendChild(bar);
+        };
+
+        // A socket that drops after the server restarts.
+        window.addEventListener('vite:ws:disconnect', show);
+
+        // A socket that never opens, which is what a stale tab gets.
+        var originalError = console.error;
+        console.error = function () {
+          var text = Array.prototype.map
+            .call(arguments, function (arg) {
+              return typeof arg === 'string' ? arg : (arg && arg.message) || '';
+            })
+            .join(' ');
+          if (text.indexOf('failed to connect to websocket') !== -1) show();
+          return originalError.apply(console, arguments);
+        };
+      })();
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Play, Clock, Sparkles } from 'lucide-react';
-import { ProjectId, PROJECTS, SceneDef } from '../types';
+import { ProjectId, PROJECTS, SceneDef, isPaperBallProject } from '../types';
 
 interface SceneTimelineProps {
   activeProject: ProjectId;
@@ -15,13 +15,15 @@ export const SceneTimeline: React.FC<SceneTimelineProps> = ({
 }) => {
   const currentProject = PROJECTS[activeProject];
   const scenes = currentProject.scenes;
+  const duration = currentProject.duration;
+  const frameCount = Math.round(duration * 24);
   return (
     <div className="max-w-6xl mx-auto px-4 py-8 space-y-6">
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold tracking-tight text-white">Scene Timeline & Shot Breakdown</h2>
           <p className="text-sm text-slate-400 mt-1">
-            Total Duration: 10.0 seconds · 240 frames @ 24 fps · 5 distinct narrative beats
+            Total Duration: {duration.toFixed(1)} seconds · {frameCount} frames @ 24 fps · {scenes.length} distinct narrative beats
           </p>
         </div>
       </div>
@@ -88,10 +90,10 @@ export const SceneTimeline: React.FC<SceneTimelineProps> = ({
 
                 <div className="p-3 bg-slate-950 rounded-lg border border-slate-800/60 space-y-1.5">
                   <div className="text-slate-400 font-semibold uppercase tracking-wider text-[10px]">
-                    {activeProject === 'paper-ball' ? 'Prop & Physics Action' : 'Shadow Silhouette'}
+                    {isPaperBallProject(activeProject) ? 'Prop & Physics Action' : 'Shadow Silhouette'}
                   </div>
                   <div className="text-slate-200 leading-relaxed">
-                    {activeProject === 'paper-ball' ? scene.propAction : scene.shadowAction}
+                    {isPaperBallProject(activeProject) ? scene.propAction : scene.shadowAction}
                   </div>
                 </div>
               </div>

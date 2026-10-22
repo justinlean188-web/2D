@@ -9,7 +9,7 @@
  *
  * This function injects:
  * 1. Exact Duration (ms) in the Info element (0x15 0x49 0xA9 0x66 -> 0x44 0x89)
- * 2. Exact DefaultDuration (ns per frame for 24fps) in the Video TrackEntry (0xAE -> 0x23 0xE3 0x83)
+ * 2. Exact DefaultDuration (ns per frame for the requested output fps) in the Video TrackEntry (0xAE -> 0x23 0xE3 0x83)
  * with precise EBML VINT length calculations.
  */
 

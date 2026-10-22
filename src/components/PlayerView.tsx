@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+﻿import React, { useEffect, useRef, useState, useCallback } from 'react';
 import {
   Play,
   Pause,
@@ -14,9 +14,29 @@ import {
   Download,
 } from 'lucide-react';
 import { CanvasRenderer } from '../animation/canvasRenderer';
+import { ExtendedPaperBallRenderer } from '../animation/extendedPaperBallRenderer';
+import { HoopRenderer } from '../animation/hoopRenderer';
 import { PaperBallRenderer } from '../animation/paperBallRenderer';
+import { PopStageRenderer } from '../animation/popStageRenderer';
+import { TrickShotRenderer } from '../animation/trickShotRenderer';
+import { PingPongRenderer } from '../animation/pingPongRenderer';
+import { DartShotRenderer } from '../animation/dartShotRenderer';
+import { CoinFlipRenderer } from '../animation/coinFlipRenderer';
+import { MachineRenderer } from '../animation/machineRenderer';
+import { SequelPaperBallRenderer } from '../animation/sequelPaperBallRenderer';
+import {
+  PAPER_BALL_30_CUES,
+  POP_STAR_CUES,
+  TRICK_SHOT_CUES,
+  PING_PONG_CUES,
+  DART_SHOT_CUES,
+  COIN_FLIP_CUES,
+  PAPER_BALL_PART3_CUES,
+  PAPER_BALL_PART4_CUES,
+  PAPER_BALL_SEQUEL_CUES,
+} from '../audio/cueMaps';
 import { soundEngine, speakVoiceOver, stopVoiceOver } from '../audio/soundEngine';
-import { StudioConfig, PROJECTS, SceneDef } from '../types';
+import { StudioConfig, PROJECTS, SceneDef, isPaperBallProject } from '../types';
 
 interface PlayerViewProps {
   config: StudioConfig;
@@ -40,6 +60,19 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const shadowRendererRef = useRef<CanvasRenderer>(new CanvasRenderer());
   const paperBallRendererRef = useRef<PaperBallRenderer>(new PaperBallRenderer());
+  const extendedPaperBallRendererRef = useRef<ExtendedPaperBallRenderer>(
+    new ExtendedPaperBallRenderer()
+  );
+  const sequelPaperBallRendererRef = useRef<SequelPaperBallRenderer>(
+    new SequelPaperBallRenderer()
+  );
+  const hoopRendererRef = useRef<HoopRenderer>(new HoopRenderer());
+  const machineRendererRef = useRef<MachineRenderer>(new MachineRenderer());
+  const popStageRendererRef = useRef<PopStageRenderer>(new PopStageRenderer());
+  const trickShotRendererRef = useRef<TrickShotRenderer>(new TrickShotRenderer());
+  const pingPongRendererRef = useRef<PingPongRenderer>(new PingPongRenderer());
+  const dartShotRendererRef = useRef<DartShotRenderer>(new DartShotRenderer());
+  const coinFlipRendererRef = useRef<CoinFlipRenderer>(new CoinFlipRenderer());
   const [speed, setSpeed] = useState<number>(1.0);
   const [isLooping, setIsLooping] = useState<boolean>(true);
   const lastTimeRef = useRef<number>(performance.now());
@@ -47,6 +80,17 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
 
   const currentProject = PROJECTS[config.activeProject];
   const projectScenes = currentProject.scenes;
+  const projectDuration = currentProject.duration;
+  // The pop short burns its seven scene captions into the picture.
+  const isPopProject = config.activeProject === 'pop-star';
+  // So does the trick-shot short, which narrates what happens to him.
+  const isTrickShotProject = config.activeProject === 'trick-shot-champion';
+  // And the ping-pong short, whose six scene captions are burned in.
+  const isPingPongProject = config.activeProject === 'ping-pong-revenge';
+  // The dart short also burns its six captions into the picture.
+  const isDartProject = config.activeProject === 'dart-shot';
+  // And the coin-flip short, with gold-haloed captions.
+  const isCoinFlipProject = config.activeProject === 'coin-flip';
 
   // Current active scene
   const activeScene =
@@ -54,31 +98,92 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
       (s) => currentTime >= s.timeRange[0] && currentTime < s.timeRange[1]
     ) || projectScenes[projectScenes.length - 1];
 
-  // Reset audio cues when seeking or starting over
+  // Synchronize the cue set with a seek target: cues before the playhead are
+  // considered spent, cues after it can fire again. This prevents every past
+  // sound from firing at once after jumping to a later scene.
   const resetAudioCues = useCallback((toTime: number) => {
     const cues = triggeredAudioCues.current;
-    if (config.activeProject === 'paper-ball') {
-      if (toTime < 1.9) cues.delete('toss');
-      if (toTime < 4.3) cues.delete('rim');
-      if (toTime < 5.9) cues.delete('lamp');
-      if (toTime < 7.4) cues.delete('fan');
-      if (toTime < 8.5) cues.delete('wall');
-      if (toTime < 9.3) cues.delete('bonk');
-      if (toTime < 9.5) cues.delete('plop');
-    } else {
-      if (toTime < 0.3) cues.delete('step1');
-      if (toTime < 0.7) cues.delete('step2');
-      if (toTime < 1.1) cues.delete('skip');
-      if (toTime < 1.9) cues.delete('scratch');
-      if (toTime < 4.4) cues.delete('paper');
-      if (toTime < 5.0) cues.delete('tap1');
-      if (toTime < 5.2) cues.delete('tap2');
-      if (toTime < 6.0) cues.delete('thump');
-      if (toTime < 6.2) cues.delete('squeak');
-      if (toTime < 7.9) cues.delete('trombone');
-      if (toTime < 0.1) cues.delete('vo1');
-      if (toTime < 7.9) cues.delete('vo2');
+    const setCueState = (id: string, time: number) => {
+      if (time <= toTime) cues.add(id);
+      else cues.delete(id);
+    };
+
+    if (config.activeProject === 'paper-ball-30') {
+      for (const cue of PAPER_BALL_30_CUES) setCueState(cue.id, cue.time);
+      return;
     }
+
+    if (config.activeProject === 'paper-ball-sequel') {
+      for (const cue of PAPER_BALL_SEQUEL_CUES) setCueState(cue.id, cue.time);
+      return;
+    }
+
+    if (config.activeProject === 'paper-ball-part3') {
+      for (const cue of PAPER_BALL_PART3_CUES) setCueState(cue.id, cue.time);
+      return;
+    }
+
+    if (config.activeProject === 'paper-ball-part4') {
+      for (const cue of PAPER_BALL_PART4_CUES) setCueState(cue.id, cue.time);
+      return;
+    }
+
+    if (config.activeProject === 'pop-star') {
+      for (const cue of POP_STAR_CUES) setCueState(cue.id, cue.time);
+      return;
+    }
+
+    if (config.activeProject === 'trick-shot-champion') {
+      for (const cue of TRICK_SHOT_CUES) setCueState(cue.id, cue.time);
+      return;
+    }
+
+    if (config.activeProject === 'ping-pong-revenge') {
+      for (const cue of PING_PONG_CUES) setCueState(cue.id, cue.time);
+      return;
+    }
+
+    if (config.activeProject === 'dart-shot') {
+      for (const cue of DART_SHOT_CUES) setCueState(cue.id, cue.time);
+      return;
+    }
+
+    if (config.activeProject === 'coin-flip') {
+      for (const cue of COIN_FLIP_CUES) setCueState(cue.id, cue.time);
+      return;
+    }
+
+    if (config.activeProject === 'paper-ball') {
+      (
+        [
+          ['toss', 2.0],
+          ['rim', 4.4],
+          ['lamp', 6.0],
+          ['fan', 7.5],
+          ['wall', 8.6],
+          ['bonk', 9.4],
+          ['plop', 9.6],
+        ] as const
+      ).forEach(([id, time]) => setCueState(id, time));
+      return;
+    }
+
+    (
+      [
+        ['step1', 0.4],
+        ['step2', 0.8],
+        ['skip', 1.2],
+        ['scratch', 2.0],
+        ['paper', 4.5],
+        ['tap1', 5.05],
+        ['tap2', 5.25],
+        ['thump', 6.1],
+        ['squeak', 6.3],
+        ['trombone', 8.0],
+        ['vo1', 0.1],
+        ['vo2', 8.0],
+      ] as const
+    ).forEach(([id, time]) => setCueState(id, time));
   }, [config.activeProject]);
 
   // Audio triggering checks during playback
@@ -86,6 +191,149 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
     (t: number) => {
       if (!config.enableSFX && !config.enableVoiceOver) return;
       const cues = triggeredAudioCues.current;
+
+      if (config.activeProject === 'paper-ball-30') {
+        if (!config.enableSFX) return;
+        for (const cue of PAPER_BALL_30_CUES) {
+          if (t >= cue.time && !cues.has(cue.id)) {
+            cue.play();
+            cues.add(cue.id);
+          }
+        }
+        return;
+      }
+
+      if (config.activeProject === 'paper-ball-sequel') {
+        if (!config.enableSFX) return;
+        for (const cue of PAPER_BALL_SEQUEL_CUES) {
+          if (t >= cue.time && !cues.has(cue.id)) {
+            cue.play();
+            cues.add(cue.id);
+          }
+        }
+        return;
+      }
+
+      if (config.activeProject === 'paper-ball-part3') {
+        if (!config.enableSFX) return;
+        for (const cue of PAPER_BALL_PART3_CUES) {
+          if (t >= cue.time && !cues.has(cue.id)) {
+            cue.play();
+            cues.add(cue.id);
+          }
+        }
+        return;
+      }
+
+      if (config.activeProject === 'paper-ball-part4') {
+        if (!config.enableSFX) return;
+        for (const cue of PAPER_BALL_PART4_CUES) {
+          if (t >= cue.time && !cues.has(cue.id)) {
+            cue.play();
+            cues.add(cue.id);
+          }
+        }
+        return;
+      }
+
+      if (config.activeProject === 'pop-star') {
+        if (!config.enableSFX) return;
+        for (const cue of POP_STAR_CUES) {
+          if (cues.has(cue.id)) continue;
+          if (cue.id.startsWith('pop-track-')) {
+            // A music section only starts inside its own window, so seeking
+            // forward does not stack every section on top of each other.
+            if (t >= cue.time && t < cue.time + 7.3) {
+              cue.play();
+              cues.add(cue.id);
+            }
+            continue;
+          }
+          // Short accents only fire just after their mark, never in a burst.
+          if (t >= cue.time && t - cue.time < 0.75) {
+            cue.play();
+            cues.add(cue.id);
+          }
+        }
+        return;
+      }
+
+      if (config.activeProject === 'trick-shot-champion') {
+        if (!config.enableSFX) return;
+        for (const cue of TRICK_SHOT_CUES) {
+          if (cues.has(cue.id)) continue;
+          if (cue.id.startsWith('ts-score-')) {
+            // The score is scheduled in sections so a seek never stacks them.
+            if (t >= cue.time && t < cue.time + 7.6) {
+              cue.play();
+              cues.add(cue.id);
+            }
+            continue;
+          }
+          if (t >= cue.time && t - cue.time < 0.75) {
+            cue.play();
+            cues.add(cue.id);
+          }
+        }
+        return;
+      }
+
+      if (config.activeProject === 'ping-pong-revenge') {
+        if (!config.enableSFX) return;
+        for (const cue of PING_PONG_CUES) {
+          if (cues.has(cue.id)) continue;
+          if (cue.id.startsWith('pp-score-')) {
+            if (t >= cue.time && t < cue.time + 7.6) {
+              cue.play();
+              cues.add(cue.id);
+            }
+            continue;
+          }
+          if (t >= cue.time && t - cue.time < 0.75) {
+            cue.play();
+            cues.add(cue.id);
+          }
+        }
+        return;
+      }
+
+      if (config.activeProject === 'dart-shot') {
+        if (!config.enableSFX) return;
+        for (const cue of DART_SHOT_CUES) {
+          if (cues.has(cue.id)) continue;
+          if (cue.id.startsWith('ds-score-')) {
+            if (t >= cue.time && t < cue.time + 7.6) {
+              cue.play();
+              cues.add(cue.id);
+            }
+            continue;
+          }
+          if (t >= cue.time && t - cue.time < 0.75) {
+            cue.play();
+            cues.add(cue.id);
+          }
+        }
+        return;
+      }
+
+      if (config.activeProject === 'coin-flip') {
+        if (!config.enableSFX) return;
+        for (const cue of COIN_FLIP_CUES) {
+          if (cues.has(cue.id)) continue;
+          if (cue.id.startsWith('cf-score-')) {
+            if (t >= cue.time && t < cue.time + 7.6) {
+              cue.play();
+              cues.add(cue.id);
+            }
+            continue;
+          }
+          if (t >= cue.time && t - cue.time < 0.75) {
+            cue.play();
+            cues.add(cue.id);
+          }
+        }
+        return;
+      }
 
       if (config.activeProject === 'paper-ball') {
         if (!config.enableSFX) return;
@@ -189,6 +437,13 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
   const currentTimeRef = useRef<number>(currentTime);
   currentTimeRef.current = currentTime;
 
+  // Switching projects or audio toggles starts a fresh cue state at the
+  // current playhead, so seeking never dumps a stack of old sounds.
+  useEffect(() => {
+    triggeredAudioCues.current.clear();
+    resetAudioCues(currentTimeRef.current);
+  }, [config.activeProject, config.enableSFX, config.enableVoiceOver, resetAudioCues]);
+
   // Main animation render loop
   useEffect(() => {
     let animId: number;
@@ -200,12 +455,12 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
       if (isPlaying) {
         const prev = currentTimeRef.current;
         let nextTime = prev + delta * speed;
-        if (nextTime >= 10.0) {
+        if (nextTime >= projectDuration) {
           if (isLooping) {
             nextTime = 0.0;
             resetAudioCues(0.0);
           } else {
-            nextTime = 10.0;
+            nextTime = projectDuration;
             setIsPlaying(false);
           }
         }
@@ -225,7 +480,25 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
             renderTime = Math.floor(t * 24) / 24;
           }
 
-          if (config.activeProject === 'paper-ball') {
+          if (config.activeProject === 'paper-ball-30') {
+            extendedPaperBallRendererRef.current.render(ctx, renderTime, config);
+          } else if (config.activeProject === 'paper-ball-sequel') {
+            sequelPaperBallRendererRef.current.render(ctx, renderTime, config);
+          } else if (config.activeProject === 'paper-ball-part3') {
+            hoopRendererRef.current.render(ctx, renderTime, config);
+          } else if (config.activeProject === 'paper-ball-part4') {
+            machineRendererRef.current.render(ctx, renderTime, config);
+          } else if (config.activeProject === 'pop-star') {
+            popStageRendererRef.current.render(ctx, renderTime, config);
+          } else if (config.activeProject === 'trick-shot-champion') {
+            trickShotRendererRef.current.render(ctx, renderTime, config);
+          } else if (config.activeProject === 'ping-pong-revenge') {
+            pingPongRendererRef.current.render(ctx, renderTime, config);
+          } else if (config.activeProject === 'dart-shot') {
+            dartShotRendererRef.current.render(ctx, renderTime, config);
+          } else if (config.activeProject === 'coin-flip') {
+            coinFlipRendererRef.current.render(ctx, renderTime, config);
+          } else if (config.activeProject === 'paper-ball') {
             paperBallRendererRef.current.render(ctx, renderTime, config);
           } else {
             shadowRendererRef.current.render(ctx, renderTime, config);
@@ -240,7 +513,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
     animId = requestAnimationFrame(renderLoop);
 
     return () => cancelAnimationFrame(animId);
-  }, [isPlaying, speed, isLooping, config, checkAudioTriggers, resetAudioCues, setCurrentTime, setIsPlaying]);
+  }, [isPlaying, speed, isLooping, projectDuration, config, checkAudioTriggers, resetAudioCues, setCurrentTime, setIsPlaying]);
 
   // Spacebar toggle play/pause
   useEffect(() => {
@@ -261,11 +534,11 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [setIsPlaying]);
+  }, [setIsPlaying, projectDuration, resetAudioCues]);
 
   const seekRelative = (deltaSec: number) => {
     setCurrentTime((prev) => {
-      const target = Math.max(0, Math.min(10.0, prev + deltaSec));
+      const target = Math.max(0, Math.min(projectDuration, prev + deltaSec));
       resetAudioCues(target);
       return target;
     });
@@ -279,7 +552,22 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
   const takeSnapshot = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const prefix = config.activeProject === 'paper-ball' ? 'paper-ball' : 'shadow-quit';
+    const prefix =
+      config.activeProject === 'shadow-quit'
+        ? 'shadow-quit'
+        : config.activeProject === 'trick-shot-champion'
+        ? 'trick-shot-champion'
+        : config.activeProject === 'pop-star'
+        ? 'max-rex-beep'
+        : config.activeProject === 'paper-ball-part4'
+        ? 'paper-ball-part4'
+        : config.activeProject === 'paper-ball-part3'
+        ? 'paper-ball-part3'
+        : config.activeProject === 'paper-ball-sequel'
+        ? 'paper-ball-ricochet-ep2'
+        : config.activeProject === 'paper-ball-30'
+        ? 'paper-ball-ricochet-30s'
+        : 'paper-ball';
     const link = document.createElement('a');
     link.download = `${prefix}-${currentTime.toFixed(2)}s.png`;
     link.href = canvas.toDataURL('image/png');
@@ -287,6 +575,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
   };
 
   const currentFrame = Math.floor(currentTime * 24);
+  const totalFrames = Math.round(projectDuration * 24);
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 space-y-6">
@@ -388,7 +677,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
               </div>
             )}
           </div>
-          <span className="text-xs text-slate-400 mt-2 font-mono">1080 × 1920 (9:16 Vertical)</span>
+          <span className="text-xs text-slate-400 mt-2 font-mono">1080 Ã— 1920 (9:16 Vertical)</span>
         </div>
 
         {/* Right Column: Interactive Director Desk & Timeline */}
@@ -404,10 +693,12 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
               </div>
               <div className="text-right font-mono">
                 <div className="text-lg font-bold text-rose-400">
-                  {currentTime.toFixed(2)}s <span className="text-slate-400 text-xs">/ 10.00s</span>
+                  {currentTime.toFixed(2)}s{' '}
+                  <span className="text-slate-400 text-xs">/ {projectDuration.toFixed(2)}s</span>
                 </div>
                 <div className="text-xs text-slate-400">
-                  Frame {currentFrame} <span className="text-slate-400 text-[10px]">/ 240</span>
+                  Frame {currentFrame}{' '}
+                  <span className="text-slate-400 text-[10px]">/ {totalFrames}</span>
                 </div>
               </div>
             </div>
@@ -417,7 +708,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
               <input
                 type="range"
                 min="0"
-                max="10"
+                max={projectDuration}
                 step="0.01"
                 value={currentTime}
                 onChange={(e) => {
@@ -428,14 +719,12 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
                 className="w-full accent-rose-600 cursor-pointer h-2 bg-slate-800 rounded-lg"
               />
 
-              {/* Scene Cut Marker labels below progress bar */}
-              <div className="flex justify-between text-[11px] font-mono text-slate-400 px-0.5">
-                <span>0s (Start)</span>
-                <span>2s (Quit)</span>
-                <span>4s (Complaint)</span>
-                <span>6s (Sit-In)</span>
-                <span>8s (HR)</span>
-                <span>10s</span>
+              {/* Scene cut markers below the progress bar */}
+              <div className="flex justify-between text-[10px] font-mono text-slate-400 px-0.5">
+                {projectScenes.map((scene) => (
+                  <span key={scene.id}>{scene.timeRange[0].toFixed(0)}s</span>
+                ))}
+                <span>{projectDuration}s</span>
               </div>
             </div>
 
@@ -541,10 +830,10 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
               </div>
               <div className="p-2.5 bg-slate-950 rounded-lg border border-slate-800/60">
                 <div className="text-slate-400 font-medium">
-                  {config.activeProject === 'paper-ball' ? 'Prop & Physics Action' : 'Shadow Behavior'}
+                  {isPaperBallProject(config.activeProject) ? 'Prop & Physics Action' : 'Shadow Behavior'}
                 </div>
                 <div className="text-slate-200 mt-0.5">
-                  {config.activeProject === 'paper-ball' ? activeScene.propAction : activeScene.shadowAction}
+                  {isPaperBallProject(config.activeProject) ? activeScene.propAction : activeScene.shadowAction}
                 </div>
               </div>
             </div>
@@ -597,7 +886,27 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
               <div className="text-left">
                 <div className="text-xs font-semibold">Cartoon SFX</div>
                 <div className="text-[11px] text-slate-400">
-                  {config.activeProject === 'paper-ball' ? 'Whack, bonk, clink' : 'Scratch, taps, horn'}
+                  {config.activeProject === 'paper-ball-30'
+                    ? 'Whooshes, beeps, heartbeat'
+                    : config.activeProject === 'paper-ball-sequel'
+                    ? 'Rumble, bonks, clicks, fanfare'
+                    : config.activeProject === 'paper-ball-part3'
+                    ? 'March, squeaks, boings, swish'
+                    : config.activeProject === 'paper-ball-part4'
+                    ? 'Bonks, machine clatter, swish'
+                    : config.activeProject === 'pop-star'
+                    ? 'Pop track, crowd, robot bleeps'
+                    : config.activeProject === 'trick-shot-champion'
+                    ? 'Epic score, rim clanks, crowd'
+                    : config.activeProject === 'ping-pong-revenge'
+                    ? 'Comedy score, bonks, cup clink'
+                    : config.activeProject === 'dart-shot'
+                    ? 'Comedy score, dart thunks, clock'
+                    : config.activeProject === 'coin-flip'
+                    ? 'Comedy score, coin tings, splashes'
+                    : config.activeProject === 'paper-ball'
+                    ? 'Whack, bonk, clink'
+                    : 'Scratch, taps, horn'}
                 </div>
               </div>
               <span className={`text-xs font-mono ${config.enableSFX ? 'text-emerald-400' : 'text-slate-600'}`}>
@@ -607,13 +916,19 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
 
             <button
               onClick={() => {
-                if (currentProject.hasCaptions) {
+                if (
+                  currentProject.hasCaptions &&
+                  !isPopProject &&
+                  !isPingPongProject &&
+                  !isDartProject &&
+                  !isCoinFlipProject
+                ) {
                   setConfig({ ...config, showCaptions: !config.showCaptions });
                 }
               }}
-              disabled={!currentProject.hasCaptions}
+              disabled={!currentProject.hasCaptions || isPopProject || isTrickShotProject || isPingPongProject || isDartProject || isCoinFlipProject}
               className={`p-3 rounded-xl border flex items-center justify-between transition-colors ${
-                !currentProject.hasCaptions
+                !currentProject.hasCaptions || isPopProject || isTrickShotProject || isPingPongProject || isDartProject || isCoinFlipProject
                   ? 'bg-slate-950/50 border-slate-900 text-slate-600 cursor-not-allowed opacity-60'
                   : config.showCaptions
                   ? 'bg-slate-900 border-slate-700 text-white cursor-pointer'
@@ -623,19 +938,33 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
               <div className="text-left">
                 <div className="text-xs font-semibold">In-Video Captions</div>
                 <div className="text-[11px] text-slate-400">
-                  {currentProject.hasCaptions ? 'Opening & End-card' : 'No text constraint'}
+                  {(isPingPongProject || isDartProject || isCoinFlipProject)
+                    ? 'Burned-in scene captions'
+                    : isPopProject || isTrickShotProject
+                    ? 'Burned-in narration captions'
+                    : currentProject.hasCaptions
+                    ? 'Opening & End-card'
+                    : 'No text constraint'}
                 </div>
               </div>
               <span
                 className={`text-xs font-mono ${
-                  !currentProject.hasCaptions
+                  isPopProject || isTrickShotProject || isPingPongProject || isDartProject || isCoinFlipProject
+                    ? 'text-emerald-400'
+                    : !currentProject.hasCaptions
                     ? 'text-slate-600'
                     : config.showCaptions
                     ? 'text-emerald-400'
                     : 'text-slate-600'
                 }`}
               >
-                {!currentProject.hasCaptions ? 'NONE' : config.showCaptions ? 'ON' : 'OFF'}
+                {isPopProject || isTrickShotProject || isPingPongProject || isDartProject
+                  ? 'ON'
+                  : !currentProject.hasCaptions
+                  ? 'NONE'
+                  : config.showCaptions
+                  ? 'ON'
+                  : 'OFF'}
               </span>
             </button>
           </div>

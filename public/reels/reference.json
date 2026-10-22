@@ -1,0 +1,76 @@
+{
+  "generatedAt": "2026-10-21T03:52:57.580Z",
+  "source": {
+    "url": "C:\\Users\\olive\\AppData\\Local\\Temp\\opencode\\ranking-reel.webm",
+    "file": "scripts\\.cache\\source\\reference.mp4",
+    "duration": 46,
+    "fps": 24,
+    "width": 1080,
+    "height": 1920
+  },
+  "analysis": {
+    "detectedCuts": false,
+    "segmentCount": 8,
+    "averageSceneSeconds": 5.75,
+    "beatPattern": [
+      5.75,
+      5.75,
+      5.75,
+      5.75,
+      5.75,
+      5.75,
+      5.75,
+      5.75
+    ]
+  },
+  "segments": [
+    {
+      "index": 0,
+      "start": 0,
+      "duration": 5.75,
+      "thumbnail": "/reels/reference/00.jpg"
+    },
+    {
+      "index": 1,
+      "start": 5.75,
+      "duration": 5.75,
+      "thumbnail": "/reels/reference/01.jpg"
+    },
+    {
+      "index": 2,
+      "start": 11.5,
+      "duration": 5.75,
+      "thumbnail": "/reels/reference/02.jpg"
+    },
+    {
+      "index": 3,
+      "start": 17.25,
+      "duration": 5.75,
+      "thumbnail": "/reels/reference/03.jpg"
+    },
+    {
+      "index": 4,
+      "start": 23,
+      "duration": 5.75,
+      "thumbnail": "/reels/reference/04.jpg"
+    },
+    {
+      "index": 5,
+      "start": 28.75,
+      "duration": 5.75,
+      "thumbnail": "/reels/reference/05.jpg"
+    },
+    {
+      "index": 6,
+      "start": 34.5,
+      "duration": 5.75,
+      "thumbnail": "/reels/reference/06.jpg"
+    },
+    {
+      "index": 7,
+      "start": 40.25,
+      "duration": 5.75,
+      "thumbnail": "/reels/reference/07.jpg"
+    }
+  ]
+}

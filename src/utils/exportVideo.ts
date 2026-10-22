@@ -1,15 +1,61 @@
-import { CanvasRenderer } from '../animation/canvasRenderer';
+﻿import { CanvasRenderer } from '../animation/canvasRenderer';
+import { ExtendedPaperBallRenderer } from '../animation/extendedPaperBallRenderer';
+import { HoopRenderer } from '../animation/hoopRenderer';
+import { MachineRenderer } from '../animation/machineRenderer';
 import { PaperBallRenderer } from '../animation/paperBallRenderer';
+import { PopStageRenderer } from '../animation/popStageRenderer';
+import { TrickShotRenderer } from '../animation/trickShotRenderer';
+import { PingPongRenderer } from '../animation/pingPongRenderer';
+import { DartShotRenderer } from '../animation/dartShotRenderer';
+import { CoinFlipRenderer } from '../animation/coinFlipRenderer';
+import { SequelPaperBallRenderer } from '../animation/sequelPaperBallRenderer';
+import {
+  PAPER_BALL_30_CUES,
+  POP_STAR_CUES,
+  TRICK_SHOT_CUES,
+  PING_PONG_CUES,
+  DART_SHOT_CUES,
+  COIN_FLIP_CUES,
+  PAPER_BALL_PART3_CUES,
+  PAPER_BALL_PART4_CUES,
+  PAPER_BALL_SEQUEL_CUES,
+} from '../audio/cueMaps';
 import { soundEngine } from '../audio/soundEngine';
-import { StudioConfig } from '../types';
+import { PROJECTS, StudioConfig } from '../types';
 import { fixWebmDuration } from './fixWebmDuration';
+
+export type ExportFps = 24 | 30 | 60;
+
+export const EXPORT_FPS_OPTIONS: ExportFps[] = [24, 30, 60];
+
+export interface ExportTimelineRenderer {
+  render(ctx: CanvasRenderingContext2D, time: number, config: StudioConfig): void;
+  /**
+   * Lets the export tell the renderer that the timeline is running.
+   *
+   * A clip renderer keeps its videos playing while the export runs, so it
+   * does not have to seek the video on every single frame. Seeking a long
+   * clip frame by frame is what makes an export crawl.
+   */
+  setPlayback?(playing: boolean): void;
+}
 
 export interface ExportOptions {
   config: StudioConfig;
   exportSpeed?: number; // 1.0 = normal, 0.75 = relaxed, 0.5 = slow-mo
+  loopCount?: number; // 1-10 complete plays of the selected project's timeline
+  fps?: ExportFps; // output frame rate; audio timing is unaffected
   format?: 'mp4' | 'webm';
   previewCanvas?: HTMLCanvasElement | null;
   onProgress?: (progress: number, currentSec: number, totalSec: number) => void;
+  /** Renders a custom timeline instead of the active project. */
+  renderer?: ExportTimelineRenderer;
+  /** Duration of the custom timeline in seconds. */
+  duration?: number;
+  /** Spoken lines with the moment they are read. */
+  narration?: { time: number; text: string }[];
+  /** File name prefix for the download. */
+  filePrefix?: string;
 }
 
 export interface ExportResult {
@@ -18,23 +64,53 @@ export interface ExportResult {
   filename: string;
   format: 'mp4' | 'webm';
   duration: number;
+  fps: ExportFps;
+  /** True when the browser blocked the audio, so the file has no sound. */
+  silent?: boolean;
+}
+
+/**
+ * Chromium can report MP4 MediaRecorder support but cannot mux the
+ * Web Audio destination track into it, which produces a one-frame file.
+ * MP4 with audio is currently reliable only in Safari; everywhere else
+ * use WebM (VP9 + Opus), which this app can record correctly.
+ */
+export function canRecordMp4WithAudio(): boolean {
+  if (typeof navigator === 'undefined' || typeof MediaRecorder === 'undefined') {
+    return false;
+  }
+  const ua = navigator.userAgent;
+  const isSafari =
+    /Safari/i.test(ua) && !/Chrome|CriOS|Chromium|Edg|OPR|Android/i.test(ua);
+  return isSafari && MediaRecorder.isTypeSupported('video/mp4;codecs=avc1,mp4a.40.2');
 }
 
 /**
  * Renders the 2D stickman animation frame-by-frame with synchronized cartoon audio
  * into a downloadable high-resolution video file.
  *
- * Guarantees exact playback speed, proper duration metadata, 24fps track headers,
- * and continuous crystal-clear audio from 0.00s.
+ * Guarantees exact playback speed, proper duration metadata, requested-fps track
+ * headers, and continuous crystal-clear audio from 0.00s.
  */
 export async function exportVideo(options: ExportOptions): Promise<ExportResult> {
-  const { config, exportSpeed = 1.0, format = 'mp4', previewCanvas, onProgress } = options;
+  const {
+    config,
+    exportSpeed = 1.0,
+    loopCount = 1,
+    fps = 24,
+    format = 'webm',
+    previewCanvas,
+    onProgress,
+  } = options;
+  const loops = Math.max(1, Math.min(10, Math.round(loopCount)));
+  const requestedMp4 = format === 'mp4' && canRecordMp4WithAudio();
+  const exportConfig: StudioConfig = { ...config, showSafeZones: false };
 
   const width = 1080;
   const height = 1920;
-  const fps = 24;
-  const animationDuration = 10.0; // 10.0 seconds of animation
-  const totalDuration = animationDuration / exportSpeed; // e.g. 10s at 1.0x, 20s at 0.5x
+  const animationDuration =
+    options.duration ?? PROJECTS[config.activeProject].duration;
+  const totalDuration = (animationDuration * loops) / exportSpeed;
 
   const offCanvas = document.createElement('canvas');
   offCanvas.width = width;
@@ -57,38 +133,133 @@ export async function exportVideo(options: ExportOptions): Promise<ExportResult>
     throw new Error('Canvas 2D context not available');
   }
 
-  const renderer =
-    config.activeProject === 'paper-ball'
+  const renderer: ExportTimelineRenderer = options.renderer ??
+    (config.activeProject === 'coin-flip'
+      ? new CoinFlipRenderer()
+      : config.activeProject === 'dart-shot'
+      ? new DartShotRenderer()
+      : config.activeProject === 'ping-pong-revenge'
+      ? new PingPongRenderer()
+      : config.activeProject === 'trick-shot-champion'
+      ? new TrickShotRenderer()
+      : config.activeProject === 'pop-star'
+      ? new PopStageRenderer()
+      : config.activeProject === 'paper-ball-part4'
+      ? new MachineRenderer()
+      : config.activeProject === 'paper-ball-part3'
+      ? new HoopRenderer()
+      : config.activeProject === 'paper-ball-sequel'
+      ? new SequelPaperBallRenderer()
+      : config.activeProject === 'paper-ball-30'
+      ? new ExtendedPaperBallRenderer()
+      : config.activeProject === 'paper-ball'
       ? new PaperBallRenderer()
-      : new CanvasRenderer();
+      : new CanvasRenderer());
+
+  // The timeline runs on its own clock, so the renderer has to run its clips
+  // as well. A clip renderer that keeps its videos paused would seek the
+  // video on every frame, and that is what makes an export crawl.
+  renderer.setPlayback?.(true);
 
   const filePrefix =
-    config.activeProject === 'paper-ball' ? 'paper-ball-ricochet' : 'shadow-quit';
+    options.filePrefix ??
+    (config.activeProject === 'shadow-quit'
+      ? 'shadow-quit'
+      : config.activeProject === 'coin-flip'
+      ? 'coin-flip'
+      : config.activeProject === 'dart-shot'
+      ? 'dart-shot'
+      : config.activeProject === 'ping-pong-revenge'
+      ? 'ping-pong-revenge'
+      : config.activeProject === 'trick-shot-champion'
+      ? 'trick-shot-champion'
+      : config.activeProject === 'pop-star'
+      ? 'max-rex-beep'
+      : config.activeProject === 'paper-ball-part4'
+      ? 'paper-ball-part4'
+      : config.activeProject === 'paper-ball-part3'
+      ? 'paper-ball-part3'
+      : config.activeProject === 'paper-ball-sequel'
+      ? 'paper-ball-ricochet-ep2'
+      : 'paper-ball-ricochet');
   const speedLabel = exportSpeed !== 1.0 ? `-${exportSpeed}x` : '';
+  const durationTag =
+    Math.abs(totalDuration - 10.0) < 0.05
+      ? ''
+      : `-${Number(totalDuration.toFixed(1))}s`;
+  const fpsTag = fps !== 24 ? `-${fps}fps` : '';
 
-  // 1. Capture video stream from canvas at 24fps
-  const canvasStream = (
-    offCanvas as unknown as { captureStream: (fps: number) => MediaStream }
-  ).captureStream(fps);
+  // 1. Capture video stream from canvas at the requested output frame rate.
+  // Frames are pulled explicitly with requestFrame() from a fixed-interval
+  // timer (see the loop below) so the recorded file keeps an even spacing.
+  const captureStream = (
+    offCanvas as unknown as { captureStream?: (fps: number) => MediaStream }
+  ).captureStream;
+  if (typeof captureStream !== 'function' || typeof MediaRecorder === 'undefined') {
+    offCanvas.remove();
+    throw new Error(
+      'This browser cannot record canvas video. Try a current version of Chrome, Edge, Firefox, or Safari.'
+    );
+  }
+  let canvasStream = captureStream.call(offCanvas, fps);
+  let videoTrack = canvasStream.getVideoTracks()[0];
+  const manualCapture =
+    !!videoTrack &&
+    typeof (videoTrack as unknown as { requestFrame?: () => void }).requestFrame === 'function';
 
-  const videoTrack = canvasStream.getVideoTracks()[0];
+  if (manualCapture) {
+    // Manual capture: the track only emits a frame when we ask for one, so
+    // the recorded pacing is decided by our scheduler and not by however the
+    // browser happens to run its animation frames.
+    videoTrack.stop();
+    canvasStream = captureStream.call(offCanvas, 0);
+    videoTrack = canvasStream.getVideoTracks()[0];
+  }
+
   const tracks: MediaStreamTrack[] = videoTrack ? [videoTrack] : [];
 
   // 2. Setup Web Audio MediaStreamDestination to embed synchronized audio
-  const audioCtx = soundEngine.getContext();
+  let audioCtx = soundEngine.getContext();
   let audioDestination: MediaStreamAudioDestinationNode | null = null;
   let silentCarrier: OscillatorNode | AudioScheduledSourceNode | null = null;
   let silentGain: GainNode | null = null;
+  let recordedWithAudio = false;
 
   if (audioCtx) {
     try {
-      if (audioCtx.state === 'suspended') {
-        await audioCtx.resume();
+      // The state is read through a helper: the context can change state
+      // while the resume is pending, and the narrowed type would hide that.
+      const audioState = () => audioCtx?.state ?? 'closed';
+      if (audioState() === 'suspended') {
+        // A suspended context only starts after a real user gesture, and
+        // `resume()` stays pending for as long as the browser's autoplay
+        // policy blocks it. Awaiting it would leave the export sitting at 0%
+        // with no error at all, so the resume is raced against a short
+        // timeout and the file is exported without sound instead.
+        const started = await Promise.race([
+          audioCtx.resume().then(() => true).catch(() => false),
+          new Promise<boolean>((resolve) => {
+            window.setTimeout(() => resolve(false), 1500);
+          }),
+        ]);
+        if (!started && audioState() !== 'running') {
+          console.warn('[export] the audio context did not start - exporting without sound');
+          audioCtx = null;
+        }
       }
+    } catch (e) {
+      console.warn('Could not resume the audio context:', e);
+      audioCtx = null;
+    }
+  }
+
+  if (audioCtx) {
+    try {
       audioDestination = audioCtx.createMediaStreamDestination();
       const audioTracks = audioDestination.stream.getAudioTracks();
       if (audioTracks.length > 0) {
         tracks.push(audioTracks[0]);
+        recordedWithAudio = true;
       }
 
       // Continuous silent audio carrier so audio packets start immediately at t = 0.000s
@@ -129,11 +300,16 @@ export async function exportVideo(options: ExportOptions): Promise<ExportResult>
     'video/webm',
   ];
 
+  if (format === 'mp4' && !requestedMp4) {
+    console.warn(
+      'MP4 recording with this synthesized audio track is not reliable in this browser; exporting WebM instead.'
+    );
+  }
+
   let selectedMime = '';
-  const searchCandidates =
-    format === 'mp4'
-      ? [...mp4Candidates, ...webmCandidates]
-      : [...webmCandidates, ...mp4Candidates];
+  const searchCandidates = requestedMp4
+    ? [...mp4Candidates, ...webmCandidates]
+    : [...webmCandidates, ...mp4Candidates];
 
   for (const mime of searchCandidates) {
     if (typeof MediaRecorder !== 'undefined' && MediaRecorder.isTypeSupported(mime)) {
@@ -154,19 +330,23 @@ export async function exportVideo(options: ExportOptions): Promise<ExportResult>
     }
   };
 
-  const recordingFinished = new Promise<Blob>((resolve) => {
+  const recordingFinished = new Promise<Blob>((resolve, reject) => {
     recorder.onstop = () => {
       const isMp4Actual = selectedMime.includes('mp4');
       const ext = isMp4Actual ? 'mp4' : 'webm';
       const blob = new Blob(chunks, { type: selectedMime || `video/${ext}` });
       resolve(blob);
     };
+    recorder.onerror = () => {
+      reject(new Error('MediaRecorder stopped with an error while capturing the video.'));
+    };
   });
 
   const triggeredCues = new Set<string>();
+  let currentLoop = 0;
 
   // Pre-render initial frame t=0
-  renderer.render(ctx, 0.0, config);
+  renderer.render(ctx, 0.0, exportConfig);
 
   if (previewCanvas) {
     const pCtx = previewCanvas.getContext('2d');
@@ -177,24 +357,150 @@ export async function exportVideo(options: ExportOptions): Promise<ExportResult>
 
   // Start recorder with 100ms chunk intervals
   recorder.start(100);
+  const wallStart = performance.now();
 
-  const startTime = performance.now();
+  // ---------------------------------------------------------------------
+  // Frame pacing
+  // ---------------------------------------------------------------------
+  // MediaRecorder stamps every frame with the wall clock, so a page that
+  // stalls (or a tab the browser throttles in the background) turns into a
+  // frozen download: the picture holds still while the audio keeps playing.
+  // The AudioContext clock keeps running even when timers and rAF are
+  // throttled, so it drives both the capture schedule and the animation time.
+  const useAudioClock = !!audioCtx && audioCtx.state === 'running';
+  const clockStart = useAudioClock ? audioCtx!.currentTime : 0;
+  const elapsedSeconds = () =>
+    useAudioClock
+      ? audioCtx!.currentTime - clockStart
+      : (performance.now() - wallStart) / 1000;
+
+  /**
+   * Schedules `onTick` every `intervalSec`. Uses the audio clock when it is
+   * available so the cadence survives background-tab throttling, with a
+   * watchdog timer as a safety net.
+   */
+  const createPacer = (intervalSec: number, onTick: () => void) => {
+    let stopped = false;
+    let lastTick = performance.now();
+
+    const fire = () => {
+      if (stopped) return;
+      lastTick = performance.now();
+      onTick();
+    };
+
+    // Watchdog: keeps the recording moving even if the audio callback stops
+    // arriving (for example if the context is suspended mid-export).
+    let watchdog = 0;
+    const startWatchdog = () => {
+      watchdog = window.setInterval(() => {
+        if (!stopped && performance.now() - lastTick > intervalSec * 1000 * 2) {
+          fire();
+        }
+      }, 200);
+    };
+
+    if (useAudioClock) {
+      const ctx = audioCtx!;
+      const silent = ctx.createGain();
+      silent.gain.value = 0;
+      silent.connect(ctx.destination);
+      const blip = ctx.createBuffer(
+        1,
+        Math.max(1, Math.ceil(intervalSec * ctx.sampleRate)),
+        ctx.sampleRate
+      );
+      const tick = () => {
+        if (stopped) return;
+        const src = ctx.createBufferSource();
+        src.buffer = blip;
+        src.connect(silent);
+        src.onended = () => {
+          try {
+            src.disconnect();
+          } catch {}
+          if (!stopped) {
+            fire();
+            tick();
+          }
+        };
+        const now = ctx.currentTime;
+        src.start(now);
+        src.stop(now + intervalSec);
+      };
+      tick();
+      startWatchdog();
+      return () => {
+        stopped = true;
+        window.clearInterval(watchdog);
+        try {
+          silent.disconnect();
+        } catch {}
+      };
+    }
+
+    let timer = 0;
+    const tick = () => {
+      if (stopped) return;
+      fire();
+      timer = window.setTimeout(tick, intervalSec * 1000);
+    };
+    tick();
+    startWatchdog();
+    return () => {
+      stopped = true;
+      window.clearTimeout(timer);
+      window.clearInterval(watchdog);
+    };
+  };
+
+  // Draw the opening frame and pull it into the track so the video starts at 0.0s.
+  renderer.render(ctx, 0.0, exportConfig);
+  if (manualCapture && videoTrack) {
+    (videoTrack as unknown as { requestFrame: () => void }).requestFrame();
+  }
+
+  const frameInterval = 1 / fps;
+  let stopPacer = () => {};
+  let rafId = 0;
 
   await new Promise<void>((resolve) => {
+    // One capture per fixed slot, whichever driver gets there first. rAF keeps
+    // the foreground on an exact 24/30/60 grid; the audio-clock pacer and its
+    // watchdog keep the picture moving once a throttled tab stops painting.
+    const slotMs = frameInterval * 1000;
+    let nextSlotMs = performance.now() + slotMs;
+
     const step = () => {
-      const now = performance.now();
-      const elapsedWallClock = (now - startTime) / 1000;
-      const wallClockT = Math.min(totalDuration, elapsedWallClock);
+      const nowMs = performance.now();
+      if (nowMs < nextSlotMs) return;
+      nextSlotMs += slotMs;
+      if (nowMs - nextSlotMs > slotMs * 2) nextSlotMs = nowMs + slotMs;
 
-      // Animation time advances according to exportSpeed
-      const animT = Math.min(animationDuration, wallClockT * exportSpeed);
+      const elapsed = elapsedSeconds();
+      const wallClockT = Math.min(totalDuration, elapsed);
 
-      // Quantize to 24fps frames
-      const renderT = Math.floor(animT * fps) / fps;
-      renderer.render(ctx, renderT, config);
+      // Animation time advances according to exportSpeed and wraps each loop.
+      let totalAnimationTime = wallClockT * exportSpeed;
+      // The final capture can land a hair past the end; pin it to the last
+      // frame instead of wrapping around to frame 0 for a one-frame flash.
+      if (elapsed >= totalDuration) {
+        totalAnimationTime = Math.max(0, totalAnimationTime - 0.0001);
+      }
+      const loopIndex = Math.floor(totalAnimationTime / animationDuration);
+      const animT = totalAnimationTime % animationDuration;
+      if (loopIndex !== currentLoop) {
+        triggeredCues.clear();
+        currentLoop = loopIndex;
+      }
 
-      // Trigger video track frame capture if supported
-      if (videoTrack && 'requestFrame' in videoTrack) {
+      // Draw the exact moment of the timeline for this frame. Sampling the
+      // continuous clock (instead of snapping to the frame grid) guarantees
+      // every captured frame is unique, so no frame is ever held still.
+      const renderT = Math.min(animT, animationDuration - 1 / fps);
+      renderer.render(ctx, renderT, exportConfig);
+
+      if (manualCapture && videoTrack) {
         (videoTrack as unknown as { requestFrame: () => void }).requestFrame();
       }
 
@@ -210,7 +516,95 @@ export async function exportVideo(options: ExportOptions): Promise<ExportResult>
       if (audioDestination) {
         const dest = audioDestination;
 
-        if (config.activeProject === 'paper-ball') {
+        if (options.narration && options.narration.length > 0) {
+          for (const line of options.narration) {
+            if (animT >= line.time && !triggeredCues.has(`vo-${line.time}`)) {
+              soundEngine.playSpokenText(line.text, dest);
+              triggeredCues.add(`vo-${line.time}`);
+            }
+          }
+        } else if (config.activeProject === 'paper-ball-30') {
+          if (config.enableSFX) {
+            for (const cue of PAPER_BALL_30_CUES) {
+              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
+                cue.play(dest);
+                triggeredCues.add(cue.id);
+              }
+            }
+          }
+        } else if (config.activeProject === 'paper-ball-sequel') {
+          if (config.enableSFX) {
+            for (const cue of PAPER_BALL_SEQUEL_CUES) {
+              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
+                cue.play(dest);
+                triggeredCues.add(cue.id);
+              }
+            }
+          }
+        } else if (config.activeProject === 'paper-ball-part3') {
+          if (config.enableSFX) {
+            for (const cue of PAPER_BALL_PART3_CUES) {
+              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
+                cue.play(dest);
+                triggeredCues.add(cue.id);
+              }
+            }
+          }
+        } else if (config.activeProject === 'paper-ball-part4') {
+          if (config.enableSFX) {
+            for (const cue of PAPER_BALL_PART4_CUES) {
+              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
+                cue.play(dest);
+                triggeredCues.add(cue.id);
+              }
+            }
+          }
+        } else if (config.activeProject === 'pop-star') {
+          if (config.enableSFX) {
+            for (const cue of POP_STAR_CUES) {
+              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
+                cue.play(dest);
+                triggeredCues.add(cue.id);
+              }
+            }
+          }
+        } else if (config.activeProject === 'trick-shot-champion') {
+          if (config.enableSFX) {
+            for (const cue of TRICK_SHOT_CUES) {
+              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
+                cue.play(dest);
+                triggeredCues.add(cue.id);
+              }
+            }
+          }
+        } else if (config.activeProject === 'ping-pong-revenge') {
+          if (config.enableSFX) {
+            for (const cue of PING_PONG_CUES) {
+              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
+                cue.play(dest);
+                triggeredCues.add(cue.id);
+              }
+            }
+          }
+        } else if (config.activeProject === 'dart-shot') {
+          if (config.enableSFX) {
+            for (const cue of DART_SHOT_CUES) {
+              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
+                cue.play(dest);
+                triggeredCues.add(cue.id);
+              }
+            }
+          }
+        } else if (config.activeProject === 'coin-flip') {
+          if (config.enableSFX) {
+            for (const cue of COIN_FLIP_CUES) {
+              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
+                cue.play(dest);
+                triggeredCues.add(cue.id);
+              }
+            }
+          }
+        } else if (config.activeProject === 'paper-ball') {
           if (config.enableSFX) {
             if (animT >= 2.0 && !triggeredCues.has('toss')) {
               soundEngine.playWhoosh(dest);
@@ -304,18 +698,33 @@ export async function exportVideo(options: ExportOptions): Promise<ExportResult>
         onProgress(percent, wallClockT, totalDuration);
       }
 
-      if (elapsedWallClock < totalDuration) {
-        requestAnimationFrame(step);
+      if (elapsed < totalDuration) {
+        // The drivers call step again on the next slot.
       } else {
+        if (rafId) cancelAnimationFrame(rafId);
+        rafId = 0;
         resolve();
       }
     };
 
-    requestAnimationFrame(step);
+    stopPacer = createPacer(frameInterval, step);
+    const rafLoop = () => {
+      rafId = requestAnimationFrame(rafLoop);
+      step();
+    };
+    rafId = requestAnimationFrame(rafLoop);
   });
 
-  // Final 10.0s frame render
-  renderer.render(ctx, 10.0, config);
+  stopPacer();
+  if (rafId) {
+    cancelAnimationFrame(rafId);
+    rafId = 0;
+  }
+
+  // Final local-loop pose for the preview/fallback capture. Manual capture
+  // stops at the last output frame so no frame is added past the selected
+  // video length.
+  renderer.render(ctx, animationDuration, exportConfig);
   if (onProgress) {
     onProgress(100, totalDuration, totalDuration);
   }
@@ -339,28 +748,39 @@ export async function exportVideo(options: ExportOptions): Promise<ExportResult>
   recorder.stop();
   const rawVideoBlob = await recordingFinished;
 
-  let finalBlob = rawVideoBlob;
   const isMp4 = selectedMime.includes('mp4');
 
-  // If WebM, patch the EBML header with exact Duration and 24fps DefaultDuration
-  if (!isMp4) {
-    finalBlob = await fixWebmDuration(rawVideoBlob, totalDuration * 1000, fps);
+  try {
+    if (rawVideoBlob.size < 50_000) {
+      throw new Error(
+        'The browser produced an incomplete recording. Try exporting again with the WebM format.'
+      );
+    }
+
+    let finalBlob = rawVideoBlob;
+
+    // If WebM, patch the EBML header with exact Duration and the selected
+    // frame rate's DefaultDuration.
+    if (!isMp4) {
+      finalBlob = await fixWebmDuration(rawVideoBlob, totalDuration * 1000, fps);
+    }
+
+    const extension = isMp4 ? 'mp4' : 'webm';
+    const filename = `${filePrefix}${durationTag}${speedLabel}${fpsTag}-1080x1920.${extension}`;
+    const url = URL.createObjectURL(finalBlob);
+
+    return {
+      blob: finalBlob,
+      url,
+      filename,
+      format: isMp4 ? 'mp4' : 'webm',
+      duration: totalDuration,
+      fps,
+      silent: !recordedWithAudio,
+    };
+  } finally {
+    // The clips only ran for the export; the preview takes over again.
+    renderer.setPlayback?.(false);
+    offCanvas.remove();
   }
-
-  // Cleanup offCanvas
-  if (offCanvas.parentNode) {
-    offCanvas.parentNode.removeChild(offCanvas);
-  }
-
-  const extension = isMp4 ? 'mp4' : 'webm';
-  const filename = `${filePrefix}${speedLabel}-1080x1920.${extension}`;
-  const url = URL.createObjectURL(finalBlob);
-
-  return {
-    blob: finalBlob,
-    url,
-    filename,
-    format: isMp4 ? 'mp4' : 'webm',
-    duration: totalDuration,
-  };
 }

@@ -1,33 +1,77 @@
-import React, { useState, useRef } from 'react';
-import { X, Download, Play, CheckCircle, Film, Sparkles, Volume2, Gauge } from 'lucide-react';
-import { StudioConfig } from '../types';
-import { exportVideo, ExportResult } from '../utils/exportVideo';
+import React, { useEffect, useState, useRef } from 'react';
+import { X, Download, CheckCircle, Film, Sparkles, Volume2, Gauge, AlertCircle, Repeat, Frame } from 'lucide-react';
+import { PROJECTS, StudioConfig } from '../types';
+import {
+  exportVideo,
+  ExportResult,
+  ExportFps,
+  ExportTimelineRenderer,
+  EXPORT_FPS_OPTIONS,
+  canRecordMp4WithAudio,
+} from '../utils/exportVideo';
 
 interface ExportModalProps {
   isOpen: boolean;
   onClose: () => void;
   config: StudioConfig;
+  /** Renders a custom timeline instead of the active project. */
+  renderer?: ExportTimelineRenderer;
+  /** Duration of the custom timeline in seconds. */
+  duration?: number;
+  /** Spoken lines with the moment they are read. */
+  narration?: { time: number; text: string }[];
+  /** File name prefix for the download. */
+  filePrefix?: string;
+  /** Title shown in the modal header. */
+  title?: string;
 }
 
 export const ExportModal: React.FC<ExportModalProps> = ({
   isOpen,
   onClose,
   config,
+  renderer,
+  duration,
+  narration,
+  filePrefix,
+  title,
 }) => {
+  const mp4Available = canRecordMp4WithAudio();
+  const baseDuration = duration ?? PROJECTS[config.activeProject].duration;
+  const projectTitle = title ?? PROJECTS[config.activeProject].title;
+  const [loopCount, setLoopCount] = useState<number>(1);
   const [exportSpeed, setExportSpeed] = useState<number>(1.0);
-  const [exportFormat, setExportFormat] = useState<'mp4' | 'webm'>('mp4');
+  const [exportFps, setExportFps] = useState<ExportFps>(24);
+  const [exportFormat, setExportFormat] = useState<'mp4' | 'webm'>(
+    mp4Available ? 'mp4' : 'webm'
+  );
   const [isExporting, setIsExporting] = useState<boolean>(false);
   const [progress, setProgress] = useState<number>(0);
   const [currentSec, setCurrentSec] = useState<number>(0);
-  const [totalSec, setTotalSec] = useState<number>(10);
+  const [totalSec, setTotalSec] = useState<number>(baseDuration);
   const [result, setResult] = useState<ExportResult | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const previewCanvasRef = useRef<HTMLCanvasElement | null>(null);
+  const outputDuration = (baseDuration * loopCount) / exportSpeed;
+  const outputSecondsLabel = outputDuration.toFixed(1).replace(/\.0$/, '');
+  const outputFrameCount = Math.round(outputDuration * exportFps);
+
+  useEffect(() => {
+    setLoopCount(1);
+    setExportFps(24);
+    setResult(null);
+    setError(null);
+    setTotalSec(baseDuration);
+  }, [config.activeProject, baseDuration]);
 
   if (!isOpen) return null;
 
   const handleStartExport = async () => {
     setIsExporting(true);
     setProgress(0);
+    setCurrentSec(0);
+    setTotalSec(outputDuration);
+    setError(null);
     setResult(null);
 
     // Give React time to mount the preview canvas in the DOM
@@ -37,8 +81,14 @@ export const ExportModal: React.FC<ExportModalProps> = ({
       const res = await exportVideo({
         config,
         exportSpeed,
+        loopCount,
+        fps: exportFps,
         format: exportFormat,
         previewCanvas: previewCanvasRef.current,
+        renderer,
+        duration,
+        narration,
+        filePrefix,
         onProgress: (p, cSec, tSec) => {
           setProgress(p);
           setCurrentSec(cSec);
@@ -57,6 +107,11 @@ export const ExportModal: React.FC<ExportModalProps> = ({
       document.body.removeChild(a);
     } catch (err) {
       console.error('Export failed:', err);
+      setError(
+        err instanceof Error
+          ? err.message
+          : 'Export failed. Try the WebM format and keep this tab visible while recording.'
+      );
     } finally {
       setIsExporting(false);
     }
@@ -85,11 +140,7 @@ export const ExportModal: React.FC<ExportModalProps> = ({
               <h2 className="text-base font-bold text-white">
                 Export 1080×1920 (9:16) Video
               </h2>
-              <p className="text-xs text-slate-400">
-                {config.activeProject === 'paper-ball'
-                  ? 'The Paper Ball Ricochet'
-                  : 'What If Your Shadow Quit?'}
-              </p>
+              <p className="text-xs text-slate-400">{projectTitle}</p>
             </div>
           </div>
           <button
@@ -106,6 +157,50 @@ export const ExportModal: React.FC<ExportModalProps> = ({
           {/* Options view when not yet exported or configuring */}
           {!result && !isExporting && (
             <div className="space-y-6">
+              {/* Video Length / Loops */}
+              <div className="space-y-2.5">
+                <div className="flex items-center justify-between gap-3">
+                  <label className="text-sm font-semibold text-white flex items-center gap-2">
+                    <Repeat className="w-4 h-4 text-rose-400" />
+                    <span>Video Length</span>
+                  </label>
+                  <span className="text-xs text-rose-400 font-mono text-right">
+                    {outputSecondsLabel}s · {loopCount} {loopCount === 1 ? 'play' : 'plays'} · {exportFps}fps
+                  </span>
+                </div>
+                <div className="grid grid-cols-3 gap-3">
+                  {[1, 2, 3].map((loops) => {
+                    const baseSeconds = loops * baseDuration;
+                    return (
+                      <button
+                        key={loops}
+                        onClick={() => setLoopCount(loops)}
+                        className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer ${
+                          loopCount === loops
+                            ? 'bg-rose-950/60 border-rose-500 text-white ring-1 ring-rose-500'
+                            : 'bg-slate-950/60 border-slate-800 text-slate-300 hover:border-slate-700'
+                        }`}
+                      >
+                        <div className="flex items-center justify-between font-bold text-sm">
+                          <span>{baseSeconds}s</span>
+                          <span className="text-[10px] font-mono text-slate-400">
+                            {loops === 1 ? '1 play' : `${loops} loops`}
+                          </span>
+                        </div>
+                        <p className="text-xs text-slate-400 mt-1 leading-snug">
+                          {loops === 1
+                            ? `One complete play of the ${baseDuration}-second film.`
+                            : `${loops} full plays of the film with sound cues re-triggered each loop.`}
+                        </p>
+                      </button>
+                    );
+                  })}
+                </div>
+                <p className="text-xs text-slate-500">
+                  Length is before pacing. A slower pace extends the final duration shown above.
+                </p>
+              </div>
+
               {/* Speed / Pacing Option */}
               <div className="space-y-2.5">
                 <div className="flex items-center justify-between">
@@ -113,8 +208,8 @@ export const ExportModal: React.FC<ExportModalProps> = ({
                     <Gauge className="w-4 h-4 text-rose-400" />
                     <span>Animation Pacing & Speed</span>
                   </label>
-                  <span className="text-xs text-rose-400 font-mono">
-                    Output: {(10 / exportSpeed).toFixed(1)}s duration
+                  <span className="text-xs text-slate-400 font-mono">
+                    Applies to every loop
                   </span>
                 </div>
                 <div className="grid grid-cols-3 gap-3">
@@ -122,42 +217,42 @@ export const ExportModal: React.FC<ExportModalProps> = ({
                     {
                       val: 1.0,
                       label: '1.0x Normal',
-                      dur: '10.0s',
                       desc: 'Classic snappy cartoon comedic timing',
                     },
                     {
                       val: 0.75,
                       label: '0.75x Relaxed',
-                      dur: '13.3s',
                       desc: 'Smoother, extra-readable arcs & reactions',
                     },
                     {
                       val: 0.5,
                       label: '0.5x Slow-Mo',
-                      dur: '20.0s',
                       desc: 'Ultra deliberate pantomime comedy',
                     },
-                  ].map((item) => (
-                    <button
-                      key={item.val}
-                      onClick={() => setExportSpeed(item.val)}
-                      className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer ${
-                        exportSpeed === item.val
-                          ? 'bg-rose-950/60 border-rose-500 text-white ring-1 ring-rose-500'
-                          : 'bg-slate-950/60 border-slate-800 text-slate-300 hover:border-slate-700'
-                      }`}
-                    >
-                      <div className="flex items-center justify-between font-bold text-sm">
-                        <span>{item.label}</span>
-                        <span className="text-xs font-mono text-slate-400">
-                          {item.dur}
-                        </span>
-                      </div>
-                      <p className="text-xs text-slate-400 mt-1 leading-snug">
-                        {item.desc}
-                      </p>
-                    </button>
-                  ))}
+                  ].map((item) => {
+                    const itemDuration = (baseDuration * loopCount) / item.val;
+                    return (
+                      <button
+                        key={item.val}
+                        onClick={() => setExportSpeed(item.val)}
+                        className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer ${
+                          exportSpeed === item.val
+                            ? 'bg-rose-950/60 border-rose-500 text-white ring-1 ring-rose-500'
+                            : 'bg-slate-950/60 border-slate-800 text-slate-300 hover:border-slate-700'
+                        }`}
+                      >
+                        <div className="flex items-center justify-between font-bold text-sm">
+                          <span>{item.label}</span>
+                          <span className="text-xs font-mono text-slate-400">
+                            {itemDuration.toFixed(1)}s
+                          </span>
+                        </div>
+                        <p className="text-xs text-slate-400 mt-1 leading-snug">
+                          {item.desc}
+                        </p>
+                      </button>
+                    );
+                  })}
                 </div>
                 {exportSpeed !== 1.0 && (
                   <p className="text-xs text-emerald-400 bg-emerald-950/40 border border-emerald-800/60 rounded-lg p-2.5">
@@ -166,30 +261,95 @@ export const ExportModal: React.FC<ExportModalProps> = ({
                 )}
               </div>
 
+              {/* Frame Rate Option */}
+              <div className="space-y-2.5">
+                <div className="flex items-center justify-between gap-3">
+                  <label className="text-sm font-semibold text-white flex items-center gap-2">
+                    <Frame className="w-4 h-4 text-rose-400" />
+                    <span>Frame Rate</span>
+                  </label>
+                  <span className="text-xs text-slate-400 font-mono text-right">
+                    {exportFps}fps · {outputFrameCount.toLocaleString()} frames
+                  </span>
+                </div>
+                <div className="grid grid-cols-3 gap-3">
+                  {EXPORT_FPS_OPTIONS.map((fps) => {
+                    const frameCount = Math.round(outputDuration * fps);
+                    const meta = {
+                      24: { label: 'Cinematic', desc: 'Authored cartoon cadence with snappy 24fps timing.' },
+                      30: { label: 'Smooth', desc: 'Extra frames for web and social playback.' },
+                      60: { label: 'Ultra Smooth', desc: 'Maximum smoothness; largest file size.' },
+                    }[fps];
+                    return (
+                      <button
+                        key={fps}
+                        onClick={() => setExportFps(fps)}
+                        className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer ${
+                          exportFps === fps
+                            ? 'bg-rose-950/60 border-rose-500 text-white ring-1 ring-rose-500'
+                            : 'bg-slate-950/60 border-slate-800 text-slate-300 hover:border-slate-700'
+                        }`}
+                      >
+                        <div className="flex items-center justify-between font-bold text-sm">
+                          <span>{fps} fps</span>
+                          <span className="text-[10px] font-mono text-slate-400">
+                            {meta.label}
+                          </span>
+                        </div>
+                        <p className="text-xs text-slate-400 mt-1 leading-snug">
+                          {meta.desc}
+                        </p>
+                        <p className="text-[10px] text-slate-500 mt-1 font-mono">
+                          {frameCount.toLocaleString()} frames
+                        </p>
+                      </button>
+                    );
+                  })}
+                </div>
+                <p className="text-xs text-slate-500">
+                  Every rate renders the same {outputSecondsLabel}s film, so the sound cues land at the
+                  exact same moments. Higher rates just sample the motion more often.
+                </p>
+              </div>
+
               {/* Format selection */}
               <div className="space-y-2.5">
                 <label className="text-sm font-semibold text-white">
                   Video Container & Codec
                 </label>
-                <div className="grid grid-cols-2 gap-3">
-                  <button
-                    onClick={() => setExportFormat('mp4')}
-                    className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer ${
-                      exportFormat === 'mp4'
-                        ? 'bg-rose-950/60 border-rose-500 text-white ring-1 ring-rose-500'
-                        : 'bg-slate-950/60 border-slate-800 text-slate-300 hover:border-slate-700'
-                    }`}
-                  >
-                    <div className="flex items-center justify-between font-bold text-sm">
-                      <span>MP4 (Recommended)</span>
-                      <span className="text-[10px] bg-rose-600 text-white px-1.5 py-0.5 rounded font-mono">
-                        Universal
-                      </span>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {mp4Available ? (
+                    <button
+                      onClick={() => setExportFormat('mp4')}
+                      className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer ${
+                        exportFormat === 'mp4'
+                          ? 'bg-rose-950/60 border-rose-500 text-white ring-1 ring-rose-500'
+                          : 'bg-slate-950/60 border-slate-800 text-slate-300 hover:border-slate-700'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between font-bold text-sm">
+                        <span>MP4 (H.264 + AAC)</span>
+                        <span className="text-[10px] bg-rose-600 text-white px-1.5 py-0.5 rounded font-mono">
+                          QuickTime
+                        </span>
+                      </div>
+                      <p className="text-xs text-slate-400 mt-1">
+                        Best for QuickTime, iOS, and social uploads. Available in Safari.
+                      </p>
+                    </button>
+                  ) : (
+                    <div className="p-3.5 rounded-xl border border-slate-800 bg-slate-950/40 text-left">
+                      <div className="flex items-center justify-between font-bold text-sm text-slate-400">
+                        <span>MP4 (H.264 + AAC)</span>
+                        <span className="text-[10px] bg-slate-800 text-slate-400 px-1.5 py-0.5 rounded font-mono">
+                          Safari only
+                        </span>
+                      </div>
+                      <p className="text-xs text-slate-500 mt-1">
+                        Chrome and Edge cannot mux the synthesized audio track into MP4. Use WebM with sound instead.
+                      </p>
                     </div>
-                    <p className="text-xs text-slate-400 mt-1">
-                      Exact 1:1 playback speed and loud audio on Windows Media Player, QuickTime, iOS, Android, and social media.
-                    </p>
-                  </button>
+                  )}
 
                   <button
                     onClick={() => setExportFormat('webm')}
@@ -199,9 +359,16 @@ export const ExportModal: React.FC<ExportModalProps> = ({
                         : 'bg-slate-950/60 border-slate-800 text-slate-300 hover:border-slate-700'
                     }`}
                   >
-                    <div className="font-bold text-sm">WebM (VP9 + Opus)</div>
+                    <div className="flex items-center justify-between font-bold text-sm">
+                      <span>WebM (VP9 + Opus)</span>
+                      {!mp4Available && (
+                        <span className="text-[10px] bg-rose-600 text-white px-1.5 py-0.5 rounded font-mono">
+                          Recommended
+                        </span>
+                      )}
+                    </div>
                     <p className="text-xs text-slate-400 mt-1">
-                      Patched EBML duration header for web platforms and browser playback.
+                      VP9 video + Opus audio with a patched duration header. Works in Chrome, Edge, Firefox, and VLC.
                     </p>
                   </button>
                 </div>
@@ -214,6 +381,13 @@ export const ExportModal: React.FC<ExportModalProps> = ({
                   Synchronized cartoon sound effects are mixed directly into the audio track.
                 </span>
               </div>
+
+              {error && (
+                <div className="flex items-start gap-2.5 p-3 bg-rose-950/50 border border-rose-800 rounded-xl text-xs text-rose-200">
+                  <AlertCircle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
+                  <span>{error}</span>
+                </div>
+              )}
             </div>
           )}
 
@@ -242,7 +416,7 @@ export const ExportModal: React.FC<ExportModalProps> = ({
                 </div>
                 <div className="flex justify-between text-[11px] font-mono text-slate-500">
                   <span>{currentSec.toFixed(1)}s / {totalSec.toFixed(1)}s</span>
-                  <span>1080 × 1920 @ 24fps</span>
+                  <span>1080 × 1920 @ {exportFps}fps</span>
                 </div>
               </div>
 
@@ -275,9 +449,16 @@ export const ExportModal: React.FC<ExportModalProps> = ({
               <div className="bg-slate-950 p-3 rounded-xl border border-slate-800 text-xs font-mono text-slate-300 max-w-md mx-auto space-y-1">
                 <div className="text-white font-semibold">{result.filename}</div>
                 <div className="text-slate-400">
-                  Duration: {result.duration.toFixed(1)}s · Format: {result.format.toUpperCase()} · 1080×1920
+                  Duration: {result.duration.toFixed(1)}s · Format: {result.format.toUpperCase()} · {result.fps}fps · 1080×1920
                 </div>
               </div>
+
+              {result.silent && (
+                <p className="text-xs text-amber-400">
+                  The browser blocked the audio, so this file has no sound. Click the page
+                  once and export again to get the sound with it.
+                </p>
+              )}
 
               <p className="text-xs text-slate-400">
                 You can test playback above to confirm the exact speed and loud cartoon sound effects.
@@ -301,14 +482,16 @@ export const ExportModal: React.FC<ExportModalProps> = ({
                 className="flex items-center gap-2 px-6 py-2.5 text-sm font-bold text-white bg-rose-600 hover:bg-rose-500 rounded-xl shadow-lg transition-colors cursor-pointer"
               >
                 <Sparkles className="w-4 h-4" />
-                <span>Render & Download Video</span>
+                <span>Render & Download {outputSecondsLabel}s Video</span>
               </button>
             </>
           ) : result ? (
             <>
               <button
                 onClick={() => {
+                  if (result) URL.revokeObjectURL(result.url);
                   setResult(null);
+                  setError(null);
                 }}
                 className="px-4 py-2 text-sm text-slate-400 hover:text-white transition-colors cursor-pointer"
               >
@@ -332,7 +515,8 @@ export const ExportModal: React.FC<ExportModalProps> = ({
             </>
           ) : (
             <div className="w-full text-center text-xs text-slate-500">
-              Please keep this tab open while recording frames...
+              Keep this tab in the foreground while recording — browsers throttle background tabs and
+              that shows up as frozen frames in the download.
             </div>
           )}
         </div>

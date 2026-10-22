@@ -36,8 +36,11 @@ export const Header: React.FC<HeaderProps> = ({
             onChange={(e) => setActiveProject(e.target.value as ProjectId)}
             className="appearance-none bg-slate-950 hover:bg-slate-800 text-white font-bold text-sm pl-3 pr-8 py-1.5 rounded-lg border border-slate-700 focus:outline-none focus:border-rose-500 cursor-pointer transition-colors"
           >
-            <option value="paper-ball">The Paper Ball Ricochet</option>
-            <option value="shadow-quit">What If Your Shadow Quit?</option>
+            {Object.values(PROJECTS).map((project) => (
+              <option key={project.id} value={project.id}>
+                {project.title}
+              </option>
+            ))}
           </select>
           <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
         </div>
@@ -96,12 +99,12 @@ export const Header: React.FC<HeaderProps> = ({
           {isExporting ? (
             <>
               <Sparkles className="w-3.5 h-3.5 animate-spin" />
-              <span>Rendering 10s MP4...</span>
+              <span>Export Studio Open...</span>
             </>
           ) : (
             <>
               <Download className="w-3.5 h-3.5" />
-              <span>Export 10s Video</span>
+              <span>Export Video</span>
             </>
           )}
         </button>

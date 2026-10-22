@@ -1,6 +1,6 @@
 {
-  "name": "What If Your Shadow Quit? — AI Animation Studio",
-  "description": "Interactive 10-second 2D minimalist comedy animation player, director studio, and video prompt generator.",
+  "name": "2D Animation Studio",
+  "description": "Interactive 1080x1920 minimalist 2D stickman animation studio: eleven procedural shorts (including The Ping-Pong Revenge, The Angry Stickman vs. The Impossible Dart Shot, The Angry Stickman vs. The Impossible Coin Flip and Angry Stickman: Trick-Shot Champion), a 24/30/60 fps video exporter, a sound lab, and a ranking-reel builder.",
   "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+  "majorCapabilities": []
 }

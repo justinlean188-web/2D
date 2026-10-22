@@ -4,5 +4,11 @@ dist/
 coverage/
 .DS_Store
 *.log
-.env*
-!.env.example
+.env
+.env.*
+
+# Cached reference videos for the reel scripts
+scripts/.cache
+
+# Clips downloaded by the reel downloader
+public/source-videos/

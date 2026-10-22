@@ -8,9 +8,10 @@ import { ReelStudio } from './components/ReelStudio';
 import { StudioConfig, DEFAULT_CONFIG, PROJECTS, ProjectId, SceneDef } from './types';
 import { soundEngine, stopVoiceOver } from './audio/soundEngine';
 import { ExportModal } from './components/ExportModal';
-import { Clapperboard, Trophy } from 'lucide-react';
+import { ViralRankStudio } from './viralrank/ViralRankStudio';
+import { Clapperboard, Trophy, Film } from 'lucide-react';
 
-type Section = 'studio' | 'reels';
+type Section = 'studio' | 'reels' | 'viralrank';
 
 const getInitialProject = (): ProjectId => {
   const requested = new URLSearchParams(window.location.search).get('project');
@@ -20,6 +21,7 @@ const getInitialProject = (): ProjectId => {
 };
 
 const REEL_ALIASES = ['reels', 'reel', 'clone-reels', 'clone', 'ranking'];
+const VIRAL_ALIASES = ['viralrank', 'viral', 'shorts', 'editor', 'viralrank-studio'];
 
 const getSectionFromUrl = (): Section => {
   const params = new URLSearchParams(window.location.search);
@@ -30,6 +32,7 @@ const getSectionFromUrl = (): Section => {
     params.get('mode') ??
     ''
   ).toLowerCase();
+  if (VIRAL_ALIASES.includes(requested) || params.get('viral') === '1') return 'viralrank';
   if (REEL_ALIASES.includes(requested)) return 'reels';
   if (params.get('reels') === '1' || params.get('reels') === 'true') return 'reels';
   return 'studio';
@@ -56,7 +59,9 @@ export default function App() {
 
   useEffect(() => {
     document.title =
-      section === 'reels'
+      section === 'viralrank'
+        ? 'ViralRank Studio — AI Shorts & Reels Video Editor'
+        : section === 'reels'
         ? 'Clone Reels — 2D Animation Studio'
         : `${PROJECTS[config.activeProject].title} — 2D Animation Studio`;
   }, [config.activeProject, section]);
@@ -64,10 +69,10 @@ export default function App() {
   // Write the section into the address bar so the view can be shared or reloaded.
   useEffect(() => {
     const url = new URL(window.location.href);
-    if (section === 'reels') {
-      url.searchParams.set('section', 'reels');
-    } else {
+    if (section === 'studio') {
       url.searchParams.delete('section');
+    } else {
+      url.searchParams.set('section', section);
     }
     window.history.replaceState({}, '', url.toString());
   }, [section]);
@@ -174,13 +179,22 @@ export default function App() {
             label="Clone Reels"
             hint="Ranking countdown reels"
           />
+          <SidebarButton
+            active={section === 'viralrank'}
+            onClick={() => handleSectionChange('viralrank')}
+            icon={<Film className="w-4 h-4" />}
+            label="ViralRank Studio"
+            hint="AI Shorts & Reels Editor"
+          />
         </nav>
 
         <div className="mt-auto p-4 border-t border-slate-800 text-[11px] text-slate-500 leading-relaxed">
           <div className="text-slate-400 font-semibold mb-1">How this works</div>
           {section === 'studio'
             ? 'Design a stickman short, then export it at 24 / 30 / 60 fps.'
-            : 'Download source videos, trim and rank them, then export the reel with narration.'}
+            : section === 'reels'
+            ? 'Download source videos, trim and rank them, then export the reel with narration.'
+            : 'Multitrack 9:16 editor with per-clip SFX, AI suggestions, and dynamic rankings.'}
         </div>
       </aside>
 
@@ -254,7 +268,7 @@ export default function App() {
               config={config}
             />
           </>
-        ) : (
+        ) : section === 'reels' ? (
           <>
             <header className="flex items-center justify-between gap-6 px-6 py-4 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 sticky top-0 z-40">
               <div className="flex items-center gap-3 min-w-0">
@@ -308,13 +322,35 @@ export default function App() {
               <ReelStudio />
             </main>
           </>
+        ) : (
+          <>
+            <header className="flex items-center justify-between gap-6 px-6 py-3.5 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 sticky top-0 z-40">
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="w-8 h-8 rounded-lg bg-rose-600 flex items-center justify-center text-white shrink-0 shadow-sm">
+                  <Film className="w-4 h-4" />
+                </div>
+                <div className="min-w-0">
+                  <h1 className="text-sm font-bold text-white truncate">ViralRank Studio</h1>
+                  <p className="text-[11px] text-slate-400 truncate">
+                    AI Shorts & Reels Video Editor · 9:16 Vertical · Multitrack Timeline · Per-Clip Sound FX
+                  </p>
+                </div>
+              </div>
+            </header>
+
+            <main className="flex-1 min-h-0">
+              <ViralRankStudio />
+            </main>
+          </>
         )}
 
         {/* Clean, Non-slop Footer */}
         <footer className="border-t border-slate-800 py-6 px-6 text-center text-xs text-slate-500">
           <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
             <p>
-              {section === 'reels'
+              {section === 'viralrank'
+                ? 'ViralRank Studio · AI Shorts & Reels Video Editor · 1080×1920 (9:16) Multitrack'
+                : section === 'reels'
                 ? 'Clone Reels · Ranking Countdown Reels · 1080×1920 (9:16)'
                 : config.activeProject !== 'shadow-quit'
                 ? `${PROJECTS[config.activeProject].title} · Minimalist 2D Vector Stickman Comedy · 1080×1920 (9:16)`

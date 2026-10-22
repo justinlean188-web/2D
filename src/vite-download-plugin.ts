@@ -2,8 +2,8 @@ import path from 'node:path';
 import type { Plugin } from 'vite';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
-import { createWriteStream } from 'node:fs';
-import { mkdir, rename, rm, stat } from 'node:fs/promises';
+import { createWriteStream, createReadStream } from 'node:fs';
+import { mkdir, rename, rm, stat, readdir } from 'node:fs/promises';
 import { downloadSourceVideo } from '../scripts/lib/downloadSourceVideo.ts';
 
 const execFileAsync = promisify(execFile);
@@ -42,6 +42,185 @@ export const reelDownloadPlugin = (): Plugin => ({
       res.setHeader('Content-Type', 'application/json');
       res.setHeader('Cache-Control', 'no-store');
       res.end(JSON.stringify({ stamp }));
+    });
+
+    // Lists available downloaded videos in public/source-videos
+    server.middlewares.use('/__source-videos-list', async (req, res) => {
+      res.setHeader('Content-Type', 'application/json');
+      res.setHeader('Access-Control-Allow-Origin', '*');
+      const sourceDir = path.resolve(process.cwd(), 'public', 'source-videos');
+      try {
+        await mkdir(sourceDir, { recursive: true });
+        const files = await readdir(sourceDir);
+        const list = await Promise.all(
+          files
+            .filter((f) => /\.(mp4|webm|mov|m4v)$/i.test(f))
+            .map(async (filename) => {
+              const s = await stat(path.join(sourceDir, filename)).catch(() => ({ size: 0 }));
+              return {
+                filename,
+                filepath: `/source-videos/${encodeURIComponent(filename)}`,
+                sizeBytes: s.size,
+              };
+            })
+        );
+        res.statusCode = 200;
+        res.end(JSON.stringify({ files: list }));
+      } catch {
+        res.statusCode = 200;
+        res.end(JSON.stringify({ files: [] }));
+      }
+    });
+
+    // Dedicated high-performance video streaming middleware for /source-videos
+    // Handles byte-range requests (HTTP 206), CORS headers, and resilient fuzzy matching
+    // for percent-encoded or unicode filenames.
+    server.middlewares.use('/source-videos', async (req, res, next) => {
+      if (req.method !== 'GET' && req.method !== 'HEAD' && req.method !== 'OPTIONS') {
+        next();
+        return;
+      }
+
+      // Handle CORS preflight
+      if (req.method === 'OPTIONS') {
+        res.statusCode = 204;
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Access-Control-Allow-Methods', 'GET, HEAD, OPTIONS');
+        res.setHeader('Access-Control-Allow-Headers', 'Range, Content-Type, Accept');
+        res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
+        res.end();
+        return;
+      }
+
+      const rawUrl = req.url ?? '/';
+      const pathname = rawUrl.split('?')[0].replace(/^\/+/, '');
+      let decodedName = pathname;
+      try {
+        decodedName = decodeURIComponent(pathname);
+      } catch {}
+
+      const sourceDir = path.resolve(process.cwd(), 'public', 'source-videos');
+      let targetPath = path.join(sourceDir, decodedName);
+      let fileExists = false;
+
+      try {
+        const s = await stat(targetPath);
+        if (s.isFile()) fileExists = true;
+      } catch {}
+
+      if (!fileExists) {
+        try {
+          const s = await stat(path.join(sourceDir, pathname));
+          if (s.isFile()) {
+            targetPath = path.join(sourceDir, pathname);
+            fileExists = true;
+          }
+        } catch {}
+      }
+
+      // If still not found, search the directory for matches (fuzzy / ID match)
+      if (!fileExists) {
+        try {
+          const allFiles = await readdir(sourceDir);
+          const cleanTarget = decodedName.toLowerCase();
+          const idMatch = decodedName.match(/\[?([a-zA-Z0-9_-]{11})\]?/);
+          const id = idMatch ? idMatch[1] : null;
+
+          const matched = allFiles.find((f) => {
+            const lf = f.toLowerCase();
+            if (lf === cleanTarget) return true;
+            if (id && lf.includes(id.toLowerCase())) return true;
+            if (lf.endsWith(cleanTarget) || cleanTarget.endsWith(lf)) return true;
+            const baseTarget = cleanTarget.replace(/\.[^.]+$/, '');
+            if (
+              baseTarget.length > 5 &&
+              (lf.includes(baseTarget) || baseTarget.includes(lf.replace(/\.[^.]+$/, '')))
+            ) {
+              return true;
+            }
+            return false;
+          });
+
+          if (matched) {
+            targetPath = path.join(sourceDir, matched);
+            fileExists = true;
+          }
+        } catch {}
+      }
+
+      if (!fileExists) {
+        next();
+        return;
+      }
+
+      try {
+        const stats = await stat(targetPath);
+        const fileSize = stats.size;
+        const ext = path.extname(targetPath).toLowerCase();
+        const contentType =
+          ext === '.webm'
+            ? 'video/webm'
+            : ext === '.mov'
+            ? 'video/quicktime'
+            : ext === '.ogg' || ext === '.ogv'
+            ? 'video/ogg'
+            : 'video/mp4';
+
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Access-Control-Allow-Methods', 'GET, HEAD, OPTIONS');
+        res.setHeader('Access-Control-Allow-Headers', 'Range, Content-Type, Accept');
+        res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
+        res.setHeader('Accept-Ranges', 'bytes');
+        res.setHeader('Content-Type', contentType);
+
+        const range = req.headers.range;
+        if (range) {
+          const parts = range.replace(/bytes=/, '').split('-');
+          const start = parseInt(parts[0], 10);
+          const end = parts[1] ? parseInt(parts[1], 10) : fileSize - 1;
+
+          if (start >= fileSize || end >= fileSize || start > end) {
+            res.statusCode = 416;
+            res.setHeader('Content-Range', `bytes */${fileSize}`);
+            res.end();
+            return;
+          }
+
+          const chunkSize = end - start + 1;
+          res.statusCode = 206;
+          res.setHeader('Content-Range', `bytes ${start}-${end}/${fileSize}`);
+          res.setHeader('Content-Length', chunkSize);
+
+          if (req.method === 'HEAD') {
+            res.end();
+            return;
+          }
+
+          const stream = createReadStream(targetPath, { start, end });
+          stream.on('error', () => {
+            if (!res.headersSent) res.statusCode = 500;
+            res.end();
+          });
+          stream.pipe(res);
+        } else {
+          res.statusCode = 200;
+          res.setHeader('Content-Length', fileSize);
+
+          if (req.method === 'HEAD') {
+            res.end();
+            return;
+          }
+
+          const stream = createReadStream(targetPath);
+          stream.on('error', () => {
+            if (!res.headersSent) res.statusCode = 500;
+            res.end();
+          });
+          stream.pipe(res);
+        }
+      } catch {
+        next();
+      }
     });
 
     // A small log of every reel request, so a failure can be traced from the

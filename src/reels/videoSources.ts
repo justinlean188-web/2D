@@ -25,7 +25,7 @@ const PAGE_HOSTS = [
 export const isPageUrl = (url: string): boolean => {
   const clean = url.trim().toLowerCase();
   if (!clean) return false;
-  if (clean.startsWith('blob:') || clean.startsWith('data:')) return false;
+  if (clean.startsWith('blob:') || clean.startsWith('data:') || clean.startsWith('/source-videos/')) return false;
   try {
     const host = new URL(clean).hostname.replace(/^www\./, '');
     return PAGE_HOSTS.some((known) => host === known || host.endsWith('.' + known));
@@ -36,11 +36,16 @@ export const isPageUrl = (url: string): boolean => {
 
 /** True when the URL looks like a direct media file. */
 export const looksLikeMedia = (url: string): boolean => {
-  const clean = url.trim().split('?')[0].toLowerCase();
+  let clean = url.trim().split('?')[0].split('#')[0].toLowerCase();
   if (!clean) return false;
-  if (clean.startsWith('blob:') || clean.startsWith('data:')) return true;
-  return /\.(mp4|webm|mov|m4v|ogv|ogg|mp3)$/.test(clean);
+  if (clean.startsWith('blob:') || clean.startsWith('data:') || clean.startsWith('/source-videos/')) return true;
+  try {
+    clean = decodeURIComponent(clean);
+  } catch {}
+  return /\.(mp4|webm|mov|m4v|ogv|ogg|mp3)$/i.test(clean);
 };
 
 /** A local file picked from disk. */
-export const isLocalFile = (url: string): boolean => url.startsWith('blob:');
+export const isLocalFile = (url: string): boolean =>
+  url.startsWith('blob:') || url.startsWith('/source-videos/');
+

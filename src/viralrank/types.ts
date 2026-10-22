@@ -138,6 +138,11 @@ export interface ViralRankProject {
   rankingCount: number; // 3, 5, 10, 20 or custom
   orderMode: OrderMode; // 'countdown' = #5 to #1; 'best-first' = #1 to #5
   badgeTheme: 'gold' | 'neon-cyan' | 'crimson' | 'emerald' | 'amber';
+  titlePrefix?: string; // e.g. "Ranking Best"
+  titleAccent?: string; // e.g. "Pool Fails"
+  accentColor?: string; // e.g. "#ef4444"
+  voiceIntro?: string; // e.g. "Top 6 Ranking best pool fails"
+  useVoiceIntroOnly?: boolean; // When true, no visual title card is shown; voiceover hook speaks right at 0.0s over the video
   items: RankingItem[];
   sourceLibrary: SourceMedia[];
   music: MusicTrack;

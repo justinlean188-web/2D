@@ -534,6 +534,93 @@ class ViralRankAudioEngine {
       window.speechSynthesis.cancel();
     }
   }
+
+  private musicInterval: number | null = null;
+  private musicGainNode: GainNode | null = null;
+
+  public playMusicBeat(genre: string = 'energetic', volume: number = 0.35) {
+    this.stopMusic();
+    if (this.isMuted) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    this.musicGainNode = ctx.createGain();
+    this.musicGainNode.gain.setValueAtTime(Math.max(0, Math.min(1, volume)), ctx.currentTime);
+    this.route(this.musicGainNode);
+
+    let step = 0;
+    const bpm = genre === 'energetic' ? 128 : genre === 'action' ? 140 : genre === 'suspense' ? 95 : 120;
+    const stepInterval = (60 / bpm) * 1000 * 0.5; // eighth notes
+
+    const triggerStep = () => {
+      if (!ctx || !this.musicGainNode) return;
+      const now = ctx.currentTime;
+      const isKick = step % 4 === 0;
+      const isSnare = step % 4 === 2;
+      const isBass = step % 2 === 0;
+
+      if (isKick) {
+        // Subtle kick beat
+        const kickOsc = ctx.createOscillator();
+        const kickG = ctx.createGain();
+        kickOsc.frequency.setValueAtTime(110, now);
+        kickOsc.frequency.exponentialRampToValueAtTime(35, now + 0.15);
+        kickG.gain.setValueAtTime(0.4, now);
+        kickG.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+        kickOsc.connect(kickG);
+        kickG.connect(this.musicGainNode);
+        kickOsc.start(now);
+        kickOsc.stop(now + 0.2);
+      }
+
+      if (isSnare && genre !== 'suspense') {
+        // High hat / snappy tap
+        const hatOsc = ctx.createOscillator();
+        const hatG = ctx.createGain();
+        hatOsc.type = 'triangle';
+        hatOsc.frequency.setValueAtTime(genre === 'action' ? 280 : 380, now);
+        hatG.gain.setValueAtTime(0.18, now);
+        hatG.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+        hatOsc.connect(hatG);
+        hatG.connect(this.musicGainNode);
+        hatOsc.start(now);
+        hatOsc.stop(now + 0.09);
+      }
+
+      if (isBass) {
+        // Melodic synth pulse
+        const bassOsc = ctx.createOscillator();
+        const bassG = ctx.createGain();
+        bassOsc.type = genre === 'suspense' ? 'sawtooth' : 'sine';
+        const bassFreq = genre === 'suspense' ? 55 : genre === 'action' ? 65 : 82;
+        bassOsc.frequency.setValueAtTime(bassFreq, now);
+        bassG.gain.setValueAtTime(0.25, now);
+        bassG.gain.exponentialRampToValueAtTime(0.005, now + 0.22);
+        bassOsc.connect(bassG);
+        bassG.connect(this.musicGainNode);
+        bassOsc.start(now);
+        bassOsc.stop(now + 0.25);
+      }
+
+      step++;
+    };
+
+    triggerStep();
+    this.musicInterval = window.setInterval(triggerStep, stepInterval);
+  }
+
+  public stopMusic() {
+    if (this.musicInterval !== null) {
+      clearInterval(this.musicInterval);
+      this.musicInterval = null;
+    }
+    if (this.musicGainNode) {
+      try {
+        this.musicGainNode.disconnect();
+      } catch {}
+      this.musicGainNode = null;
+    }
+  }
 }
 
 export const viralAudio = new ViralRankAudioEngine();

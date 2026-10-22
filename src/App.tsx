@@ -184,7 +184,7 @@ export default function App() {
             onClick={() => handleSectionChange('viralrank')}
             icon={<Film className="w-4 h-4" />}
             label="ViralRank Studio"
-            hint="AI Shorts & Reels Editor"
+            hint="Ranking shorts with custom SFX"
           />
         </nav>
 
@@ -194,7 +194,7 @@ export default function App() {
             ? 'Design a stickman short, then export it at 24 / 30 / 60 fps.'
             : section === 'reels'
             ? 'Download source videos, trim and rank them, then export the reel with narration.'
-            : 'Multitrack 9:16 editor with per-clip SFX, AI suggestions, and dynamic rankings.'}
+            : 'Build viral 9:16 ranking countdowns with dedicated sound effects for every clip.'}
         </div>
       </aside>
 
@@ -332,7 +332,7 @@ export default function App() {
                 <div className="min-w-0">
                   <h1 className="text-sm font-bold text-white truncate">ViralRank Studio</h1>
                   <p className="text-[11px] text-slate-400 truncate">
-                    AI Shorts & Reels Video Editor · 9:16 Vertical · Multitrack Timeline · Per-Clip Sound FX
+                    Ranking Shorts & Reels · 9:16 Vertical · Individual Sound FX Per Clip · AI Audio Suggestions
                   </p>
                 </div>
               </div>

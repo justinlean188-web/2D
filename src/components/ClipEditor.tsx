@@ -43,6 +43,22 @@ export const ClipEditor: React.FC<ClipEditorProps> = ({
   const [state, setState] = useState<LoadState>('loading');
   const retriedRef = useRef(false);
 
+  // A URL without protocol or leading slash is normalized to local /source-videos/
+  const normalizedUrl = React.useMemo(() => {
+    const raw = (clip.url || '').trim();
+    if (!raw) return '';
+    if (
+      raw.startsWith('http://') ||
+      raw.startsWith('https://') ||
+      raw.startsWith('blob:') ||
+      raw.startsWith('data:') ||
+      raw.startsWith('/')
+    ) {
+      return raw;
+    }
+    return `/source-videos/${raw}`;
+  }, [clip.url]);
+
   // A new URL reloads the element from the top.
   useEffect(() => {
     setTime(0);
@@ -54,9 +70,12 @@ export const ClipEditor: React.FC<ClipEditorProps> = ({
       el.pause();
       el.currentTime = 0;
       el.setAttribute('crossorigin', 'anonymous');
-      el.load();
+      if (normalizedUrl) {
+        el.src = normalizedUrl;
+        el.load();
+      }
     }
-  }, [clip.url]);
+  }, [normalizedUrl]);
 
   // The trim range is clamped to the source.
   useEffect(() => {
@@ -247,7 +266,7 @@ export const ClipEditor: React.FC<ClipEditorProps> = ({
         </p>
       )}
 
-      {state === 'loading' && clip.url && !looksLikeMedia(clip.url) && (
+      {state === 'loading' && normalizedUrl && !looksLikeMedia(normalizedUrl) && (
         <p className="text-[11px] text-slate-500">
           That looks like a page link rather than a direct video file. Use a link that ends in
           .mp4 / .webm (or a signed media URL).
@@ -256,7 +275,7 @@ export const ClipEditor: React.FC<ClipEditorProps> = ({
 
       <video
         ref={videoRef}
-        src={clip.url}
+        src={normalizedUrl}
         crossOrigin="anonymous"
         muted
         playsInline

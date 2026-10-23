@@ -6,6 +6,7 @@ import {
   ExportResult,
   ExportFps,
   ExportTimelineRenderer,
+  ExportNarrationClip,
   EXPORT_FPS_OPTIONS,
   canRecordMp4WithAudio,
 } from '../utils/exportVideo';
@@ -20,10 +21,16 @@ interface ExportModalProps {
   duration?: number;
   /** Spoken lines with the moment they are read. */
   narration?: { time: number; text: string }[];
+  /** Narration takes that are already decoded (real, understandable speech). */
+  narrationAudio?: ExportNarrationClip[];
+  /** Generates the narration takes before the recording starts. */
+  prepareNarration?: () => Promise<ExportNarrationClip[]>;
   /** File name prefix for the download. */
   filePrefix?: string;
   /** Title shown in the modal header. */
   title?: string;
+  /** Video elements for custom renderers that need them (e.g., ViralRankRenderer). */
+  videos?: Map<string, HTMLVideoElement>;
 }
 
 export const ExportModal: React.FC<ExportModalProps> = ({
@@ -33,8 +40,11 @@ export const ExportModal: React.FC<ExportModalProps> = ({
   renderer,
   duration,
   narration,
+  narrationAudio,
+  prepareNarration,
   filePrefix,
   title,
+  videos,
 }) => {
   const mp4Available = canRecordMp4WithAudio();
   const baseDuration = duration ?? PROJECTS[config.activeProject].duration;
@@ -46,6 +56,8 @@ export const ExportModal: React.FC<ExportModalProps> = ({
     mp4Available ? 'mp4' : 'webm'
   );
   const [isExporting, setIsExporting] = useState<boolean>(false);
+  const [isPreparing, setIsPreparing] = useState<boolean>(false);
+  const [voiceNote, setVoiceNote] = useState<string | null>(null);
   const [progress, setProgress] = useState<number>(0);
   const [currentSec, setCurrentSec] = useState<number>(0);
   const [totalSec, setTotalSec] = useState<number>(baseDuration);
@@ -73,6 +85,26 @@ export const ExportModal: React.FC<ExportModalProps> = ({
     setTotalSec(outputDuration);
     setError(null);
     setResult(null);
+    setVoiceNote(null);
+
+    // Generate the narration first: the export can only mix takes that are
+    // already decoded, and a spoken line is worth a couple of seconds of wait.
+    let narrationClips = narrationAudio;
+    if (prepareNarration) {
+      setIsPreparing(true);
+      try {
+        narrationClips = await prepareNarration();
+      } catch (err) {
+        narrationClips = [];
+        setVoiceNote(
+          err instanceof Error
+            ? `Voice-over skipped: ${err.message}`
+            : 'Voice-over skipped: the narration could not be generated.'
+        );
+      } finally {
+        setIsPreparing(false);
+      }
+    }
 
     // Give React time to mount the preview canvas in the DOM
     await new Promise((r) => setTimeout(r, 60));
@@ -88,7 +120,9 @@ export const ExportModal: React.FC<ExportModalProps> = ({
         renderer,
         duration,
         narration,
+        narrationAudio: narrationClips,
         filePrefix,
+        videos,
         onProgress: (p, cSec, tSec) => {
           setProgress(p);
           setCurrentSec(cSec);
@@ -378,9 +412,18 @@ export const ExportModal: React.FC<ExportModalProps> = ({
               <div className="flex items-center gap-3 p-3 bg-slate-950/70 border border-slate-800 rounded-xl text-xs text-slate-300">
                 <Volume2 className="w-4 h-4 text-rose-400 shrink-0" />
                 <span>
-                  Synchronized cartoon sound effects are mixed directly into the audio track.
+                  {narrationAudio || prepareNarration
+                    ? 'The spoken voice-over, music and sound effects are mixed straight into the recorded track.'
+                    : 'Synchronized cartoon sound effects are mixed directly into the audio track.'}
                 </span>
               </div>
+
+              {voiceNote && (
+                <div className="flex items-start gap-2.5 p-3 bg-amber-950/50 border border-amber-800 rounded-xl text-xs text-amber-200">
+                  <AlertCircle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+                  <span>{voiceNote}</span>
+                </div>
+              )}
 
               {error && (
                 <div className="flex items-start gap-2.5 p-3 bg-rose-950/50 border border-rose-800 rounded-xl text-xs text-rose-200">
@@ -405,8 +448,10 @@ export const ExportModal: React.FC<ExportModalProps> = ({
 
               <div className="space-y-2 max-w-md mx-auto">
                 <div className="flex justify-between text-xs font-mono">
-                  <span className="text-slate-400">Rendering Video Stream...</span>
-                  <span className="text-rose-400 font-bold">{progress}%</span>
+                  <span className="text-slate-400">
+                    {isPreparing ? 'Generating the voice-over…' : 'Rendering Video Stream...'}
+                  </span>
+                  <span className="text-rose-400 font-bold">{isPreparing ? '…' : `${progress}%`}</span>
                 </div>
                 <div className="w-full h-3 bg-slate-800 rounded-full overflow-hidden p-0.5 border border-slate-700">
                   <div

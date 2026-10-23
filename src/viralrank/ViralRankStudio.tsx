@@ -28,6 +28,7 @@ import { StudioConfig, DEFAULT_CONFIG } from '../types';
 import {
   AudioEffect,
   EffectType,
+  NarrationVoice,
   OrderMode,
   RankingItem,
   ViralRankProject,
@@ -40,6 +41,15 @@ import {
   STOCK_SOURCES,
 } from './presets';
 import { viralAudio } from './audioEngine';
+import {
+  NARRATION_VOICES,
+  getCachedNarration,
+  getNarrationBuffer,
+  normalizeNarrationVoice,
+  playNarrationClip,
+  preloadNarration,
+  prepareNarration,
+} from './narration';
 import { ViralRankRenderer } from './viralRankRenderer';
 
 export const ViralRankStudio: React.FC = () => {
@@ -81,11 +91,22 @@ export const ViralRankStudio: React.FC = () => {
   const lastTimeRef = useRef<number>(performance.now());
   const firedCuesRef = useRef<Set<string>>(new Set());
   const spokenVoiceRef = useRef<Set<string>>(new Set());
+  const activeNarrationRef = useRef<{ stop: (fadeSeconds?: number) => void } | null>(null);
   const videoRefs = useRef<Map<string, HTMLVideoElement>>(new Map());
 
   const totalDuration = useMemo(() => {
     return project.items.reduce((acc, it) => acc + (it.duration || 4.0), 0);
   }, [project.items]);
+
+  const narrationVoice = normalizeNarrationVoice(project.narrationVoice);
+
+  // Rough length of a spoken line, used to warn when a script is longer than
+  // the clip it belongs to (two narrators at once are never wanted).
+  const estimateSpokenSeconds = (text: string, rate = 1) => {
+    const words = text.trim().split(/\s+/).filter(Boolean).length;
+    if (!words) return 0;
+    return (words * 0.42) / Math.max(0.5, rate);
+  };
 
   // Keep renderer updated
   useEffect(() => {
@@ -149,6 +170,9 @@ export const ViralRankStudio: React.FC = () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
       rafRef.current = null;
       viralAudio.stopMusic();
+      viralAudio.stopSpeech();
+      activeNarrationRef.current?.stop();
+      activeNarrationRef.current = null;
       return;
     }
 
@@ -178,7 +202,20 @@ export const ViralRankStudio: React.FC = () => {
           const introKey = 'voice-intro';
           if (next >= 0.05 && next <= 0.4 && !spokenVoiceRef.current.has(introKey)) {
             spokenVoiceRef.current.add(introKey);
-            viralAudio.speak(project.voiceIntro, { rate: 1.05 });
+            const introBuffer = getCachedNarration(project.voiceIntro, narrationVoice);
+            activeNarrationRef.current?.stop();
+            activeNarrationRef.current = introBuffer
+              ? playNarrationClip({
+                  time: 0,
+                  buffer: introBuffer,
+                  rate: project.voiceIntroSpeed ?? 1.05,
+                })
+              : null;
+            if (!introBuffer) {
+              viralAudio.speak(project.voiceIntro, {
+                rate: project.voiceIntroSpeed ?? 1.05,
+              });
+            }
           }
         }
 
@@ -192,7 +229,7 @@ export const ViralRankStudio: React.FC = () => {
           // Check if playhead is within clip
           if (next >= clipStart && next <= clipEnd) {
             // Check Narration
-            if (item.narrationText && !isMuted) {
+            if (item.narrationText && item.narrationEnabled !== false && !isMuted) {
               const voiceKey = `voice-${item.id}`;
               const triggerTime =
                 i === 0 && project.voiceIntro ? clipStart + 2.0 : clipStart + 0.1;
@@ -202,7 +239,20 @@ export const ViralRankStudio: React.FC = () => {
                 !spokenVoiceRef.current.has(voiceKey)
               ) {
                 spokenVoiceRef.current.add(voiceKey);
-                viralAudio.speak(item.narrationText, { rate: 1.05 });
+                const clipBuffer = getCachedNarration(item.narrationText, narrationVoice);
+                activeNarrationRef.current?.stop();
+                activeNarrationRef.current = clipBuffer
+                  ? playNarrationClip({
+                      time: 0,
+                      buffer: clipBuffer,
+                      rate: item.narrationSpeed ?? 1.05,
+                    })
+                  : null;
+                if (!clipBuffer) {
+                  viralAudio.speak(item.narrationText, {
+                    rate: item.narrationSpeed ?? 1.05,
+                  });
+                }
               }
             }
 
@@ -297,6 +347,8 @@ export const ViralRankStudio: React.FC = () => {
               cropMode: 'fit',
               transition: 'none',
               narrationText: `And check out this fail at number ${idx + 1}!`,
+              narrationEnabled: true,
+              narrationSpeed: 1.05,
               soundEffects: [
                 {
                   id: `sfx-${Date.now()}-1`,
@@ -563,6 +615,9 @@ export const ViralRankStudio: React.FC = () => {
     setCurrentTime(0);
     setIsPlaying(false);
     viralAudio.stopMusic();
+    viralAudio.stopSpeech();
+    activeNarrationRef.current?.stop();
+    activeNarrationRef.current = null;
     setStatusMessage('Reset to Ranking Best Pool Fails (Top 6 to Top 1)');
   }, []);
 
@@ -571,6 +626,9 @@ export const ViralRankStudio: React.FC = () => {
     setCurrentTime(time);
     firedCuesRef.current.clear();
     spokenVoiceRef.current.clear();
+    viralAudio.stopSpeech();
+    activeNarrationRef.current?.stop();
+    activeNarrationRef.current = null;
   };
 
   // Jump preview to clip
@@ -588,24 +646,65 @@ export const ViralRankStudio: React.FC = () => {
     [project.items]
   );
 
-  // Prepare Narration cues for ExportModal
+  // Every spoken line, with the moment it starts and the speed it is read at.
   const exportNarration = useMemo(() => {
     let offset = 0;
-    const list: { time: number; text: string }[] = [];
+    const list: { time: number; text: string; rate: number }[] = [];
     if (project.voiceIntro) {
-      list.push({ time: 0.05, text: project.voiceIntro });
+      list.push({
+        time: 0.05,
+        text: project.voiceIntro,
+        rate: project.voiceIntroSpeed ?? 1.05,
+      });
     }
     for (let i = 0; i < project.items.length; i++) {
       const it = project.items[i];
-      if (it.narrationText) {
+      if (it.narrationText && it.narrationEnabled !== false) {
         const startTime =
           i === 0 && project.voiceIntro ? Math.max(offset + 0.1, 2.0) : offset + 0.1;
-        list.push({ time: startTime, text: it.narrationText });
+        list.push({
+          time: startTime,
+          text: it.narrationText,
+          rate: it.narrationSpeed ?? 1.05,
+        });
       }
       offset += it.duration;
     }
     return list;
-  }, [project.items, project.voiceIntro]);
+  }, [
+    project.items,
+    project.voiceIntro,
+    project.voiceIntroSpeed,
+  ]);
+
+  // Warm the narration cache while the editor is open, so the preview plays
+  // instantly and the export does not have to fetch anything mid-recording.
+  useEffect(() => {
+    preloadNarration(exportNarration, narrationVoice);
+  }, [exportNarration, narrationVoice]);
+
+  // Decodes every line before the recorder starts; the export mixes the exact
+  // takes that were just previewed.
+  const prepareNarrationForExport = useCallback(
+    () => prepareNarration(exportNarration, narrationVoice),
+    [exportNarration, narrationVoice]
+  );
+
+  // Plays a line in the editor. Uses the same decoded take as the export;
+  // falls back to the browser voice only when the speech endpoint is down.
+  const previewNarrationLine = useCallback(
+    async (text: string, rate: number) => {
+      if (!text.trim()) return;
+      const buffer = await getNarrationBuffer(text, narrationVoice);
+      if (buffer) {
+        viralAudio.stopSpeech();
+        playNarrationClip({ time: 0, buffer, rate });
+        return;
+      }
+      viralAudio.speak(text, { rate });
+    },
+    [narrationVoice]
+  );
 
   const studioConfig: StudioConfig = {
     ...DEFAULT_CONFIG,
@@ -792,9 +891,10 @@ export const ViralRankStudio: React.FC = () => {
                 </label>
                 <button
                   onClick={() =>
-                    viralAudio.speak(project.voiceIntro || 'Top 6 Ranking best pool fails', {
-                      rate: 1.05,
-                    })
+                    void previewNarrationLine(
+                      project.voiceIntro || 'Top 6 Ranking best pool fails',
+                      project.voiceIntroSpeed ?? 1.05
+                    )
                   }
                   className="text-xs text-rose-400 hover:text-rose-300 font-semibold cursor-pointer flex items-center gap-1"
                 >
@@ -808,9 +908,50 @@ export const ViralRankStudio: React.FC = () => {
                 placeholder="e.g. Top 6 Ranking best pool fails"
                 className="w-full px-3 py-1.5 text-xs bg-slate-900 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-rose-500 font-medium"
               />
+              <div className="flex items-center gap-3">
+                <label className="flex items-center gap-1.5 text-xs text-slate-300 shrink-0">
+                  <span>Speed</span>
+                  <input
+                    type="range"
+                    min="0.5"
+                    max="2.0"
+                    step="0.05"
+                    value={project.voiceIntroSpeed ?? 1.05}
+                    onChange={(e) => updateProject({ voiceIntroSpeed: Number(e.target.value) })}
+                    className="w-24 accent-rose-500 h-1.5 cursor-pointer"
+                  />
+                  <span className="text-[11px] font-mono text-rose-300 w-7 text-right">
+                    {(project.voiceIntroSpeed ?? 1.05).toFixed(2)}x
+                  </span>
+                </label>
+              </div>
               <p className="text-[10px] text-slate-500">
                 Spoken immediately at the start of the video — no visual intro delay, matching viral TikTok reels.
               </p>
+
+              {/* Narrator voice */}
+              <div className="pt-2 border-t border-slate-800/60 space-y-1.5">
+                <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-400">
+                  Narrator Voice
+                </label>
+                <select
+                  value={narrationVoice}
+                  onChange={(e) =>
+                    updateProject({ narrationVoice: e.target.value as NarrationVoice })
+                  }
+                  className="w-full px-3 py-2 text-xs bg-slate-950 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-rose-500"
+                >
+                  {NARRATION_VOICES.map((voice) => (
+                    <option key={voice.id} value={voice.id}>
+                      {voice.label}
+                    </option>
+                  ))}
+                </select>
+                <p className="text-[10px] text-slate-500 mt-1">
+                  Used for the intro hook and every clip. Each line is spoken once and decoded, so
+                  the downloaded video sounds exactly like the preview.
+                </p>
+              </div>
             </div>
 
             {/* Background Music & Caption Preset Controls */}
@@ -1192,7 +1333,12 @@ export const ViralRankStudio: React.FC = () => {
                           <span>Voiceover Script for Rank #{item.rank}</span>
                         </span>
                         <button
-                          onClick={() => viralAudio.speak(item.narrationText, { rate: 1.05 })}
+                          onClick={() =>
+                            void previewNarrationLine(
+                              item.narrationText,
+                              item.narrationSpeed ?? 1.05
+                            )
+                          }
                           className="text-rose-400 hover:text-rose-300 font-semibold cursor-pointer"
                         >
                           🔊 Test voice
@@ -1205,6 +1351,22 @@ export const ViralRankStudio: React.FC = () => {
                         placeholder="Narration read by AI when this rank appears..."
                         className="w-full px-3 py-1.5 text-xs bg-slate-900 border border-slate-700 rounded-lg text-slate-200 focus:outline-none focus:border-rose-500"
                       />
+                      {(() => {
+                        const seconds = estimateSpokenSeconds(
+                          item.narrationText,
+                          item.narrationSpeed ?? 1.05
+                        );
+                        if (!seconds) return null;
+                        const over = seconds > item.duration - 0.2;
+                        return (
+                          <p
+                            className={`text-[10px] ${over ? 'text-amber-400' : 'text-slate-500'}`}
+                          >
+                            ≈ {seconds.toFixed(1)}s spoken · clip is {item.duration.toFixed(1)}s
+                            {over ? ' — it will run into the next clip' : ''}
+                          </p>
+                        );
+                      })()}
                     </div>
 
                     {/* Individual Sound Effects Bar */}
@@ -1472,7 +1634,7 @@ export const ViralRankStudio: React.FC = () => {
         config={studioConfig}
         renderer={rendererRef.current}
         duration={totalDuration}
-        narration={exportNarration}
+        prepareNarration={prepareNarrationForExport}
         filePrefix={`viralrank-top${project.items.length}`}
         title={`Export ${project.title}`}
       />

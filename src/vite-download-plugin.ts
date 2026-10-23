@@ -18,6 +18,53 @@ const execFileAsync = promisify(execFile);
 const BROWSER_SAFE_VIDEO = new Set(['h264']);
 const BROWSER_SAFE_AUDIO = new Set(['aac', 'mp3', 'opus', 'vorbis']);
 
+const TTS_USER_AGENT =
+  'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36';
+
+/**
+ * The speech service answers with a 400 when a request carries more than
+ * roughly 200 characters, so a line is cut at the last word boundary that
+ * fits. The clips are concatenated into one MP3, which every browser decodes
+ * as a single clip.
+ */
+function splitSpeechChunks(text: string, max = 180): string[] {
+  const clean = text.replace(/\s+/g, ' ').trim();
+  if (clean.length <= max) return [clean];
+
+  const chunks: string[] = [];
+  let rest = clean;
+  while (rest.length > max) {
+    let cut = rest.lastIndexOf(' ', max);
+    if (cut < max * 0.5) cut = max;
+    chunks.push(rest.slice(0, cut).trim());
+    rest = rest.slice(cut).trim();
+  }
+  if (rest) chunks.push(rest);
+  return chunks;
+}
+
+async function fetchSpeechChunk(chunk: string, lang: string): Promise<Buffer> {
+  const url =
+    'https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob' +
+    `&tl=${encodeURIComponent(lang)}&total=1&idx=0&textlen=${chunk.length}` +
+    `&q=${encodeURIComponent(chunk)}`;
+
+  const response = await fetch(url, {
+    headers: { 'User-Agent': TTS_USER_AGENT, Referer: 'https://translate.google.com/' },
+    signal: AbortSignal.timeout(15000),
+  });
+
+  if (!response.ok) {
+    throw new Error(`the speech service answered ${response.status}`);
+  }
+
+  const bytes = Buffer.from(await response.arrayBuffer());
+  if (bytes.length < 512) {
+    throw new Error('the speech service returned no audio');
+  }
+  return bytes;
+}
+
 /**
  * A local bridge for the Clone Reels downloader.
  *
@@ -416,6 +463,77 @@ export const reelDownloadPlugin = (): Plugin => ({
           error: friendly,
           sizeBytes: size,
         });
+      }
+    });
+
+    /**
+     * Voice-over narration for the ranking reels.
+     *
+     * A ranking reel has to ship with a voice that a viewer can actually
+     * understand, and the browser's own speech synthesis cannot be recorded
+     * into the export (its audio never reaches a Web Audio graph). This
+     * endpoint turns the script into real MP3 narration on the Node side,
+     * where no CORS rule applies, so the studio can decode it once and mix
+     * the exact same voice into the preview and the recorded file.
+     */
+    const ttsCache = new Map<string, Buffer>();
+
+    server.middlewares.use('/__reel-tts', async (req, res) => {
+      const requestUrl = new URL(req.url ?? '/', 'http://localhost');
+      const text = (requestUrl.searchParams.get('text') ?? '').replace(/\s+/g, ' ').trim();
+      const lang = (requestUrl.searchParams.get('lang') ?? 'en').trim();
+
+      const sendError = (status: number, message: string) => {
+        res.statusCode = status;
+        res.setHeader('Content-Type', 'application/json');
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.end(JSON.stringify({ error: message }));
+      };
+
+      if (!text) {
+        sendError(400, 'Missing the text parameter.');
+        return;
+      }
+      if (text.length > 2400) {
+        sendError(400, 'That narration line is too long. Keep it under 2400 characters.');
+        return;
+      }
+      if (!/^[a-z]{2}(-[A-Za-z]{2,4})?$/.test(lang)) {
+        sendError(400, 'Unsupported language tag.');
+        return;
+      }
+
+      const cacheKey = `${lang}|${text}`;
+      try {
+        let audio = ttsCache.get(cacheKey);
+        if (!audio) {
+          const chunks = splitSpeechChunks(text);
+          const parts: Buffer[] = [];
+          for (const chunk of chunks) {
+            parts.push(await fetchSpeechChunk(chunk, lang));
+            // The service rate-limits bursts of requests, and a reel only has
+            // a handful of lines, so a short gap between chunks is free.
+            if (chunks.length > 1) await new Promise((r) => setTimeout(r, 60));
+          }
+          audio = Buffer.concat(parts);
+          if (ttsCache.size > 60) ttsCache.clear();
+          ttsCache.set(cacheKey, audio);
+          console.log(`[tts] ${lang} ${text.length} chars -> ${audio.length} bytes`);
+        }
+
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'audio/mpeg');
+        res.setHeader('Content-Length', String(audio.length));
+        res.setHeader('Cache-Control', 'no-store');
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.end(audio);
+      } catch (error) {
+        const raw = error instanceof Error ? error.message : String(error);
+        console.warn(`[tts] failed: ${raw}`);
+        sendError(
+          502,
+          `The voice-over could not be generated (${raw}). Check the internet connection and try again.`
+        );
       }
     });
 

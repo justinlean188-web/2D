@@ -8,6 +8,8 @@ import { TrickShotRenderer } from '../animation/trickShotRenderer';
 import { PingPongRenderer } from '../animation/pingPongRenderer';
 import { DartShotRenderer } from '../animation/dartShotRenderer';
 import { CoinFlipRenderer } from '../animation/coinFlipRenderer';
+import { BowlingStrikeRenderer } from '../animation/bowlingStrikeRenderer';
+import { RooftopPlaneRenderer } from '../animation/rooftopPlaneRenderer';
 import { SequelPaperBallRenderer } from '../animation/sequelPaperBallRenderer';
 import {
   PAPER_BALL_30_CUES,
@@ -16,6 +18,8 @@ import {
   PING_PONG_CUES,
   DART_SHOT_CUES,
   COIN_FLIP_CUES,
+  BOWLING_STRIKE_CUES,
+  ROOFTOP_PLANE_CUES,
   PAPER_BALL_PART3_CUES,
   PAPER_BALL_PART4_CUES,
   PAPER_BALL_SEQUEL_CUES,
@@ -38,6 +42,20 @@ export interface ExportTimelineRenderer {
    * clip frame by frame is what makes an export crawl.
    */
   setPlayback?(playing: boolean): void;
+  /**
+   * Optional: Pass video elements to renderers that need them (e.g., ViralRankRenderer).
+   * The map key should match the clip/item ID used by the renderer.
+   */
+  setVideos?(videos: Map<string, HTMLVideoElement>): void;
+}
+
+/** A narration take that is already decoded, so the export never waits on it. */
+export interface ExportNarrationClip {
+  /** Seconds into the timeline (the start of a loop). */
+  time: number;
+  buffer: AudioBuffer;
+  /** Playback speed of the take, 0.5 - 2.0. */
+  rate?: number;
 }
 
 export interface ExportOptions {
@@ -54,8 +72,12 @@ export interface ExportOptions {
   duration?: number;
   /** Spoken lines with the moment they are read. */
   narration?: { time: number; text: string }[];
+  /** Decoded narration takes; mixed into the recorded track exactly as decoded. */
+  narrationAudio?: ExportNarrationClip[];
   /** File name prefix for the download. */
   filePrefix?: string;
+  /** Video elements for custom renderers that need them (e.g., ViralRankRenderer). */
+  videos?: Map<string, HTMLVideoElement>;
 }
 
 export interface ExportResult {
@@ -134,7 +156,11 @@ export async function exportVideo(options: ExportOptions): Promise<ExportResult>
   }
 
   const renderer: ExportTimelineRenderer = options.renderer ??
-    (config.activeProject === 'coin-flip'
+    (config.activeProject === 'bowling-strike'
+      ? new BowlingStrikeRenderer()
+      : config.activeProject === 'paper-plane-rooftop'
+      ? new RooftopPlaneRenderer()
+      : config.activeProject === 'coin-flip'
       ? new CoinFlipRenderer()
       : config.activeProject === 'dart-shot'
       ? new DartShotRenderer()
@@ -161,10 +187,19 @@ export async function exportVideo(options: ExportOptions): Promise<ExportResult>
   // video on every frame, and that is what makes an export crawl.
   renderer.setPlayback?.(true);
 
+  // Pass video elements to custom renderers that need them (e.g., ViralRankRenderer)
+  if (options.videos && typeof renderer.setVideos === 'function') {
+    renderer.setVideos(options.videos);
+  }
+
   const filePrefix =
     options.filePrefix ??
     (config.activeProject === 'shadow-quit'
       ? 'shadow-quit'
+      : config.activeProject === 'bowling-strike'
+      ? 'bowling-strike'
+      : config.activeProject === 'paper-plane-rooftop'
+      ? 'paper-plane-rooftop'
       : config.activeProject === 'coin-flip'
       ? 'coin-flip'
       : config.activeProject === 'dart-shot'
@@ -344,6 +379,7 @@ export async function exportVideo(options: ExportOptions): Promise<ExportResult>
 
   const triggeredCues = new Set<string>();
   let currentLoop = 0;
+  let activeNarration: { stop: (fadeSeconds?: number) => void } | null = null;
 
   // Pre-render initial frame t=0
   renderer.render(ctx, 0.0, exportConfig);
@@ -516,7 +552,40 @@ export async function exportVideo(options: ExportOptions): Promise<ExportResult>
       if (audioDestination) {
         const dest = audioDestination;
 
-        if (options.narration && options.narration.length > 0) {
+        if (options.narrationAudio && options.narrationAudio.length > 0) {
+          // Real speech, decoded before the recording started. Each take is
+          // started once per loop, at the exact second it belongs to.
+          const ctx = audioDestination.context;
+          for (const clip of options.narrationAudio) {
+            const cue = `voa-${clip.time}`;
+            if (animT >= clip.time && !triggeredCues.has(cue)) {
+              triggeredCues.add(cue);
+              // Two narrators talking at once is never wanted: the next line
+              // takes over from the one before it.
+              activeNarration?.stop(0.12);
+              const source = ctx.createBufferSource();
+              source.buffer = clip.buffer;
+              source.playbackRate.value = Math.max(0.5, Math.min(2, clip.rate ?? 1));
+              const gain = ctx.createGain();
+              gain.gain.value = 0.95;
+              source.connect(gain);
+              gain.connect(dest);
+              source.start();
+              activeNarration = {
+                stop: (fadeSeconds = 0.1) => {
+                  try {
+                    const now = ctx.currentTime;
+                    const fade = Math.max(0, fadeSeconds);
+                    gain.gain.cancelScheduledValues(now);
+                    gain.gain.setValueAtTime(gain.gain.value, now);
+                    gain.gain.linearRampToValueAtTime(0.0001, now + fade);
+                    source.stop(now + fade + 0.01);
+                  } catch {}
+                },
+              };
+            }
+          }
+        } else if (options.narration && options.narration.length > 0) {
           for (const line of options.narration) {
             if (animT >= line.time && !triggeredCues.has(`vo-${line.time}`)) {
               soundEngine.playSpokenText(line.text, dest);
@@ -589,6 +658,24 @@ export async function exportVideo(options: ExportOptions): Promise<ExportResult>
         } else if (config.activeProject === 'dart-shot') {
           if (config.enableSFX) {
             for (const cue of DART_SHOT_CUES) {
+              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
+                cue.play(dest);
+                triggeredCues.add(cue.id);
+              }
+            }
+          }
+        } else if (config.activeProject === 'bowling-strike') {
+          if (config.enableSFX) {
+            for (const cue of BOWLING_STRIKE_CUES) {
+              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
+                cue.play(dest);
+                triggeredCues.add(cue.id);
+              }
+            }
+          }
+        } else if (config.activeProject === 'paper-plane-rooftop') {
+          if (config.enableSFX) {
+            for (const cue of ROOFTOP_PLANE_CUES) {
               if (animT >= cue.time && !triggeredCues.has(cue.id)) {
                 cue.play(dest);
                 triggeredCues.add(cue.id);

@@ -1,10 +1,58 @@
 import { EffectType } from './types';
 
+/**
+ * Picks the most natural English voice the browser offers.
+ *
+ * This is only the preview fallback: real narration is decoded from the
+ * dev-server speech endpoint, because speechSynthesis audio never reaches a
+ * Web Audio graph and so can never be recorded into an export.
+ */
+function pickSpeechVoice(): SpeechSynthesisVoice | null {
+  if (typeof window === 'undefined' || !window.speechSynthesis) return null;
+  const voices = window.speechSynthesis.getVoices();
+  if (!voices.length) return null;
+
+  const english = voices.filter((voice) => voice.lang.toLowerCase().startsWith('en'));
+  const pool = english.length > 0 ? english : voices;
+  const preferred = [
+    /google us english/i,
+    /microsoft (aria|jenny|guy|christopher|eric|sonia)/i,
+    /samantha/i,
+    /alex/i,
+    /daniel/i,
+  ];
+
+  for (const pattern of preferred) {
+    const match = pool.find((voice) => pattern.test(voice.name));
+    if (match) return match;
+  }
+  return pool[0] ?? null;
+}
+
 class ViralRankAudioEngine {
   private ctx: AudioContext | null = null;
   private musicSource: AudioNode | null = null;
   private isMuted: boolean = false;
   private masterGainNode: GainNode | null = null;
+  private volume: number = 1.0;
+
+  private route(node: AudioNode, dest?: AudioNode) {
+    if (dest) {
+      node.connect(dest);
+    } else if (this.masterGainNode) {
+      node.connect(this.masterGainNode);
+    } else if (this.ctx) {
+      node.connect(this.ctx.destination);
+    }
+  }
+
+  public setVolume(vol: number) {
+    this.volume = Math.max(0, Math.min(1, vol));
+  }
+
+  public getVolume(): number {
+    return this.volume;
+  }
 
   public getContext(): AudioContext | null {
     if (typeof window === 'undefined') return null;
@@ -34,16 +82,6 @@ class ViralRankAudioEngine {
 
   public getMuted(): boolean {
     return this.isMuted;
-  }
-
-  private route(node: AudioNode, dest?: AudioNode) {
-    if (dest) {
-      node.connect(dest);
-    } else if (this.masterGainNode) {
-      node.connect(this.masterGainNode);
-    } else if (this.ctx) {
-      node.connect(this.ctx.destination);
-    }
   }
 
   /**
@@ -508,7 +546,10 @@ class ViralRankAudioEngine {
   }
 
   /**
-   * Spoken narration synthesis using Web Speech API with fallback.
+   * Preview fallback narration with the browser's own voices.
+   *
+   * The reel preview normally plays the decoded MP3 narration so it matches
+   * the export exactly; this is only used when that audio is unavailable.
    */
   public speak(
     text: string,
@@ -523,10 +564,48 @@ class ViralRankAudioEngine {
     utterance.pitch = Math.max(0.5, Math.min(1.8, options.pitch ?? 1.0));
     utterance.volume = Math.max(0, Math.min(1.0, options.volume ?? 1.0));
 
-    if (options.onEnd) {
-      utterance.onend = options.onEnd;
-    }
+    const voice = pickSpeechVoice();
+    if (voice) utterance.voice = voice;
+    if (options.onEnd) utterance.onend = options.onEnd;
+
     window.speechSynthesis.speak(utterance);
+  }
+
+  /**
+   * Plays a decoded narration clip through the master gain (or straight into
+   * an export destination) and returns a handle so the caller can stop it.
+   */
+  public playBuffer(
+    buffer: AudioBuffer,
+    options: { rate?: number; gain?: number; dest?: AudioNode } = {}
+  ): { stop: (fadeSeconds?: number) => void } | null {
+    if (this.isMuted && !options.dest) return null;
+    const ctx = this.getContext();
+    if (!ctx) return null;
+
+    const source = ctx.createBufferSource();
+    source.buffer = buffer;
+    source.playbackRate.value = Math.max(0.5, Math.min(2.0, options.rate ?? 1));
+
+    const gain = ctx.createGain();
+    gain.gain.value = Math.max(0, Math.min(2, options.gain ?? 1));
+
+    source.connect(gain);
+    this.route(gain, options.dest);
+    source.start();
+
+    return {
+      stop: (fadeSeconds = 0.1) => {
+        try {
+          const now = ctx.currentTime;
+          const fade = Math.max(0, fadeSeconds);
+          gain.gain.cancelScheduledValues(now);
+          gain.gain.setValueAtTime(gain.gain.value, now);
+          gain.gain.linearRampToValueAtTime(0.0001, now + fade);
+          source.stop(now + fade + 0.01);
+        } catch {}
+      },
+    };
   }
 
   public stopSpeech() {

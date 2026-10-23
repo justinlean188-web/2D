@@ -22,6 +22,12 @@ import type { RankingCategory } from '../reels/categoryStyles';
 import { DEFAULT_CONFIG, StudioConfig } from '../types';
 import { speakVoiceOver, stopVoiceOver, soundEngine } from '../audio/soundEngine';
 import {
+  getCachedNarration,
+  playNarrationClip,
+  preloadNarration,
+  prepareNarration,
+} from '../viralrank/narration';
+import {
   CHARACTER_ART,
   DEFAULT_RANKING_DATA,
   RANKING_CATEGORIES,
@@ -66,6 +72,7 @@ export const ReelStudio: React.FC = () => {
   const rafRef = useRef<number | null>(null);
   const lastFrameRef = useRef<number>(0);
   const spokenRef = useRef<Set<string>>(new Set());
+  const activeNarrationRef = useRef<{ stop: (fadeSeconds?: number) => void } | null>(null);
   const configRef = useRef<StudioConfig>({
     ...DEFAULT_CONFIG,
     activeProject: 'pop-star',
@@ -167,21 +174,47 @@ export const ReelStudio: React.FC = () => {
       const key = `${line.time}`;
       if (currentTime >= line.time && !spokenRef.current.has(key)) {
         spokenRef.current.add(key);
-        speakVoiceOver(line.text, { rate: 1.02, pitch: 1, volume: 1 });
+        const buffer = getCachedNarration(line.text, 'us');
+        activeNarrationRef.current?.stop();
+        activeNarrationRef.current = buffer
+          ? playNarrationClip({ time: line.time, buffer, rate: 1.02 })
+          : null;
+        if (!buffer) {
+          speakVoiceOver(line.text, { rate: 1.02, pitch: 1, volume: 1 });
+        }
       }
     });
   }, [currentTime, isPlaying, isMuted, isNarrationOn, narration]);
+
+  // Prepare the narration takes while the reel is open: the export mixes the
+  // same real speech the preview plays, never a synthetic vowel drone.
+  useEffect(() => {
+    if (!isNarrationOn) return;
+    preloadNarration(narration, 'us');
+  }, [narration, isNarrationOn]);
+
+  const prepareReelNarration = useCallback(
+    () =>
+      isNarrationOn
+        ? prepareNarration(narration, 'us')
+        : Promise.resolve([]),
+    [narration, isNarrationOn]
+  );
 
   // Switching the spoken narration off stops whatever is being read.
   useEffect(() => {
     if (!isNarrationOn) {
       stopVoiceOver();
+      activeNarrationRef.current?.stop();
+      activeNarrationRef.current = null;
       spokenRef.current = new Set();
     }
   }, [isNarrationOn]);
 
   const togglePlay = useCallback(() => {
     stopVoiceOver();
+    activeNarrationRef.current?.stop();
+    activeNarrationRef.current = null;
     setIsPlaying((p) => !p);
   }, []);
 
@@ -189,7 +222,11 @@ export const ReelStudio: React.FC = () => {
     setIsMuted((m) => {
       const next = !m;
       soundEngine.setMuted(next);
-      if (next) stopVoiceOver();
+      if (next) {
+        stopVoiceOver();
+        activeNarrationRef.current?.stop();
+        activeNarrationRef.current = null;
+      }
       return next;
     });
   }, []);
@@ -1300,7 +1337,7 @@ export const ReelStudio: React.FC = () => {
         config={configRef.current}
         renderer={rendererRef.current}
         duration={duration}
-        narration={isNarrationOn ? narration : undefined}
+        prepareNarration={prepareReelNarration}
         filePrefix="ranking-reel"
         title={data.title}
       />

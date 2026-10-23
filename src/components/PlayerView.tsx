@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import {
   Play,
   Pause,
@@ -22,6 +22,8 @@ import { TrickShotRenderer } from '../animation/trickShotRenderer';
 import { PingPongRenderer } from '../animation/pingPongRenderer';
 import { DartShotRenderer } from '../animation/dartShotRenderer';
 import { CoinFlipRenderer } from '../animation/coinFlipRenderer';
+import { BowlingStrikeRenderer } from '../animation/bowlingStrikeRenderer';
+import { RooftopPlaneRenderer } from '../animation/rooftopPlaneRenderer';
 import { MachineRenderer } from '../animation/machineRenderer';
 import { SequelPaperBallRenderer } from '../animation/sequelPaperBallRenderer';
 import {
@@ -31,6 +33,8 @@ import {
   PING_PONG_CUES,
   DART_SHOT_CUES,
   COIN_FLIP_CUES,
+  BOWLING_STRIKE_CUES,
+  ROOFTOP_PLANE_CUES,
   PAPER_BALL_PART3_CUES,
   PAPER_BALL_PART4_CUES,
   PAPER_BALL_SEQUEL_CUES,
@@ -73,6 +77,8 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
   const pingPongRendererRef = useRef<PingPongRenderer>(new PingPongRenderer());
   const dartShotRendererRef = useRef<DartShotRenderer>(new DartShotRenderer());
   const coinFlipRendererRef = useRef<CoinFlipRenderer>(new CoinFlipRenderer());
+  const bowlingStrikeRendererRef = useRef<BowlingStrikeRenderer>(new BowlingStrikeRenderer());
+  const rooftopPlaneRendererRef = useRef<RooftopPlaneRenderer>(new RooftopPlaneRenderer());
   const [speed, setSpeed] = useState<number>(1.0);
   const [isLooping, setIsLooping] = useState<boolean>(true);
   const lastTimeRef = useRef<number>(performance.now());
@@ -145,6 +151,16 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
 
     if (config.activeProject === 'dart-shot') {
       for (const cue of DART_SHOT_CUES) setCueState(cue.id, cue.time);
+      return;
+    }
+
+    if (config.activeProject === 'bowling-strike') {
+      for (const cue of BOWLING_STRIKE_CUES) setCueState(cue.id, cue.time);
+      return;
+    }
+
+    if (config.activeProject === 'paper-plane-rooftop') {
+      for (const cue of ROOFTOP_PLANE_CUES) setCueState(cue.id, cue.time);
       return;
     }
 
@@ -302,6 +318,44 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
         for (const cue of DART_SHOT_CUES) {
           if (cues.has(cue.id)) continue;
           if (cue.id.startsWith('ds-score-')) {
+            if (t >= cue.time && t < cue.time + 7.6) {
+              cue.play();
+              cues.add(cue.id);
+            }
+            continue;
+          }
+          if (t >= cue.time && t - cue.time < 0.75) {
+            cue.play();
+            cues.add(cue.id);
+          }
+        }
+        return;
+      }
+
+      if (config.activeProject === 'bowling-strike') {
+        if (!config.enableSFX) return;
+        for (const cue of BOWLING_STRIKE_CUES) {
+          if (cues.has(cue.id)) continue;
+          if (cue.id.startsWith('bs-score-')) {
+            if (t >= cue.time && t < cue.time + 7.6) {
+              cue.play();
+              cues.add(cue.id);
+            }
+            continue;
+          }
+          if (t >= cue.time && t - cue.time < 0.75) {
+            cue.play();
+            cues.add(cue.id);
+          }
+        }
+        return;
+      }
+
+      if (config.activeProject === 'paper-plane-rooftop') {
+        if (!config.enableSFX) return;
+        for (const cue of ROOFTOP_PLANE_CUES) {
+          if (cues.has(cue.id)) continue;
+          if (cue.id.startsWith('rp-score-')) {
             if (t >= cue.time && t < cue.time + 7.6) {
               cue.play();
               cues.add(cue.id);
@@ -480,7 +534,11 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
             renderTime = Math.floor(t * 24) / 24;
           }
 
-          if (config.activeProject === 'paper-ball-30') {
+          if (config.activeProject === 'bowling-strike') {
+            bowlingStrikeRendererRef.current.render(ctx, renderTime, config);
+          } else if (config.activeProject === 'paper-plane-rooftop') {
+            rooftopPlaneRendererRef.current.render(ctx, renderTime, config);
+          } else if (config.activeProject === 'paper-ball-30') {
             extendedPaperBallRendererRef.current.render(ctx, renderTime, config);
           } else if (config.activeProject === 'paper-ball-sequel') {
             sequelPaperBallRendererRef.current.render(ctx, renderTime, config);

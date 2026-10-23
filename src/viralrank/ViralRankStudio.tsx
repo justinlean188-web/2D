@@ -357,7 +357,7 @@ export const ViralRankStudio: React.FC = () => {
               cropMode: 'fit',
               transition: 'none',
               narrationText: `And check out this fail at number ${idx + 1}!`,
-              narrationEnabled: true,
+              narrationEnabled: false,
               narrationSpeed: 1.05,
               soundEffects: [
                 {
@@ -748,11 +748,31 @@ export const ViralRankStudio: React.FC = () => {
     project.voiceIntroSpeed,
   ]);
 
+  // Every script line is preloaded, including the ones that are switched off,
+  // so flipping a clip's Voice switch on plays instantly instead of falling
+  // back to the browser voice while the take downloads.
+  const allNarrationLines = useMemo(() => {
+    const list: { time: number; text: string; rate: number }[] = [];
+    if (project.voiceIntro) {
+      list.push({
+        time: 0.05,
+        text: project.voiceIntro,
+        rate: project.voiceIntroSpeed ?? 1.05,
+      });
+    }
+    for (const it of project.items) {
+      if (it.narrationText.trim()) {
+        list.push({ time: 0, text: it.narrationText, rate: it.narrationSpeed ?? 1.05 });
+      }
+    }
+    return list;
+  }, [project.items, project.voiceIntro, project.voiceIntroSpeed]);
+
   // Warm the narration cache while the editor is open, so the preview plays
   // instantly and the export does not have to fetch anything mid-recording.
   useEffect(() => {
-    preloadNarration(exportNarration, narrationVoice);
-  }, [exportNarration, narrationVoice]);
+    preloadNarration(allNarrationLines, narrationVoice);
+  }, [allNarrationLines, narrationVoice]);
 
   // Decodes every line before the recorder starts; the export mixes the exact
   // takes that were just previewed.
@@ -1151,6 +1171,7 @@ export const ViralRankStudio: React.FC = () => {
               {project.items.map((item, index) => {
                 const isDropdownOpen = activeItemDropdown === item.id;
                 const isTrimmerOpen = expandedTrimmerId === item.id;
+                const voiceOn = item.narrationEnabled !== false;
 
                 return (
                   <div
@@ -1416,12 +1437,88 @@ export const ViralRankStudio: React.FC = () => {
                     </div>
 
                     {/* Spoken Narration Script */}
-                    <div className="space-y-1">
-                      <div className="flex items-center justify-between text-[11px] text-slate-400">
-                        <span className="flex items-center gap-1.5">
-                          <Mic className="w-3.5 h-3.5 text-rose-400" />
-                          <span>Voiceover Script for Rank #{item.rank}</span>
+                    <div
+                      className={`space-y-1 rounded-lg border p-2.5 transition ${
+                        voiceOn
+                          ? 'border-slate-800 bg-slate-900/40'
+                          : 'border-slate-800/60 bg-slate-900/20'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between gap-2 text-[11px] text-slate-400">
+                        <span className="flex min-w-0 items-center gap-1.5">
+                          <Mic
+                            className={`h-3.5 w-3.5 shrink-0 ${
+                              voiceOn ? 'text-rose-400' : 'text-slate-500'
+                            }`}
+                          />
+                          <span className="truncate">Voiceover for Rank #{item.rank}</span>
                         </span>
+                        <button
+                          onClick={() => updateItem(item.id, { narrationEnabled: !voiceOn })}
+                          role="switch"
+                          aria-checked={voiceOn}
+                          title={
+                            voiceOn
+                              ? "Turn this clip's voiceover off"
+                              : "Turn this clip's voiceover on"
+                          }
+                          className={`flex shrink-0 cursor-pointer items-center gap-2 rounded-full border px-2 py-1 text-[10px] font-bold uppercase tracking-wide transition ${
+                            voiceOn
+                              ? 'border-emerald-500/60 bg-emerald-500/15 text-emerald-300'
+                              : 'border-slate-700 bg-slate-950 text-slate-400 hover:text-slate-200'
+                          }`}
+                        >
+                          <span
+                            className={`relative inline-flex h-3.5 w-6 rounded-full transition ${
+                              voiceOn ? 'bg-emerald-500' : 'bg-slate-600'
+                            }`}
+                          >
+                            <span
+                              className={`absolute top-0.5 h-2.5 w-2.5 rounded-full bg-white transition-all ${
+                                voiceOn ? 'left-3' : 'left-0.5'
+                              }`}
+                            />
+                          </span>
+                          <span>{voiceOn ? 'Voice ON' : 'Voice OFF'}</span>
+                        </button>
+                      </div>
+
+                      <input
+                        type="text"
+                        value={item.narrationText}
+                        onChange={(e) => updateItem(item.id, { narrationText: e.target.value })}
+                        placeholder="Narration read by AI when this rank appears..."
+                        className={`w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-1.5 text-xs text-slate-200 focus:border-rose-500 focus:outline-none ${
+                          voiceOn ? '' : 'opacity-60'
+                        }`}
+                      />
+
+                      <div className="flex items-center justify-between gap-2">
+                        {voiceOn ? (
+                          (() => {
+                            const seconds = estimateSpokenSeconds(
+                              item.narrationText,
+                              item.narrationSpeed ?? 1.05
+                            );
+                            if (!seconds) return <span />;
+                            const over = seconds > item.duration - 0.2;
+                            return (
+                              <p
+                                className={`text-[10px] ${
+                                  over ? 'text-amber-400' : 'text-slate-500'
+                                }`}
+                              >
+                                ≈ {seconds.toFixed(1)}s spoken · clip is{' '}
+                                {item.duration.toFixed(1)}s
+                                {over ? ' — it will run into the next clip' : ''}
+                              </p>
+                            );
+                          })()
+                        ) : (
+                          <p className="text-[10px] text-slate-500">
+                            Off — this line is skipped in the preview and the downloaded video.
+                          </p>
+                        )}
                         <button
                           onClick={() =>
                             void previewNarrationLine(
@@ -1429,34 +1526,11 @@ export const ViralRankStudio: React.FC = () => {
                               item.narrationSpeed ?? 1.05
                             )
                           }
-                          className="text-rose-400 hover:text-rose-300 font-semibold cursor-pointer"
+                          className="shrink-0 cursor-pointer font-semibold text-rose-400 hover:text-rose-300"
                         >
-                          🔊 Test voice
+                          🔊 Test
                         </button>
                       </div>
-                      <input
-                        type="text"
-                        value={item.narrationText}
-                        onChange={(e) => updateItem(item.id, { narrationText: e.target.value })}
-                        placeholder="Narration read by AI when this rank appears..."
-                        className="w-full px-3 py-1.5 text-xs bg-slate-900 border border-slate-700 rounded-lg text-slate-200 focus:outline-none focus:border-rose-500"
-                      />
-                      {(() => {
-                        const seconds = estimateSpokenSeconds(
-                          item.narrationText,
-                          item.narrationSpeed ?? 1.05
-                        );
-                        if (!seconds) return null;
-                        const over = seconds > item.duration - 0.2;
-                        return (
-                          <p
-                            className={`text-[10px] ${over ? 'text-amber-400' : 'text-slate-500'}`}
-                          >
-                            ≈ {seconds.toFixed(1)}s spoken · clip is {item.duration.toFixed(1)}s
-                            {over ? ' — it will run into the next clip' : ''}
-                          </p>
-                        );
-                      })()}
                     </div>
 
                     {/* Individual Sound Effects Bar */}

@@ -433,7 +433,7 @@ export const DEFAULT_VIRALRANK_PROJECT: ViralRankProject = {
       cropMode: 'fit',
       transition: 'none',
       narrationText: 'Number six wiped out the entire patio fence!',
-      narrationEnabled: true,
+      narrationEnabled: false,
       narrationSpeed: 1.05,
       soundEffects: [
         {
@@ -482,7 +482,7 @@ export const DEFAULT_VIRALRANK_PROJECT: ViralRankProject = {
       cropMode: 'fit',
       transition: 'none',
       narrationText: 'Number five tried to vault the pool coping.',
-      narrationEnabled: true,
+      narrationEnabled: false,
       narrationSpeed: 1.05,
       soundEffects: [
         {
@@ -531,7 +531,7 @@ export const DEFAULT_VIRALRANK_PROJECT: ViralRankProject = {
       cropMode: 'fit',
       transition: 'none',
       narrationText: 'Number four missed the donut float completely.',
-      narrationEnabled: true,
+      narrationEnabled: false,
       narrationSpeed: 1.05,
       soundEffects: [
         {
@@ -566,7 +566,7 @@ export const DEFAULT_VIRALRANK_PROJECT: ViralRankProject = {
       cropMode: 'fit',
       transition: 'none',
       narrationText: 'Number three belly-flopped onto the float!',
-      narrationEnabled: true,
+      narrationEnabled: false,
       narrationSpeed: 1.05,
       soundEffects: [
         {
@@ -629,7 +629,7 @@ export const DEFAULT_VIRALRANK_PROJECT: ViralRankProject = {
       cropMode: 'fit',
       transition: 'none',
       narrationText: 'Number two flew right over the fence!',
-      narrationEnabled: true,
+      narrationEnabled: false,
       narrationSpeed: 1.05,
       soundEffects: [
         {
@@ -678,7 +678,7 @@ export const DEFAULT_VIRALRANK_PROJECT: ViralRankProject = {
       cropMode: 'fit',
       transition: 'none',
       narrationText: 'And number one: the roof trampoline flip!',
-      narrationEnabled: true,
+      narrationEnabled: false,
       narrationSpeed: 1.05,
       soundEffects: [
         {

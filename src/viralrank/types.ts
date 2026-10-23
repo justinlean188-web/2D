@@ -68,7 +68,7 @@ export interface RankingItem {
   cropMode: CropMode;
   transition: TransitionType;
   narrationText: string;
-  narrationEnabled: boolean; // When false, voiceover is skipped for this clip
+  narrationEnabled: boolean; // Off by default; the rank's Voice switch enables it
   narrationSpeed: number; // Voiceover speed multiplier (0.5 - 2.0)
   soundEffects: AudioEffect[];
 }

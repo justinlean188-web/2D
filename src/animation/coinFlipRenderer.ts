@@ -1,4 +1,4 @@
-﻿import { StudioConfig } from '../types';
+import { StudioConfig } from '../types';
 
 /**
  * CoinFlipRenderer
@@ -88,9 +88,10 @@ interface CameraKey {
 
 const TAU = Math.PI * 2;
 const INK = '#000000';
-const GOLD = '#d99b00';
-const GOLD_PALE = '#ffe08a';
-const WATER = '#cfe3f5';
+// Minimalist Monochrome palette: stark ink black, pure white, and translucent negative space
+const GOLD = '#000000';
+const GOLD_PALE = '#ffffff';
+const WATER = 'rgba(0, 0, 0, 0.05)';
 
 const clamp = (v: number, min: number, max: number) => Math.max(min, Math.min(max, v));
 const lerp = (a: number, b: number, u: number) => a + (b - a) * u;
@@ -291,12 +292,9 @@ export class CoinFlipRenderer {
       ctx.font = '900 74px "Arial Black", "Helvetica Neue", Arial, sans-serif';
       ctx.lineJoin = 'round';
       ctx.lineCap = 'round';
-      // Gold halo, heavy black outline, white face.
-      ctx.strokeStyle = GOLD;
-      ctx.lineWidth = 23;
-      ctx.strokeText(text, 0, 0);
+      // Minimalist Monochrome: Heavy black ink outline, pure white text
       ctx.strokeStyle = INK;
-      ctx.lineWidth = 16;
+      ctx.lineWidth = 18;
       ctx.strokeText(text, 0, 0);
       ctx.fillStyle = '#ffffff';
       ctx.fillText(text, 0, 0);
@@ -306,7 +304,7 @@ export class CoinFlipRenderer {
 
   private renderSafeZones(ctx: CanvasRenderingContext2D) {
     ctx.save();
-    ctx.strokeStyle = 'rgba(244, 63, 94, 0.85)';
+    ctx.strokeStyle = 'rgba(0, 0, 0, 0.45)';
     ctx.setLineDash([14, 12]);
     ctx.lineWidth = 3;
 

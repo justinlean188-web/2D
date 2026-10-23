@@ -1,13 +1,5 @@
 export type AspectRatio = '9:16' | '16:9' | '1:1';
 
-/**
- * Narration accent for the generated voice-over.
- *
- * The reel narration is spoken by the dev-server speech endpoint and decoded
- * into an AudioBuffer, so the preview and the export use the exact same take.
- */
-export type NarrationVoice = 'us' | 'uk' | 'au' | 'in';
-
 export type EffectType =
   | 'whoosh'
   | 'impact'
@@ -68,8 +60,6 @@ export interface RankingItem {
   cropMode: CropMode;
   transition: TransitionType;
   narrationText: string;
-  narrationEnabled: boolean; // Off by default; the rank's Voice switch enables it
-  narrationSpeed: number; // Voiceover speed multiplier (0.5 - 2.0)
   soundEffects: AudioEffect[];
 }
 
@@ -152,8 +142,6 @@ export interface ViralRankProject {
   titleAccent?: string; // e.g. "Pool Fails"
   accentColor?: string; // e.g. "#ef4444"
   voiceIntro?: string; // e.g. "Top 6 Ranking best pool fails"
-  voiceIntroSpeed?: number; // Voice intro speed multiplier (0.5 - 2.0)
-  narrationVoice?: NarrationVoice; // Accent used for the intro and every clip
   useVoiceIntroOnly?: boolean; // When true, no visual title card is shown; voiceover hook speaks right at 0.0s over the video
   items: RankingItem[];
   sourceLibrary: SourceMedia[];
@@ -162,7 +150,6 @@ export interface ViralRankProject {
   captions: CaptionSegment[];
   captionStyle: CaptionStyle;
   showSafeZones: boolean;
-  showRankingNumbers?: boolean; // Show the rank ladder in the preview and the export (default true)
   resolutionQuality: 'full' | 'half' | 'quarter';
 }
 

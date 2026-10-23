@@ -15,9 +15,10 @@ export interface SceneDef {
   propAction?: string;
 }
 
+export type CanvasTheme = 'black-on-white' | 'white-on-black';
+
 export type ProjectId =
-  | 'bowling-strike'
-  | 'paper-plane-rooftop'
+  | 'mind-traps'
   | 'coin-flip'
   | 'dart-shot'
   | 'ping-pong-revenge'
@@ -1433,283 +1434,132 @@ export const COIN_FLIP_SCENES: SceneDef[] = [
   },
 ];
 
-export const BOWLING_STRIKE_PROMPT = `THE ANGRY STICKMAN: BOWLING MARBLE TRICKSHOT - 30-SECOND AI VIDEO PROMPT
+export const MIND_TRAPS_PROMPT = `ANGRY STICKMAN: MIND TRAPS & THE RED CAGE
+AI VIDEO PROMPT
 
-Create a funny 30-second 2D stickman animation for YouTube Shorts, vertical 9:16, 1080x1920, 24fps.
+MASTER STYLE
+Create a 30-second, vertical 9:16, 1080 x 1920, 24 fps minimalist 2D stickman explainer animation in stark Minimalist Monochrome with vivid red storytelling accents. Pure white or pure black canvas, round heads, line limbs, consistent stroke weight (12px), and occasional simple expressions. Up to three vivid accent colors distinguish emotions, risks, or actions. Turn anxiety into a cage or attention into a progress bar.
 
-VISUAL STYLE:
-Minimalist flat 2D vector animation, clean white stickman head, black stickman body and limbs, thick black outlines, expressive eyebrows, exaggerated physical comedy, smooth motion, simple colorful bowling alley, clear silhouettes, quick cuts, and consistent character design. Keep the same bowling lane, ten pins, tiny marble, and character throughout.
+CHARACTER & METAPHORS
+- Black stickman on pure white background (Style 1A) and white stickman on pure black background (Style 1B).
+- Round head, line limbs, minimal expressive facial features (diagonal angry brow slash, stunned wide eyes, teeth grit, cartoon anger vein 💢).
+- Visual Metaphors: A 3D perspective wireframe red cage constricting around the figure, an overhead attention/stress HUD progress bar overflowing at 100%, and a giant vivid red gavel smashing cracked architectural columns.
 
-SCENE 1 - THE CHALLENGE (0-5 seconds):
-Inside a bowling alley, the angry stickman holds a tiny marble and points dramatically at ten bowling pins. He prepares to knock all ten down using only the marble.
-Add editing caption: "He wants to knock down 10 pins with ONE tiny marble!"
-Use a dramatic close-up and confident pose.
+SCENE FLOW
+0-5s: The Anxiety Cage (Style 1B). Pure black canvas, glowing white stickman clutching head in panic. A vivid red wireframe cage constricts tightly around him. Caption: ANXIETY IS A CAGE.
+5-10s: Attention Overload. An overhead minimalist HUD progress bar fills from 15% to 100% in vivid red: OVERFLOW! Steam vents from ears, comic anger vein ticks. Caption: ATTENTION OVERLOAD!
+10-16s: Decisive Action & The Gavel (Style 1A). Cut to pure white canvas with towering black architectural columns. Black stickman raises an enormous vivid red gavel overhead, leaps and slams it into the ground! Radial shockwaves erupt, floor cracks spread, columns fracture. Caption: DECISIVE ACTION.
+16-21s: The Cognitive Maze. Minimalist monochrome labyrinth walls. Red obstacle barrier. Dotted trajectory vector curve calculates escape angle; stickman leaps over cleanly. Caption: FIND THE VECTOR.
+21-26s: Shatter The Pattern. Stickman swings the red gavel into the red cage. The cage violently shatters into 40+ geometric red shards flying across the frame. Screen shake on impact. Caption: SHATTER THE TRAP!
+26-30s: Clarity Over Noise. Clean open composition. Standing tall in calm mastery. Overhead progress bar reads 100% CLARITY. Confident thumbs-up to camera with a serene smile. Caption: FEW LINES. BIG IDEA.
 
-SCENE 2 - EPIC FAILURE (5-9 seconds):
-He rolls the marble down the lane. It moves extremely slowly and stops just before the pins. The stickman stomps angrily, and the wind from his stomp makes one pin wobble and fall.
-Caption: "First try... absolutely embarrassing."
-Use funny slow motion and a tiny rolling sound.
+SOUND
+Procedural synthesizer cues: low metallic cage rumble, tension heartbeat, ticking progress meter, alarm buzzer, foot stomp, colossal gavel impact crash, shattering glass/metal explosion, serene clarity chime. No dialogue.`;
 
-SCENE 3 - THE INVENTION (9-15 seconds):
-The stickman gets furious and builds a ridiculous marble launcher using a bowling ramp, springs, and a giant plunger. He puts the marble inside, pulls a lever, and braces himself.
-Caption: "So he builds a MARBLE LAUNCHER!"
-Show exaggerated mechanical movement and suspense.
-
-SCENE 4 - THE PERFECT SHOT (15-22 seconds):
-The marble launches at high speed, bounces off a wall, ricochets off a ceiling pipe, and races down the lane. It hits the front pin, triggering a spectacular domino effect that knocks down all ten pins. The stickman celebrates like a world champion.
-Caption: "THE MOST IMPOSSIBLE SHOT EVER!"
-Use dynamic tracking shots, rapid impacts, and dramatic victory music.
-
-SCENE 5 - THE REVENGE OF THE PINS (22-27 seconds):
-One fallen pin rebounds off the back wall and knocks into another pin. Several pins begin bouncing and rolling back down the lane toward the celebrating stickman. His smile slowly turns into horror.
-Caption: "BUT HE CELEBRATED TOO EARLY..."
-Use a record scratch and a quick zoom into his terrified face.
-
-SCENE 6 - THE PUNCHLINE (27-30 seconds):
-The pins crash into the stickman and bury him under a huge pile. The tiny marble rolls out and knocks over the final pin beside his head. From underneath the pile, the stickman gives a furious thumbs-up.
-Caption: "STRIKE! ...AND GAME OVER"
-End with a freeze-frame and a short comedic sound effect.
-
-AUDIO:
-Add paper-thin rolling sounds for the marble, spring boings, mechanical clanks, a launch whoosh, pin crashes, a record scratch, dramatic music, and a muffled angry scream. No spoken dialogue.
-
-TEXT RULES:
-Do not generate text inside the animation frames. Add all captions in the editing stage using bold, large, high-contrast text near the top of the vertical frame. Keep each caption readable and timed to its matching scene.`;
-
-export const BOWLING_STRIKE_SCENES: SceneDef[] = [
+export const MIND_TRAPS_SCENES: SceneDef[] = [
   {
     id: 1,
     name: "Scene 1",
-    title: "The Challenge",
+    title: "The Anxiety Cage",
     timeRange: [0.0, 5.0],
     videoPrompt:
-      "Inside a bowling alley, the angry stickman holds a tiny marble and points dramatically at ten bowling pins. He prepares to knock all ten down using only the marble.",
+      "Style 1B: White figure on pure black canvas. Stickman clutches his head in anxiety as a vivid red wireframe cage bends and constricts tightly around him.",
     animationDesc:
-      "0.0-1.8s dramatic close-up and confident smirk holding tiny marble, 1.8-3.2s dramatic point at the ten pins, 3.2-5.0s wind-up and preparation to roll.",
-    soundDesc: "Bowling ambient chime, marble twinkle, confident ding, swoosh.",
-    captionText: "He wants to knock down 10 pins with ONE tiny marble!",
-    punchline: "Points at ten pins with one tiny marble",
-    characterAction: "Holds tiny marble, points dramatically at ten pins, poses with extreme confidence.",
-    propAction: "Ten bowling pins stand in triangle formation at the end of the glossy lane.",
+      "0-2.5s White stickman crouches clutching head on pitch-black canvas; 2.5-5.0s vivid red 3D cage bars flex and constrict inward with breathing tension.",
+    soundDesc: "Low metallic cage creak, subtle heartbeat pulse, and rising claustrophobic drone.",
+    captionText: "ANXIETY IS A CAGE.",
+    punchline: "ANXIETY IS A CAGE.",
+    characterAction: "Crouches, clutches head with both hands, trembles with anxious wide eyes.",
+    propAction: "3D perspective red cage bars constrict inward around the figure.",
   },
   {
     id: 2,
     name: "Scene 2",
-    title: "Epic Failure",
-    timeRange: [5.0, 9.0],
-    videoPrompt:
-      "He rolls the marble down the lane. It moves extremely slowly and stops just before the pins. The stickman stomps angrily, and the wind from his stomp makes one pin wobble and fall.",
-    animationDesc:
-      "5.0-5.8s soft roll, 5.8-7.2s marble rolls in hilarious slow motion, stopping an inch short of pin 1, 7.2-8.0s stickman stomps the floor in frustration, 8.0-9.0s wind draft wobbles front pin which gently topples.",
-    soundDesc: "Tiny rolling sound, slow-motion whistle, awkward silence, heavy stomp thump, single soft pin clatter.",
-    captionText: "First try... absolutely embarrassing.",
-    punchline: "Marble stops inches before pins, wind knocks one down",
-    characterAction: "Rolls marble, watches in disbelief as it stops, stomps in rage.",
-    propAction: "Marble crawls slowly and stops; one pin wobbles and falls.",
-  },
-  {
-    id: 3,
-    name: "Scene 3",
-    title: "The Invention",
-    timeRange: [9.0, 15.0],
-    videoPrompt:
-      "The stickman gets furious and builds a ridiculous marble launcher using a bowling ramp, springs, and a giant plunger. He puts the marble inside, pulls a lever, and braces himself.",
-    animationDesc:
-      "9.0-10.2s lightbulb rage spark, 10.2-12.8s assembling ramp, heavy coiled springs and giant red plunger, 12.8-14.0s loads tiny marble into barrel, 14.0-15.0s pulls back lever with teeth-gritting tension.",
-    soundDesc: "Rage growl, mechanical clanks, spring boings, rubber twang, rising suspense music.",
-    captionText: "So he builds a MARBLE LAUNCHER!",
-    punchline: "Absurd plunger and spring marble cannon",
-    characterAction: "Assembles contraption with fury, loads marble, pulls back lever.",
-    propAction: "Bowling ramp, heavy springs, and giant red suction plunger combine into launcher.",
-  },
-  {
-    id: 4,
-    name: "Scene 4",
-    title: "The Perfect Shot",
-    timeRange: [15.0, 22.0],
-    videoPrompt:
-      "The marble launches at high speed, bounces off a wall, ricochets off a ceiling pipe, and races down the lane. It hits the front pin, triggering a spectacular domino effect that knocks down all ten pins. The stickman celebrates like a world champion.",
-    animationDesc:
-      "15.0-15.5s high-speed plunger launch blast, 15.5-16.5s wall ricochet, 16.5-17.5s ceiling pipe bounce, 17.5-19.0s races down lane center and strikes head pin, 19.0-20.5s explosive domino pin crash knocking down all 10 pins, 20.5-22.0s wild world-champion celebration dance.",
-    soundDesc: "Launch whoosh, wall bonk, pipe clang, marble zip, massive bowling strike crash, triumphant fanfare.",
-    captionText: "THE MOST IMPOSSIBLE SHOT EVER!",
-    punchline: "Impossible ricochet strike and premature celebration",
-    characterAction: "Fires cannon, eyes track ricochet in shock, erupts into ecstatic victory celebration.",
-    propAction: "Marble ricochets off wall and ceiling pipe, smashes head pin, sending all 10 pins flying.",
-  },
-  {
-    id: 5,
-    name: "Scene 5",
-    title: "The Revenge of the Pins",
-    timeRange: [22.0, 27.0],
-    videoPrompt:
-      "One fallen pin rebounds off the back wall and knocks into another pin. Several pins begin bouncing and rolling back down the lane toward the celebrating stickman. His smile slowly turns into horror.",
-    animationDesc:
-      "22.0-23.4s fallen pin kicks off back bumper and strikes neighboring pin, 23.4-25.0s rolling pins gather momentum and slide back down lane toward stickman, 25.0-27.0s record scratch, celebration freezes, camera zooms into stickman's terrified, sweat-dripping face.",
-    soundDesc: "Bumper clack, wooden rolling rumble, record scratch, tense heartbeat, horrified gasp.",
-    captionText: "BUT HE CELEBRATED TOO EARLY...",
-    punchline: "Pins roll back down the lane toward him",
-    characterAction: "Dancing celebration freezes, eyes dilate in sheer dread, slowly lowers arms.",
-    propAction: "Pins rebound off back pit wall and charge down the polished wood lane.",
-  },
-  {
-    id: 6,
-    name: "Scene 6",
-    title: "The Punchline",
-    timeRange: [27.0, 30.0],
-    videoPrompt:
-      "The pins crash into the stickman and bury him under a huge pile. The tiny marble rolls out and knocks over the final pin beside his head. From underneath the pile, the stickman gives a furious thumbs-up.",
-    animationDesc:
-      "27.0-27.8s avalanche of bowling pins crashes over stickman, burying him completely, 27.8-28.8s tiny marble gently rolls out of the wreckage and knocks over one standing pin beside his head with a tiny dink, 28.8-29.6s stickman's black arm sticks out from under pile and gives a trembling, furious thumbs-up, 29.6-30.0s comedic freeze-frame.",
-    soundDesc: "Massive wooden pile crash, tiny marble roll, gentle pin clink, muffled angry scream, short comedic horn freeze-frame.",
-    captionText: "STRIKE! ...AND GAME OVER",
-    punchline: "Buried under pins, final pin falls, furious thumbs-up",
-    characterAction: "Buried under bowling pins, arm emerges to deliver angry thumbs-up.",
-    propAction: "Pins form pile on stickman; marble rolls out and knocks last pin; thumbs-up emerges.",
-  },
-];
-
-export const ROOFTOP_PLANE_PROMPT = `THE ANGRY STICKMAN: ROOFTOP PAPER AIRPLANE TRICKSHOT - 30-SECOND AI VIDEO PROMPT
-
-Create a 30-second vertical 9:16 minimalist 2D stickman comedy animation for YouTube Shorts (1080×1920, 24fps).
-The entire film takes place on a skyscraper rooftop at sunset.
-
-STYLE:
-Minimalist flat 2D vector animation, thick clean black outlines, white stickman head, black stickman body, expressive eyebrows, simple cartoon physics, smooth motion, exaggerated reactions, comedic timing. Warm sunset sky with minimalist city building silhouettes, rooftop air-conditioning unit, rooftop water tank, satellite dish, tiny window on a nearby rooftop, and a coffee cup on a loose rooftop panel. Flat colors only, clean bold silhouettes. Keep character design and props strictly consistent throughout. No spoken dialogue, no text, no subtitles, no logos, no watermarks.
-
-SCENE 1 (0–5 seconds):
-The angry stickman stands on the rooftop holding a crisp white paper airplane. He aims at a tiny window on a neighboring rooftop. He throws confidently with a smirk, but the airplane smacks into the building wall and flops down. His smile disappears into stunned silence.
-
-SCENE 2 (5–10 seconds):
-He throws another airplane. It bounces off the air-conditioning unit with a metallic boing, circles around his head in an absurd loop, and accidentally lands inside his coffee cup. He glares at the cup and hurls it away in frustration.
-
-SCENE 3 (10–16 seconds):
-He gets a crazy idea! He builds an absurd paper-airplane launcher using a mop, stretched rubber bands, and a traffic cone. He loads a fresh airplane, pulls back the mechanism, and prepares to launch. Dramatic close-up of his determined, focused eyes with glowing determination.
-
-SCENE 4 (16–23 seconds):
-The airplane launches at incredible speed! It zips through a narrow gap, curves around the rooftop water tank, ricochets sharply off a satellite dish, and flies perfectly through the tiny window across the chasm. The stickman celebrates wildly with fists in the air before even checking the result!
-
-SCENE 5 (23–27 seconds):
-Reveal the true result: the airplane has landed directly inside a second coffee cup resting on a loose rooftop panel. The panel tilts like a catapult lever and launches the cup high into the sky! The stickman slowly turns toward it in horror.
-
-SCENE 6 (27–30 seconds):
-The coffee cup drops upside down squarely onto the stickman's head. The paper airplane glides down and lands neatly inside the bottom of the cup. He raises his arms triumphantly as if he has won a championship — then dark coffee drips down his face. His expression flips from heroic pride to absolute boiling rage! End with a fast comedic freeze-frame.`;
-
-export const ROOFTOP_PLANE_SCENES: SceneDef[] = [
-  {
-    id: 1,
-    name: "Scene 1",
-    title: "The First Throw",
-    timeRange: [0.0, 5.0],
-    videoPrompt:
-      "The angry stickman stands on a skyscraper rooftop at sunset holding a paper airplane. He aims at a tiny window on a neighboring rooftop, throws confidently, but the plane smacks into the wall. His smile disappears.",
-    animationDesc:
-      "0.0-1.8s confident stance holding airplane, 1.8-2.6s aim and wind-up, 2.6-3.4s throw and flight, 3.4-3.8s wall smack, 3.8-5.0s smile freezes and eyebrow twitches in disbelief.",
-    soundDesc: "Gentle rooftop wind, paper whoosh, cartoon wall bonk, awkward silence.",
-    captionText: "",
-    punchline: "Wall smack",
-    characterAction: "Holds airplane, aims, throws confidently, freezes when it smacks the wall.",
-    propAction: "Paper airplane smacks into the distant wall and falls down.",
-  },
-  {
-    id: 2,
-    name: "Scene 2",
-    title: "AC Ricochet & Coffee Cup",
+    title: "Attention Overload",
     timeRange: [5.0, 10.0],
     videoPrompt:
-      "He throws another airplane. It bounces off an air-conditioning unit, circles around his head, and accidentally lands inside his coffee cup. He glares at the cup and throws it away in frustration.",
+      "An overhead minimalist HUD progress bar fills with vivid red to 100% OVERFLOW! Stickman glares upward, steam puffs from his ears and an anger vein pops.",
     animationDesc:
-      "5.0-5.8s pulls out second airplane, 5.8-6.5s hard throw, 6.5-6.9s AC unit bounce, 6.9-7.8s circles around stickman's head, 7.8-8.2s plops into coffee cup, 8.2-9.1s shocked glare, 9.1-10.0s angry cup throw.",
-    soundDesc: "Whoosh, metallic boing, spinning whirr, coffee plop, angry squeak, throw whoosh.",
-    captionText: "",
-    punchline: "Lands in coffee cup",
-    characterAction: "Throws plane, tracks it circling head, stares at coffee cup, hurls cup away.",
-    propAction: "Plane bounces off AC unit, orbits stickman, drops in coffee cup; cup is thrown away.",
+      "5.0-8.5s floating progress bar fills rapidly to 99%; 8.5-10.0s flashes OVERFLOW!, stickman snarls, steam vents from head and 💢 anger mark pops.",
+    soundDesc: "Fast mechanical meter ticks, rising pitch alarm, and cartoon steam hiss.",
+    captionText: "ATTENTION OVERLOAD!",
+    punchline: "ATTENTION OVERLOAD!",
+    characterAction: "Glares upward at the bar, eyebrow slashes into fury, teeth grit.",
+    propAction: "Overhead HUD meter fills to max and flashes red warning hazards.",
   },
   {
     id: 3,
     name: "Scene 3",
-    title: "The Crazy Invention",
+    title: "Decisive Action",
     timeRange: [10.0, 16.0],
     videoPrompt:
-      "He gets a crazy idea. He builds an absurd paper-airplane launcher using a mop, rubber bands, and a traffic cone. He loads a fresh airplane, pulls back the mechanism, and prepares to launch with a dramatic eye close-up.",
+      "Style 1A: Black figure on white canvas with massive cracked black columns. Black stickman raises an enormous vivid red gavel and slams it down with catastrophic force!",
     animationDesc:
-      "10.0-11.2s lightbulb idea jump, 11.2-13.4s builds launcher from mop, traffic cone and rubber bands, 13.4-14.5s loads airplane and stretches rubber band, 14.5-16.0s dramatic anime eye close-up with intense pupils.",
-    soundDesc: "Idea ding, construction clatter, rubber band stretch, creak, dramatic rising tension music.",
-    captionText: "",
-    punchline: "Absurd launcher",
-    characterAction: "Gets idea, builds contraption, pulls back elastic, focuses with extreme intensity.",
-    propAction: "Mop, cone and rubber bands combine into a high-powered catapult.",
+      "10.0-12.8s stickman raises giant red gavel overhead; 12.8s colossal slam down; 12.8-16.0s shockwave ring, floor cracks shoot across canvas, columns buckle.",
+    soundDesc: "Heavy foot stomp, dramatic wind-up whoosh, colossal thunderous hammer impact, and crashing stone pillars.",
+    captionText: "DECISIVE ACTION.",
+    punchline: "DECISIVE ACTION.",
+    characterAction: "Leaps, grips giant red gavel with both hands, slams floor with decisive force.",
+    propAction: "Giant red gavel smashes the ground; black columns fracture and crack lines spread.",
   },
   {
     id: 4,
     name: "Scene 4",
-    title: "The Impossible Flight",
-    timeRange: [16.0, 23.0],
+    title: "Find The Vector",
+    timeRange: [16.0, 21.0],
     videoPrompt:
-      "The airplane launches at incredible speed. It passes through a narrow gap, curves around the rooftop water tank, ricochets off a satellite dish, and flies perfectly through the tiny window. The stickman celebrates wildly before confirming the result.",
+      "Stickman encounters a red obstacle block in a minimalist maze. A dashed trajectory vector calculates the escape arc, and he leaps over cleanly.",
     animationDesc:
-      "16.0-16.4s supersonic launch, 16.4-17.6s zips through narrow gap, 17.6-19.2s swoops around water tank, 19.2-20.4s satellite dish metallic ricochet, 20.4-21.5s swoops straight into tiny window, 21.5-23.0s premature wild celebration.",
-    soundDesc: "High-power launch blast, supersonic whoosh, metallic dish boing, window swish, victory fanfare.",
-    captionText: "",
-    punchline: "Premature celebration",
-    characterAction: "Fires launcher, watches with mouth agape, bursts into wild jumping celebration.",
-    propAction: "Airplane performs high-speed obstacle course and enters tiny window.",
+      "16.0-18.0s walks up to blocking red barrier, pauses to calculate; 18.0-21.0s dashed vector curve appears, stickman leaps cleanly over the obstacle.",
+    soundDesc: "Rhythmic footsteps, calculating digital blip, and clean athletic leap whoosh.",
+    captionText: "FIND THE VECTOR.",
+    punchline: "FIND THE VECTOR.",
+    characterAction: "Calculates trajectory, springs into athletic parkour leap.",
+    propAction: "Minimalist maze walls, red barrier, and glowing trajectory curve.",
   },
   {
     id: 5,
     name: "Scene 5",
-    title: "The Rooftop Catapult",
-    timeRange: [23.0, 27.0],
+    title: "Shatter The Trap",
+    timeRange: [21.0, 26.0],
     videoPrompt:
-      "Reveal that the airplane has landed inside a coffee cup on a loose rooftop panel. The panel tilts and launches the cup into the air. The stickman slowly turns toward it in horror.",
+      "The stickman confronts the red cage armed with the red gavel. He swings and smashes the cage, which explodes into 40+ geometric red shards flying outward!",
     animationDesc:
-      "23.0-24.2s zoom onto tiny window ledge showing loose rooftop panel, 24.2-25.2s plane lands in coffee cup, panel teeters, 25.2-26.0s panel snaps down like seesaw and flings coffee cup skyward, 26.0-27.0s stickman freezes and slowly turns in sheer horror.",
-    soundDesc: "Cup landing clink, creaking panel, catapult boing, dramatic suspense slide, gasp.",
-    captionText: "",
-    punchline: "Cup launched into sky",
-    characterAction: "Celebration stops cold, head turns toward sky in pure dread.",
-    propAction: "Loose panel teeters and catapults coffee cup high into the air.",
+      "21.0-23.2s wind-up swing; 23.2s impact shatters the red cage; 23.2-26.0s 40+ sharp red shards blast outward with screen shake.",
+    soundDesc: "Heavy whoosh, explosive glass/metal shatter, and dispersing debris clatter.",
+    captionText: "SHATTER THE TRAP!",
+    punchline: "SHATTER THE TRAP!",
+    characterAction: "Swings gavel forward, smashes cage, lands in empowered follow-through.",
+    propAction: "Red cage bursts into dozens of high-velocity rotating polygon shards.",
   },
   {
     id: 6,
     name: "Scene 6",
-    title: "The Coffee Crown",
-    timeRange: [27.0, 30.0],
+    title: "Clarity Over Noise",
+    timeRange: [26.0, 30.0],
     videoPrompt:
-      "The coffee cup drops upside down onto the stickman's head. The airplane lands neatly inside the cup. He raises his arms triumphantly as if he has won a championship, then coffee drips down his face. Expression turns from pride to absolute rage. Fast freeze-frame.",
+      "Clean open minimalist canvas. Stickman stands in calm mastery. Overhead meter shows 100% BALANCED CLARITY. He gives a confident thumbs-up to camera.",
     animationDesc:
-      "27.0-27.5s falling cup drops upside down onto head with bonk, 27.5-27.9s paper airplane glides down and docks into cup, 27.9-28.7s poses triumphantly with arms raised, 28.7-29.4s coffee drips down cheeks, 29.4-29.8s eyes bug out in screaming rage, 29.8-30.0s fast comedic freeze-frame.",
-    soundDesc: "Cartoon head bonk, soft paper landing, mini victory chime, coffee drip plops, angry scream, freeze-frame hit.",
-    captionText: "",
-    punchline: "Coffee drip & freeze frame",
-    characterAction: "Gets bonked with cup, proudly poses, feels drip, screams in fury, freezes.",
-    propAction: "Cup acts as helmet on head, paper airplane docks on top, coffee drips down.",
+      "26.0-28.5s calm breathing, 100% clarity bar pulses softly; 28.5-30.0s turns to camera, gives thumbs-up with sparkle ding.",
+    soundDesc: "Serene glass chime, deep calm breath, and crisp confidence ding.",
+    captionText: "FEW LINES. BIG IDEA.",
+    punchline: "FEW LINES. BIG IDEA.",
+    characterAction: "Stands upright, breathes calmly, gives confident thumbs-up.",
+    propAction: "Clean minimalist HUD bar at 100% Clarity.",
   },
 ];
 
 export const PROJECTS: Record<ProjectId, ProjectDef> = {
-  'bowling-strike': {
-    id: 'bowling-strike',
-    title: 'Angry Stickman: The Impossible Bowling Trickshot',
-    subtitle: 'The 30-Second Bowling Alley Comedy',
-    tagline: 'Vertical 9:16 Stickman Short · Ten Pins vs. One Marble · Sound Effects Only',
+  'mind-traps': {
+    id: 'mind-traps',
+    title: 'Angry Stickman: Mind Traps & The Red Cage',
+    subtitle: 'The 30-Second Minimalist Monochrome Explainer',
+    tagline: 'Vertical 9:16 · Style 1A (White) & 1B (Black) · Vivid Red Accent Storytelling',
     duration: 30,
     hasAudioDialogue: false,
-    hasCaptions: false,
-    masterPrompt: BOWLING_STRIKE_PROMPT,
-    scenes: BOWLING_STRIKE_SCENES,
-  },
-  'paper-plane-rooftop': {
-    id: 'paper-plane-rooftop',
-    title: 'The Angry Stickman: Rooftop Paper Airplane',
-    subtitle: 'The 30-Second Skyscraper Trickshot Comedy',
-    tagline: 'Vertical 9:16 Stickman Short · Pure Visual Slapstick · Sound Effects Only',
-    duration: 30,
-    hasAudioDialogue: false,
-    hasCaptions: false,
-    masterPrompt: ROOFTOP_PLANE_PROMPT,
-    scenes: ROOFTOP_PLANE_SCENES,
+    hasCaptions: true,
+    masterPrompt: MIND_TRAPS_PROMPT,
+    scenes: MIND_TRAPS_SCENES,
   },
   'coin-flip': {
     id: 'coin-flip',
@@ -1836,6 +1686,8 @@ export const PROJECTS: Record<ProjectId, ProjectDef> = {
 
 export interface StudioConfig {
   activeProject: ProjectId;
+  canvasTheme: CanvasTheme;
+  vividAccent: string;
   accentColor: string;
   enableVoiceOver: boolean;
   enableSFX: boolean;
@@ -1851,14 +1703,16 @@ export interface StudioConfig {
 }
 
 export const DEFAULT_CONFIG: StudioConfig = {
-  activeProject: 'bowling-strike', // The latest short is the default film
-  accentColor: '#e11d48',
+  activeProject: 'mind-traps', // The flagship Minimalist Monochrome explainer (Style 1A and 1B)
+  canvasTheme: 'black-on-white', // Style 1A: Black on White (toggleable to Style 1B: White on Black)
+  vividAccent: '#ef4444', // Vivid Red as seen in reference image for emotions, risks & cages
+  accentColor: '#000000', // Minimalist Monochrome
   enableVoiceOver: false,
   enableSFX: true,
   voiceRate: 0.88,
   voicePitch: 0.92,
   voiceVolume: 1.0,
-  showCaptions: false, // Strict: no captions, no text for paper-ball
+  showCaptions: true, // Captions on by default for explainer
   showSafeZones: false,
   fpsMode: 24,
   customVO1: 'What if your shadow quit?',

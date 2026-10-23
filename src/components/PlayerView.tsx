@@ -22,19 +22,17 @@ import { TrickShotRenderer } from '../animation/trickShotRenderer';
 import { PingPongRenderer } from '../animation/pingPongRenderer';
 import { DartShotRenderer } from '../animation/dartShotRenderer';
 import { CoinFlipRenderer } from '../animation/coinFlipRenderer';
-import { BowlingStrikeRenderer } from '../animation/bowlingStrikeRenderer';
-import { RooftopPlaneRenderer } from '../animation/rooftopPlaneRenderer';
 import { MachineRenderer } from '../animation/machineRenderer';
 import { SequelPaperBallRenderer } from '../animation/sequelPaperBallRenderer';
+import { MindTrapsRenderer } from '../animation/mindTrapsRenderer';
 import {
+  MIND_TRAPS_CUES,
   PAPER_BALL_30_CUES,
   POP_STAR_CUES,
   TRICK_SHOT_CUES,
   PING_PONG_CUES,
   DART_SHOT_CUES,
   COIN_FLIP_CUES,
-  BOWLING_STRIKE_CUES,
-  ROOFTOP_PLANE_CUES,
   PAPER_BALL_PART3_CUES,
   PAPER_BALL_PART4_CUES,
   PAPER_BALL_SEQUEL_CUES,
@@ -77,8 +75,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
   const pingPongRendererRef = useRef<PingPongRenderer>(new PingPongRenderer());
   const dartShotRendererRef = useRef<DartShotRenderer>(new DartShotRenderer());
   const coinFlipRendererRef = useRef<CoinFlipRenderer>(new CoinFlipRenderer());
-  const bowlingStrikeRendererRef = useRef<BowlingStrikeRenderer>(new BowlingStrikeRenderer());
-  const rooftopPlaneRendererRef = useRef<RooftopPlaneRenderer>(new RooftopPlaneRenderer());
+  const mindTrapsRendererRef = useRef<MindTrapsRenderer>(new MindTrapsRenderer());
   const [speed, setSpeed] = useState<number>(1.0);
   const [isLooping, setIsLooping] = useState<boolean>(true);
   const lastTimeRef = useRef<number>(performance.now());
@@ -113,6 +110,11 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
       if (time <= toTime) cues.add(id);
       else cues.delete(id);
     };
+
+    if (config.activeProject === 'mind-traps') {
+      for (const cue of MIND_TRAPS_CUES) setCueState(cue.id, cue.time);
+      return;
+    }
 
     if (config.activeProject === 'paper-ball-30') {
       for (const cue of PAPER_BALL_30_CUES) setCueState(cue.id, cue.time);
@@ -151,16 +153,6 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
 
     if (config.activeProject === 'dart-shot') {
       for (const cue of DART_SHOT_CUES) setCueState(cue.id, cue.time);
-      return;
-    }
-
-    if (config.activeProject === 'bowling-strike') {
-      for (const cue of BOWLING_STRIKE_CUES) setCueState(cue.id, cue.time);
-      return;
-    }
-
-    if (config.activeProject === 'paper-plane-rooftop') {
-      for (const cue of ROOFTOP_PLANE_CUES) setCueState(cue.id, cue.time);
       return;
     }
 
@@ -332,36 +324,10 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
         return;
       }
 
-      if (config.activeProject === 'bowling-strike') {
+      if (config.activeProject === 'mind-traps') {
         if (!config.enableSFX) return;
-        for (const cue of BOWLING_STRIKE_CUES) {
+        for (const cue of MIND_TRAPS_CUES) {
           if (cues.has(cue.id)) continue;
-          if (cue.id.startsWith('bs-score-')) {
-            if (t >= cue.time && t < cue.time + 7.6) {
-              cue.play();
-              cues.add(cue.id);
-            }
-            continue;
-          }
-          if (t >= cue.time && t - cue.time < 0.75) {
-            cue.play();
-            cues.add(cue.id);
-          }
-        }
-        return;
-      }
-
-      if (config.activeProject === 'paper-plane-rooftop') {
-        if (!config.enableSFX) return;
-        for (const cue of ROOFTOP_PLANE_CUES) {
-          if (cues.has(cue.id)) continue;
-          if (cue.id.startsWith('rp-score-')) {
-            if (t >= cue.time && t < cue.time + 7.6) {
-              cue.play();
-              cues.add(cue.id);
-            }
-            continue;
-          }
           if (t >= cue.time && t - cue.time < 0.75) {
             cue.play();
             cues.add(cue.id);
@@ -534,10 +500,8 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
             renderTime = Math.floor(t * 24) / 24;
           }
 
-          if (config.activeProject === 'bowling-strike') {
-            bowlingStrikeRendererRef.current.render(ctx, renderTime, config);
-          } else if (config.activeProject === 'paper-plane-rooftop') {
-            rooftopPlaneRendererRef.current.render(ctx, renderTime, config);
+          if (config.activeProject === 'mind-traps') {
+            mindTrapsRendererRef.current.render(ctx, renderTime, config);
           } else if (config.activeProject === 'paper-ball-30') {
             extendedPaperBallRendererRef.current.render(ctx, renderTime, config);
           } else if (config.activeProject === 'paper-ball-sequel') {
@@ -638,7 +602,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 space-y-6">
       {/* Top Controls Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-4 bg-slate-900 border border-slate-800 rounded-xl p-4">
+      <div className="flex flex-wrap items-center justify-between gap-4 bg-zinc-900 border border-zinc-800 rounded-xl p-4">
         {/* Scene Selector Pills */}
         <div className="flex items-center gap-1.5 overflow-x-auto py-1">
           {projectScenes.map((s) => {
@@ -647,10 +611,10 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
               <button
                 key={s.id}
                 onClick={() => jumpToScene(s)}
-                className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-colors whitespace-nowrap cursor-pointer ${
+                className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors whitespace-nowrap cursor-pointer ${
                   isCur
-                    ? 'bg-rose-600 text-white font-semibold shadow-sm'
-                    : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+                    ? 'bg-white text-zinc-950 font-bold shadow-sm ring-1 ring-white/20'
+                    : 'bg-zinc-950 text-zinc-300 hover:bg-zinc-800 border border-zinc-800'
                 }`}
               >
                 {s.name}: {s.title}
@@ -663,10 +627,10 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
         <div className="flex items-center gap-2">
           <button
             onClick={() => setConfig({ ...config, showSafeZones: !config.showSafeZones })}
-            className={`flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-lg border transition-colors cursor-pointer ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border transition-colors cursor-pointer ${
               config.showSafeZones
-                ? 'bg-rose-950/60 text-rose-300 border-rose-500/80'
-                : 'bg-slate-800 text-slate-300 border-slate-700 hover:bg-slate-700'
+                ? 'bg-zinc-800 text-white border-zinc-600'
+                : 'bg-zinc-950 text-zinc-400 border-zinc-800 hover:bg-zinc-800 hover:text-white'
             }`}
           >
             <Grid className="w-3.5 h-3.5" />
@@ -675,7 +639,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
 
           <button
             onClick={() => setConfig({ ...config, fpsMode: config.fpsMode === 24 ? 60 : 24 })}
-            className="px-3 py-1.5 text-xs font-mono bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700 rounded-lg transition-colors cursor-pointer"
+            className="px-3 py-1.5 text-xs font-mono bg-zinc-950 text-zinc-300 hover:bg-zinc-800 border border-zinc-800 rounded-lg transition-colors cursor-pointer"
             title="Toggle authentic 24fps cartoon step vs 60fps interpolation"
           >
             {config.fpsMode} FPS
@@ -683,7 +647,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
 
           <button
             onClick={takeSnapshot}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-slate-800 text-slate-200 hover:bg-slate-700 border border-slate-700 rounded-lg transition-colors cursor-pointer"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-zinc-950 text-zinc-200 hover:bg-zinc-800 border border-zinc-800 rounded-lg transition-colors cursor-pointer"
             title="Download 1080x1920 PNG snapshot of current frame"
           >
             <Camera className="w-3.5 h-3.5" />
@@ -693,7 +657,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
           {onOpenExport && (
             <button
               onClick={onOpenExport}
-              className="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold bg-rose-600 hover:bg-rose-500 text-white rounded-lg shadow-sm transition-colors cursor-pointer"
+              className="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold bg-white hover:bg-zinc-200 text-zinc-950 rounded-lg shadow-sm transition-colors cursor-pointer"
               title="Export 1080x1920 MP4/WebM with custom speed & synchronized audio"
             >
               <Download className="w-3.5 h-3.5" />
@@ -729,7 +693,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
                 onClick={() => setIsPlaying(true)}
                 className="absolute inset-0 bg-black/10 flex items-center justify-center transition-opacity cursor-pointer group"
               >
-                <div className="w-14 h-14 rounded-full bg-black/70 group-hover:bg-rose-600 flex items-center justify-center text-white shadow-lg transition-all transform group-hover:scale-110">
+                <div className="w-14 h-14 rounded-full bg-black/70 group-hover:bg-white group-hover:text-zinc-950 flex items-center justify-center text-white shadow-lg transition-all transform group-hover:scale-110">
                   <Play className="w-7 h-7 ml-1" />
                 </div>
               </div>
@@ -741,22 +705,22 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
         {/* Right Column: Interactive Director Desk & Timeline */}
         <div className="lg:col-span-7 space-y-5">
           {/* Active Scene Monitor Card */}
-          <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4">
+          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5 space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <span className="text-xs font-mono text-rose-400">Current Scene Beat</span>
+                <span className="text-xs font-mono text-zinc-400">Current Scene Beat</span>
                 <h3 className="text-xl font-bold text-white mt-0.5">
                   {activeScene.name}: {activeScene.title}
                 </h3>
               </div>
               <div className="text-right font-mono">
-                <div className="text-lg font-bold text-rose-400">
+                <div className="text-lg font-bold text-white">
                   {currentTime.toFixed(2)}s{' '}
-                  <span className="text-slate-400 text-xs">/ {projectDuration.toFixed(2)}s</span>
+                  <span className="text-zinc-500 text-xs">/ {projectDuration.toFixed(2)}s</span>
                 </div>
-                <div className="text-xs text-slate-400">
+                <div className="text-xs text-zinc-500">
                   Frame {currentFrame}{' '}
-                  <span className="text-slate-400 text-[10px]">/ {totalFrames}</span>
+                  <span className="text-zinc-600 text-[10px]">/ {totalFrames}</span>
                 </div>
               </div>
             </div>
@@ -774,11 +738,11 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
                   setCurrentTime(val);
                   resetAudioCues(val);
                 }}
-                className="w-full accent-rose-600 cursor-pointer h-2 bg-slate-800 rounded-lg"
+                className="w-full accent-white cursor-pointer h-2 bg-zinc-800 rounded-lg"
               />
 
               {/* Scene cut markers below the progress bar */}
-              <div className="flex justify-between text-[10px] font-mono text-slate-400 px-0.5">
+              <div className="flex justify-between text-[10px] font-mono text-zinc-500 px-0.5">
                 {projectScenes.map((scene) => (
                   <span key={scene.id}>{scene.timeRange[0].toFixed(0)}s</span>
                 ))}
@@ -787,7 +751,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
             </div>
 
             {/* Transport Button Controls */}
-            <div className="flex flex-wrap items-center justify-between gap-4 pt-2 border-t border-slate-800">
+            <div className="flex flex-wrap items-center justify-between gap-4 pt-2 border-t border-zinc-800">
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => {
@@ -796,7 +760,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
                     setIsPlaying(true);
                   }}
                   title="Restart"
-                  className="p-2 text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 rounded-lg transition-colors cursor-pointer"
+                  className="p-2 text-zinc-300 hover:text-white bg-zinc-800 hover:bg-zinc-700 rounded-lg transition-colors cursor-pointer"
                 >
                   <RotateCcw className="w-4 h-4" />
                 </button>
@@ -804,14 +768,14 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
                 <button
                   onClick={() => seekRelative(-1 / 24)}
                   title="Previous Frame (Left Arrow)"
-                  className="p-2 text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 rounded-lg transition-colors cursor-pointer"
+                  className="p-2 text-zinc-300 hover:text-white bg-zinc-800 hover:bg-zinc-700 rounded-lg transition-colors cursor-pointer"
                 >
                   <SkipBack className="w-4 h-4" />
                 </button>
 
                 <button
                   onClick={() => setIsPlaying(!isPlaying)}
-                  className="flex items-center gap-2 px-5 py-2 text-sm font-bold text-white bg-rose-600 hover:bg-rose-500 rounded-lg shadow-sm transition-colors cursor-pointer"
+                  className="flex items-center gap-2 px-5 py-2 text-sm font-bold text-zinc-950 bg-white hover:bg-zinc-200 rounded-lg shadow-sm transition-colors cursor-pointer"
                 >
                   {isPlaying ? (
                     <>
@@ -829,7 +793,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
                 <button
                   onClick={() => seekRelative(1 / 24)}
                   title="Next Frame (Right Arrow)"
-                  className="p-2 text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 rounded-lg transition-colors cursor-pointer"
+                  className="p-2 text-zinc-300 hover:text-white bg-zinc-800 hover:bg-zinc-700 rounded-lg transition-colors cursor-pointer"
                 >
                   <SkipForward className="w-4 h-4" />
                 </button>
@@ -838,8 +802,8 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
                   onClick={() => setIsLooping(!isLooping)}
                   className={`px-3 py-1.5 text-xs font-semibold rounded-lg border transition-colors cursor-pointer ${
                     isLooping
-                      ? 'bg-rose-950/60 text-rose-300 border-rose-500/80'
-                      : 'bg-slate-800 text-slate-400 border-slate-700'
+                      ? 'bg-zinc-800 text-white border-zinc-600'
+                      : 'bg-zinc-950 text-zinc-500 border-zinc-800'
                   }`}
                 >
                   Loop
@@ -847,15 +811,15 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
               </div>
 
               {/* Playback speed selector */}
-              <div className="flex items-center gap-1 bg-slate-950 p-1 rounded-lg border border-slate-800">
+              <div className="flex items-center gap-1 bg-zinc-950 p-1 rounded-lg border border-zinc-800">
                 {[0.5, 0.75, 1.0, 1.25, 1.5].map((s) => (
                   <button
                     key={s}
                     onClick={() => setSpeed(s)}
                     className={`px-2.5 py-1 text-xs font-mono rounded transition-colors cursor-pointer ${
                       speed === s
-                        ? 'bg-rose-600 text-white font-bold'
-                        : 'text-slate-400 hover:text-slate-200'
+                        ? 'bg-white text-zinc-950 font-bold'
+                        : 'text-zinc-400 hover:text-white'
                     }`}
                     title={
                       s === 0.5
@@ -873,12 +837,12 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
           </div>
 
           {/* Prompt Sync Card */}
-          <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
+          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5 space-y-3">
             <div className="flex items-center justify-between text-xs">
               <span className="font-semibold text-white">Live Pantomime Description</span>
-              <span className="text-rose-400 font-mono">Synced to current frame</span>
+              <span className="text-zinc-400 font-mono">Synced to current frame</span>
             </div>
-            <p className="text-sm text-slate-300 leading-relaxed bg-slate-950 p-3.5 rounded-lg border border-slate-800/80 font-mono text-xs">
+            <p className="text-sm text-zinc-300 leading-relaxed bg-zinc-950 p-3.5 rounded-lg border border-zinc-800/80 font-mono text-xs">
               {activeScene.videoPrompt}
             </p>
             <div className="grid grid-cols-2 gap-3 text-xs pt-1">

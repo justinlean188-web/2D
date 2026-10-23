@@ -95,7 +95,8 @@ interface PathPoint {
 }
 
 const TAU = Math.PI * 2;
-const ORANGE = '#f97316';
+// Minimalist Monochrome palette: white cartoon basketball with black seams
+const ORANGE = '#ffffff';
 
 const clamp = (v: number, min: number, max: number) => Math.max(min, Math.min(max, v));
 const lerp = (a: number, b: number, u: number) => a + (b - a) * u;
@@ -395,7 +396,7 @@ export class MachineRenderer {
     ctx.rect(-50, -50, 100, 90);
     ctx.stroke();
 
-    ctx.fillStyle = ORANGE;
+    ctx.fillStyle = '#000000';
     ctx.strokeStyle = '#000000';
     ctx.lineWidth = 6;
     ctx.beginPath();
@@ -2436,14 +2437,14 @@ export class MachineRenderer {
 
   private renderSafeZones(ctx: CanvasRenderingContext2D) {
     ctx.save();
-    ctx.strokeStyle = 'rgba(225, 29, 72, 0.45)';
+    ctx.strokeStyle = 'rgba(0, 0, 0, 0.45)';
     ctx.lineWidth = 3;
     ctx.setLineDash([12, 8]);
     ctx.strokeRect(60, 220, this.width - 120, this.height - 560);
-    ctx.fillStyle = 'rgba(225, 29, 72, 0.08)';
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.04)';
     ctx.fillRect(this.width - 160, 400, 120, 900);
     ctx.fillRect(60, this.height - 340, this.width - 120, 260);
-    ctx.fillStyle = '#e11d48';
+    ctx.fillStyle = '#111111';
     ctx.font = '600 24px "JetBrains Mono", monospace';
     ctx.fillText('9:16 MOBILE SAFE BOUNDS (1080 × 1920)', 80, 200);
     ctx.restore();

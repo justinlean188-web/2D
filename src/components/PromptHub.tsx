@@ -29,7 +29,7 @@ export const PromptHub: React.FC<PromptHubProps> = ({ activeProject }) => {
     <div className="max-w-6xl mx-auto px-4 py-8 space-y-8">
       {/* Intro */}
       <div className="space-y-2">
-        <div className="flex items-center gap-2 text-xs font-mono text-rose-400">
+        <div className="flex items-center gap-2 text-xs font-mono text-zinc-400">
           <span>Active Project</span>
           <span>·</span>
           <span>{currentProject.title}</span>
@@ -47,7 +47,7 @@ export const PromptHub: React.FC<PromptHubProps> = ({ activeProject }) => {
       <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Film className="w-5 h-5 text-rose-500" />
+            <Film className="w-5 h-5 text-zinc-300" />
             <h3 className="text-lg font-semibold text-white">Master Prompt & Constraints</h3>
           </div>
           <button
@@ -89,7 +89,7 @@ export const PromptHub: React.FC<PromptHubProps> = ({ activeProject }) => {
             <div key={scene.id} className="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
               <div className="flex items-start justify-between gap-4">
                 <div>
-                  <div className="flex items-center gap-2 text-xs text-rose-400 font-mono">
+                  <div className="flex items-center gap-2 text-xs text-zinc-400 font-mono">
                     <span>{scene.name}</span>
                     <span>·</span>
                     <span>{scene.timeRange[0].toFixed(1)}s – {scene.timeRange[1].toFixed(1)}s</span>
@@ -151,7 +151,7 @@ export const PromptHub: React.FC<PromptHubProps> = ({ activeProject }) => {
           <>
             <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-3">
               <div className="flex items-center gap-2">
-                <Film className="w-4 h-4 text-rose-500" />
+                <Film className="w-4 h-4 text-zinc-300" />
                 <h4 className="text-sm font-semibold text-white">Coin-Flip Continuity Constraints</h4>
               </div>
               <ul className="text-xs text-slate-300 space-y-2 leading-relaxed">
@@ -168,7 +168,7 @@ export const PromptHub: React.FC<PromptHubProps> = ({ activeProject }) => {
 
             <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-3">
               <div className="flex items-center gap-2">
-                <Volume2 className="w-4 h-4 text-rose-500" />
+                <Volume2 className="w-4 h-4 text-zinc-300" />
                 <h4 className="text-sm font-semibold text-white">Coin-Flip SFX Map</h4>
               </div>
               <ul className="text-xs text-slate-300 space-y-2 leading-relaxed">
@@ -185,7 +185,7 @@ export const PromptHub: React.FC<PromptHubProps> = ({ activeProject }) => {
           <>
             <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-3">
               <div className="flex items-center gap-2">
-                <Film className="w-4 h-4 text-rose-500" />
+                <Film className="w-4 h-4 text-zinc-300" />
                 <h4 className="text-sm font-semibold text-white">Dart-Shot Continuity Constraints</h4>
               </div>
               <ul className="text-xs text-slate-300 space-y-2 leading-relaxed">
@@ -201,7 +201,7 @@ export const PromptHub: React.FC<PromptHubProps> = ({ activeProject }) => {
 
             <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-3">
               <div className="flex items-center gap-2">
-                <Volume2 className="w-4 h-4 text-rose-500" />
+                <Volume2 className="w-4 h-4 text-zinc-300" />
                 <h4 className="text-sm font-semibold text-white">Dart-Shot SFX Map</h4>
               </div>
               <ul className="text-xs text-slate-300 space-y-2 leading-relaxed">
@@ -218,7 +218,7 @@ export const PromptHub: React.FC<PromptHubProps> = ({ activeProject }) => {
           <>
             <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-3">
               <div className="flex items-center gap-2">
-                <Film className="w-4 h-4 text-rose-500" />
+                <Film className="w-4 h-4 text-zinc-300" />
                 <h4 className="text-sm font-semibold text-white">One-Room Continuity Constraints</h4>
               </div>
               <ul className="text-xs text-slate-300 space-y-2 leading-relaxed">
@@ -233,7 +233,7 @@ export const PromptHub: React.FC<PromptHubProps> = ({ activeProject }) => {
 
             <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-3">
               <div className="flex items-center gap-2">
-                <Volume2 className="w-4 h-4 text-rose-500" />
+                <Volume2 className="w-4 h-4 text-zinc-300" />
                 <h4 className="text-sm font-semibold text-white">Ping-Pong SFX Map</h4>
               </div>
               <ul className="text-xs text-slate-300 space-y-2 leading-relaxed">
@@ -250,7 +250,7 @@ export const PromptHub: React.FC<PromptHubProps> = ({ activeProject }) => {
           <>
             <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-3">
               <div className="flex items-center gap-2">
-                <Film className="w-4 h-4 text-rose-500" />
+                <Film className="w-4 h-4 text-zinc-300" />
                 <h4 className="text-sm font-semibold text-white">Championship Continuity Constraints</h4>
               </div>
               <ul className="text-xs text-slate-300 space-y-2 leading-relaxed">
@@ -265,7 +265,7 @@ export const PromptHub: React.FC<PromptHubProps> = ({ activeProject }) => {
 
             <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-3">
               <div className="flex items-center gap-2">
-                <Volume2 className="w-4 h-4 text-rose-500" />
+                <Volume2 className="w-4 h-4 text-zinc-300" />
                 <h4 className="text-sm font-semibold text-white">Trick-Shot SFX Map</h4>
               </div>
               <ul className="text-xs text-slate-300 space-y-2 leading-relaxed">
@@ -282,7 +282,7 @@ export const PromptHub: React.FC<PromptHubProps> = ({ activeProject }) => {
           <>
             <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-3">
               <div className="flex items-center gap-2">
-                <Film className="w-4 h-4 text-rose-500" />
+                <Film className="w-4 h-4 text-zinc-300" />
                 <h4 className="text-sm font-semibold text-white">Shorts Continuity Constraints</h4>
               </div>
               <ul className="text-xs text-slate-300 space-y-2 leading-relaxed">
@@ -297,7 +297,7 @@ export const PromptHub: React.FC<PromptHubProps> = ({ activeProject }) => {
 
             <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-3">
               <div className="flex items-center gap-2">
-                <Volume2 className="w-4 h-4 text-rose-500" />
+                <Volume2 className="w-4 h-4 text-zinc-300" />
                 <h4 className="text-sm font-semibold text-white">Pop Star SFX Map</h4>
               </div>
               <ul className="text-xs text-slate-300 space-y-2 leading-relaxed">
@@ -315,7 +315,7 @@ export const PromptHub: React.FC<PromptHubProps> = ({ activeProject }) => {
           <>
             <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-3">
               <div className="flex items-center gap-2">
-                <Film className="w-4 h-4 text-rose-500" />
+                <Film className="w-4 h-4 text-zinc-300" />
                 <h4 className="text-sm font-semibold text-white">Shorts Continuity Constraints</h4>
               </div>
               <ul className="text-xs text-slate-300 space-y-2 leading-relaxed">
@@ -330,7 +330,7 @@ export const PromptHub: React.FC<PromptHubProps> = ({ activeProject }) => {
 
             <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-3">
               <div className="flex items-center gap-2">
-                <Volume2 className="w-4 h-4 text-rose-500" />
+                <Volume2 className="w-4 h-4 text-zinc-300" />
                 <h4 className="text-sm font-semibold text-white">Episode 4 SFX Map</h4>
               </div>
               <ul className="text-xs text-slate-300 space-y-2 leading-relaxed">
@@ -347,7 +347,7 @@ export const PromptHub: React.FC<PromptHubProps> = ({ activeProject }) => {
           <>
             <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-3">
               <div className="flex items-center gap-2">
-                <Film className="w-4 h-4 text-rose-500" />
+                <Film className="w-4 h-4 text-zinc-300" />
                 <h4 className="text-sm font-semibold text-white">Series Continuity Constraints</h4>
               </div>
               <ul className="text-xs text-slate-300 space-y-2 leading-relaxed">
@@ -363,7 +363,7 @@ export const PromptHub: React.FC<PromptHubProps> = ({ activeProject }) => {
 
             <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-3">
               <div className="flex items-center gap-2">
-                <Volume2 className="w-4 h-4 text-rose-500" />
+                <Volume2 className="w-4 h-4 text-zinc-300" />
                 <h4 className="text-sm font-semibold text-white">Part 3 SFX Map</h4>
               </div>
               <ul className="text-xs text-slate-300 space-y-2 leading-relaxed">
@@ -382,7 +382,7 @@ export const PromptHub: React.FC<PromptHubProps> = ({ activeProject }) => {
           <>
             <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-3">
               <div className="flex items-center gap-2">
-                <Film className="w-4 h-4 text-rose-500" />
+                <Film className="w-4 h-4 text-zinc-300" />
                 <h4 className="text-sm font-semibold text-white">Sequel Continuity Constraints</h4>
               </div>
               <ul className="text-xs text-slate-300 space-y-2 leading-relaxed">
@@ -397,7 +397,7 @@ export const PromptHub: React.FC<PromptHubProps> = ({ activeProject }) => {
 
             <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-3">
               <div className="flex items-center gap-2">
-                <Volume2 className="w-4 h-4 text-rose-500" />
+                <Volume2 className="w-4 h-4 text-zinc-300" />
                 <h4 className="text-sm font-semibold text-white">Episode 2 SFX Map</h4>
               </div>
               <ul className="text-xs text-slate-300 space-y-2 leading-relaxed">
@@ -416,7 +416,7 @@ export const PromptHub: React.FC<PromptHubProps> = ({ activeProject }) => {
           <>
             <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-3">
               <div className="flex items-center gap-2">
-                <Film className="w-4 h-4 text-rose-500" />
+                <Film className="w-4 h-4 text-zinc-300" />
                 <h4 className="text-sm font-semibold text-white">Visual & Continuity Constraints</h4>
               </div>
               <ul className="text-xs text-slate-300 space-y-2 leading-relaxed">
@@ -430,7 +430,7 @@ export const PromptHub: React.FC<PromptHubProps> = ({ activeProject }) => {
 
             <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-3">
               <div className="flex items-center gap-2">
-                <Volume2 className="w-4 h-4 text-rose-500" />
+                <Volume2 className="w-4 h-4 text-zinc-300" />
                 <h4 className="text-sm font-semibold text-white">30-Second SFX Map</h4>
               </div>
               <ul className="text-xs text-slate-300 space-y-2 leading-relaxed">
@@ -449,7 +449,7 @@ export const PromptHub: React.FC<PromptHubProps> = ({ activeProject }) => {
           <>
             <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-3">
               <div className="flex items-center gap-2">
-                <Film className="w-4 h-4 text-rose-500" />
+                <Film className="w-4 h-4 text-zinc-300" />
                 <h4 className="text-sm font-semibold text-white">Visual & Animation Constraints</h4>
               </div>
               <ul className="text-xs text-slate-300 space-y-2 leading-relaxed">
@@ -462,7 +462,7 @@ export const PromptHub: React.FC<PromptHubProps> = ({ activeProject }) => {
 
             <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-3">
               <div className="flex items-center gap-2">
-                <Volume2 className="w-4 h-4 text-rose-500" />
+                <Volume2 className="w-4 h-4 text-zinc-300" />
                 <h4 className="text-sm font-semibold text-white">Acoustic Cartoon Timing</h4>
               </div>
               <ul className="text-xs text-slate-300 space-y-2 leading-relaxed">
@@ -480,7 +480,7 @@ export const PromptHub: React.FC<PromptHubProps> = ({ activeProject }) => {
           <>
             <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-3">
               <div className="flex items-center gap-2">
-                <Mic className="w-4 h-4 text-rose-500" />
+                <Mic className="w-4 h-4 text-zinc-300" />
                 <h4 className="text-sm font-semibold text-white">Voice-Over Direction</h4>
               </div>
               <ul className="text-xs text-slate-300 space-y-2 leading-relaxed">
@@ -492,7 +492,7 @@ export const PromptHub: React.FC<PromptHubProps> = ({ activeProject }) => {
 
             <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-3">
               <div className="flex items-center gap-2">
-                <Volume2 className="w-4 h-4 text-rose-500" />
+                <Volume2 className="w-4 h-4 text-zinc-300" />
                 <h4 className="text-sm font-semibold text-white">Audio & Editing Design</h4>
               </div>
               <ul className="text-xs text-slate-300 space-y-2 leading-relaxed">

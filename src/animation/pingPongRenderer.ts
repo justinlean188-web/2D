@@ -93,7 +93,8 @@ interface BookState {
 }
 
 const TAU = Math.PI * 2;
-const ORANGE = '#f97316';
+// Minimalist Monochrome palette: white tournament ball, stark black ink outlines
+const ORANGE = '#ffffff';
 const INK = '#000000';
 const CUP_GREY = '#ededed';
 
@@ -244,7 +245,7 @@ export class PingPongRenderer {
       ctx.lineWidth = Math.max(8, Math.round(size * 0.2));
       ctx.strokeStyle = '#000000';
       ctx.strokeText(caption.text, this.width / 2, 1704);
-      ctx.fillStyle = ORANGE;
+      ctx.fillStyle = '#ffffff';
       ctx.fillText(caption.text, this.width / 2, 1704);
       ctx.restore();
     }
@@ -322,13 +323,13 @@ export class PingPongRenderer {
 
   private renderSafeZones(ctx: CanvasRenderingContext2D) {
     ctx.save();
-    ctx.strokeStyle = 'rgba(225, 29, 72, 0.85)';
+    ctx.strokeStyle = 'rgba(0, 0, 0, 0.45)';
     ctx.lineWidth = 3;
     ctx.setLineDash([14, 12]);
     ctx.strokeRect(54, 96, this.width - 108, this.height - 192);
     ctx.setLineDash([]);
 
-    ctx.fillStyle = 'rgba(225, 29, 72, 0.9)';
+    ctx.fillStyle = '#111111';
     ctx.font = '700 26px Arial, Helvetica, sans-serif';
     ctx.textAlign = 'left';
     ctx.fillText('9:16 SAFE AREA', 66, 76);

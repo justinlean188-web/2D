@@ -38,23 +38,23 @@ export const SceneTimeline: React.FC<SceneTimelineProps> = ({
               key={scene.id}
               className={`relative group p-6 rounded-xl border transition-all ${
                 isActive
-                  ? 'bg-slate-900/90 border-rose-500 shadow-lg shadow-rose-950/20'
-                  : 'bg-slate-900/40 border-slate-800 hover:border-slate-700'
+                  ? 'bg-zinc-900 border-white shadow-lg shadow-black/40 ring-1 ring-white/10'
+                  : 'bg-zinc-900/40 border-zinc-800 hover:border-zinc-700'
               }`}
             >
               {/* Dot on the vertical timeline track */}
               <div
                 className={`absolute -left-[31px] top-7 w-3.5 h-3.5 rounded-full border-2 transition-all ${
                   isActive
-                    ? 'bg-rose-500 border-white ring-4 ring-rose-500/20'
-                    : 'bg-slate-900 border-slate-700 group-hover:border-rose-400'
+                    ? 'bg-white border-zinc-950 ring-4 ring-white/20'
+                    : 'bg-zinc-900 border-zinc-700 group-hover:border-zinc-400'
                 }`}
               />
 
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-800/80">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-zinc-800/80">
                 <div>
-                  <div className="flex items-center gap-2 text-xs font-mono text-rose-400">
-                    <Clock className="w-3.5 h-3.5" />
+                  <div className="flex items-center gap-2 text-xs font-mono text-zinc-400">
+                    <Clock className="w-3.5 h-3.5 text-zinc-300" />
                     <span>
                       {scene.timeRange[0].toFixed(1)}s – {scene.timeRange[1].toFixed(1)}s
                     </span>
@@ -68,10 +68,10 @@ export const SceneTimeline: React.FC<SceneTimelineProps> = ({
 
                 <button
                   onClick={() => onSelectScene(scene)}
-                  className={`flex items-center gap-2 px-4 py-2 text-xs font-semibold rounded-lg transition-colors cursor-pointer shrink-0 ${
+                  className={`flex items-center gap-2 px-4 py-2 text-xs font-bold rounded-lg transition-colors cursor-pointer shrink-0 ${
                     isActive
-                      ? 'bg-rose-600 text-white'
-                      : 'bg-slate-800 hover:bg-slate-700 text-slate-200'
+                      ? 'bg-white text-zinc-950 shadow-sm hover:bg-zinc-200'
+                      : 'bg-zinc-800 hover:bg-zinc-700 text-zinc-200'
                   }`}
                 >
                   <Play className="w-3.5 h-3.5" />
@@ -81,32 +81,32 @@ export const SceneTimeline: React.FC<SceneTimelineProps> = ({
 
               {/* Grid content */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 text-xs">
-                <div className="p-3 bg-slate-950 rounded-lg border border-slate-800/60 space-y-1.5">
-                  <div className="text-slate-400 font-semibold uppercase tracking-wider text-[10px]">
+                <div className="p-3 bg-zinc-950 rounded-lg border border-zinc-800/60 space-y-1.5">
+                  <div className="text-zinc-400 font-semibold uppercase tracking-wider text-[10px]">
                     Main Character (Stickman)
                   </div>
-                  <div className="text-slate-200 leading-relaxed">{scene.characterAction}</div>
+                  <div className="text-zinc-200 leading-relaxed">{scene.characterAction}</div>
                 </div>
 
-                <div className="p-3 bg-slate-950 rounded-lg border border-slate-800/60 space-y-1.5">
-                  <div className="text-slate-400 font-semibold uppercase tracking-wider text-[10px]">
+                <div className="p-3 bg-zinc-950 rounded-lg border border-zinc-800/60 space-y-1.5">
+                  <div className="text-zinc-400 font-semibold uppercase tracking-wider text-[10px]">
                     {isPaperBallProject(activeProject) ? 'Prop & Physics Action' : 'Shadow Silhouette'}
                   </div>
-                  <div className="text-slate-200 leading-relaxed">
+                  <div className="text-zinc-200 leading-relaxed">
                     {isPaperBallProject(activeProject) ? scene.propAction : scene.shadowAction}
                   </div>
                 </div>
               </div>
 
               {/* Sound & Punchline banner */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mt-4 pt-3 border-t border-slate-800/40 text-xs">
-                <div className="text-slate-400">
-                  <span className="text-slate-500 font-medium">Audio: </span>
-                  <span className="text-slate-300">{scene.soundDesc}</span>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mt-4 pt-3 border-t border-zinc-800/40 text-xs">
+                <div className="text-zinc-400">
+                  <span className="text-zinc-500 font-medium">Audio: </span>
+                  <span className="text-zinc-300">{scene.soundDesc}</span>
                 </div>
-                <div className="flex items-center gap-1.5 text-rose-400">
-                  <Sparkles className="w-3.5 h-3.5" />
-                  <span className="font-medium">{scene.punchline}</span>
+                <div className="flex items-center gap-1.5 text-zinc-300">
+                  <Sparkles className="w-3.5 h-3.5 text-white" />
+                  <span className="font-semibold">{scene.punchline}</span>
                 </div>
               </div>
             </div>

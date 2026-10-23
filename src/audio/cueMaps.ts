@@ -437,125 +437,31 @@ export const DART_SHOT_CUES: AudioCue[] = [
 ];
 
 /**
- * Complete 30-second sound map for "THE ANGRY STICKMAN: ROOFTOP PAPER AIRPLANE TRICKSHOT".
- * One list drives both the preview and the export track.
+ * Complete 30-second sound map for "Angry Stickman: Mind Traps & The Red Cage".
+ * Drives both preview and video export.
  */
-/**
- * Complete 30-second sound map for "THE ANGRY STICKMAN: BOWLING MARBLE TRICKSHOT".
- * One list drives both the preview and the export track.
- */
-export const BOWLING_STRIKE_CUES: AudioCue[] = [
-  // Background comedy score sections (sliced in 7.5s chunks for export safety)
-  { id: 'bs-score-1', time: 0.0, play: (d) => soundEngine.playCoinFlipScoreSection(d, 0, 7.5) },
-  { id: 'bs-score-2', time: 7.5, play: (d) => soundEngine.playCoinFlipScoreSection(d, 7.5, 15.0) },
-  { id: 'bs-score-3', time: 15.0, play: (d) => soundEngine.playCoinFlipScoreSection(d, 15.0, 22.5) },
-  { id: 'bs-score-4', time: 22.5, play: (d) => soundEngine.playCoinFlipScoreSection(d, 22.5, 30.0) },
-
-  // Scene 1: The Challenge (0-5s)
-  { id: 'bs-marble-twinkle', time: 0.5, play: (d) => soundEngine.playMicSparkle(d) },
-  { id: 'bs-confident-ding', time: 1.2, play: (d) => soundEngine.playConfidenceDing(d) },
-  { id: 'bs-point-whoosh', time: 2.2, play: (d) => soundEngine.playWhoosh(d) },
-  { id: 'bs-windup-squeak', time: 4.2, play: (d) => soundEngine.playSqueak(d) },
-
-  // Scene 2: Epic Failure (5-9s)
-  { id: 'bs-marble-roll-slow', time: 5.2, play: (d) => soundEngine.playMarbleRoll(d) },
-  { id: 'bs-slowmo-whistle', time: 6.0, play: (d) => soundEngine.playWhoosh(d) },
-  { id: 'bs-stomp-thump', time: 7.4, play: (d) => soundEngine.playFloorThump(d) },
-  { id: 'bs-wind-whoosh', time: 7.8, play: (d) => soundEngine.playWhoosh(d) },
-  { id: 'bs-pin-topple-single', time: 8.3, play: (d) => soundEngine.playPinImpact(d, 0.7) },
-
-  // Scene 3: The Invention (9-15s)
-  { id: 'bs-rage-growl', time: 9.3, play: (d) => soundEngine.playDramaticRumble(d) },
-  { id: 'bs-build-clank-1', time: 10.4, play: (d) => soundEngine.playMechanicalClick(d) },
-  { id: 'bs-build-clank-2', time: 11.2, play: (d) => soundEngine.playClipboardTap(d) },
-  { id: 'bs-spring-boing-1', time: 12.0, play: (d) => soundEngine.playRubberBandTwang(d) },
-  { id: 'bs-marble-load', time: 13.0, play: (d) => soundEngine.playCoinTing(d) },
-  { id: 'bs-lever-pull', time: 14.1, play: (d) => soundEngine.playRubberBandTwang(d) },
-  { id: 'bs-tension-heartbeat', time: 14.6, play: (d) => soundEngine.playHeartbeat(d) },
-
-  // Scene 4: The Perfect Shot (15-22s)
-  { id: 'bs-launch-fire', time: 15.02, play: (d) => soundEngine.playLauncherFire(d) },
-  { id: 'bs-wall-bonk', time: 15.75, play: (d) => soundEngine.playWallBounce(d) },
-  { id: 'bs-pipe-clang', time: 16.7, play: (d) => soundEngine.playRimClink(d) },
-  { id: 'bs-lane-zip', time: 17.6, play: (d) => soundEngine.playMarbleRoll(d) },
-  { id: 'bs-strike-crash', time: 18.85, play: (d) => soundEngine.playBowlingStrikeCrash(d) },
-  { id: 'bs-victory-fanfare', time: 19.8, play: (d) => soundEngine.playVictoryFanfare(d) },
-  { id: 'bs-crowd-cheer', time: 20.2, play: (d) => soundEngine.playCrowdCheer(d) },
-
-  // Scene 5: The Revenge of the Pins (22-27s)
-  { id: 'bs-bumper-rebound', time: 22.6, play: (d) => soundEngine.playPinImpact(d, 0.9) },
-  { id: 'bs-pins-rolling-rumble', time: 23.5, play: (d) => soundEngine.playFloorThump(d) },
-  { id: 'bs-pins-rolling-clatter', time: 24.2, play: (d) => soundEngine.playPinImpact(d, 0.6) },
-  { id: 'bs-record-scratch', time: 25.1, play: (d) => soundEngine.playRecordScratch(d) },
-  { id: 'bs-horror-rumble', time: 25.8, play: (d) => soundEngine.playDramaticRumble(d) },
-
-  // Scene 6: The Punchline (27-30s)
-  { id: 'bs-pins-pile-crash', time: 27.2, play: (d) => soundEngine.playBowlingStrikeCrash(d) },
-  { id: 'bs-marble-roll-out', time: 28.1, play: (d) => soundEngine.playMarbleRoll(d) },
-  { id: 'bs-final-pin-dink', time: 28.6, play: (d) => soundEngine.playPinImpact(d, 0.65) },
-  { id: 'bs-muffled-scream', time: 28.9, play: (d) => soundEngine.playMuffledScream(d) },
-  { id: 'bs-freeze-horn', time: 29.8, play: (d) => soundEngine.playConfidenceDing(d) },
+export const MIND_TRAPS_CUES: AudioCue[] = [
+  { id: 'mt-rumble-open', time: 0.2, play: (d) => soundEngine.playDramaticRumble(d) },
+  { id: 'mt-cage-creak', time: 1.2, play: (d) => soundEngine.playSqueak(d) },
+  { id: 'mt-heart-1', time: 2.2, play: (d) => soundEngine.playHeartbeat(d) },
+  { id: 'mt-heart-2', time: 3.4, play: (d) => soundEngine.playHeartbeat(d) },
+  { id: 'mt-meter-tick-1', time: 5.2, play: (d) => soundEngine.playClipboardTap(d) },
+  { id: 'mt-meter-tick-2', time: 6.2, play: (d) => soundEngine.playClipboardTap(d) },
+  { id: 'mt-meter-tick-3', time: 7.2, play: (d) => soundEngine.playClipboardTap(d) },
+  { id: 'mt-alarm', time: 8.4, play: (d) => soundEngine.playCalculatorBeep(d) },
+  { id: 'mt-steam', time: 9.0, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'mt-stomp', time: 10.4, play: (d) => soundEngine.playFloorThump(d) },
+  { id: 'mt-gavel-windup', time: 12.0, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'mt-gavel-slam', time: 12.8, play: (d) => soundEngine.playTrashCrash(d) },
+  { id: 'mt-column-crack', time: 13.0, play: (d) => soundEngine.playFloorThump(d) },
+  { id: 'mt-step-1', time: 16.2, play: (d) => soundEngine.playFootstep(false) },
+  { id: 'mt-step-2', time: 16.7, play: (d) => soundEngine.playFootstep(false) },
+  { id: 'mt-calc-ding', time: 17.8, play: (d) => soundEngine.playConfidenceDing(d) },
+  { id: 'mt-leap', time: 18.5, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'mt-land', time: 19.8, play: (d) => soundEngine.playFloorThump(d) },
+  { id: 'mt-swing-whoosh', time: 22.4, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'mt-shatter', time: 23.2, play: (d) => soundEngine.playTrashCrash(d) },
+  { id: 'mt-rumble-end', time: 23.6, play: (d) => soundEngine.playDramaticRumble(d) },
+  { id: 'mt-clarity-chime', time: 26.6, play: (d) => soundEngine.playConfidenceDing(d) },
+  { id: 'mt-thumbs-sparkle', time: 28.5, play: (d) => soundEngine.playMicSparkle(d) },
 ];
-
-export const ROOFTOP_PLANE_CUES: AudioCue[] = [
-  // Background comedy score sections (sliced in 7.5s chunks for export safety)
-  { id: 'rp-score-1', time: 0.0, play: (d) => soundEngine.playCoinFlipScoreSection(d, 0, 7.5) },
-  { id: 'rp-score-2', time: 7.5, play: (d) => soundEngine.playCoinFlipScoreSection(d, 7.5, 15.0) },
-  { id: 'rp-score-3', time: 15.0, play: (d) => soundEngine.playCoinFlipScoreSection(d, 15.0, 22.5) },
-  { id: 'rp-score-4', time: 22.5, play: (d) => soundEngine.playCoinFlipScoreSection(d, 22.5, 30.0) },
-
-  // Scene 1: Rooftop wind, confident stance, throw & wall smack
-  { id: 'rp-wind-open', time: 0.2, play: (d) => soundEngine.playWhoosh(d) },
-  { id: 'rp-confident', time: 0.8, play: (d) => soundEngine.playConfidenceDing(d) },
-  { id: 'rp-throw-1', time: 2.65, play: (d) => soundEngine.playWhoosh(d) },
-  { id: 'rp-wall-smack', time: 3.52, play: (d) => soundEngine.playWallBounce(d) },
-  { id: 'rp-wall-flop', time: 3.75, play: (d) => soundEngine.playDeskPlop(d) },
-  { id: 'rp-squeak-twitch', time: 4.3, play: (d) => soundEngine.playSqueak(d) },
-
-  // Scene 2: Second plane, AC bounce, orbit, coffee cup landing, angry throw
-  { id: 'rp-plane2-pull', time: 5.2, play: (d) => soundEngine.playClipboardTap(d) },
-  { id: 'rp-throw-2', time: 5.85, play: (d) => soundEngine.playWhoosh(d) },
-  { id: 'rp-ac-boing', time: 6.62, play: (d) => soundEngine.playRimClink(d) },
-  { id: 'rp-orbit-whoosh', time: 7.25, play: (d) => soundEngine.playWhoosh(d) },
-  { id: 'rp-cup1-plop', time: 7.92, play: (d) => soundEngine.playCoffeeDrip(d) },
-  { id: 'rp-glare-squeak', time: 8.4, play: (d) => soundEngine.playSqueak(d) },
-  { id: 'rp-cup-throw', time: 9.25, play: (d) => soundEngine.playWhoosh(d) },
-  { id: 'rp-cup-crash', time: 9.85, play: (d) => soundEngine.playFloorThump(d) },
-
-  // Scene 3: Crazy idea, building launcher, loading & tension
-  { id: 'rp-idea-ding', time: 10.25, play: (d) => soundEngine.playConfidenceDing(d) },
-  { id: 'rp-mop-cone-1', time: 11.35, play: (d) => soundEngine.playDeskPlop(d) },
-  { id: 'rp-mop-cone-2', time: 12.15, play: (d) => soundEngine.playClipboardTap(d) },
-  { id: 'rp-bands-twang', time: 12.85, play: (d) => soundEngine.playRubberBandTwang(d) },
-  { id: 'rp-load-click', time: 13.55, play: (d) => soundEngine.playMechanicalClick(d) },
-  { id: 'rp-pull-stretch', time: 14.1, play: (d) => soundEngine.playRubberBandTwang(d) },
-  { id: 'rp-heartbeat-1', time: 14.8, play: (d) => soundEngine.playHeartbeat(d) },
-  { id: 'rp-heartbeat-2', time: 15.5, play: (d) => soundEngine.playHeartbeat(d) },
-
-  // Scene 4: Incredible launch, obstacle ricochets, tiny window swish, wild celebration
-  { id: 'rp-launch-blast', time: 16.02, play: (d) => soundEngine.playLauncherFire(d) },
-  { id: 'rp-gap-whoosh', time: 16.9, play: (d) => soundEngine.playWhoosh(d) },
-  { id: 'rp-tank-curve', time: 18.2, play: (d) => soundEngine.playWhoosh(d) },
-  { id: 'rp-dish-boing', time: 19.45, play: (d) => soundEngine.playRimClink(d) },
-  { id: 'rp-dish-shimmer', time: 19.6, play: (d) => soundEngine.playMicSparkle(d) },
-  { id: 'rp-window-swish', time: 20.85, play: (d) => soundEngine.playConfidenceDing(d) },
-  { id: 'rp-fanfare', time: 21.6, play: (d) => soundEngine.playVictoryFanfare(d) },
-  { id: 'rp-cheer', time: 21.9, play: (d) => soundEngine.playCrowdCheer(d) },
-
-  // Scene 5: Reveal cup landing, panel teeter, catapult catapulting cup into air, horror turn
-  { id: 'rp-cup2-dock', time: 23.85, play: (d) => soundEngine.playDeskPlop(d) },
-  { id: 'rp-panel-creak', time: 24.6, play: (d) => soundEngine.playSqueak(d) },
-  { id: 'rp-panel-launch', time: 25.35, play: (d) => soundEngine.playFloorThump(d) },
-  { id: 'rp-cup-flying', time: 25.6, play: (d) => soundEngine.playWhoosh(d) },
-  { id: 'rp-horror-rumble', time: 26.25, play: (d) => soundEngine.playDramaticRumble(d) },
-
-  // Scene 6: Cup drops upside down on head, plane docks, triumph, drip, rage scream & freeze
-  { id: 'rp-cup-head-bonk', time: 27.28, play: (d) => soundEngine.playHeadBonk(d) },
-  { id: 'rp-plane-dock', time: 27.75, play: (d) => soundEngine.playConfidenceDing(d) },
-  { id: 'rp-triumph-chime', time: 28.1, play: (d) => soundEngine.playMicSparkle(d) },
-  { id: 'rp-coffee-drip-1', time: 28.75, play: (d) => soundEngine.playCoffeeDrip(d) },
-  { id: 'rp-coffee-drip-2', time: 29.1, play: (d) => soundEngine.playCoffeeDrip(d) },
-  { id: 'rp-angry-scream', time: 29.42, play: (d) => soundEngine.playAngryScream(d) },
-  { id: 'rp-freeze-hit', time: 29.82, play: (d) => soundEngine.playRecordScratch(d) },
-];
-

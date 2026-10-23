@@ -1,6 +1,6 @@
 import { StudioConfig } from '../types';
 import { ExportTimelineRenderer } from '../utils/exportVideo';
-import { RankingItem, ViralRankProject } from './types';
+import { CaptionStyle, EffectType, RankingItem, ViralRankProject } from './types';
 
 const TAU = Math.PI * 2;
 
@@ -147,13 +147,17 @@ export class ViralRankRenderer implements ExportTimelineRenderer {
     // 4. TOP HEADLINE (e.g. "Ranking Best Pool Fails" with "Ranking Best" in white and "Pool Fails" in red)
     this.drawTopHeadline(ctx, W);
 
-    // 5. LEFT-BOTTOM RANKINGS COLUMN (1., 2., 3. Aaaah💀, 4., 5., 6.)
-    //    Hidden entirely when the preview's Ranks switch is off.
-    if (beat && this.project.showRankingNumbers !== false) {
+    // 5. LEFT-SIDE VERTICAL RANKINGS COLUMN (1., 2., 3. Aaaah💀, 4., 5., 6.)
+    if (beat) {
       this.drawRankingLadder(ctx, beat.itemIndex, beat.clipLocalTime);
     }
 
-    // 6. SAFE ZONES (if enabled)
+    // 6. ACTIVE SFX VISUAL POP (e.g. 💥 SPLAT, 🌊 SPLASH, 📢 CHEER)
+    if (beat) {
+      this.drawSFXToast(ctx, beat.item, beat.clipLocalTime);
+    }
+
+    // 7. SAFE ZONES (if enabled)
     if (showSafeZones) {
       this.drawSafeZones(ctx, W, H);
     }
@@ -212,9 +216,16 @@ export class ViralRankRenderer implements ExportTimelineRenderer {
   }
 
   /**
-   * Renders the vertical ranking numbers column in the left-bottom of the
-   * safe area: the last rank sits just above the caption band and the column
-   * grows upwards, so the active rank is always readable over the video.
+   * Renders the vertical ranking numbers column on the left side:
+   * 1.
+   * 2.
+   * 3. Aaaah💀 (Active rank with highlighted number + white title)
+   * 4.
+   * 5.
+   * 6.
+   */
+  /**
+   * Renders the vertical ranking numbers column on the left side:
    * Visually sorted from small to large (1. at top down to 6. at bottom),
    * while the playback processes from large to small (6 down to 1)!
    */
@@ -231,14 +242,11 @@ export class ViralRankRenderer implements ExportTimelineRenderer {
     const activeItem = items[activeIdx];
 
     ctx.save();
-    const leftX = 64;
+    const leftX = 75;
+    const startY = 380;
     const totalSlots = Math.max(sortedByRank.length, 6);
     // Dynamic row spacing based on total slots
     const rowGap = Math.min(105, 780 / totalSlots);
-    // Anchor the column to the bottom-left of the safe area. The caption band
-    // starts at H - 380, so the last row stops just above it.
-    const bottomY = this.height - 430;
-    const startY = bottomY - (sortedByRank.length - 1) * rowGap;
 
     sortedByRank.forEach((item, slotIdx) => {
       const y = startY + slotIdx * rowGap;
@@ -474,6 +482,86 @@ export class ViralRankRenderer implements ExportTimelineRenderer {
     ctx.restore();
 
     ctx.restore();
+  }
+
+  /**
+   * Sound effect trigger toast badge (e.g. 💥 SPLAT!, 🌊 SPLASH!)
+   */
+  private drawSFXToast(
+    ctx: CanvasRenderingContext2D,
+    item: RankingItem,
+    clipTime: number
+  ) {
+    const activeSfx = item.soundEffects.find((s) => {
+      const dt = clipTime - s.clipOffset;
+      return dt >= 0 && dt <= 0.45;
+    });
+
+    if (!activeSfx) return;
+
+    const dt = clipTime - activeSfx.clipOffset;
+    const progress = dt / 0.45;
+    const scale = 1.0 + Math.sin(progress * Math.PI) * 0.35;
+    const alpha = 1.0 - progress * 0.55;
+
+    ctx.save();
+    const cx = this.width / 2;
+    const cy = 250;
+
+    ctx.translate(cx, cy);
+    ctx.scale(scale, scale);
+
+    const emoji = this.getEffectEmoji(activeSfx.effectType);
+    const label = `${emoji} ${(activeSfx.label || activeSfx.effectType).toUpperCase()}`;
+
+    ctx.font = '900 38px system-ui, -apple-system, sans-serif';
+    const textW = ctx.measureText(label).width + 48;
+
+    ctx.fillStyle = `#020617${Math.floor(alpha * 230).toString(16).padStart(2, '0')}`;
+    ctx.strokeStyle = this.project.accentColor || '#ef4444';
+    ctx.lineWidth = 3.5;
+    ctx.beginPath();
+    ctx.roundRect(-textW / 2, -34, textW, 68, 34);
+    ctx.fill();
+    ctx.stroke();
+
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    this.drawStrokedText(ctx, label, 0, 0, '#ffffff', '#000000', 6);
+
+    ctx.restore();
+  }
+
+  private getEffectEmoji(type: EffectType): string {
+    switch (type) {
+      case 'whoosh':
+        return '💨';
+      case 'impact':
+        return '💥';
+      case 'punch':
+        return '🥊';
+      case 'pop':
+        return '🫧';
+      case 'ding':
+      case 'bell':
+        return '🔔';
+      case 'drum-hit':
+        return '🥁';
+      case 'riser':
+        return '📈';
+      case 'bass-drop':
+        return '🔊';
+      case 'crowd-cheer':
+        return '🎉';
+      case 'laughter':
+        return '😂';
+      case 'explosion':
+        return '💣';
+      case 'success':
+        return '🏆';
+      default:
+        return '⚡';
+    }
   }
 
   private drawSafeZones(ctx: CanvasRenderingContext2D, W: number, H: number) {

@@ -694,8 +694,8 @@ export class CanvasRenderer {
     ctx.lineTo(boardW / 2 - 15, -boardH / 2 + 66);
     ctx.stroke();
 
-    // Single muted soft-red accent on clip!
-    ctx.fillStyle = config.accentColor || '#e11d48';
+    // Single stark ink accent on clip
+    ctx.fillStyle = config.accentColor || '#000000';
     ctx.fillRect(-18, -boardH / 2 - 8, 36, 12);
     ctx.strokeStyle = '#000000';
     ctx.lineWidth = 3;
@@ -730,7 +730,7 @@ export class CanvasRenderer {
 
       // Tap ripple indicator when finger strikes paper
       if (tapPhase > 0.6) {
-        ctx.strokeStyle = config.accentColor || '#e11d48';
+        ctx.strokeStyle = config.accentColor || '#000000';
         ctx.lineWidth = 3;
         ctx.beginPath();
         ctx.arc(clipX + 8, clipY - 8 + tapDip, 14 * tapPhase, 0, Math.PI * 2);
@@ -986,9 +986,9 @@ export class CanvasRenderer {
       ctx.fillStyle = '#000000';
       ctx.fillRect(this.width / 2 - textW / 2, cardY - textH / 2, textW, textH);
 
-      // Soft red accent strip on top of punchline card
-      ctx.fillStyle = config.accentColor || '#e11d48';
-      ctx.fillRect(this.width / 2 - textW / 2, cardY - textH / 2, textW, 6);
+      // Crisp white accent strip on top of punchline card
+      ctx.fillStyle = config.accentColor || '#ffffff';
+      ctx.fillRect(this.width / 2 - textW / 2, cardY - textH / 2, textW, 4);
 
       ctx.fillStyle = '#ffffff';
       ctx.fillText(captionText, this.width / 2, cardY + 2);
@@ -1016,7 +1016,7 @@ export class CanvasRenderer {
   // ==========================================================
   private renderSafeZones(ctx: CanvasRenderingContext2D) {
     ctx.save();
-    ctx.strokeStyle = 'rgba(225, 29, 72, 0.45)';
+    ctx.strokeStyle = 'rgba(0, 0, 0, 0.45)';
     ctx.lineWidth = 3;
     ctx.setLineDash([12, 8]);
 
@@ -1024,13 +1024,13 @@ export class CanvasRenderer {
     ctx.strokeRect(60, 220, this.width - 120, this.height - 560);
 
     // Right interaction rail (TikTok / Shorts side buttons)
-    ctx.fillStyle = 'rgba(225, 29, 72, 0.08)';
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.04)';
     ctx.fillRect(this.width - 160, 400, 120, 900);
 
     // Bottom safe area (caption & sound pill: ~340px)
     ctx.fillRect(60, this.height - 340, this.width - 120, 260);
 
-    ctx.fillStyle = '#e11d48';
+    ctx.fillStyle = '#111111';
     ctx.font = '600 24px "JetBrains Mono", monospace';
     ctx.fillText('9:16 MOBILE SAFE BOUNDS (1080 × 1920)', 80, 200);
     ctx.fillText('SIDE INTERACTION RAIL', this.width - 320, 380);

@@ -1,4 +1,4 @@
-﻿import { StudioConfig } from '../types';
+import { StudioConfig } from '../types';
 
 /**
  * DartShotRenderer
@@ -86,7 +86,8 @@ interface CameraKey {
 }
 
 const TAU = Math.PI * 2;
-const RED = '#dc2626';
+// Minimalist Monochrome palette: stark ink black and pure white
+const RED = '#000000';
 const INK = '#000000';
 const PANEL = '#ededed';
 
@@ -277,12 +278,9 @@ export class DartShotRenderer {
       ctx.font = '900 74px "Arial Black", "Helvetica Neue", Arial, sans-serif';
       ctx.lineJoin = 'round';
       ctx.lineCap = 'round';
-      // Red halo, heavy black outline, white face.
-      ctx.strokeStyle = RED;
-      ctx.lineWidth = 23;
-      ctx.strokeText(text, 0, 0);
+      // Minimalist Monochrome: Heavy black ink outline, pure white text
       ctx.strokeStyle = INK;
-      ctx.lineWidth = 16;
+      ctx.lineWidth = 18;
       ctx.strokeText(text, 0, 0);
       ctx.fillStyle = '#ffffff';
       ctx.fillText(text, 0, 0);
@@ -292,7 +290,7 @@ export class DartShotRenderer {
 
   private renderSafeZones(ctx: CanvasRenderingContext2D) {
     ctx.save();
-    ctx.strokeStyle = 'rgba(244, 63, 94, 0.85)';
+    ctx.strokeStyle = 'rgba(0, 0, 0, 0.45)';
     ctx.setLineDash([14, 12]);
     ctx.lineWidth = 3;
 

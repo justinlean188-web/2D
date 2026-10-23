@@ -152,7 +152,7 @@ export default function App() {
       <aside className="w-60 shrink-0 border-r border-slate-800 bg-slate-900/70 flex flex-col sticky top-0 h-screen">
         <div className="px-5 py-5 border-b border-slate-800">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-rose-600 flex items-center justify-center text-white font-bold text-sm shadow-sm">
+            <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center text-zinc-950 font-black text-sm shadow-sm">
               2D
             </div>
             <div className="min-w-0">
@@ -290,7 +290,7 @@ export default function App() {
                 >
                   {isMuted ? (
                     <svg
-                      className="w-4 h-4 text-rose-400"
+                      className="w-4 h-4 text-zinc-400"
                       viewBox="0 0 24 24"
                       fill="none"
                       stroke="currentColor"
@@ -302,7 +302,7 @@ export default function App() {
                     </svg>
                   ) : (
                     <svg
-                      className="w-4 h-4 text-emerald-400"
+                      className="w-4 h-4 text-zinc-200"
                       viewBox="0 0 24 24"
                       fill="none"
                       stroke="currentColor"
@@ -326,7 +326,7 @@ export default function App() {
           <>
             <header className="flex items-center justify-between gap-6 px-6 py-3.5 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 sticky top-0 z-40">
               <div className="flex items-center gap-3 min-w-0">
-                <div className="w-8 h-8 rounded-lg bg-rose-600 flex items-center justify-center text-white shrink-0 shadow-sm">
+                <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center text-zinc-950 shrink-0 shadow-sm">
                   <Film className="w-4 h-4" />
                 </div>
                 <div className="min-w-0">
@@ -381,14 +381,14 @@ const SidebarButton: React.FC<{
     onClick={onClick}
     className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left transition-colors cursor-pointer ${
       active
-        ? 'bg-rose-950/70 text-white ring-1 ring-rose-500/60'
-        : 'text-slate-400 hover:text-white hover:bg-slate-800/70'
+        ? 'bg-zinc-800 text-white ring-1 ring-zinc-600 font-bold'
+        : 'text-zinc-400 hover:text-white hover:bg-zinc-900/80'
     }`}
   >
-    <span className={active ? 'text-rose-400' : 'text-slate-500'}>{icon}</span>
+    <span className={active ? 'text-white' : 'text-zinc-500'}>{icon}</span>
     <span className="min-w-0">
       <span className="block text-sm font-semibold truncate">{label}</span>
-      <span className="block text-[11px] text-slate-500 truncate">{hint}</span>
+      <span className="block text-[11px] text-zinc-500 truncate">{hint}</span>
     </span>
   </button>
 );

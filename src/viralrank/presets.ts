@@ -389,9 +389,7 @@ export const DEFAULT_VIRALRANK_PROJECT: ViralRankProject = {
   titlePrefix: 'Ranking Best',
   titleAccent: 'Pool Fails',
   accentColor: '#ef4444',
-  voiceIntro: 'Top 6 pool fails',
-  voiceIntroSpeed: 1.05,
-  narrationVoice: 'us',
+  voiceIntro: 'Top 6 Ranking best pool fails',
   useVoiceIntroOnly: true,
   description: 'Viral 9:16 vertical countdown reel from Top 6 to Top 1 with voice intro hook',
   aspect: '9:16',
@@ -404,7 +402,6 @@ export const DEFAULT_VIRALRANK_PROJECT: ViralRankProject = {
   music: MUSIC_PRESETS[3],
   captionStyle: CAPTION_PRESETS.mrbeast,
   showSafeZones: false,
-  showRankingNumbers: true,
   resolutionQuality: 'full',
   voiceover: {
     enabled: true,
@@ -433,9 +430,7 @@ export const DEFAULT_VIRALRANK_PROJECT: ViralRankProject = {
       muted: false,
       cropMode: 'fit',
       transition: 'none',
-      narrationText: 'Number six wiped out the entire patio fence!',
-      narrationEnabled: false,
-      narrationSpeed: 1.05,
+      narrationText: 'Starting off at number six, this running cannonball took down the entire patio fence!',
       soundEffects: [
         {
           id: 'sfx-6-1',
@@ -482,9 +477,7 @@ export const DEFAULT_VIRALRANK_PROJECT: ViralRankProject = {
       muted: false,
       cropMode: 'fit',
       transition: 'none',
-      narrationText: 'Number five tried to vault the pool coping.',
-      narrationEnabled: false,
-      narrationSpeed: 1.05,
+      narrationText: 'Number five thought he could parkour vault over the above-ground coping.',
       soundEffects: [
         {
           id: 'sfx-5-1',
@@ -531,9 +524,7 @@ export const DEFAULT_VIRALRANK_PROJECT: ViralRankProject = {
       muted: false,
       cropMode: 'fit',
       transition: 'none',
-      narrationText: 'Number four missed the donut float completely.',
-      narrationEnabled: false,
-      narrationSpeed: 1.05,
+      narrationText: 'At number four, trying to land on the donut float went terribly wrong.',
       soundEffects: [
         {
           id: 'sfx-4-1',
@@ -566,9 +557,7 @@ export const DEFAULT_VIRALRANK_PROJECT: ViralRankProject = {
       muted: false,
       cropMode: 'fit',
       transition: 'none',
-      narrationText: 'Number three belly-flopped onto the float!',
-      narrationEnabled: false,
-      narrationSpeed: 1.05,
+      narrationText: 'Number three: Aaaah! He lost his flip mid-air and belly-flopped straight onto the float!',
       soundEffects: [
         {
           id: 'sfx-3-1',
@@ -629,9 +618,7 @@ export const DEFAULT_VIRALRANK_PROJECT: ViralRankProject = {
       muted: false,
       cropMode: 'fit',
       transition: 'none',
-      narrationText: 'Number two flew right over the fence!',
-      narrationEnabled: false,
-      narrationSpeed: 1.05,
+      narrationText: 'Number two, he completely overshot the lawn and flew over the fence!',
       soundEffects: [
         {
           id: 'sfx-2-1',
@@ -678,9 +665,7 @@ export const DEFAULT_VIRALRANK_PROJECT: ViralRankProject = {
       muted: false,
       cropMode: 'fit',
       transition: 'none',
-      narrationText: 'And number one: the roof trampoline flip!',
-      narrationEnabled: false,
-      narrationSpeed: 1.05,
+      narrationText: 'And at number one, the ultimate best pool fail: the roof trampoline flip disaster!',
       soundEffects: [
         {
           id: 'sfx-1-1',

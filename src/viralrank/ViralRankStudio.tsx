@@ -52,6 +52,15 @@ import {
 } from './narration';
 import { ViralRankRenderer } from './viralRankRenderer';
 
+/**
+ * A rank can be filled either from a link (YouTube, TikTok, a direct MP4) or
+ * from a file that already lives in `public/source-videos`. Only the link has
+ * to be downloaded; a local path is ready to play.
+ */
+function isRemoteVideoUrl(url?: string): boolean {
+  return !!url && /^https?:\/\//i.test(url.trim());
+}
+
 export const ViralRankStudio: React.FC = () => {
   const [project, setProject] = useState<ViralRankProject>(() => {
     // Deep clone default project
@@ -69,6 +78,7 @@ export const ViralRankStudio: React.FC = () => {
   const [downloadedVideos, setDownloadedVideos] = useState<
     { filename: string; filepath: string; sizeBytes: number }[]
   >([]);
+  const [downloadingItemId, setDownloadingItemId] = useState<string | null>(null);
 
   const refreshDownloadedVideos = useCallback(() => {
     fetch('/__source-videos-list')
@@ -474,6 +484,67 @@ export const ViralRankStudio: React.FC = () => {
       };
     },
     [updateItem]
+  );
+
+  // Download a clip for one rank from a link (YouTube, TikTok, direct MP4).
+  // The dev server does the fetching because the browser cannot read those
+  // sources, and the file it returns is served from public/source-videos.
+  const handleDownloadRankClip = useCallback(
+    async (item: RankingItem) => {
+      const url = (item.sourceUrl ?? '').trim();
+      if (!isRemoteVideoUrl(url)) {
+        setStatusMessage('Paste a YouTube, TikTok or video link in the field first.');
+        return;
+      }
+
+      setDownloadingItemId(item.id);
+      setStatusMessage(`Downloading ${url}...`);
+
+      try {
+        const response = await fetch(`/__reel-download?url=${encodeURIComponent(url)}`);
+        if (!response.ok) {
+          const body = await response.json().catch(() => ({}));
+          throw new Error(body.error ?? `HTTP ${response.status}`);
+        }
+        const body = (await response.json()) as {
+          filepath: string;
+          filename: string;
+          sizeBytes: number;
+        };
+
+        // The downloader does not probe the length, so the clip is measured
+        // exactly the way a file picked from the PC is.
+        updateItem(item.id, {
+          sourceUrl: body.filepath,
+          sourceMediaId: `download-${Date.now()}`,
+          sourceStart: 0,
+        });
+        const probe = document.createElement('video');
+        probe.preload = 'metadata';
+        probe.onloadedmetadata = () => {
+          const duration =
+            Number.isFinite(probe.duration) && probe.duration > 0 ? probe.duration : 4;
+          updateItem(item.id, {
+            sourceEnd: Math.min(duration, 10),
+            duration: Math.max(1, Math.min(duration, 4.0)),
+          });
+        };
+        probe.src = body.filepath;
+
+        refreshDownloadedVideos();
+        setExpandedTrimmerId(item.id);
+        setStatusMessage(
+          `Downloaded ${body.filename} (${(body.sizeBytes / 1024 / 1024).toFixed(1)} MB) — ready to trim.`
+        );
+      } catch (error) {
+        setStatusMessage(
+          `Download failed: ${error instanceof Error ? error.message : 'unknown error'}`
+        );
+      } finally {
+        setDownloadingItemId(null);
+      }
+    },
+    [refreshDownloadedVideos, updateItem]
   );
 
   // Move clip up / down in ranking list
@@ -1228,6 +1299,25 @@ export const ViralRankStudio: React.FC = () => {
                               }}
                             />
                           </label>
+
+                          {/* Download the link in the field into public/source-videos */}
+                          <button
+                            onClick={() => void handleDownloadRankClip(item)}
+                            disabled={
+                              !isRemoteVideoUrl(item.sourceUrl) || downloadingItemId !== null
+                            }
+                            title="Download this link into public/source-videos"
+                            className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-bold text-slate-200 bg-slate-800 border border-slate-700 hover:border-rose-500 hover:text-white rounded-lg transition cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed whitespace-nowrap"
+                          >
+                            <Download
+                              className={`w-3.5 h-3.5 ${
+                                downloadingItemId === item.id ? 'animate-bounce' : ''
+                              }`}
+                            />
+                            <span>
+                              {downloadingItemId === item.id ? 'Downloading...' : 'Download'}
+                            </span>
+                          </button>
 
                           {item.sourceUrl && (
                             <button

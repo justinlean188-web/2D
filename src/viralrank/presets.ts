@@ -404,6 +404,7 @@ export const DEFAULT_VIRALRANK_PROJECT: ViralRankProject = {
   music: MUSIC_PRESETS[3],
   captionStyle: CAPTION_PRESETS.mrbeast,
   showSafeZones: false,
+  showRankingNumbers: true,
   resolutionQuality: 'full',
   voiceover: {
     enabled: true,

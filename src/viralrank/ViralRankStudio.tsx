@@ -1675,6 +1675,24 @@ export const ViralRankStudio: React.FC = () => {
                 </button>
 
                 <button
+                  onClick={() =>
+                    updateProject({ showRankingNumbers: project.showRankingNumbers === false })
+                  }
+                  title={
+                    project.showRankingNumbers === false
+                      ? 'Show the ranking numbers on the video'
+                      : 'Hide the ranking numbers from the video'
+                  }
+                  className={`px-2 py-1 text-[11px] font-bold rounded-lg border transition cursor-pointer ${
+                    project.showRankingNumbers !== false
+                      ? 'bg-rose-500/20 border-rose-500 text-rose-300'
+                      : 'bg-slate-800 border-slate-700 text-slate-400 hover:text-white'
+                  }`}
+                >
+                  Ranks
+                </button>
+
+                <button
                   onClick={() => {
                     const next = !isMuted;
                     setIsMuted(next);

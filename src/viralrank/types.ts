@@ -162,6 +162,7 @@ export interface ViralRankProject {
   captions: CaptionSegment[];
   captionStyle: CaptionStyle;
   showSafeZones: boolean;
+  showRankingNumbers?: boolean; // Show the rank ladder in the preview and the export (default true)
   resolutionQuality: 'full' | 'half' | 'quarter';
 }
 

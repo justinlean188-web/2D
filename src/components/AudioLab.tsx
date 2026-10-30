@@ -19,6 +19,14 @@ export const AudioLab: React.FC<AudioLabProps> = ({ config, setConfig }) => {
   const isPingPong = config.activeProject === 'ping-pong-revenge';
   const isDartShot = config.activeProject === 'dart-shot';
   const isCoinFlip = config.activeProject === 'coin-flip';
+  const isDiamondHeist = config.activeProject === 'diamond-heist';
+  const isPancakeFlip = config.activeProject === 'pancake-flip';
+  const isVendingMachine = config.activeProject === 'vending-machine';
+  const isBiggestBalloon = config.activeProject === 'biggest-balloon';
+  const isFindTheBall = config.activeProject === 'find-the-ball';
+  const isAttempt247 = config.activeProject === 'attempt-247';
+  const isArcadeClaw = config.activeProject === 'arcade-claw';
+  const isDominoTrickshot = config.activeProject === 'domino-trickshot';
   const soundEffects = [
     // Paper Ball Ricochet Effects
     {
@@ -750,6 +758,722 @@ export const AudioLab: React.FC<AudioLabProps> = ({ config, setConfig }) => {
         setTimeout(() => soundEngine.playRecordScratch(), 3030);
       },
     },
+    {
+      project: 'arcade-claw' as const,
+      name: 'One Coin, One Dream',
+      time: 'Arcade Claw (1.55s - 3.75s)',
+      desc: 'The flourish sparkle, the coin up, the slot click, the arcade chime, the button beep and punch, and the first claw motor rolling out.',
+      trigger: () => {
+        soundEngine.playMicSparkle();
+        setTimeout(() => soundEngine.playCoinTing(), 600);
+        setTimeout(() => soundEngine.playMechanicalClick(), 950);
+        setTimeout(() => soundEngine.playArcadeChime(), 1120);
+        setTimeout(() => soundEngine.playConfidenceDing(), 1650);
+        setTimeout(() => soundEngine.playFloorThump(), 1800);
+        setTimeout(() => soundEngine.playClawMotor(undefined, 1.4), 2200);
+      },
+    },
+    {
+      project: 'arcade-claw' as const,
+      name: 'The Claw Betrays Him',
+      time: 'Arcade Claw (5.1s - 9.05s)',
+      desc: 'Grip, the lift strain, the claw opening at the last second, the sad trombone, the bear thud, the eye-twitch squeak and the low machine growl.',
+      trigger: () => {
+        soundEngine.playClawMotor(undefined, 0.7);
+        setTimeout(() => soundEngine.playClawMotor(undefined, 1.3), 700);
+        setTimeout(() => soundEngine.playSqueak(), 2020);
+        setTimeout(() => soundEngine.playSadTrombone(), 2750);
+        setTimeout(() => soundEngine.playFloorThump(), 3180);
+        setTimeout(() => soundEngine.playSqueak(), 3500);
+        setTimeout(() => soundEngine.playDramaticRumble(), 3950);
+      },
+    },
+    {
+      project: 'arcade-claw' as const,
+      name: 'Building the Trickshot Rig',
+      time: 'Arcade Claw (10.05s - 14.3s)',
+      desc: 'The racing cabinet scooting twice, the ramp slam and tap, the bumper drag and stop, the two backstop drops and the ball set on the lip.',
+      trigger: () => {
+        soundEngine.playWallBounce();
+        setTimeout(() => soundEngine.playWallBounce(), 550);
+        setTimeout(() => soundEngine.playFloorThump(), 1450);
+        setTimeout(() => soundEngine.playClipboardTap(), 1800);
+        setTimeout(() => soundEngine.playWhoosh(), 2350);
+        setTimeout(() => soundEngine.playFloorThump(), 2900);
+        setTimeout(() => soundEngine.playDeskPlop(), 3100);
+        setTimeout(() => soundEngine.playDeskPlop(), 3500);
+        setTimeout(() => soundEngine.playHeadBonk(), 4250);
+      },
+    },
+    {
+      project: 'arcade-claw' as const,
+      name: 'The Impossible Shot',
+      time: 'Arcade Claw (15.0s - 19.62s)',
+      desc: 'Launch, the bumper boing, the cabinet ricochet, two flight whooshes, the button slam, the confirm blip, power-on and the win jingle.',
+      trigger: () => {
+        soundEngine.playWhoosh();
+        setTimeout(() => soundEngine.playWallBounce(), 570);
+        setTimeout(() => soundEngine.playWallBounce(), 1070);
+        setTimeout(() => soundEngine.playWhoosh(), 1870);
+        setTimeout(() => soundEngine.playWhoosh(), 2870);
+        setTimeout(() => soundEngine.playFloorThump(), 3620);
+        setTimeout(() => soundEngine.playConfidenceDing(), 3950);
+        setTimeout(() => soundEngine.playMechanicalClick(), 4420);
+        setTimeout(() => soundEngine.playArcadeWinJingle(), 4620);
+      },
+    },
+    {
+      project: 'arcade-claw' as const,
+      name: 'Winner, Winner',
+      time: 'Arcade Claw (20.35s - 25.9s)',
+      desc: 'The second claw motor, the grab and release, the chute deposit, the victory fanfare, the crowd cheer, the celebration hops and the prize-door rattle.',
+      trigger: () => {
+        soundEngine.playClawMotor(undefined, 1.4);
+        setTimeout(() => soundEngine.playMechanicalClick(), 1650);
+        setTimeout(() => soundEngine.playMechanicalClick(), 2230);
+        setTimeout(() => soundEngine.playDeskPlop(), 2830);
+        setTimeout(() => soundEngine.playVictoryFanfare(), 3100);
+        setTimeout(() => soundEngine.playCrowdCheer(), 3430);
+        setTimeout(() => soundEngine.playFootstep(), 4100);
+        setTimeout(() => soundEngine.playFootstep(), 4350);
+        setTimeout(() => soundEngine.playMechanicalClick(), 5250);
+      },
+    },
+    {
+      project: 'arcade-claw' as const,
+      name: 'Malfunction & Plush Avalanche',
+      time: 'Arcade Claw (26.0s - 29.55s)',
+      desc: 'The alarm strobe, the plush avalanche pouring out of the prize door, a second alarm, the tiny coin ding and the freeze sting under the final frame.',
+      trigger: () => {
+        soundEngine.playArcadeAlarm();
+        setTimeout(() => soundEngine.playPlushAvalanche(), 550);
+        setTimeout(() => soundEngine.playArcadeAlarm(), 1150);
+        setTimeout(() => soundEngine.playDramaticRumble(), 2200);
+        setTimeout(() => soundEngine.playCoinTing(), 3150);
+        setTimeout(() => soundEngine.playHeartbeat(), 3550);
+      },
+    },
+    {
+      project: 'diamond-heist' as const,
+      name: 'Heist Intro & Diamond Reveal',
+      time: 'Diamond Heist (1.0s - 2.5s)',
+      desc: 'The sneaky pizzicato bed, the sparkling diamond chime, and the spoon draw from pocket.',
+      trigger: () => {
+        soundEngine.playHeistPizzicatoSection();
+        setTimeout(() => soundEngine.playDiamondChime(), 1000);
+        setTimeout(() => soundEngine.playSpoonDraw(), 2000);
+      },
+    },
+    {
+      project: 'diamond-heist' as const,
+      name: 'Laser Alarm & Panic',
+      time: 'Diamond Heist (6.5s - 9.0s)',
+      desc: 'The laser zap, the blaring alarm siren, and the awkward cough when he freezes.',
+      trigger: () => {
+        soundEngine.playLaserZap();
+        setTimeout(() => soundEngine.playAlarmSiren(undefined, 3.5), 50);
+        setTimeout(() => soundEngine.playAwkwardCough(), 2000);
+      },
+    },
+    {
+      project: 'diamond-heist' as const,
+      name: 'Rage Build & Idea',
+      time: 'Diamond Heist (9.0s - 13.5s)',
+      desc: 'The rage growl, bucket roll, tray clink, mop thud, record scratch, and idea ding.',
+      trigger: () => {
+        soundEngine.playDramaticRumble();
+        setTimeout(() => soundEngine.playFloorThump(), 500);
+        setTimeout(() => soundEngine.playMechanicalClick(), 1500);
+        setTimeout(() => soundEngine.playFloorThump(), 2500);
+        setTimeout(() => soundEngine.playRecordScratch(), 3000);
+        setTimeout(() => soundEngine.playIdeaDing(), 4000);
+      },
+    },
+    {
+      project: 'diamond-heist' as const,
+      name: 'The Impossible Shot',
+      time: 'Diamond Heist (15.0s - 20.5s)',
+      desc: 'Spoon flick whoosh, tray ping, wall boing, flight, button click, case open mechanical, success sting.',
+      trigger: () => {
+        soundEngine.playWhoosh();
+        setTimeout(() => soundEngine.playTrayPing(), 500);
+        setTimeout(() => soundEngine.playWallBoing(), 1200);
+        setTimeout(() => soundEngine.playButtonClick(), 4500);
+        setTimeout(() => soundEngine.playCaseOpen(), 4600);
+        setTimeout(() => soundEngine.playConfidenceDing(), 5500);
+      },
+    },
+    {
+      project: 'diamond-heist' as const,
+      name: 'Victory & Celebration',
+      time: 'Diamond Heist (22.5s - 25.5s)',
+      desc: 'Diamond scoop, alarms cut, angelic choir, victory fanfare, celebration steps.',
+      trigger: () => {
+        soundEngine.playScoop();
+        setTimeout(() => soundEngine.playAngelicChoir(), 1500);
+        setTimeout(() => soundEngine.playVictoryFanfareShort(), 2000);
+        setTimeout(() => soundEngine.playFootstep(), 2500);
+        setTimeout(() => soundEngine.playFootstep(), 2900);
+      },
+    },
+    {
+      project: 'diamond-heist' as const,
+      name: 'The Trap & Freeze',
+      time: 'Diamond Heist (26.5s - 29.5s)',
+      desc: 'Glass clunk, camera shutter clicks, muffled scream, freeze sting.',
+      trigger: () => {
+        soundEngine.playGlassClunk();
+        setTimeout(() => soundEngine.playCameraClick(), 1000);
+        setTimeout(() => soundEngine.playCameraClick(), 1250);
+        setTimeout(() => soundEngine.playCameraClick(), 1500);
+        setTimeout(() => soundEngine.playCameraClick(), 1750);
+        setTimeout(() => soundEngine.playCameraClick(), 2000);
+        setTimeout(() => soundEngine.playCameraClick(), 2250);
+        setTimeout(() => soundEngine.playMuffledScream(), 2500);
+        setTimeout(() => soundEngine.playFreezeSting(), 3000);
+      },
+    },
+    {
+      project: 'pancake-flip' as const,
+      name: 'The Hook & First Failure',
+      time: 'Pancake Flip (0.0s - 4.0s)',
+      desc: 'Dramatic whoosh, record-scratch freeze, pan swoosh, cartoon boing and the sticky ceiling splat.',
+      trigger: () => {
+        soundEngine.playWhoosh();
+        setTimeout(() => soundEngine.playRecordScratch(), 900);
+        setTimeout(() => soundEngine.playWhoosh(), 2600);
+        setTimeout(() => soundEngine.playCartoonBoing(), 3100);
+        setTimeout(() => soundEngine.playPancakeSplat(), 3600);
+      },
+    },
+    {
+      project: 'pancake-flip' as const,
+      name: 'The Plan',
+      time: 'Pancake Flip (7.2s - 8.2s)',
+      desc: 'Lightbulb ding and the wooden clack of the cutting-board ramp landing on the cookbooks.',
+      trigger: () => {
+        soundEngine.playIdeaDing();
+        setTimeout(() => soundEngine.playWoodClack(), 1000);
+      },
+    },
+    {
+      project: 'pancake-flip' as const,
+      name: 'The Second Failure',
+      time: 'Pancake Flip (11.3s - 12.3s)',
+      desc: 'Pancake slides up the ramp, flops back into the pan, then the sad trombone.',
+      trigger: () => {
+        soundEngine.playPancakeSlide(undefined, 0.6);
+        setTimeout(() => soundEngine.playFloorThump(), 700);
+        setTimeout(() => soundEngine.playSadTrombone(), 1000);
+      },
+    },
+    {
+      project: 'pancake-flip' as const,
+      name: 'The Perfect Landing',
+      time: 'Pancake Flip (13.3s - 18.4s)',
+      desc: 'Knuckle crack, deep breath, launch whoosh, ramp slide, sparkle and the satisfying plate clink.',
+      trigger: () => {
+        soundEngine.playKnuckleCrack();
+        setTimeout(() => soundEngine.playDeepBreath(), 500);
+        setTimeout(() => soundEngine.playWhoosh(), 1200);
+        setTimeout(() => soundEngine.playPancakeSlide(undefined, 0.8), 1400);
+        setTimeout(() => soundEngine.playMicSparkle(), 4900);
+        setTimeout(() => soundEngine.playPlateClink(), 5100);
+      },
+    },
+    {
+      project: 'pancake-flip' as const,
+      name: 'Champion Celebration',
+      time: 'Pancake Flip (19.8s - 21.0s)',
+      desc: 'Victory fanfare, confetti pop and the short crowd cheer.',
+      trigger: () => {
+        soundEngine.playVictoryFanfareShort();
+        setTimeout(() => soundEngine.playConfettiPop(), 800);
+        setTimeout(() => soundEngine.playCrowdCheer(), 1200);
+      },
+    },
+    {
+      project: 'pancake-flip' as const,
+      name: 'Pancake Revenge & Final Gag',
+      time: 'Pancake Flip (23.4s - 29.1s)',
+      desc: 'Counter bump, wet face splat, slow sticky slide, angry sting and the tiny sad trombone.',
+      trigger: () => {
+        soundEngine.playCounterBump();
+        setTimeout(() => soundEngine.playWetSplat(), 1400);
+        setTimeout(() => soundEngine.playPancakeSlide(undefined, 1.6), 2000);
+        setTimeout(() => soundEngine.playAngrySting(), 4000);
+        setTimeout(() => soundEngine.playSadTrombone(), 5700);
+      },
+    },
+    {
+      project: 'vending-machine' as const,
+      name: 'The Hook & The Shake',
+      time: 'Vending Machine (0.0s - 4.8s)',
+      desc: 'Dramatic whoosh, record-scratch freeze, machine rattle, cartoon boing and a second record scratch.',
+      trigger: () => {
+        soundEngine.playWhoosh();
+        setTimeout(() => soundEngine.playRecordScratch(), 900);
+        setTimeout(() => soundEngine.playVendingRattle(undefined, 1.7), 2600);
+        setTimeout(() => soundEngine.playCartoonBoing(), 4300);
+        setTimeout(() => soundEngine.playRecordScratch(), 4800);
+      },
+    },
+    {
+      project: 'vending-machine' as const,
+      name: 'The Second Coin',
+      time: 'Vending Machine (7.7s - 9.0s)',
+      desc: 'Coin clink, spiral whirr, heavy thud as the orange bag drops, then the disbelief scratch.',
+      trigger: () => {
+        soundEngine.playCoinClink();
+        setTimeout(() => soundEngine.playSpiralWhirr(), 100);
+        setTimeout(() => soundEngine.playVendingThud(), 800);
+        setTimeout(() => soundEngine.playRecordScratch(), 1300);
+      },
+    },
+    {
+      project: 'vending-machine' as const,
+      name: 'The Broom',
+      time: 'Vending Machine (10.8s - 13.4s)',
+      desc: 'Lightbulb ding, broom scrape, strained tug and the sad trombone note.',
+      trigger: () => {
+        soundEngine.playIdeaDing();
+        setTimeout(() => soundEngine.playBroomScrape(), 800);
+        setTimeout(() => soundEngine.playStrainedTug(), 1800);
+        setTimeout(() => soundEngine.playSadTrombone(), 2600);
+      },
+    },
+    {
+      project: 'vending-machine' as const,
+      name: 'The Flying Kick',
+      time: 'Vending Machine (14.9s - 18.35s)',
+      desc: 'Three footsteps, a rising whistle and the huge cartoon impact.',
+      trigger: () => {
+        soundEngine.playFootstep();
+        setTimeout(() => soundEngine.playFootstep(), 300);
+        setTimeout(() => soundEngine.playFootstep(), 600);
+        setTimeout(() => soundEngine.playRisingWhistle(undefined, 2.2), 1100);
+        setTimeout(() => soundEngine.playBigImpact(), 3450);
+      },
+    },
+    {
+      project: 'vending-machine' as const,
+      name: 'The Celebration',
+      time: 'Vending Machine (19.3s - 21.5s)',
+      desc: 'Double thud, victory fanfare, confetti pop and the short crowd cheer.',
+      trigger: () => {
+        soundEngine.playVendingThud();
+        setTimeout(() => soundEngine.playVendingThud(), 180);
+        setTimeout(() => soundEngine.playVictoryFanfareShort(), 500);
+        setTimeout(() => soundEngine.playConfettiPop(), 1900);
+        setTimeout(() => soundEngine.playCrowdCheer(), 2200);
+      },
+    },
+    {
+      project: 'vending-machine' as const,
+      name: 'The Punchline & End Frame',
+      time: 'Vending Machine (23.5s - 29.1s)',
+      desc: 'Bag rip, big air puff, one tiny chip tink, angry sting and the tiny sad trombone.',
+      trigger: () => {
+        soundEngine.playBagRip();
+        setTimeout(() => soundEngine.playAirPuff(), 700);
+        setTimeout(() => soundEngine.playTinyChipTink(), 3200);
+        setTimeout(() => soundEngine.playAngrySting(), 4100);
+        setTimeout(() => soundEngine.playSadTrombone(), 5600);
+      },
+    },
+    {
+      project: 'biggest-balloon' as const,
+      name: 'The Hook & Size: Medium',
+      time: 'Biggest Balloon (0.0s - 4.6s)',
+      desc: 'Dramatic whoosh, record-scratch freeze, deep inhale, rubber inflate squeaks and the cheerful chime.',
+      trigger: () => {
+        soundEngine.playWhoosh();
+        setTimeout(() => soundEngine.playRecordScratch(), 900);
+        setTimeout(() => soundEngine.playDeepBreath(), 2150);
+        setTimeout(() => soundEngine.playBalloonSqueak(0.9), 2800);
+        setTimeout(() => soundEngine.playBalloonSqueak(1.1), 3250);
+        setTimeout(() => soundEngine.playBalloonSqueak(1.2), 4100);
+        setTimeout(() => soundEngine.playCalmingChime(), 4600);
+      },
+    },
+    {
+      project: 'biggest-balloon' as const,
+      name: 'The Fake-Out',
+      time: 'Biggest Balloon (6.3s - 9.4s)',
+      desc: 'Stretch creaks, the tense drum roll, the held breath (score drop) and the relieved sigh.',
+      trigger: () => {
+        soundEngine.playBalloonStretch();
+        setTimeout(() => soundEngine.playBalloonStretch(), 800);
+        setTimeout(() => soundEngine.playDramaticRumble(), 1200);
+        setTimeout(() => soundEngine.playRelievedSigh(), 3100);
+      },
+    },
+    {
+      project: 'biggest-balloon' as const,
+      name: 'Size: Giant',
+      time: 'Biggest Balloon (10.3s - 12.8s)',
+      desc: 'Final big inflates, the knot snap and the proud fanfare note.',
+      trigger: () => {
+        soundEngine.playBalloonStretch();
+        setTimeout(() => soundEngine.playBalloonStretch(), 700);
+        setTimeout(() => soundEngine.playKnotSnap(), 1900);
+        setTimeout(() => soundEngine.playVictoryFanfareShort(), 2500);
+      },
+    },
+    {
+      project: 'biggest-balloon' as const,
+      name: 'Uh Oh & This Is Fine',
+      time: 'Biggest Balloon (14.2s - 21.8s)',
+      desc: 'Wind gust, rising whistle, record scratch, calm chime and the dramatic sting as the pine enters.',
+      trigger: () => {
+        soundEngine.playWindGust(undefined, 1.6);
+        setTimeout(() => soundEngine.playRisingWhistle(undefined, 1.4), 800);
+        setTimeout(() => soundEngine.playRecordScratch(), 2200);
+        setTimeout(() => soundEngine.playCalmingChime(), 4200);
+        setTimeout(() => soundEngine.playWindGust(undefined, 1.8), 5400);
+        setTimeout(() => soundEngine.playFreezeSting(), 7600);
+      },
+    },
+    {
+      project: 'biggest-balloon' as const,
+      name: 'The Anti-Pop & End Frame',
+      time: 'Biggest Balloon (22.2s - 28.6s)',
+      desc: 'Spot whoosh, needle-poke psst, the long raspberry air release, whirling swoosh, cartoon boing and the tiny sad trombone with a final squeak.',
+      trigger: () => {
+        soundEngine.playWhoosh();
+        setTimeout(() => soundEngine.playNeedlePoke(), 1100);
+        setTimeout(() => soundEngine.playAirRelease(undefined, 2.9), 1300);
+        setTimeout(() => soundEngine.playWhoosh(), 2200);
+        setTimeout(() => soundEngine.playCartoonBoing(), 3200);
+        setTimeout(() => soundEngine.playSadTrombone(), 5200);
+        setTimeout(() => soundEngine.playBalloonSqueak(1.5), 6400);
+      },
+    },
+    {
+      project: 'find-the-ball' as const,
+      name: 'The Hook & Setup',
+      time: 'Find the Ball (0.0s - 4.6s)',
+      desc: 'Dramatic whoosh, record-scratch freeze, magic sparkles, the teal cup lift and the cup clunk as the ball is covered.',
+      trigger: () => {
+        soundEngine.playWhoosh();
+        setTimeout(() => soundEngine.playRecordScratch(), 900);
+        setTimeout(() => soundEngine.playMagicSparkle(), 950);
+        setTimeout(() => soundEngine.playCupClunk(), 2500);
+        setTimeout(() => soundEngine.playMagicSparkle(), 3050);
+        setTimeout(() => soundEngine.playCupClunk(), 4000);
+        setTimeout(() => soundEngine.playMagicSparkle(), 4150);
+      },
+    },
+    {
+      project: 'find-the-ball' as const,
+      name: 'The Slow & Fast Shuffle',
+      time: 'Find the Ball (6.4s - 12.9s)',
+      desc: 'Two long cup slides, four fast cup slides and the very quiet ball roll as the ball escapes off the left edge.',
+      trigger: () => {
+        soundEngine.playCupSlide(undefined, 0.85);
+        setTimeout(() => soundEngine.playCupSlide(undefined, 0.85), 1300);
+        setTimeout(() => soundEngine.playCupSlide(undefined, 0.5), 3900);
+        setTimeout(() => soundEngine.playCupSlide(undefined, 0.5), 4600);
+        setTimeout(() => soundEngine.playCupSlide(undefined, 0.5), 5300);
+        setTimeout(() => soundEngine.playCupSlide(undefined, 0.5), 6000);
+        setTimeout(() => soundEngine.playBallRoll(undefined, 1.6), 5020);
+        setTimeout(() => soundEngine.playMagicSparkle(), 6550);
+      },
+    },
+    {
+      project: 'find-the-ball' as const,
+      name: 'Pick a Cup',
+      time: 'Find the Ball (15.0s - 18.2s)',
+      desc: 'The table slap, the drum roll and the three rising countdown beeps.',
+      trigger: () => {
+        soundEngine.playVendingThud();
+        setTimeout(() => soundEngine.playDrumRoll(undefined, 3.2), 350);
+        setTimeout(() => soundEngine.playCountBeep(undefined, 1.0), 1600);
+        setTimeout(() => soundEngine.playCountBeep(undefined, 1.12), 2400);
+        setTimeout(() => soundEngine.playCountBeep(undefined, 1.26), 3200);
+      },
+    },
+    {
+      project: 'find-the-ball' as const,
+      name: 'The Empty Cups',
+      time: 'Find the Ball (19.0s - 22.5s)',
+      desc: 'Two empty cup lifts, the wah-wah trombone and the record scratch before the last cup comes up.',
+      trigger: () => {
+        soundEngine.playCupClunk();
+        setTimeout(() => soundEngine.playCupClunk(), 850);
+        setTimeout(() => soundEngine.playCupClunk(), 1300);
+        setTimeout(() => soundEngine.playSadTrombone(), 1850);
+        setTimeout(() => soundEngine.playCupClunk(), 2250);
+        setTimeout(() => soundEngine.playRecordScratch(), 2550);
+        setTimeout(() => soundEngine.playCupClunk(), 3050);
+      },
+    },
+    {
+      project: 'find-the-ball' as const,
+      name: 'The Escape & End Frame',
+      time: 'Find the Ball (22.5s - 27.4s)',
+      desc: 'Record scratch, frantic cup re-flips, the tiny ball roll, the angry sting and the tiny sad trombone.',
+      trigger: () => {
+        soundEngine.playRecordScratch();
+        setTimeout(() => soundEngine.playCupClunk(), 750);
+        setTimeout(() => soundEngine.playCupClunk(), 1200);
+        setTimeout(() => soundEngine.playCupClunk(), 1550);
+        setTimeout(() => soundEngine.playBallRoll(undefined, 0.6), 2450);
+        setTimeout(() => soundEngine.playAngrySting(), 3300);
+        setTimeout(() => soundEngine.playSadTrombone(), 4900);
+      },
+    },
+    {
+      project: 'attempt-247' as const,
+      name: 'The Hook & The Easy Shot',
+      time: 'Attempt 247 (0.0s - 6.0s)',
+      desc: 'Whoosh on the easy rim-out, rim clank, soft thud, tiny wah, whoosh on the release.',
+      trigger: () => {
+        soundEngine.playWhoosh();
+        setTimeout(() => soundEngine.playRimClink(), 3660);
+        setTimeout(() => soundEngine.playPaperSlap(), 4330);
+        setTimeout(() => soundEngine.playSadTrombone(), 4600);
+      },
+    },
+    {
+      project: 'attempt-247' as const,
+      name: 'The Doorway Shot',
+      time: 'Attempt 247 (6.0s - 10.0s)',
+      desc: 'Throw whoosh, fan tink, boing, record scratch on the beanie landing.',
+      trigger: () => {
+        soundEngine.playWhoosh();
+        setTimeout(() => soundEngine.playFanTink(), 8420);
+        setTimeout(() => soundEngine.playPaperSlap(), 8930);
+        setTimeout(() => soundEngine.playCartoonBoing(), 8960);
+        setTimeout(() => soundEngine.playRecordScratch(), 9640);
+      },
+    },
+    {
+      project: 'attempt-247' as const,
+      name: 'The No-Look Shot',
+      time: 'Attempt 247 (10.0s - 14.0s)',
+      desc: 'Laid-back score note, whoosh, window knock, floor thud, record scratch.',
+      trigger: () => {
+        soundEngine.playWhoosh();
+        setTimeout(() => soundEngine.playWindowKnock(), 11320);
+        setTimeout(() => soundEngine.playPaperSlap(), 12060);
+        setTimeout(() => soundEngine.playRecordScratch(), 13150);
+      },
+    },
+    {
+      project: 'attempt-247' as const,
+      name: 'The Plan',
+      time: 'Attempt 247 (14.0s - 18.0s)',
+      desc: 'Lightbulb ding, sparkle, paper crumple, knuckle crack.',
+      trigger: () => {
+        soundEngine.playIdeaDing();
+        setTimeout(() => soundEngine.playMagicSparkle(), 14060);
+        setTimeout(() => soundEngine.playPaperCrumple(), 15200);
+        setTimeout(() => soundEngine.playKnuckleCrack(), 17000);
+      },
+    },
+    {
+      project: 'attempt-247' as const,
+      name: 'The Impossible Shot',
+      time: 'Attempt 247 (18.0s - 22.0s)',
+      desc: 'Launch whoosh, wall bounce, ceiling bounce, rim clink, drum roll, countdown beeps, held breath.',
+      trigger: () => {
+        soundEngine.playWhoosh();
+        setTimeout(() => soundEngine.playWallBounce(), 19000);
+        setTimeout(() => soundEngine.playPaperSlap(), 19500);
+        setTimeout(() => soundEngine.playRimClink(), 20150);
+        setTimeout(() => soundEngine.playDrumRoll(undefined, 1.55), 20170);
+        setTimeout(() => soundEngine.playCountBeep(undefined, 1.0), 20300);
+        setTimeout(() => soundEngine.playCountBeep(undefined, 1.12), 20770);
+        setTimeout(() => soundEngine.playCountBeep(undefined, 1.26), 21240);
+        setTimeout(() => soundEngine.playHeartbeat(), 21620);
+      },
+    },
+    {
+      project: 'attempt-247' as const,
+      name: 'The Win & Reveal',
+      time: 'Attempt 247 (22.0s - 27.0s)',
+      desc: 'Bin thunk, freeze sting, confetti pop, crowd cheer, record scratch, angry sting.',
+      trigger: () => {
+        soundEngine.playBinThunk();
+        setTimeout(() => soundEngine.playFreezeSting(), 22400);
+        setTimeout(() => soundEngine.playConfettiPop(), 23120);
+        setTimeout(() => soundEngine.playVictoryFanfareShort(), 23150);
+        setTimeout(() => soundEngine.playCrowdCheer(), 23180);
+        setTimeout(() => soundEngine.playRecordScratch(), 24150);
+        setTimeout(() => soundEngine.playAngrySting(), 25800);
+      },
+    },
+    {
+      project: 'attempt-247' as const,
+      name: 'The End Frame',
+      time: 'Attempt 247 (27.0s - 30.0s)',
+      desc: 'Paper crumple on fresh ball, sad trombone, short silence.',
+      trigger: () => {
+        soundEngine.playPaperCrumple();
+        setTimeout(() => soundEngine.playSadTrombone(), 27450);
+      },
+    },
+    {
+      project: 'needle-thread' as const,
+      name: 'The Hook & First Failures',
+      time: 'Needle Thread (0.0s - 7.0s)',
+      desc: 'Pull-back whoosh, needle ding, thread flick, comedic sting, rubbery boings, angry stomp.',
+      trigger: () => {
+        soundEngine.playWhoosh();
+        setTimeout(() => soundEngine.playCoinTing(), 500);
+        setTimeout(() => soundEngine.playSqueak(), 1700);
+        setTimeout(() => soundEngine.playFreezeSting(), 2400);
+        setTimeout(() => soundEngine.playCartoonBoing(), 3850);
+        setTimeout(() => soundEngine.playSqueak(), 5050);
+        setTimeout(() => soundEngine.playCartoonBoing(), 5650);
+        setTimeout(() => soundEngine.playFloorThump(), 6500);
+      },
+    },
+    {
+      project: 'needle-thread' as const,
+      name: 'The Magnifying Glass',
+      time: 'Needle Thread (7.0s - 12.0s)',
+      desc: 'Lightbulb ding, sparkle, raise whoosh, outside-catch squeak, miss squeak, descending slide whistle.',
+      trigger: () => {
+        soundEngine.playIdeaDing();
+        setTimeout(() => soundEngine.playMagicSparkle(), 70);
+        setTimeout(() => soundEngine.playWhoosh(), 950);
+        setTimeout(() => soundEngine.playArmCrossSqueak(), 2300);
+        setTimeout(() => soundEngine.playSqueak(), 3500);
+        setTimeout(() => soundEngine.playSlideWhistle(), 3800);
+      },
+    },
+    {
+      project: 'needle-thread' as const,
+      name: 'The Ridiculous Machine',
+      time: 'Needle Thread (12.0s - 18.0s)',
+      desc: 'Mounting clacks and clicks, proud ding, lever clunk, spring launch, thread whip, fabric squeak, record scratch.',
+      trigger: () => {
+        soundEngine.playWoodClack();
+        setTimeout(() => soundEngine.playWoodClack(), 350);
+        setTimeout(() => soundEngine.playMechanicalClick(), 700);
+        setTimeout(() => soundEngine.playWoodClack(), 1050);
+        setTimeout(() => soundEngine.playMechanicalClick(), 1400);
+        setTimeout(() => soundEngine.playMechanicalClick(), 1680);
+        setTimeout(() => soundEngine.playConfidenceDing(), 2200);
+        setTimeout(() => soundEngine.playMechanicalClick(), 3650);
+        setTimeout(() => soundEngine.playWoodClack(), 3700);
+        setTimeout(() => soundEngine.playLauncherFire(), 4030);
+        setTimeout(() => soundEngine.playWhoosh(), 4300);
+        setTimeout(() => soundEngine.playBalloonStretch(), 4720);
+        setTimeout(() => soundEngine.playRecordScratch(), 5050);
+      },
+    },
+    {
+      project: 'needle-thread' as const,
+      name: 'One Last Try',
+      time: 'Needle Thread (18.0s - 24.0s)',
+      desc: 'Deep breath, quiet heartbeats, fake-out squeak, the threading pass, sparkle, victory fanfare.',
+      trigger: () => {
+        soundEngine.playDeepBreath();
+        setTimeout(() => soundEngine.playHeartbeat(), 350);
+        setTimeout(() => soundEngine.playHeartbeat(), 1150);
+        setTimeout(() => soundEngine.playHeartbeat(), 1950);
+        setTimeout(() => soundEngine.playHeartbeat(), 2750);
+        setTimeout(() => soundEngine.playSqueak(), 3070);
+        setTimeout(() => soundEngine.playHeartbeat(), 3350);
+        setTimeout(() => soundEngine.playNeedlePoke(), 3730);
+        setTimeout(() => soundEngine.playMagicSparkle(), 4100);
+        setTimeout(() => soundEngine.playVictoryFanfareShort(), 4700);
+      },
+    },
+    {
+      project: 'needle-thread' as const,
+      name: 'The Final Twist',
+      time: 'Needle Thread (24.0s - 30.0s)',
+      desc: 'Fanfare cut by record scratch, fabric tug, stretch squeak, pop-off impact, short silence, angry sting.',
+      trigger: () => {
+        soundEngine.playRecordScratch();
+        setTimeout(() => soundEngine.playStrainedTug(), 1050);
+        setTimeout(() => soundEngine.playBalloonStretch(), 2400);
+        setTimeout(() => soundEngine.playBigImpact(), 3080);
+        setTimeout(() => soundEngine.playAngrySting(), 4650);
+      },
+    },
+    // Domino Trickshot Effects
+    {
+      project: 'domino-trickshot' as const,
+      name: 'The Challenge',
+      time: 'Domino Trickshot (0.0s - 4.0s)',
+      desc: 'Dramatic boom, ticking countdown, confident chime.',
+      trigger: () => {
+        soundEngine.playDramaticBoom();
+        soundEngine.playTickingCountdown(undefined, 3.0);
+        setTimeout(() => soundEngine.playConfidenceDing(), 2000);
+      },
+    },
+    {
+      project: 'domino-trickshot' as const,
+      name: 'First Failure',
+      time: 'Domino Trickshot (4.5s - 8.0s)',
+      desc: 'Soft flick, ball roll, tiny plop, sad trombone.',
+      trigger: () => {
+        soundEngine.playSoftFlick();
+        soundEngine.playBallRoll(undefined, 1.5);
+        setTimeout(() => soundEngine.playTinyPlop(), 1600);
+        setTimeout(() => soundEngine.playSadTrombone(), 2000);
+      },
+    },
+    {
+      project: 'domino-trickshot' as const,
+      name: 'Total Disaster',
+      time: 'Domino Trickshot (8.5s - 14.0s)',
+      desc: 'Hard flick, rapid domino clatter, cartoon crash, frustrated stomp.',
+      trigger: () => {
+        soundEngine.playHardFlick();
+        soundEngine.playDominoClatter(undefined, 3.0);
+        setTimeout(() => soundEngine.playCartoonCrash(), 3800);
+        setTimeout(() => soundEngine.playFloorThump(), 4800);
+      },
+    },
+    {
+      project: 'domino-trickshot' as const,
+      name: 'The Perfect Chain',
+      time: 'Domino Trickshot (14.0s - 20.0s)',
+      desc: 'Deep breath, precise tap, 20 rhythmic domino clicks, rising music swell, red ball roll.',
+      trigger: () => {
+        soundEngine.playDeepBreath();
+        setTimeout(() => soundEngine.playPreciseTap(), 1100);
+        // 20 domino clicks at ~0.15s intervals
+        for (let i = 0; i < 20; i++) {
+          setTimeout(() => soundEngine.playDominoClick(), 1250 + i * 150);
+        }
+        setTimeout(() => soundEngine.playRisingMusicSwelling(), 1250);
+        setTimeout(() => soundEngine.playBallRoll(undefined, 1.0), 4750);
+      },
+    },
+    {
+      project: 'domino-trickshot' as const,
+      name: 'Impossible Success',
+      time: 'Domino Trickshot (20.0s - 25.0s)',
+      desc: 'Satisfying cup ping, victory fanfare, crowd cheer, victory hops, cup wobble creak.',
+      trigger: () => {
+        soundEngine.playCupPing();
+        setTimeout(() => soundEngine.playVictoryFanfare(), 300);
+        setTimeout(() => soundEngine.playCrowdCheer(), 800);
+        setTimeout(() => soundEngine.playFloorThump(), 1800);
+        setTimeout(() => soundEngine.playFloorThump(), 2800);
+        setTimeout(() => soundEngine.playCupWobbleCreak(), 3800);
+      },
+    },
+    {
+      project: 'domino-trickshot' as const,
+      name: 'The Twist',
+      time: 'Domino Trickshot (25.0s - 30.0s)',
+      desc: 'Final cup wobble, hollow bonk, record scratch, angry sting.',
+      trigger: () => {
+        soundEngine.playCupWobbleCreak();
+        setTimeout(() => soundEngine.playHollowBonk(), 500);
+        setTimeout(() => soundEngine.playRecordScratch(), 800);
+        setTimeout(() => soundEngine.playAngrySting(), 4000);
+      },
+    },
   ];
   const visibleEffects = soundEffects.filter((effect) => effect.project === config.activeProject);
 
@@ -769,7 +1493,21 @@ export const AudioLab: React.FC<AudioLabProps> = ({ config, setConfig }) => {
           {isPaperBall ? 'Sound Design Studio' : 'Sound & Voice Design Studio'}
         </h2>
         <p className="text-sm text-slate-400 max-w-2xl mt-1">
-          {isCoinFlip
+          {isDiamondHeist
+            ? 'The Angry Stickman: The Impossible Diamond Heist is a 30-second museum comedy with a fully procedural 110 bpm sneaky score sliced into four 7.5-second sections (silence for alarm, trap, freeze) — plus diamond chime, spoon draw, laser zap, siren, tray ping, wall boing, button click, angelic choir, fanfare, glass clunk, camera clicks, and freeze sting. No external audio files.'
+            : isPancakeFlip
+            ? 'The Angry Stickman: The Perfect Pancake Flip is a 30-second kitchen comedy with a fully procedural 128 bpm bouncy score sliced into four 7.5-second sections (a music dip before the face splat and a short silence after the final trombone) — plus pan swoosh, cartoon boing, sticky ceiling splat, wood clack, pancake slides, plate clink, confetti pop, crowd cheer, counter bump, wet splat, angry sting and the tiny sad trombone. No external audio files.'
+            : isVendingMachine
+            ? 'The Angry Stickman: The Vending Machine Revenge is a 30-second snack-nook comedy with a fully procedural 122 bpm bouncy score sliced into four 7.5-second sections (a music dip before the air puff and a short silence after the final trombone) — plus machine rattle, coin clink, spiral whirr, heavy thud, broom scrape, strained tug, flying-kick impact, bag rip, giant air puff, one tiny chip tink, confetti pop, crowd cheer and the angry sting. No external audio files.'
+            : isBiggestBalloon
+            ? 'The Angry Stickman: The Biggest Balloon is a 30-second anti-pop comedy with a fully procedural 126 bpm bouncy score sliced into four 7.5-second sections (the music drops out for the shot 3 fake-out and goes silent after the last trombone) — plus deep breath, rubber inflate squeaks, stretch creaks, tense drum roll, relieved sigh, knot snap, proud fanfare, wind gusts, needle-poke psst, a long raspberry air release, whirling swoosh and the tiny sad trombone. No external audio files.'
+            : isFindTheBall
+            ? 'The Angry Stickman: Find the Ball is a 30-second cup-shuffle comedy with a fully procedural 118 bpm playful magic-show score sliced into four 7.5-second sections (the music dips for the empty middle-cup reveal and goes silent after the last trombone) — plus cup lifts and clunks, wooden cup slides, magic sparkles, the table slap, a drum roll, three rising countdown beeps, a very quiet ball roll, the wah-wah trombone, record scratches, a frantic cup-flip flurry and the angry sting. No external audio files.'
+            : isArcadeClaw
+            ? 'The Angry Stickman: The Impossible Claw Machine is a 30-second neon arcade comedy with a fully procedural 132 bpm chiptune sliced into four 7.5-second sections (silence windows for the gag beats, a sting at the button and a fanfare in the chute) — plus coin and slot clicks, claw motors, the bumper boing, the cabinet ricochet, the win jingle, the alarm strobe and the plush avalanche. No external audio files.'
+            : isDominoTrickshot
+            ? 'The Angry Stickman: The Impossible Domino Trickshot is a 30-second chain reaction comedy with a fully procedural 124 bpm bouncy score sliced into four 7.5-second sections (music dip during the cup wobble, silence after the final sting) — plus dramatic boom, ticking countdown, soft flick, hard flick, 20 rhythmic domino clicks, rising swell, cup ping, victory fanfare, crowd cheer, hollow bonk, record scratch, and angry sting. No external audio files.'
+            : isCoinFlip
             ? 'The Angry Stickman vs. The Impossible Coin Flip is a 30-second one-room comedy with a fully procedural score: a smug showman strut, a mechanical engineering march, a rage tremolo that cuts dead on the final flick, a pinball ricochet, a tiny victory fanfare and a record scratch — plus the rim tings, the forehead bonk, the rubber-band launch, the glass splashes and the gold coin ring that ends the film. No external audio files.'
             : isDartShot
             ? 'The Angry Stickman vs. The Impossible Dart Shot is a 30-second one-room comedy with a fully procedural score: a smug pizzicato opening, a ticking measuring theme, a rage tremolo that cuts dead on the final throw, a tick-tock ricochet, a tiny victory fanfare and a record scratch — plus the cork thunks, book clatters, the rubber-band launch and the heavy board bonk that ends the film. No external audio files.'

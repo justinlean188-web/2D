@@ -22,6 +22,18 @@ import { TrickShotRenderer } from '../animation/trickShotRenderer';
 import { PingPongRenderer } from '../animation/pingPongRenderer';
 import { DartShotRenderer } from '../animation/dartShotRenderer';
 import { CoinFlipRenderer } from '../animation/coinFlipRenderer';
+import { ArcadeClawRenderer } from '../animation/arcadeClawRenderer';
+import { DiamondHeistRenderer } from '../animation/diamondHeistRenderer';
+import { PancakeFlipRenderer } from '../animation/pancakeFlipRenderer';
+import { VendingMachineRenderer } from '../animation/vendingMachineRenderer';
+import { BiggestBalloonRenderer } from '../animation/biggestBalloonRenderer';
+import { FindTheBallRenderer } from '../animation/findTheBallRenderer';
+import { Attempt247Renderer } from '../animation/attempt247Renderer';
+import { NeedleThreadRenderer } from '../animation/needleThreadRenderer';
+import { MagnetTrickRenderer } from '../animation/magnetTrickRenderer';
+import { RingShotRenderer } from '../animation/ringShotRenderer';
+import { PencilLandingRenderer } from '../animation/pencilLandingRenderer';
+import { DominoTrickshotRenderer } from '../animation/dominoTrickshotRenderer';
 import { MachineRenderer } from '../animation/machineRenderer';
 import { SequelPaperBallRenderer } from '../animation/sequelPaperBallRenderer';
 import { MindTrapsRenderer } from '../animation/mindTrapsRenderer';
@@ -33,6 +45,18 @@ import {
   PING_PONG_CUES,
   DART_SHOT_CUES,
   COIN_FLIP_CUES,
+  ARCADE_CLAW_CUES,
+  DIAMOND_HEIST_CUES,
+  PANCAKE_FLIP_CUES,
+  VENDING_MACHINE_CUES,
+  BIGGEST_BALLOON_CUES,
+  FIND_THE_BALL_CUES,
+  ATTEMPT_247_CUES,
+  NEEDLE_THREAD_CUES,
+  MAGNET_TRICK_CUES,
+  RING_SHOT_CUES,
+  PENCIL_LANDING_CUES,
+  DOMINO_TRICKSHOT_CUES,
   PAPER_BALL_PART3_CUES,
   PAPER_BALL_PART4_CUES,
   PAPER_BALL_SEQUEL_CUES,
@@ -65,6 +89,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
   const extendedPaperBallRendererRef = useRef<ExtendedPaperBallRenderer>(
     new ExtendedPaperBallRenderer()
   );
+  const [vitrineOpen, setVitrineOpen] = useState<boolean | undefined>(undefined);
   const sequelPaperBallRendererRef = useRef<SequelPaperBallRenderer>(
     new SequelPaperBallRenderer()
   );
@@ -75,6 +100,18 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
   const pingPongRendererRef = useRef<PingPongRenderer>(new PingPongRenderer());
   const dartShotRendererRef = useRef<DartShotRenderer>(new DartShotRenderer());
   const coinFlipRendererRef = useRef<CoinFlipRenderer>(new CoinFlipRenderer());
+  const arcadeClawRendererRef = useRef<ArcadeClawRenderer>(new ArcadeClawRenderer());
+  const diamondHeistRendererRef = useRef<DiamondHeistRenderer>(new DiamondHeistRenderer());
+  const pancakeFlipRendererRef = useRef<PancakeFlipRenderer>(new PancakeFlipRenderer());
+  const vendingMachineRendererRef = useRef<VendingMachineRenderer>(new VendingMachineRenderer());
+  const biggestBalloonRendererRef = useRef<BiggestBalloonRenderer>(new BiggestBalloonRenderer());
+  const findTheBallRendererRef = useRef<FindTheBallRenderer>(new FindTheBallRenderer());
+  const attempt247RendererRef = useRef<Attempt247Renderer>(new Attempt247Renderer());
+  const needleThreadRendererRef = useRef<NeedleThreadRenderer>(new NeedleThreadRenderer());
+  const magnetTrickRendererRef = useRef<MagnetTrickRenderer>(new MagnetTrickRenderer());
+  const ringShotRendererRef = useRef<RingShotRenderer>(new RingShotRenderer());
+  const pencilLandingRendererRef = useRef<PencilLandingRenderer>(new PencilLandingRenderer());
+  const dominoTrickshotRendererRef = useRef<DominoTrickshotRenderer>(new DominoTrickshotRenderer());
   const mindTrapsRendererRef = useRef<MindTrapsRenderer>(new MindTrapsRenderer());
   const [speed, setSpeed] = useState<number>(1.0);
   const [isLooping, setIsLooping] = useState<boolean>(true);
@@ -94,6 +131,31 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
   const isDartProject = config.activeProject === 'dart-shot';
   // And the coin-flip short, with gold-haloed captions.
   const isCoinFlipProject = config.activeProject === 'coin-flip';
+  // The arcade-claw short burns cyan-haloed captions near the top of the frame.
+  const isArcadeClawProject = config.activeProject === 'arcade-claw';
+  // The diamond-heist short burns red-haloed captions near the top of the frame.
+  const isDiamondHeistProject = config.activeProject === 'diamond-heist';
+  // The pancake-flip short burns bold white captions near the top of the frame.
+  const isPancakeFlipProject = config.activeProject === 'pancake-flip';
+  // The vending-machine short also burns bold white captions near the top.
+  const isVendingMachineProject = config.activeProject === 'vending-machine';
+  // The biggest-balloon short burns white captions with growing "SIZE" steps.
+  const isBiggestBalloonProject = config.activeProject === 'biggest-balloon';
+  // The find-the-ball short burns captions plus a big 3-2-1 countdown.
+  const isFindTheBallProject = config.activeProject === 'find-the-ball';
+  // The attempt-247 short burns captions plus a big 3-2-1 rim countdown.
+  const isAttempt247Project = config.activeProject === 'attempt-247';
+  // The needle-thread short burns captions; the caption toggle stays disabled
+  // so the gag timing is never altered from the UI.
+  const isNeedleThreadProject = config.activeProject === 'needle-thread';
+  // The ring-shot short burns captions; the caption toggle stays disabled for
+  // the same reason as the other burned-in shorts.
+  const isRingShotProject = config.activeProject === 'ring-shot';
+  // The pencil-landing short burns captions; the caption toggle stays disabled
+  // so the gag timing is never altered from the UI.
+  const isPencilLandingProject = config.activeProject === 'pencil-landing';
+  // The domino-trickshot short burns captions near the top of the frame.
+  const isDominoTrickshotProject = config.activeProject === 'domino-trickshot';
 
   // Current active scene
   const activeScene =
@@ -158,6 +220,66 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
 
     if (config.activeProject === 'coin-flip') {
       for (const cue of COIN_FLIP_CUES) setCueState(cue.id, cue.time);
+      return;
+    }
+
+    if (config.activeProject === 'arcade-claw') {
+      for (const cue of ARCADE_CLAW_CUES) setCueState(cue.id, cue.time);
+      return;
+    }
+
+    if (config.activeProject === 'diamond-heist') {
+      for (const cue of DIAMOND_HEIST_CUES) setCueState(cue.id, cue.time);
+      return;
+    }
+
+    if (config.activeProject === 'pancake-flip') {
+      for (const cue of PANCAKE_FLIP_CUES) setCueState(cue.id, cue.time);
+      return;
+    }
+
+    if (config.activeProject === 'vending-machine') {
+      for (const cue of VENDING_MACHINE_CUES) setCueState(cue.id, cue.time);
+      return;
+    }
+
+    if (config.activeProject === 'biggest-balloon') {
+      for (const cue of BIGGEST_BALLOON_CUES) setCueState(cue.id, cue.time);
+      return;
+    }
+
+    if (config.activeProject === 'find-the-ball') {
+      for (const cue of FIND_THE_BALL_CUES) setCueState(cue.id, cue.time);
+      return;
+    }
+
+    if (config.activeProject === 'attempt-247') {
+      for (const cue of ATTEMPT_247_CUES) setCueState(cue.id, cue.time);
+      return;
+    }
+
+    if (config.activeProject === 'needle-thread') {
+      for (const cue of NEEDLE_THREAD_CUES) setCueState(cue.id, cue.time);
+      return;
+    }
+
+    if (config.activeProject === 'magnet-trick') {
+      for (const cue of MAGNET_TRICK_CUES) setCueState(cue.id, cue.time);
+      return;
+    }
+
+    if (config.activeProject === 'ring-shot') {
+      for (const cue of RING_SHOT_CUES) setCueState(cue.id, cue.time);
+      return;
+    }
+
+    if (config.activeProject === 'pencil-landing') {
+      for (const cue of PENCIL_LANDING_CUES) setCueState(cue.id, cue.time);
+      return;
+    }
+
+    if (config.activeProject === 'domino-trickshot') {
+      for (const cue of DOMINO_TRICKSHOT_CUES) setCueState(cue.id, cue.time);
       return;
     }
 
@@ -355,6 +477,213 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
         return;
       }
 
+      if (config.activeProject === 'arcade-claw') {
+        if (!config.enableSFX) return;
+        for (const cue of ARCADE_CLAW_CUES) {
+          if (cues.has(cue.id)) continue;
+          if (cue.id.startsWith('ac-score-')) {
+            if (t >= cue.time && t < cue.time + 7.6) {
+              cue.play();
+              cues.add(cue.id);
+            }
+            continue;
+          }
+          if (t >= cue.time && t - cue.time < 0.75) {
+            cue.play();
+            cues.add(cue.id);
+          }
+        }
+        return;
+      }
+
+      if (config.activeProject === 'diamond-heist') {
+        if (!config.enableSFX) return;
+        for (const cue of DIAMOND_HEIST_CUES) {
+          if (cues.has(cue.id)) continue;
+          if (cue.id.startsWith('dh-score-')) {
+            if (t >= cue.time && t < cue.time + 7.6) {
+              cue.play();
+              cues.add(cue.id);
+            }
+            continue;
+          }
+          if (t >= cue.time && t - cue.time < 0.75) {
+            cue.play();
+            cues.add(cue.id);
+          }
+        }
+        return;
+      }
+
+      if (config.activeProject === 'pancake-flip') {
+        if (!config.enableSFX) return;
+        for (const cue of PANCAKE_FLIP_CUES) {
+          if (cues.has(cue.id)) continue;
+          if (cue.id.startsWith('pf-score-')) {
+            if (t >= cue.time && t < cue.time + 7.6) {
+              cue.play();
+              cues.add(cue.id);
+            }
+            continue;
+          }
+          if (t >= cue.time && t - cue.time < 0.75) {
+            cue.play();
+            cues.add(cue.id);
+          }
+        }
+        return;
+      }
+
+      if (config.activeProject === 'vending-machine') {
+        if (!config.enableSFX) return;
+        for (const cue of VENDING_MACHINE_CUES) {
+          if (cues.has(cue.id)) continue;
+          if (cue.id.startsWith('vm-score-')) {
+            if (t >= cue.time && t < cue.time + 7.6) {
+              cue.play();
+              cues.add(cue.id);
+            }
+            continue;
+          }
+          if (t >= cue.time && t - cue.time < 0.75) {
+            cue.play();
+            cues.add(cue.id);
+          }
+        }
+        return;
+      }
+
+      if (config.activeProject === 'biggest-balloon') {
+        if (!config.enableSFX) return;
+        for (const cue of BIGGEST_BALLOON_CUES) {
+          if (cues.has(cue.id)) continue;
+          if (cue.id.startsWith('bb-score-')) {
+            if (t >= cue.time && t < cue.time + 7.6) {
+              cue.play();
+              cues.add(cue.id);
+            }
+            continue;
+          }
+          if (t >= cue.time && t - cue.time < 0.75) {
+            cue.play();
+            cues.add(cue.id);
+          }
+        }
+        return;
+      }
+
+      if (config.activeProject === 'find-the-ball') {
+        if (!config.enableSFX) return;
+        for (const cue of FIND_THE_BALL_CUES) {
+          if (cues.has(cue.id)) continue;
+          if (cue.id.startsWith('fb-score-')) {
+            if (t >= cue.time && t < cue.time + 7.6) {
+              cue.play();
+              cues.add(cue.id);
+            }
+            continue;
+          }
+          if (t >= cue.time && t - cue.time < 0.75) {
+            cue.play();
+            cues.add(cue.id);
+          }
+        }
+        return;
+      }
+
+      if (config.activeProject === 'attempt-247') {
+        if (!config.enableSFX) return;
+        for (const cue of ATTEMPT_247_CUES) {
+          if (cues.has(cue.id)) continue;
+          if (cue.id.startsWith('a247-score-')) {
+            if (t >= cue.time && t < cue.time + 7.6) {
+              cue.play();
+              cues.add(cue.id);
+            }
+            continue;
+          }
+          if (t >= cue.time && t - cue.time < 0.75) {
+            cue.play();
+            cues.add(cue.id);
+          }
+        }
+        return;
+      }
+
+      if (config.activeProject === 'needle-thread') {
+        if (!config.enableSFX) return;
+        for (const cue of NEEDLE_THREAD_CUES) {
+          if (cues.has(cue.id)) continue;
+          if (cue.id.startsWith('nt-score-')) {
+            if (t >= cue.time && t < cue.time + 7.6) {
+              cue.play();
+              cues.add(cue.id);
+            }
+            continue;
+          }
+          if (t >= cue.time && t - cue.time < 0.75) {
+            cue.play();
+            cues.add(cue.id);
+          }
+        }
+        return;
+      }
+
+      if (config.activeProject === 'magnet-trick') {
+        if (!config.enableSFX) return;
+        for (const cue of MAGNET_TRICK_CUES) {
+          if (cues.has(cue.id)) continue;
+          if (t >= cue.time && t - cue.time < 0.75) {
+            cue.play();
+            cues.add(cue.id);
+          }
+        }
+        return;
+      }
+
+      if (config.activeProject === 'ring-shot') {
+        if (!config.enableSFX) return;
+        for (const cue of RING_SHOT_CUES) {
+          if (cues.has(cue.id)) continue;
+          if (t >= cue.time && t - cue.time < 0.75) {
+            cue.play();
+            cues.add(cue.id);
+          }
+        }
+        return;
+      }
+
+      if (config.activeProject === 'pencil-landing') {
+        if (!config.enableSFX) return;
+        for (const cue of PENCIL_LANDING_CUES) {
+          if (cues.has(cue.id)) continue;
+          if (t >= cue.time && t - cue.time < 0.75) {
+            cue.play();
+            cues.add(cue.id);
+          }
+        }
+        return;
+      }
+
+      if (config.activeProject === 'domino-trickshot') {
+        if (!config.enableSFX) return;
+        for (const cue of DOMINO_TRICKSHOT_CUES) {
+          if (cues.has(cue.id)) continue;
+          if (cue.id.startsWith('dt-score-')) {
+            if (t >= cue.time && t < cue.time + 7.6) {
+              cue.play();
+              cues.add(cue.id);
+            }
+            continue;
+          }
+          if (t >= cue.time && t - cue.time < 0.75) {
+            cue.play();
+            cues.add(cue.id);
+          }
+        }
+        return;
+      }
+
       if (config.activeProject === 'paper-ball') {
         if (!config.enableSFX) return;
         if (t >= 2.0 && !cues.has('toss')) {
@@ -520,6 +849,30 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
             dartShotRendererRef.current.render(ctx, renderTime, config);
           } else if (config.activeProject === 'coin-flip') {
             coinFlipRendererRef.current.render(ctx, renderTime, config);
+          } else if (config.activeProject === 'arcade-claw') {
+            arcadeClawRendererRef.current.render(ctx, renderTime, config);
+          } else if (config.activeProject === 'diamond-heist') {
+            diamondHeistRendererRef.current.render(ctx, renderTime, config, vitrineOpen);
+          } else if (config.activeProject === 'pancake-flip') {
+            pancakeFlipRendererRef.current.render(ctx, renderTime, config);
+          } else if (config.activeProject === 'vending-machine') {
+            vendingMachineRendererRef.current.render(ctx, renderTime, config);
+          } else if (config.activeProject === 'biggest-balloon') {
+            biggestBalloonRendererRef.current.render(ctx, renderTime, config);
+          } else if (config.activeProject === 'find-the-ball') {
+            findTheBallRendererRef.current.render(ctx, renderTime, config);
+          } else if (config.activeProject === 'attempt-247') {
+            attempt247RendererRef.current.render(ctx, renderTime, config);
+          } else if (config.activeProject === 'needle-thread') {
+            needleThreadRendererRef.current.render(ctx, renderTime, config);
+          } else if (config.activeProject === 'magnet-trick') {
+            magnetTrickRendererRef.current.render(ctx, renderTime, config);
+          } else if (config.activeProject === 'ring-shot') {
+            ringShotRendererRef.current.render(ctx, renderTime, config);
+          } else if (config.activeProject === 'pencil-landing') {
+            pencilLandingRendererRef.current.render(ctx, renderTime, config);
+          } else if (config.activeProject === 'domino-trickshot') {
+            dominoTrickshotRendererRef.current.render(ctx, renderTime, config);
           } else if (config.activeProject === 'paper-ball') {
             paperBallRendererRef.current.render(ctx, renderTime, config);
           } else {
@@ -577,6 +930,30 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
     const prefix =
       config.activeProject === 'shadow-quit'
         ? 'shadow-quit'
+        : config.activeProject === 'arcade-claw'
+        ? 'arcade-claw'
+        : config.activeProject === 'diamond-heist'
+        ? 'diamond-heist'
+        : config.activeProject === 'pancake-flip'
+        ? 'pancake-flip'
+        : config.activeProject === 'vending-machine'
+        ? 'vending-machine'
+        : config.activeProject === 'biggest-balloon'
+        ? 'biggest-balloon'
+        : config.activeProject === 'find-the-ball'
+        ? 'find-the-ball'
+        : config.activeProject === 'attempt-247'
+        ? 'attempt-247'
+        : config.activeProject === 'needle-thread'
+        ? 'needle-thread'
+        : config.activeProject === 'magnet-trick'
+        ? 'magnet-trick'
+        : config.activeProject === 'ring-shot'
+        ? 'ring-shot'
+        : config.activeProject === 'pencil-landing'
+        ? 'pencil-landing'
+        : config.activeProject === 'domino-trickshot'
+        ? 'domino-trickshot'
         : config.activeProject === 'trick-shot-champion'
         ? 'trick-shot-champion'
         : config.activeProject === 'pop-star'
@@ -686,6 +1063,15 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
               className="w-full h-full object-contain select-none cursor-pointer"
               onClick={() => setIsPlaying((p) => !p)}
             />
+
+            {/* Preview caption overlay for burned-in caption shorts */}
+            {(isDiamondHeistProject || isPancakeFlipProject || isVendingMachineProject || isBiggestBalloonProject || isFindTheBallProject || isAttempt247Project || isNeedleThreadProject || isDominoTrickshotProject) && activeScene?.captionText && (
+              <div className="absolute top-4 left-0 right-0 z-20 pointer-events-none flex justify-center">
+                <div className="bg-black/70 text-white text-sm font-bold px-3 py-1 rounded-md max-w-[90%] text-center">
+                  {activeScene.captionText}
+                </div>
+              </div>
+            )}
 
             {/* In-Frame Pause Indicator overlay if stopped */}
             {!isPlaying && (
@@ -836,6 +1222,29 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
             </div>
           </div>
 
+          {/* Vitrine Toggle Button (diamond-heist only) */}
+          {isDiamondHeistProject && (
+            <button
+              onClick={() => setVitrineOpen((o) => !o)}
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-zinc-950 text-zinc-200 hover:bg-zinc-800 border border-zinc-800 rounded-lg transition-colors cursor-pointer"
+              title="Toggle Diamond Vitrine Open/Closed"
+            >
+              <svg
+                className="w-3.5 h-3.5"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 002-2H6a2 2 0 002-2V5a2 2 0 002-2h12m-6 4h12a2 2 0 002-2v-6a2 2 0 002-2H6a2 2 0 002-2v6a2 2 0 002-2H6a2 2 0 002 2v6m6-4a2 2 0 11-4 0 2 2 0 014 0z"
+                />
+              </svg>
+              <span>Vitrine</span>
+            </button>
+          )}
+
           {/* Prompt Sync Card */}
           <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5 space-y-3">
             <div className="flex items-center justify-between text-xs">
@@ -926,6 +1335,22 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
                     ? 'Comedy score, dart thunks, clock'
                     : config.activeProject === 'coin-flip'
                     ? 'Comedy score, coin tings, splashes'
+                    : config.activeProject === 'arcade-claw'
+                    ? 'Chiptune score, claw motors, plush'
+                    : config.activeProject === 'diamond-heist'
+                    ? 'Sneaky score, laser zap, tray ping, camera clicks'
+                    : config.activeProject === 'pancake-flip'
+                    ? 'Bouncy score, pan swoosh, splats, confetti, trombone'
+                    : config.activeProject === 'vending-machine'
+                    ? 'Bouncy score, rattle, coin clink, kick boom'
+                    : config.activeProject === 'biggest-balloon'
+                    ? 'Bouncy score, rubber squeaks, air release'
+                    : config.activeProject === 'find-the-ball'
+                    ? 'Magic-show score, cup slides, countdown beeps'
+                    : config.activeProject === 'attempt-247'
+                    ? 'Sports score, rim clink, fan tink, countdown, trombone'
+                    : config.activeProject === 'needle-thread'
+                    ? 'Bouncy score, boings, machine clicks, heartbeat, sting'
                     : config.activeProject === 'paper-ball'
                     ? 'Whack, bonk, clink'
                     : 'Scratch, taps, horn'}
@@ -943,14 +1368,22 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
                   !isPopProject &&
                   !isPingPongProject &&
                   !isDartProject &&
-                  !isCoinFlipProject
+                  !isCoinFlipProject &&
+                  !isArcadeClawProject &&
+                  !isDiamondHeistProject &&
+                  !isPancakeFlipProject &&
+                  !isVendingMachineProject &&
+                  !isBiggestBalloonProject &&
+                  !isFindTheBallProject &&
+                  !isAttempt247Project &&
+                  !isDominoTrickshotProject
                 ) {
                   setConfig({ ...config, showCaptions: !config.showCaptions });
                 }
               }}
-              disabled={!currentProject.hasCaptions || isPopProject || isTrickShotProject || isPingPongProject || isDartProject || isCoinFlipProject}
+              disabled={!currentProject.hasCaptions || isPopProject || isTrickShotProject || isPingPongProject || isDartProject || isCoinFlipProject || isArcadeClawProject || isDiamondHeistProject || isPancakeFlipProject || isVendingMachineProject || isBiggestBalloonProject || isFindTheBallProject || isAttempt247Project || isNeedleThreadProject || isRingShotProject || isPencilLandingProject || isDominoTrickshotProject}
               className={`p-3 rounded-xl border flex items-center justify-between transition-colors ${
-                !currentProject.hasCaptions || isPopProject || isTrickShotProject || isPingPongProject || isDartProject || isCoinFlipProject
+                !currentProject.hasCaptions || isPopProject || isTrickShotProject || isPingPongProject || isDartProject || isCoinFlipProject || isArcadeClawProject || isDiamondHeistProject || isPancakeFlipProject || isVendingMachineProject || isBiggestBalloonProject || isFindTheBallProject || isAttempt247Project || isNeedleThreadProject || isRingShotProject || isPencilLandingProject || isDominoTrickshotProject
                   ? 'bg-slate-950/50 border-slate-900 text-slate-600 cursor-not-allowed opacity-60'
                   : config.showCaptions
                   ? 'bg-slate-900 border-slate-700 text-white cursor-pointer'
@@ -960,7 +1393,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
               <div className="text-left">
                 <div className="text-xs font-semibold">In-Video Captions</div>
                 <div className="text-[11px] text-slate-400">
-                  {(isPingPongProject || isDartProject || isCoinFlipProject)
+                  {(isPingPongProject || isDartProject || isCoinFlipProject || isArcadeClawProject || isDiamondHeistProject || isPancakeFlipProject || isVendingMachineProject || isBiggestBalloonProject || isFindTheBallProject || isAttempt247Project || isNeedleThreadProject || isRingShotProject || isPencilLandingProject || isDominoTrickshotProject)
                     ? 'Burned-in scene captions'
                     : isPopProject || isTrickShotProject
                     ? 'Burned-in narration captions'
@@ -971,7 +1404,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
               </div>
               <span
                 className={`text-xs font-mono ${
-                  isPopProject || isTrickShotProject || isPingPongProject || isDartProject || isCoinFlipProject
+                  isPopProject || isTrickShotProject || isPingPongProject || isDartProject || isCoinFlipProject || isArcadeClawProject || isDiamondHeistProject || isPancakeFlipProject || isVendingMachineProject || isBiggestBalloonProject || isFindTheBallProject || isAttempt247Project
                     ? 'text-emerald-400'
                     : !currentProject.hasCaptions
                     ? 'text-slate-600'
@@ -980,7 +1413,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
                     : 'text-slate-600'
                 }`}
               >
-                {isPopProject || isTrickShotProject || isPingPongProject || isDartProject
+                {isPopProject || isTrickShotProject || isPingPongProject || isDartProject || isCoinFlipProject || isArcadeClawProject || isDiamondHeistProject || isPancakeFlipProject || isVendingMachineProject || isBiggestBalloonProject || isFindTheBallProject || isAttempt247Project
                   ? 'ON'
                   : !currentProject.hasCaptions
                   ? 'NONE'

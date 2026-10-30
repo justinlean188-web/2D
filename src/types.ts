@@ -19,7 +19,19 @@ export type CanvasTheme = 'black-on-white' | 'white-on-black';
 
 export type ProjectId =
   | 'mind-traps'
+  | 'arcade-claw'
+  | 'diamond-heist'
+  | 'pancake-flip'
+  | 'vending-machine'
+  | 'biggest-balloon'
+  | 'find-the-ball'
+  | 'attempt-247'
+  | 'needle-thread'
+  | 'magnet-trick'
+  | 'ring-shot'
   | 'coin-flip'
+  | 'pencil-landing'
+  | 'domino-trickshot'
   | 'dart-shot'
   | 'ping-pong-revenge'
   | 'trick-shot-champion'
@@ -1549,6 +1561,1757 @@ export const MIND_TRAPS_SCENES: SceneDef[] = [
   },
 ];
 
+export const DIAMOND_HEIST_PROMPT = `THE ANGRY STICKMAN: THE IMPOSSIBLE DIAMOND HEIST — 30-SECOND AI VIDEO PROMPT
+
+Create a funny 30-second 2D stickman animation for YouTube Shorts, vertical 9:16, 1080×1920, 24fps.
+
+VISUAL STYLE:
+Minimalist flat 2D vector animation, thick black outlines, white round stickman head, black stickman body, expressive eyebrows, exaggerated physical comedy, a grand museum gallery, red security lasers, a glass display case, a giant sparkling diamond, a spoon, a metal serving tray, and a janitor's bucket. Keep the character and museum layout consistent throughout.
+
+SCENE 1 (0–5 seconds):
+The angry stickman sneaks into a museum gallery and spots a giant diamond inside a glass display case. He pulls a tiny spoon from his pocket and confidently points it at the diamond.
+Caption added during editing: "He wants to steal a diamond using ONLY a spoon!"
+Sound: Sneaky music and sparkling chime.
+
+SCENE 2 (5–9 seconds):
+He crawls beneath red laser beams but stands up too early and triggers the security system. Red lights flash and an alarm sounds. He freezes and gives the camera an innocent smile.
+Caption: "ONE WRONG MOVE… ALARM!"
+Sound: Laser zap, loud siren, awkward cough.
+
+SCENE 3 (9–15 seconds):
+Furious, he studies the gallery and spots a rolling janitor's bucket, a mop, and a shiny serving tray. He suddenly gets an idea and positions the tray like a trickshot surface.
+Caption: "FINE. HE'LL USE PHYSICS!"
+Sound: Record scratch followed by an idea ding.
+
+SCENE 4 (15–22 seconds):
+He flicks a tiny metal ball with the spoon. The ball ricochets off the serving tray, bounces off a wall, and hits a clearly visible automatic cleaning demonstration button. The display case opens as part of its scheduled demonstration. Show the entire improbable trajectory clearly.
+Caption: "THE MOST RIDICULOUS PLAN EVER!"
+Sound: Ping, boing, mechanical click, dramatic music.
+
+SCENE 5 (22–26 seconds):
+The stickman uses the spoon to lift the giant diamond and proudly holds it up. The alarms stop, and he celebrates as though he has accomplished the greatest trickshot in history.
+Caption: "HE ACTUALLY GOT IT!"
+Sound: Angelic choir and victory fanfare.
+
+SCENE 6 (26–30 seconds):
+The display case automatically closes around the stickman for the next exhibit cycle. He is trapped inside like a living statue, still holding the diamond. Visitors gather outside and take photographs. He maintains a fake smile while one eyebrow twitches angrily.
+Caption: "HE FORGOT THE EXIT! 💀"
+Sound: Glass clunk, camera clicks, muffled angry scream. End with a freeze-frame.
+
+CAMERA:
+Use quick cuts, expressive close-ups, clear movement, exaggerated cartoon timing, and a strong final visual punchline. Keep all actions readable without dialogue.
+
+TEXT:
+Do not generate text inside the animation frames. Add all captions during editing, timed to the matching scenes. Use bold, high-contrast text near the top of the vertical frame.
+
+AUDIO:
+Use sneaky music, laser zaps, alarms, metallic pings, mechanical clicks, a victory fanfare, and comedic camera sounds. No spoken dialogue, logos, or watermarks.`;
+
+export const DIAMOND_HEIST_SCENES: SceneDef[] = [
+  {
+    id: 1,
+    name: "Scene 1",
+    title: "The Heist Begins",
+    timeRange: [0.0, 5.0],
+    videoPrompt:
+      "The angry stickman sneaks into a museum gallery and spots a giant diamond inside a glass display case. He pulls a tiny spoon from his pocket and confidently points it at the diamond.",
+    animationDesc:
+      "0.0-0.8s stickman sneaks into gallery, 0.8-1.5s spots giant diamond in glass case, 1.5-2.5s pulls tiny spoon from pocket with flourish, 2.5-3.5s points spoon at diamond with confident smirk, 3.5-5.0s leans in admiring the target.",
+    soundDesc: "Sneaky pizzicato music, sparkling diamond chime at 1.0s, spoon draw sound at 2.0s.",
+    captionText: "He wants to steal a diamond using ONLY a spoon!",
+    punchline: "One spoon, one giant diamond, zero plan.",
+    characterAction: "Sneaks in, spots diamond, pulls spoon dramatically, points confidently.",
+    propAction: "Grand museum gallery with glass display case containing giant sparkling diamond.",
+  },
+  {
+    id: 2,
+    name: "Scene 2",
+    title: "The Alarm",
+    timeRange: [5.0, 9.0],
+    videoPrompt:
+      "He crawls beneath red laser beams but stands up too early and triggers the security system. Red lights flash and an alarm sounds. He freezes and gives the camera an innocent smile.",
+    animationDesc:
+      "5.0-6.0s crawls under red laser grid, 6.0-6.5s stands up too early, chest hits laser beam, 6.5-7.0s red alarm lights flash, siren blares, 7.0-8.0s freezes in place, 8.0-9.0s turns to camera with innocent grin and raised eyebrow.",
+    soundDesc: "Laser zap at 6.5s, loud siren alarm from 6.5s, awkward cough at 8.5s.",
+    captionText: "ONE WRONG MOVE… ALARM!",
+    punchline: "The world's most impatient laser crawler.",
+    characterAction: "Crawls carefully, prematurely stands, triggers alarm, freezes, innocent smile.",
+    propAction: "Red laser grid across gallery, glass case, flashing red alarm lights.",
+  },
+  {
+    id: 3,
+    name: "Scene 3",
+    title: "The Setup",
+    timeRange: [9.0, 15.0],
+    videoPrompt:
+      "Furious, he studies the gallery and spots a rolling janitor's bucket, a mop, and a shiny serving tray. He suddenly gets an idea and positions the tray like a trickshot surface.",
+    animationDesc:
+      "9.0-9.5s rage spark, eyebrows furrow, 9.5-10.5s scans gallery, spots bucket and mop, 10.5-11.5s rolls janitor's bucket into position, 11.5-12.5s places metal serving tray at perfect angle, 12.5-13.5s positions mop as backstop, 13.5-15.0s steps back, aims spoon at tiny metal ball on tray, manic grin.",
+    soundDesc: "Rage growl at 9.0s, bucket roll clatter, tray clink, mop thud, record scratch at 12.0s, idea ding at 13.0s, dramatic rising music.",
+    captionText: "FINE. HE'LL USE PHYSICS!",
+    punchline: "A janitor's bucket, a serving tray, and pure desperation.",
+    characterAction: "Rages, scans, drags bucket, angles tray, positions mop, aims with wild eyes.",
+    propAction: "Janitor's bucket, mop, metal serving tray arranged as trickshot rig; tiny metal ball on tray.",
+  },
+  {
+    id: 4,
+    name: "Scene 4",
+    title: "The Impossible Shot",
+    timeRange: [15.0, 22.0],
+    videoPrompt:
+      "He flicks a tiny metal ball with the spoon. The ball ricochets off the serving tray, bounces off a wall, and hits a clearly visible automatic cleaning demonstration button. The display case opens as part of its scheduled demonstration. Show the entire improbable trajectory clearly.",
+    animationDesc:
+      "15.0-15.3s flicks ball with spoon, 15.3-16.0s ball hits serving tray with loud PING, 16.0-17.0s ricochets off gallery wall with BOING, 17.0-18.5s flies through air in perfect arc, 18.5-19.5s hits automatic cleaning demo button, 19.5-20.5s mechanical click, display case slides open, 20.5-22.0s diamond revealed, stickman stares in disbelief.",
+    soundDesc: "Spoon flick thwack at 15.0s, tray PING at 15.5s, wall BOING at 16.2s, flight whoosh, button click at 19.5s, mechanical case opening, dramatic success sting at 20.5s.",
+    captionText: "THE MOST RIDICULOUS PLAN EVER!",
+    punchline: "A spoon, a tray, a wall, a button — perfection.",
+    characterAction: "Flicks ball, tracks with head whipping between impacts, freezes at button hit, disbelief.",
+    propAction: "Metal ball ricochets off tray, wall, hits demo button; glass case slides open revealing diamond.",
+  },
+  {
+    id: 5,
+    name: "Scene 5",
+    title: "The Victory",
+    timeRange: [22.0, 26.0],
+    videoPrompt:
+      "The stickman uses the spoon to lift the giant diamond and proudly holds it up. The alarms stop, and he celebrates as though he has accomplished the greatest trickshot in history.",
+    animationDesc:
+      "22.0-23.0s reaches in with spoon, scoops giant diamond, 23.0-24.0s holds diamond high on spoon like a trophy, 24.0-25.0s alarms stop, silence, 25.0-26.0s explosive celebration, victory dance, kisses spoon.",
+    soundDesc: "Scoop sound at 22.5s, alarms cut at 24.0s, angelic choir at 24.0s, victory fanfare from 24.5s, celebratory whoops.",
+    captionText: "HE ACTUALLY GOT IT!",
+    punchline: "The most absurd heist in history actually worked.",
+    characterAction: "Scoops diamond with spoon, holds it triumphantly, alarms stop, erupts in victory dance.",
+    propAction: "Giant diamond balanced on tiny spoon; display case open; alarms silent.",
+  },
+  {
+    id: 6,
+    name: "Scene 6",
+    title: "The Trap",
+    timeRange: [26.0, 30.0],
+    videoPrompt:
+      "The display case automatically closes around the stickman for the next exhibit cycle. He is trapped inside like a living statue, still holding the diamond. Visitors gather outside and take photographs. He maintains a fake smile while one eyebrow twitches angrily.",
+    animationDesc:
+      "26.0-26.5s case mechanism activates, glass slides shut around him, 26.5-27.5s stickman frozen inside case like exhibit, 27.5-28.5s visitors gather, camera flashes, 28.5-29.5s stickman forced smile, eyebrow twitches with rage, 29.5-30.0s comedic freeze-frame on trapped face.",
+    soundDesc: "Glass clunk at 26.5s, camera shutter clicks from 27.5s, muffled angry scream at 29.0s, record scratch freeze at 29.5s.",
+    captionText: "HE FORGOT THE EXIT! 💀",
+    punchline: "He stole the diamond but became the exhibit.",
+    characterAction: "Trapped inside case, visitors photograph, fake smile, angry eyebrow twitch.",
+    propAction: "Glass case closes around stickman; visitors outside with cameras; diamond still on spoon.",
+  },
+];
+
+export const PANCAKE_FLIP_PROMPT = `THE ANGRY STICKMAN: THE PERFECT PANCAKE FLIP — 30-SECOND AI VIDEO PROMPT
+
+Create a 30-second funny 2D stickman animation for YouTube Shorts, vertical 9:16, 1080x1920, 24fps.
+
+VISUAL STYLE:
+2D flat vector cartoon animation in a clean Modern Pop style, thick black outlines, bright flat colors, smooth 24 fps motion, exaggerated but readable cartoon physics. The main character is an angry-looking black stickman with a round white face, thick expressive eyebrows, a red beanie, and a bright yellow shirt. He is the only character in the entire animation. His personality is determined, competitive, impatient, and comically overconfident. The setting is a colorful modern kitchen with turquoise cabinets, a pink backsplash, an orange countertop, a gas stove on the left side of the counter, and a visible sink beside the stove. The kitchen contains a black frying pan, a metal spatula, one white round plate, three hardcover cookbooks, one wooden cutting board, and a small bottle of maple syrup. Keep the character, kitchen layout, prop positions, lighting and palette identical across every scene.
+
+CONTINUITY LOCK:
+There is exactly one golden pancake throughout the story. Never duplicate, replace, or transform it. The stove and sink remain on the left side of the counter; the ramp and plate are on the right. Once constructed, the wooden cutting board remains supported by the three stacked cookbooks. The white plate sits a short distance beyond the ramp's upper end, aligned with the pancake's flight path but not touching the ramp. The same black frying pan is used throughout. When the stickman catches the pancake during the second failed attempt, he holds the pan below the lower end of the ramp. Use hard cuts to hide difficult object handoffs. Never teleport objects or introduce unestablished props.
+
+SHOT 1 (0-2s) THE HOOK:
+Extreme close-up of the determined face, thick eyebrows angled sharply down, eyes locked on camera, gripping the black frying pan with the golden pancake visible along the bottom of the frame. Fast smash zoom, brief freeze-frame and a simple graphic flash without lettering. Caption added during editing: "CAN HE LAND IT?" Sound: dramatic whoosh, record-scratch freeze.
+
+SHOT 2 (2-6s) THE FIRST FAILURE:
+Wide shot of the kitchen. He confidently flicks the pan upward; the single pancake launches too high, spins and sticks flat against the ceiling with an exaggerated splat. Ceiling visible in the upper part of the frame. He slowly raises his head, eyebrows twitching in disbelief. Caption: "FIRST TRY…" Sound: pan swoosh, cartoon boing, sticky splat, short record scratch.
+
+SHOT 3 (6-10s) THE PLAN:
+Hard cut to the same pancake resting in the frying pan. A simple lightbulb graphic appears above his head. The wooden cutting board is already assembled into a ramp supported by the three stacked cookbooks; he adjusts the white plate a short distance beyond the upper end along the flight path, measures the angle with his hands, narrows his eyes and grins. Caption: "TIME FOR A RAMP." Sound: lightbulb ding, wooden clack, rising musical build.
+
+SHOT 4 (10-13s) THE SECOND FAILURE:
+Wide stable shot of the stickman, frying pan, ramp and plate. He holds the pan just below the lower end of the ramp and flicks the pancake onto the wooden board. The pancake slides halfway up, loses momentum, tips sideways and slides back into the pan he is holding underneath. He pauses, then slowly glares directly at the camera. Caption: "NOPE." Sound: wooden slide, soft flop, short sad trombone.
+
+SHOT 5A (13-16s) THE FINAL LAUNCH:
+He cracks his knuckles, takes a deep breath, narrows his eyes and flicks the single pancake from the pan onto the lower end of the ramp with a strong clean motion. The pancake slides rapidly up the board and launches into the air toward the plate. The camera follows the pancake briefly; end while it is airborne. Caption: "ONE SHOT." Sound: launch whoosh, rising whistle.
+
+SHOT 5B (16-19s) THE PERFECT LANDING:
+Continue directly from the airborne position. The same pancake spins through a smooth exaggerated arc above the plate while the stickman leans forward with clenched fists and wide eyes. It descends into the exact center of the white plate and settles flat without bouncing. A tiny sparkle appears on impact. No caption. Sound: rising whistle, brief sparkle, satisfying plate clink.
+
+SHOT 6 (19-23s) THE CHAMPION:
+He freezes in disbelief, then jumps into the air with both arms raised as colorful confetti bursts around him. He lands in an exaggerated champion pose and points proudly at the pancake. The plate and pancake stay stationary. Caption: "PERFECT!!!" Sound: victory fanfare, confetti pop, short crowd cheer.
+
+SHOT 7 (23-29s) PANCAKE REVENGE:
+Beat 1: while celebrating he backs into the countertop and bumps it with his hip; the plate jolts and the pancake slides off. Beat 2: hard cut to the same pancake already stuck flat across his face; do not animate a complicated airborne collision. Beat 3: the pancake slowly slides down his face revealing an intensely furious expression, fists clenched. Optionally one small drop of maple syrup drips onto his shirt. Caption: "…OR NOT 💀" Sound: counter bump, wet splat, slow sticky slide, angry musical sting.
+
+SHOT 8 (29-30s) THE FINAL GAG:
+The golden pancake now rests on top of his head like a tiny golden hat. He stands completely still, staring into the camera with a defeated furious expression, red beanie still visible. Slowly push the camera toward his face, matching Shot 1's framing. No caption. Sound: tiny sad trombone, then brief silence.
+
+NEGATIVE PROMPT:
+Photorealism, 3D rendering, extra characters, dialogue, speech bubbles, generated text inside the frames, logos, watermarks, changing outfits, changing kitchen colors, inconsistent character design, blurry images, distorted hands, extra limbs, duplicated pancakes, duplicated plates, morphing objects, random camera orientation, unnecessary scene transitions.
+
+CAPTIONS (added during editing, upper-middle area 15-35% down, white extra-bold with thick black outline):
+1. "CAN HE LAND IT?" 2. "FIRST TRY…" 3. "TIME FOR A RAMP." 4. "NOPE." 5. "ONE SHOT." 6. none 7. "PERFECT!!!" 8. "…OR NOT 💀" 9. none.
+
+AUDIO:
+One upbeat bouncy comedic background track at about 20-30% of the mix, prominent synchronized SFX, a music dip just before the pancake hits his face, short silence after the final sad trombone. No spoken dialogue or narration.`;
+
+export const PANCAKE_FLIP_SCENES: SceneDef[] = [
+  {
+    id: 1,
+    name: "Shot 1",
+    title: "The Hook",
+    timeRange: [0.0, 2.0],
+    videoPrompt:
+      "Extreme close-up of the angry stickman's determined face, thick eyebrows angled sharply downward, eyes locked on the camera, gripping the black frying pan with the golden pancake visible along the bottom of the frame. Fast smash zoom, brief freeze-frame and a simple graphic flash without lettering.",
+    animationDesc:
+      "0.0-0.7s smash zoom toward the face, 0.7-1.2s freeze-frame with graphic flash, 1.2-2.0s hold the determined close-up with the pan and pancake at the bottom of frame.",
+    soundDesc: "Dramatic whoosh at 0.0s, record-scratch freeze at 0.9s.",
+    captionText: "CAN HE LAND IT?",
+    punchline: "One pancake, one impossible trickshot, zero patience.",
+    characterAction: "Stares down the camera, grips the pan, prepares the trick shot.",
+    propAction: "Black frying pan with the single golden pancake visible at the bottom.",
+  },
+  {
+    id: 2,
+    name: "Shot 2",
+    title: "The First Failure",
+    timeRange: [2.0, 6.0],
+    videoPrompt:
+      "Wide shot of the kitchen. The stickman stands beside the stove holding the frying pan. He confidently flicks the pan upward. The single golden pancake launches too high, spins through the air and sticks flat against the kitchen ceiling with an exaggerated cartoon splat. Ceiling visible in the upper part of the frame. He slowly raises his head to look at the pancake, eyebrows twitching in disbelief.",
+    animationDesc:
+      "2.0-2.8s confident wind-up, 2.8-3.4s pancake launches too high, 3.4-4.0s sticks flat to the ceiling with a splat, 4.0-4.6s camera punch-in toward the pancake, 4.6-6.0s stickman looks up in disbelief, eyebrows twitching.",
+    soundDesc: "Pan swoosh at 2.6s, cartoon boing at 3.1s, sticky splat at 3.6s, short record scratch at 4.4s.",
+    captionText: "FIRST TRY…",
+    punchline: "The pancake found the ceiling instead of the plate.",
+    characterAction: "Flicks confidently, watches the pancake stick to the ceiling, disbelief.",
+    propAction: "Single golden pancake stuck flat on the ceiling; empty frying pan in his hand.",
+  },
+  {
+    id: 3,
+    name: "Shot 3",
+    title: "The Plan",
+    timeRange: [6.0, 10.0],
+    videoPrompt:
+      "Hard cut to the same golden pancake already resting inside the frying pan. The stickman suddenly gets an idea and a simple lightbulb graphic appears above his head. The wooden cutting board is already assembled into a ramp supported by three stacked hardcover cookbooks. He adjusts the white plate a short distance beyond the upper end of the ramp along the flight path, measures the angle with his hands, narrows his eyes and grins.",
+    animationDesc:
+      "6.0-6.6s hard cut to pancake in pan, 6.6-7.4s lightbulb graphic appears, 7.4-8.4s completed ramp and plate setup shown, 8.4-9.2s he measures the ramp angle with his hands, 9.2-10.0s narrows eyes and grins with exaggerated overconfidence.",
+    soundDesc: "Lightbulb ding at 7.2s, wooden clack at 8.2s, rising musical build from 8.5s.",
+    captionText: "TIME FOR A RAMP.",
+    punchline: "A cutting board, three cookbooks and pure desperation.",
+    characterAction: "Gets the idea, adjusts the plate, measures the ramp, grins.",
+    propAction: "Cutting board ramp on three stacked cookbooks; white plate beyond the upper end; pancake back in the pan.",
+  },
+  {
+    id: 4,
+    name: "Shot 4",
+    title: "The Second Failure",
+    timeRange: [10.0, 13.0],
+    videoPrompt:
+      "Wide stable shot clearly showing the stickman, frying pan, ramp and plate. He holds the pan just below the lower end of the ramp and flicks the golden pancake onto the wooden board. The pancake slides halfway up, loses momentum, tips sideways and slides backward into the pan he is holding underneath. He looks down at it, pauses, then slowly turns his head toward the camera and glares directly at the viewer. His shoulders slump slightly.",
+    animationDesc:
+      "10.0-10.5s holds the pan below the ramp, 10.5-11.2s flicks the pancake onto the board, 11.2-12.0s pancake slides halfway up, tips and slides back into the pan, 12.0-13.0s he pauses and glares straight at the camera with slumped shoulders.",
+    soundDesc: "Wooden slide at 11.2s, soft flop at 12.0s, short sad trombone at 12.2s.",
+    captionText: "NOPE.",
+    punchline: "Physics said no.",
+    characterAction: "Flicks the pancake, catches it back in the pan, glares at the camera.",
+    propAction: "Pancake slides up and returns to the frying pan below the ramp; plate stays beyond the ramp.",
+  },
+  {
+    id: 5,
+    name: "Shot 5A",
+    title: "The Final Launch",
+    timeRange: [13.0, 16.0],
+    videoPrompt:
+      "Wide shot showing the stickman, black frying pan, wooden ramp and white plate. The plate remains a short distance beyond the ramp's upper end along the intended flight path. He cracks his knuckles, takes a deep breath, narrows his eyes and flicks the single golden pancake from the pan onto the lower end of the ramp with a strong, clean motion. The pancake slides rapidly up the board and launches into the air toward the plate. The camera follows the pancake briefly and ends while it is airborne.",
+    animationDesc:
+      "13.0-13.6s cracks his knuckles, 13.6-14.2s deep breath and narrow eyes, 14.2-14.8s clean flick onto the low end of the ramp, 14.8-15.5s pancake slides rapidly up the board, 15.5-16.0s pancake launches into the air as the camera follows.",
+    soundDesc: "Knuckle crack at 13.3s, deep breath at 13.8s, launch whoosh at 14.4s, rising whistle from 15.2s.",
+    captionText: "ONE SHOT.",
+    punchline: "Everything comes down to this flick.",
+    characterAction: "Cracks knuckles, breathes deep, flicks the pancake up the ramp.",
+    propAction: "Pancake slides up the wooden ramp and launches into the air toward the plate.",
+  },
+  {
+    id: 6,
+    name: "Shot 5B",
+    title: "The Perfect Landing",
+    timeRange: [16.0, 19.0],
+    videoPrompt:
+      "Continue directly from the airborne position. The same golden pancake continues along the same flight direction, preserving its size, color, shape and rotation. The white plate remains stationary. The pancake spins through a smooth exaggerated cartoon arc above the plate while the stickman leans forward with clenched fists and wide eyes. It descends into the exact center of the white plate and settles flat without bouncing out. A tiny sparkle appears on impact.",
+    animationDesc:
+      "16.0-17.4s pancake arcs smoothly above the plate, 17.4-18.2s descends into the center of the plate, 18.2-18.6s settles flat with a tiny sparkle, 18.6-19.0s stickman holds his breath with clenched fists.",
+    soundDesc: "Rising whistle through the arc, brief sparkle at 18.3s, satisfying plate clink at 18.4s.",
+    punchline: "Airborne and perfect - nothing can go wrong now.",
+    characterAction: "Leans forward, clenched fists, wide eyes, holds his breath.",
+    propAction: "Pancake lands flat in the center of the white plate without bouncing.",
+  },
+  {
+    id: 7,
+    name: "Shot 6",
+    title: "The Champion",
+    timeRange: [19.0, 23.0],
+    videoPrompt:
+      "The stickman stares at the pancake sitting perfectly in the center of the plate. He freezes in disbelief for a brief moment, then jumps into the air with both arms raised as colorful confetti bursts around him. He lands in an exaggerated champion pose and points proudly at the pancake as if he has won a world championship. The plate and pancake remain stationary.",
+    animationDesc:
+      "19.0-19.6s disbelief freeze, 19.6-20.6s jumps with arms raised, 20.6-21.2s confetti burst, 21.2-22.2s lands in champion pose, 22.2-23.0s points proudly at the pancake.",
+    soundDesc: "Victory fanfare at 19.8s, confetti pop at 20.6s, short crowd cheer from 21.0s.",
+    captionText: "PERFECT!!!",
+    punchline: "The most absurd flip in pancake history actually landed.",
+    characterAction: "Freezes, jumps, celebrates, points proudly at the pancake.",
+    propAction: "Confetti burst; plate and pancake remain stationary on the counter.",
+  },
+  {
+    id: 8,
+    name: "Shot 7",
+    title: "Pancake Revenge",
+    timeRange: [23.0, 29.0],
+    videoPrompt:
+      "Three clear comedic beats. Beat 1: while celebrating, the stickman accidentally backs into the countertop and bumps it with his hip; the white plate jolts and the pancake slides off. Beat 2: hard cut to the same golden pancake already stuck flat across his face, covering most of it while the red beanie and yellow shirt remain visible. Beat 3: the pancake slowly slides down his face revealing an intensely furious expression, thick eyebrows angled sharply down, fists clenched. Optionally one small drop of maple syrup drips onto his shirt.",
+    animationDesc:
+      "23.0-24.0s he backs into the counter and bumps it, 24.0-24.6s plate jolts and pancake slides off, 24.6-25.2s hard cut to the pancake stuck flat across his face, 25.2-27.2s pancake slowly slides down, 27.2-29.0s furious reaction with clenched fists and an angry sting.",
+    soundDesc: "Counter bump at 23.4s, wet splat at 24.8s, slow sticky slide 25.4-27.0s, angry musical sting at 27.4s.",
+    captionText: "…OR NOT 💀",
+    punchline: "The pancake had other plans.",
+    characterAction: "Bumps the counter, gets a pancake to the face, slides it off, furious.",
+    propAction: "Plate jolts, pancake slides off, sticks across his face, then slides down.",
+  },
+  {
+    id: 9,
+    name: "Shot 8",
+    title: "The Final Gag",
+    timeRange: [29.0, 30.0],
+    videoPrompt:
+      "The golden pancake now rests on top of the stickman's head like a tiny golden hat. He stands completely still and stares directly into the camera with a defeated, furious expression. His red beanie remains visible beneath the pancake and his yellow shirt stays unchanged. Slowly push the camera toward his face, matching Shot 1's head size, angle and centered composition as closely as possible. Hold the final image briefly.",
+    animationDesc:
+      "29.0-29.4s slow camera push toward the pancake hat, 29.4-30.0s hold the defeated furious stare.",
+    soundDesc: "Tiny sad trombone at 29.1s, then brief silence.",
+    punchline: "He finally landed the pancake... on his head.",
+    characterAction: "Stands still with the pancake on his head, stares into the camera, defeated.",
+    propAction: "Golden pancake resting on top of his head like a hat.",
+  },
+];
+
+export const VENDING_MACHINE_PROMPT = `THE ANGRY STICKMAN: THE VENDING MACHINE REVENGE — 30-SECOND AI VIDEO PROMPT
+
+Create a 30-second funny 2D stickman animation for YouTube Shorts, vertical 9:16, 1080x1920, 24fps.
+
+VISUAL STYLE:
+2D flat vector cartoon in clean Modern Pop style, thick black outlines, bright flat colors, smooth 24 fps motion, exaggerated cartoon physics. The main character is an angry-looking black stickman with a round white face, thick expressive eyebrows, a red beanie, and a bright yellow shirt. He is the only character. The setting is a small, brightly lit snack nook with a mint-green wall, a purple floor, and one tall blue vending machine centered against the wall. The machine has a big glass window showing three rows of colorful snacks, a coin slot and a small keypad on the right side, and a black flap at the bottom where snacks drop. Vertical 9:16 framing. The character and key objects stay in the centre 60% of the frame. Keep the same character design, outfit, set and colors in every shot.
+
+CONTINUITY LOCK:
+There is exactly one vending machine, one stickman, one tall push broom (introduced in Shot 4), and two bags of chips: a yellow bag and an orange bag. The bags are the only chips that ever appear. Do not duplicate, transform, or replace the bags, and do not add objects. Keep object sizes, proportions and camera orientation consistent. Use hard cuts to hide difficult object handoffs. No object teleports.
+
+NEGATIVE PROMPT:
+Photorealistic, 3D render, extra characters, dialogue, speech bubbles, text, letters, readable labels, subtitles, logos, brand names, watermarks, changing outfit, changing set colors, blurry, distorted hands, extra limbs.
+
+SHOT 1 (0-2s) THE HOOK:
+Extreme close-up of the stickman's angry face pressed against the vending machine glass, one eyebrow twitching. Behind the glass, a yellow chip bag dangles by one corner from its spiral, barely hanging on. Fast smash zoom in, then a hard freeze-frame with a brief graphic flash (no lettering or symbols). Caption added in the edit: "IT STOLE HIS COIN." SFX: dramatic whoosh, record-scratch freeze.
+
+SHOT 2 (2-6s) ATTEMPT 1, THE SHAKE:
+Wide shot of the stickman and the full machine. He grabs both sides of the machine and shakes it hard; the machine wobbles and rattles, and the yellow bag swings back and forth but stays hanging. He stops, slowly looks at the bag, and glares. Keep the whole machine visible. Caption: "ATTEMPT 1: SHAKE IT." SFX: rattling shake, cartoon boing, record scratch. Edit: quick punch-in on the swinging bag.
+
+SHOT 3 (6-10s) ATTEMPT 2, THE SECOND COIN:
+The stickman slowly pulls out a second coin from his pocket, kisses it for luck, and drops it into the slot. Hard cut to the inside of the machine glass: an orange bag drops from its spiral and stops hanging directly behind the yellow bag, so now two bags are stuck. Cut back to the stickman, whose eyebrows twitch in disbelief. Caption: "SECOND COIN…" with an optional follow-up at 9.0s: "NOW IT STOLE TWO." SFX: coin clink, spiral whirr, thud, record scratch.
+
+SHOT 4 (10-14s) ATTEMPT 3, THE BROOM:
+Hard cut to the stickman already holding the tall push broom. A lightbulb pops up above his head. He kneels, pushes the broom handle up through the black flap at the bottom of the machine, and pokes upward. The handle jams solidly in the flap and will not move. He tugs with both hands, straining, and gets nowhere. Keep the machine, broom and character visible in one wide shot. Caption: "TIME FOR A BROOM." SFX: lightbulb ding, wooden scrape, strained tug, sad trombone note.
+
+SHOT 5 (14-19s) THE FLYING KICK:
+The broom is gone (hard cut, empty floor). The stickman backs up to the far edge of the frame, cracks his knuckles, and sprints toward the machine. He leaps into a flying kick pose toward the glass. Slow-motion at the moment of contact: his foot hits the machine and the whole machine shudders, with a dramatic shockwave ring. End the clip right at impact. Caption: "NOW IT'S PERSONAL." SFX: footsteps, rising whistle, huge cartoon impact. Edit: slow down to about 40-50% only for the final airborne second, then return to normal speed at the impact.
+
+SHOT 6 (19-23s) THE CELEBRATION:
+Both the yellow and orange bags drop together into the flap. Hard cut to the stickman standing back up, dusting off, then pulling both bags from the flap. He holds them above his head, then jumps with both arms up while colorful confetti bursts around him. Energetic but brief. Caption: "BOTH BAGS!!!" SFX: double thud, victory fanfare, confetti pop, short crowd cheer.
+
+SHOT 7 (23-29s) THE PUNCHLINE:
+The stickman sits on the floor and tears open the yellow bag with a happy grin. A giant puff of air bursts out, blowing his eyebrows back and shaking his shirt. He looks inside, tilts the bag over his open palm, and exactly one tiny chip falls out and lands in his hand. Close-up on his palm, then his face, with eyebrows slowly slamming down into fury. Keep him centered and the single chip clearly visible. Caption: "99% AIR 💀" SFX: bag rip, big air puff, one tiny chip tink, slow angry sting.
+
+SHOT 8 (29-30s) THE END FRAME:
+The stickman stares directly into the camera, furious and defeated, holding the single chip between two fingers. Slowly push in toward his face. Match Shot 1's head size, camera angle and centered framing as closely as possible. Hold for a fraction of a second, then cut back to the opening for a comedic replay. No caption. SFX: tiny sad trombone, then a short silence.
+
+CAPTIONS:
+Add in the editor. Extra-bold sans-serif, white fill, thick black outline and drop shadow. Two to four words each, one line where possible. Position about 15-35% down from the top. Avoid the bottom 20% and the right edge. Quick 0.1s scale-bounce pop-in on the sound effect.
+
+AUDIO:
+One bouncy comedic loop at about 20-30% volume (royalty-free or YouTube Audio Library). SFX at full presence, cut precisely on the action. Music dip for 0.3s right before the air puff in Shot 7. No spoken dialogue or narration.
+
+EDITING RULES:
+Fast cuts through Shots 1-4. Slow motion only in Shot 5. Punch-ins on the swinging bag (Shot 2), the kick impact (Shot 5) and the lone chip (Shot 7). Never render real brand names or snack logos; use plain colored bags only. One simple action per shot; hard cuts to hide tricky handoffs.`;
+
+export const VENDING_MACHINE_SCENES: SceneDef[] = [
+  {
+    id: 1,
+    name: "Shot 1",
+    title: "The Hook",
+    timeRange: [0.0, 2.0],
+    videoPrompt:
+      "Extreme close-up of the stickman's angry face pressed against the vending machine glass, one eyebrow twitching. Behind the glass, a yellow chip bag dangles by one corner from its spiral, barely hanging on. Fast smash zoom in, then a hard freeze-frame with a brief graphic flash.",
+    animationDesc:
+      "0.0-0.9s fast smash zoom into the angry face against the glass, 0.9-1.9s hard freeze-frame with a white graphic flash, yellow bag dangling by one corner behind the glass.",
+    soundDesc: "Dramatic whoosh at 0.0s, record-scratch freeze at 0.9s.",
+    captionText: "IT STOLE HIS COIN.",
+    punchline: "The machine has his coin and he has lost his patience.",
+    characterAction: "Face pressed to the glass, eyebrow twitching, furious.",
+    propAction: "One yellow chip bag dangles by a corner inside the glass.",
+  },
+  {
+    id: 2,
+    name: "Shot 2",
+    title: "The Shake",
+    timeRange: [2.0, 6.0],
+    videoPrompt:
+      "Wide shot of the stickman and the full machine. He grabs both sides of the machine and shakes it hard; the machine wobbles and rattles, and the yellow bag swings back and forth but stays hanging. He stops, slowly looks at the bag, and glares.",
+    animationDesc:
+      "2.0-2.5s grabs both sides, 2.5-4.2s shakes the machine hard, the yellow bag swings but stays hanging, 4.2-4.8s stops and looks at the bag, 4.8-6.0s glares at the machine.",
+    soundDesc: "Rattling shake 2.5-4.2s, cartoon boing at 4.3s, record scratch at 4.8s.",
+    captionText: "ATTEMPT 1: SHAKE IT.",
+    punchline: "The machine rattles. The bag stays.",
+    characterAction: "Grabs and shakes the machine, stops, glares at the stuck bag.",
+    propAction: "Vending machine wobbles; yellow bag swings by one corner, still stuck.",
+  },
+  {
+    id: 3,
+    name: "Shot 3",
+    title: "The Second Coin",
+    timeRange: [6.0, 10.0],
+    videoPrompt:
+      "The stickman slowly pulls out a second coin from his pocket, kisses it for luck, and drops it into the slot. Hard cut to the inside of the machine glass: an orange bag drops from its spiral and stops hanging directly behind the yellow bag, so now two bags are stuck. Cut back to the stickman, whose eyebrows twitch in disbelief.",
+    animationDesc:
+      "6.0-6.7s pulls out the second coin, 6.7-7.3s kisses it, 7.3-7.8s drops it into the slot, 7.8-8.6s hard cut inside the glass as the orange bag drops and hangs behind the yellow bag, 8.6-10.0s cut back to the stickman's twitching eyebrows.",
+    soundDesc: "Coin clink at 7.7s, spiral whirr 7.8-8.4s, thud at 8.5s, record scratch at 9.0s.",
+    captionText: "SECOND COIN…",
+    punchline: "Now the machine has two coins and two stuck bags.",
+    characterAction: "Pulls out a coin, kisses it, drops it in, then stares in disbelief.",
+    propAction: "Orange bag drops and hangs directly behind the yellow bag.",
+  },
+  {
+    id: 4,
+    name: "Shot 4",
+    title: "The Broom",
+    timeRange: [10.0, 14.0],
+    videoPrompt:
+      "Hard cut to the stickman already holding the tall push broom. A lightbulb pops up above his head. He kneels, pushes the broom handle up through the black flap at the bottom of the machine, and pokes upward. The handle jams solidly in the flap and will not move. He tugs with both hands, straining, and gets nowhere. Keep the machine, broom and character visible in one wide shot.",
+    animationDesc:
+      "10.0-10.6s hard cut to the broom in hand, 10.6-11.2s lightbulb appears, 11.2-12.0s kneels and pushes the handle into the flap, 12.0-12.8s the handle jams, 12.8-14.0s he tugs and strains with no movement.",
+    soundDesc: "Lightbulb ding at 10.8s, wooden scrape at 11.6s, strained tug at 12.6s, sad trombone note at 13.4s.",
+    captionText: "TIME FOR A BROOM.",
+    punchline: "The broom meets a flap that refuses to cooperate.",
+    characterAction: "Kneels, pokes the broom into the flap, tugs and strains.",
+    propAction: "Tall push broom introduced; handle jams solidly in the black flap.",
+  },
+  {
+    id: 5,
+    name: "Shot 5",
+    title: "The Flying Kick",
+    timeRange: [14.0, 19.0],
+    videoPrompt:
+      "The broom is gone. The stickman backs up to the far edge of the frame, cracks his knuckles, and sprints toward the machine. He leaps into a flying kick pose toward the glass. Slow-motion at the moment of contact: his foot hits the machine and the whole machine shudders, with a dramatic shockwave ring. End the clip right at impact.",
+    animationDesc:
+      "14.0-14.8s backs up and cracks his knuckles, 14.8-15.8s sprints toward the machine, 15.8-18.2s leaps into the flying kick in slow motion, 18.2-19.0s foot contacts the glass and the machine shudders with a shockwave ring.",
+    soundDesc: "Footsteps 14.8-15.8s, rising whistle 16.0-18.2s, huge cartoon impact at 18.4s.",
+    captionText: "NOW IT'S PERSONAL.",
+    punchline: "He is done negotiating with the machine.",
+    characterAction: "Backs up, cracks knuckles, sprints, leaps into a flying kick.",
+    propAction: "Broom is gone; the machine shudders at impact with a shockwave ring.",
+  },
+  {
+    id: 6,
+    name: "Shot 6",
+    title: "The Celebration",
+    timeRange: [19.0, 23.0],
+    videoPrompt:
+      "Both the yellow and orange bags drop together into the flap. Hard cut to the stickman standing back up, dusting off, then pulling both bags from the flap. He holds them above his head, then jumps with both arms up while colorful confetti bursts around him. Energetic but brief.",
+    animationDesc:
+      "19.0-19.6s both bags drop into the flap with a double thud, 19.6-20.4s hard cut to the stickman pulling both bags out, 20.4-21.2s holds them above his head, 21.2-22.2s jumps with both arms up, 22.2-23.0s confetti falls around him.",
+    soundDesc: "Double thud at 19.4s, victory fanfare at 19.8s, confetti pop at 21.2s, short crowd cheer from 21.5s.",
+    captionText: "BOTH BAGS!!!",
+    punchline: "Two stuck bags, one triumphant idiot.",
+    characterAction: "Stands up, pulls both bags from the flap, raises them, jumps in celebration.",
+    propAction: "Yellow and orange bags drop together into the flap; confetti bursts.",
+  },
+  {
+    id: 7,
+    name: "Shot 7",
+    title: "The Punchline",
+    timeRange: [23.0, 29.0],
+    videoPrompt:
+      "The stickman sits on the floor and tears open the yellow bag with a happy grin. A giant puff of air bursts out, blowing his eyebrows back and shaking his shirt. He looks inside, tilts the bag over his open palm, and exactly one tiny chip falls out and lands in his hand. Close-up on his palm, then his face, with eyebrows slowly slamming down into fury.",
+    animationDesc:
+      "23.0-23.8s sits down and tears open the yellow bag, 23.8-25.0s giant air puff blows his face back, 25.0-26.2s looks inside and tilts the bag over his palm, 26.2-27.2s exactly one tiny chip falls into his hand, 27.2-29.0s eyebrows slam down into fury.",
+    soundDesc: "Bag rip at 23.5s, big air puff at 24.2s, tiny chip tink at 26.7s, slow angry sting at 27.6s.",
+    captionText: "99% AIR 💀",
+    punchline: "The bag was mostly a rumor.",
+    characterAction: "Sits, tears open the bag, gets blasted by air, finds one chip, rages.",
+    propAction: "Yellow bag opens; giant air puff; exactly one tiny chip falls into his palm.",
+  },
+  {
+    id: 8,
+    name: "Shot 8",
+    title: "The End Frame",
+    timeRange: [29.0, 30.0],
+    videoPrompt:
+      "The stickman stares directly into the camera, furious and defeated, holding the single chip between two fingers. Slowly push in toward his face. Match Shot 1's head size, camera angle and centered framing as closely as possible. Hold for a fraction of a second, then cut back to the opening for a comedic replay.",
+    animationDesc:
+      "29.0-29.5s slow camera push toward the furious face, 29.5-30.0s hold the defeated stare with the single chip held between two fingers.",
+    soundDesc: "Tiny sad trombone at 29.1s, then a short silence.",
+    punchline: "One coin, two bags, one chip.",
+    characterAction: "Stares into the camera, furious and defeated, holding the single chip.",
+    propAction: "Single tiny chip held between two fingers; one yellow and one orange bag.",
+  },
+];
+
+export const BIGGEST_BALLOON_PROMPT = `THE ANGRY STICKMAN: THE BIGGEST BALLOON — 30-SECOND AI VIDEO PROMPT
+
+Create a funny 30-second 2D stickman animation for YouTube Shorts, vertical 9:16, 1080×1920, 24fps.
+
+VISUAL STYLE:
+2D flat vector cartoon in clean Modern Pop style, thick black outlines, bright flat colors, smooth 24 fps motion, exaggerated cartoon physics. The main character is an angry-looking black stickman with a round white face, thick expressive eyebrows, a red beanie, and a bright yellow shirt. He is the only character. The setting is a sunny grassy hilltop park with a bright blue sky, simple white flat clouds, soft green hills in the background, and one tall dark-green pine tree with a sharp pointed top on the right side of the frame. Vertical 9:16 framing. The character and key objects stay in the center 60% of the frame. Keep the same character design, outfit, set and colors in every shot.
+
+CONTINUITY LOCK:
+There is exactly one stickman, one shiny red balloon with a short white string, and one pine tree. The balloon is the only balloon, and it keeps the same shape and bright red color as it grows. Do not add birds, animals, other trees, buildings, or any other character. Keep proportions and camera orientation consistent. Use hard cuts to hide difficult transitions. No object teleports.
+
+NEGATIVE PROMPT:
+Photorealistic, 3D render, extra characters, birds, animals, dialogue, speech bubbles, text, letters, numbers, subtitles, logos, watermarks, changing outfit, changing set colors, blurry, distorted hands, extra limbs.
+
+SHOT 1 (0-2s) THE HOOK:
+Extreme close-up of the stickman's determined face. He holds a small, limp red balloon right in front of his mouth, eyebrows slammed down. Smash zoom in, then a hard freeze-frame with a brief graphic flash (no lettering or symbols). Caption added in the edit: "WILL IT POP?" SFX: dramatic whoosh, record-scratch freeze.
+
+SHOT 2 (2-6s) SIZE MEDIUM:
+Medium shot on the grassy hilltop. The stickman takes a deep breath and blows into the balloon. His cheeks puff and the balloon grows until it is about the size of his head. He holds it up proudly and gives a thumbs-up. Caption: "SIZE: MEDIUM". SFX: inhale, rubber inflate squeaks, cheerful chime.
+
+SHOT 3 (6-10s) SIZE LARGE, THE FAKE-OUT:
+He keeps blowing and the balloon swells until it is as big as his whole body. The rubber stretches, shiny and tight, and makes loud squeaks. He suddenly flinches, shuts his eyes, and covers his face with both arms, bracing for a pop. Nothing happens. He slowly peeks out, then lets out a huge relieved sigh. Caption: "SIZE: LARGE". SFX: rubber stretch squeaks, tense drum roll, silence, relieved sigh. Edit: quick punch-in on the tight shiny balloon surface just before the flinch.
+
+SHOT 4 (10-14s) SIZE GIANT:
+The balloon is now taller than he is. His face is red and his cheeks are huge. He pinches the neck of the balloon, ties a quick knot, and steps back to admire it, looking proud and exhausted. The balloon bobs gently above him on its string. Caption: "SIZE: GIANT". SFX: final big inflate, knot snap, proud fanfare note.
+
+SHOT 5 (14-18s) UH OH:
+A breeze blows. The giant balloon starts to rise and pulls the stickman by the string. His feet leave the ground. He looks down, then up, then straight at the camera in panic. Hard cut to a wide shot: he is already floating well above the grass, holding the string with both hands, legs dangling. Caption: "UH OH." SFX: wind gust, rising whistle, record scratch.
+
+SHOT 6 (18-22s) THIS IS FINE:
+Wide, high shot of the hilltop park far below. The stickman floats peacefully in the sky, holding the string with one hand, and calmly waves at the camera with the other, suddenly relaxed and smug. A gentle breeze slowly drifts him sideways toward the tall pine tree with the sharp pointed top at the edge of the frame. He does not notice. Caption: "THIS IS FINE." SFX: calm music note, soft wind, then a quick dramatic sting as the pine tree enters the frame.
+
+SHOT 7 (22-27s) THE ANTI-POP:
+The stickman finally spots the pine tree. His eyes go huge and he paddles his legs in the air trying to steer away. The balloon touches the sharp pine tip. It does not bang: a tiny hole opens and the balloon deflates in one long, wild burst of air. The balloon zooms in loops and zigzags across the sky with the stickman clinging to the string and spinning, cheeks flapping, eyes wide. Keep the balloon red and the stickman clearly visible throughout. Captions: "THE POP…" at 22.2s, then "…WASN'T A POP 💀" as the zigzag begins. SFX: needle-poke "psst", long raspberry-style air release, whirling swoosh, cartoon boing. Edit: quick punch-in on the poke.
+
+SHOT 8 (27-30s) THE END FRAME:
+Hard cut to a close-up. The stickman hangs by his yellow shirt from a pine branch. The limp, deflated red balloon is draped across the front of his face like a floppy mask. He slowly pushes it down with one hand to reveal a defeated, furious stare straight into the camera. Slowly push in toward his face. Match Shot 1's head size, camera angle and centered framing as closely as possible. Hold for a fraction of a second, then cut back to the opening. No caption. SFX: tiny sad trombone, final air squeak, then a short silence.
+
+CAPTIONS:
+Add in the editor. Extra-bold sans-serif, white fill, thick black outline and drop shadow. Two to four words each, one line where possible. Position about 15-35% down from the top. Avoid the bottom 20% and the right edge. Quick 0.1s scale-bounce pop-in on the sound effect. Keep the "SIZE" captions in the same position and style, and make each one slightly larger than the last so the text grows with the balloon.
+
+AUDIO:
+One bouncy comedic loop at about 20-30% volume (royalty-free or YouTube Audio Library). SFX at full presence, cut precisely on the action. Drop the music for a beat during the fake-out in Shot 3, then bring it back at the relief sigh. No spoken dialogue or narration.
+
+EDITING RULES:
+Fast cuts through Shots 1-5. A calmer, wider beat in Shot 6 makes the Shot 7 chaos funnier. Punch-ins on the tight balloon (Shot 3), the needle-poke (Shot 7) and his furious face (Shot 8). Keep one simple action per shot; hard cuts to hide tricky transitions.`;
+
+export const BIGGEST_BALLOON_SCENES: SceneDef[] = [
+  {
+    id: 1,
+    name: "Shot 1",
+    title: "The Hook",
+    timeRange: [0.0, 2.0],
+    videoPrompt:
+      "Extreme close-up of the stickman's determined face. He holds a small, limp red balloon right in front of his mouth, eyebrows slammed down. Smash zoom in, then a hard freeze-frame with a brief graphic flash.",
+    animationDesc:
+      "0.0-0.9s smash zoom into the furious face behind the limp balloon, 0.9-1.9s hard freeze-frame with a white graphic flash, the limp red balloon wobbling in front of his mouth.",
+    soundDesc: "Dramatic whoosh at 0.0s, record-scratch freeze at 0.9s.",
+    captionText: "WILL IT POP?",
+    punchline: "A balloon, a set of lungs, and a lot of misplaced confidence.",
+    characterAction: "Glares at the tiny limp balloon, eyebrows slammed down.",
+    propAction: "One small limp red balloon held right in front of his mouth.",
+  },
+  {
+    id: 2,
+    name: "Shot 2",
+    title: "Size: Medium",
+    timeRange: [2.0, 6.0],
+    videoPrompt:
+      "Medium shot on the grassy hilltop. The stickman takes a deep breath and blows into the balloon. His cheeks puff and the balloon grows until it is about the size of his head. He holds it up proudly and gives a thumbs-up.",
+    animationDesc:
+      "2.0-2.7s deep breath with rising chest, 2.7-4.4s blows into the balloon as it grows to head size, 4.4-5.2s holds it up proudly, 5.2-6.0s gives a confident thumbs-up.",
+    soundDesc: "Deep inhale at 2.2s, rubber inflate squeaks 2.8-4.2s, cheerful chime at 4.6s.",
+    captionText: "SIZE: MEDIUM",
+    punchline: "So far, so under control.",
+    characterAction: "Inhales, blows the balloon up to head size, holds it up and thumbs up.",
+    propAction: "The red balloon grows from limp to head-size on its short white string.",
+  },
+  {
+    id: 3,
+    name: "Shot 3",
+    title: "Size: Large, The Fake-Out",
+    timeRange: [6.0, 10.0],
+    videoPrompt:
+      "He keeps blowing and the balloon swells until it is as big as his whole body. The rubber stretches, shiny and tight, and makes loud squeaks. He suddenly flinches, shuts his eyes, and covers his face with both arms, bracing for a pop. Nothing happens. He slowly peeks out, then lets out a huge relieved sigh.",
+    animationDesc:
+      "6.0-8.0s keeps blowing as the balloon swells to body size with stretching squeaks, 8.0-8.6s flinches and covers his face bracing for a pop, 8.6-9.2s nothing happens, 9.2-9.6s peeks out, 9.6-10.0s huge relieved sigh as his shoulders drop.",
+    soundDesc: "Rubber stretch squeaks 6.2-7.8s, tense drum roll 7.6-8.0s, silence 8.0-9.2s, relieved sigh at 9.4s.",
+    captionText: "SIZE: LARGE",
+    punchline: "Everyone braces. Nothing pops.",
+    characterAction: "Blows the balloon to body size, flinches, covers his face, peeks, and sighs in relief.",
+    propAction: "The balloon swells to body size, shiny and tight, and holds without popping.",
+  },
+  {
+    id: 4,
+    name: "Shot 4",
+    title: "Size: Giant",
+    timeRange: [10.0, 14.0],
+    videoPrompt:
+      "The balloon is now taller than he is. His face is red and his cheeks are huge. He pinches the neck of the balloon, ties a quick knot, and steps back to admire it, looking proud and exhausted. The balloon bobs gently above him on its string.",
+    animationDesc:
+      "10.0-11.8s final big inflate as the balloon passes his height, 11.8-12.4s pinches the neck and ties a quick knot, 12.4-13.2s steps back to admire it, 13.2-14.0s proud exhausted pose while the giant balloon bobs above him.",
+    soundDesc: "Final big inflate 10.2-11.6s, knot snap at 12.2s, proud fanfare note at 12.8s.",
+    captionText: "SIZE: GIANT",
+    punchline: "He has made something that should not be legal in a park.",
+    characterAction: "Inflates the last of it, pinches and knots the neck, steps back and admires it, exhausted.",
+    propAction: "The balloon grows taller than the stickman and bobs above him on its string.",
+  },
+  {
+    id: 5,
+    name: "Shot 5",
+    title: "Uh Oh",
+    timeRange: [14.0, 18.0],
+    videoPrompt:
+      "A breeze blows. The giant balloon starts to rise and pulls the stickman by the string. His feet leave the ground. He looks down, then up, then straight at the camera in panic. Hard cut to a wide shot: he is already floating well above the grass, holding the string with both hands, legs dangling.",
+    animationDesc:
+      "14.0-14.8s a breeze catches the balloon and it pulls the string taut, 14.8-15.6s his feet leave the ground and he looks down, 15.6-16.4s looks up then straight at the camera in panic, 16.4-18.0s hard cut wide: floating above the grass holding the string with both hands, legs dangling.",
+    soundDesc: "Wind gust at 14.2s, rising whistle 15.0-16.0s, record scratch at 16.4s.",
+    captionText: "UH OH.",
+    punchline: "The balloon is now in charge.",
+    characterAction: "Gets pulled off the ground, looks down, up and at the camera, then clings to the string.",
+    propAction: "The giant balloon lifts him off the grass and rises into the sky.",
+  },
+  {
+    id: 6,
+    name: "Shot 6",
+    title: "This Is Fine",
+    timeRange: [18.0, 22.0],
+    videoPrompt:
+      "Wide, high shot of the hilltop park far below. The stickman floats peacefully in the sky, holding the string with one hand, and calmly waves at the camera with the other, suddenly relaxed and smug. A gentle breeze slowly drifts him sideways toward the tall pine tree with the sharp pointed top at the edge of the frame. He does not notice.",
+    animationDesc:
+      "18.0-19.2s floats peacefully with the park far below, 19.2-20.6s waves calmly at the camera, relaxed and smug, 20.6-21.8s a gentle breeze drifts him sideways toward the pine tree, 21.8-22.0s the sharp pine tip enters the frame and he still does not notice.",
+    soundDesc: "Calm music note at 18.4s, soft wind 19.0-21.0s, quick dramatic sting at 21.8s.",
+    captionText: "THIS IS FINE.",
+    punchline: "Famous last words.",
+    characterAction: "Floats calmly, waves at the camera with one hand, drifts toward the pine tree unaware.",
+    propAction: "The balloon drifts sideways toward the pine tree with the sharp pointed top.",
+  },
+  {
+    id: 7,
+    name: "Shot 7",
+    title: "The Anti-Pop",
+    timeRange: [22.0, 27.0],
+    videoPrompt:
+      "The stickman finally spots the pine tree. His eyes go huge and he paddles his legs in the air trying to steer away. The balloon touches the sharp pine tip. It does not bang: a tiny hole opens and the balloon deflates in one long, wild burst of air. The balloon zooms in loops and zigzags across the sky with the stickman clinging to the string and spinning, cheeks flapping, eyes wide.",
+    animationDesc:
+      "22.0-22.6s spots the pine tree and his eyes go huge, 22.6-23.3s paddles his legs trying to steer away, 23.3-23.6s the balloon touches the sharp pine tip and a tiny hole opens, 23.6-26.8s the balloon deflates in one long wild burst, zigzagging in loops across the sky while he clings and spins, 26.8-27.0s the limp balloon flutters out.",
+    soundDesc: "Needle-poke psst at 23.3s, long raspberry-style air release 23.5-26.5s, whirling swoosh at 24.4s, cartoon boing at 25.4s.",
+    captionText: "THE POP…",
+    punchline: "The pop never came. The flight did.",
+    characterAction: "Spots the tree, paddles his legs, then clings to the string and spins through the zigzag.",
+    propAction: "The balloon gets a tiny hole from the pine tip and deflates in a wild zigzag.",
+  },
+  {
+    id: 8,
+    name: "Shot 8",
+    title: "The End Frame",
+    timeRange: [27.0, 30.0],
+    videoPrompt:
+      "Hard cut to a close-up. The stickman hangs by his yellow shirt from a pine branch. The limp, deflated red balloon is draped across the front of his face like a floppy mask. He slowly pushes it down with one hand to reveal a defeated, furious stare straight into the camera. Slowly push in toward his face. Match Shot 1's head size, camera angle and centered framing as closely as possible.",
+    animationDesc:
+      "27.0-28.0s hangs by his shirt from the pine branch with the limp balloon draped over his face, 28.0-29.0s slowly pushes the deflated balloon down with one hand, 29.0-30.0s defeated furious stare into the camera with a slow push in.",
+    soundDesc: "Tiny sad trombone at 27.4s, final air squeak at 28.6s, then a short silence.",
+    punchline: "One balloon, one pine tree, one ruined afternoon.",
+    characterAction: "Hangs from the branch, pushes the limp balloon off his face, glares into the camera.",
+    propAction: "Limp deflated red balloon draped over his face, pushed down to his chest.",
+  },
+];
+
+export const FIND_THE_BALL_PROMPT = `THE ANGRY STICKMAN: FIND THE BALL — 30-SECOND AI VIDEO PROMPT
+
+Create a funny 30-second 2D stickman animation for YouTube Shorts, vertical 9:16, 1080×1920, 24fps.
+
+VISUAL STYLE:
+2D flat vector cartoon in clean Modern Pop style, thick black outlines, bright flat colors, smooth 24 fps motion, exaggerated cartoon physics. The main character is an angry-looking black stickman with a round white face, thick expressive eyebrows, a red beanie, and a bright yellow shirt. He is the only character. The setting is a small theater stage with deep navy curtains, a warm spotlight cone, a polished wooden floor, and one small wooden table centered in front of him. On the table sit three plastic cups in a row, turned upside down: orange on the left, teal in the middle, purple on the right. Vertical 9:16 framing. The character and key objects stay in the center 60% of the frame. Keep the same character design, outfit, set and colors in every shot.
+
+CONTINUITY LOCK:
+There is exactly one stickman, one table, three cups (orange, teal, purple) and one bright pink ball. Cup colors never change. Do not add any other character, animal, or object. Keep object sizes, proportions and camera orientation consistent. Use hard cuts to hide difficult object handoffs. No object teleports.
+
+NEGATIVE PROMPT:
+Photorealistic, 3D render, extra characters, dialogue, speech bubbles, text, letters, numbers, subtitles, logos, watermarks, changing outfit, changing set colors, extra cups, extra balls, blurry, distorted hands, extra limbs.
+
+SHOT 1 (0-2s) THE HOOK:
+Extreme close-up of the stickman's face with a confident smirk and one raised eyebrow. He holds a bright pink ball up between two fingers right in front of his face. Smash zoom in, then a hard freeze-frame with a brief graphic flash. Caption added in the edit: "FIND THE BALL." SFX: dramatic whoosh, magic sparkle, record-scratch freeze.
+
+SHOT 2 (2-6s) THE SETUP:
+Medium shot of the stickman standing behind the table. He lifts the teal middle cup, places the pink ball on the table under it, and sets the cup back down, clearly covering the ball. He points two fingers at his eyes and then at the camera ("watch me"). Keep all three cups clearly visible. Caption: "WATCH CLOSELY…". SFX: cup clunk, magic sparkle, sneaky pizzicato music.
+
+SHOT 3 (6-10s) THE SLOW SHUFFLE:
+Locked camera on the table. The stickman slides the cups slowly: he swaps the orange and teal cups, then swaps the orange and purple cups. The movement is slow and easy to follow, one swap at a time. He keeps looking at the camera with a smug grin. Caption: "EASY, RIGHT?". SFX: cups sliding on wood, rhythmic tick-tock music.
+
+SHOT 4 (10-15s) THE FAST SHUFFLE:
+Same locked camera. The stickman speeds up and swaps the cups four more times, each swap still readable. His arms blur slightly with speed and his eyebrows go up and down. At about the midpoint of the shot the pink ball slips out from under the middle cup at 11.4s, rolls across the table and drops off the left edge at 12.5s, while the viewer's eyes are on the cups. The stickman does not notice it. His hands finish with a ta-da flourish over the restored cup row. Caption: "NOW FASTER.". SFX: fast cup slides, rising music tempo, tiny ball "tick-tick" rolling sound (very quiet). Edit: the rolling ball must stay visible for about one second but small. Keep it clear of the captions.
+
+SHOT 5 (15-19s) PICK A CUP:
+The cups stop sliding. The stickman slaps both hands on the table, leans toward the camera, and points straight at the viewer with a challenging smirk. Hold the pose. Camera slowly pushes in on the three cups. Caption: "PICK A CUP." with a countdown "3… 2… 1…" added in the edit. SFX: cups stop with a thud, drum roll, countdown beeps (3, 2, 1).
+
+SHOT 6 (19-22s) TWO EMPTY CUPS:
+The stickman lifts the orange cup on the left: it is empty. His smirk fades slightly. He lifts the purple cup on the right: it is empty as well. His eyebrows rise in confusion. Only the middle teal cup remains covered. Caption: "NOPE.". SFX: cup lifts, wah-wah trombone, record scratch.
+
+SHOT 7 (22-27s) THE REAL ANSWER:
+The stickman slowly lifts the middle teal cup: also empty. He freezes, then frantically looks under each cup again, shakes the table, and stares at the camera in panic. He looks down: the pink ball is sitting on the stage floor by his foot, calmly rolling to a stop. His eyes slowly narrow in fury. Keep the ball clearly visible on the floor. Captions: "WHERE'S THE BALL?!" at 22.2s, then "…IT ESCAPED 💀" at 24.6s. SFX: cup lift, record scratch, panicked tapping, tiny ball roll, angry sting.
+
+SHOT 8 (27-30s) THE END FRAME:
+Close-up. The stickman has picked the pink ball back up and holds it between two fingers in front of his face, exactly like Shot 1. His smirk is gone: he stares into the camera, defeated and furious. Match Shot 1's head size, camera angle and centered framing as closely as possible. Hold for a fraction of a second, then cut back to the opening. Caption: "DID YOU SEE IT? 👀". SFX: tiny sad trombone, then a short silence.
+
+CAPTIONS:
+Add in the editor. Extra-bold sans-serif, white fill, thick black outline and drop shadow. Two to four words each, one line where possible. Position about 15-35% down from the top. Avoid the bottom 20% and the right edge. Quick 0.1s scale-bounce pop-in on the sound effect. For the countdown in Shot 5, big centered "3", "2", "1" pops, one per beep, in the same font and style.
+
+AUDIO:
+One playful magic-show loop at about 20-30% volume (royalty-free or YouTube Audio Library). SFX at full presence, cut precisely on the action. Keep the rolling-ball sound very quiet so it feels like a hidden clue. Dip the music for the empty middle-cup reveal in Shot 7, then hit the angry sting when he sees the ball. No spoken dialogue or narration.
+
+EDITING RULES:
+Keep the camera locked during the shuffle so viewers can track the cups. Punch-ins on the cups at the countdown (Shot 5), the third empty cup (Shot 7) and his furious face (Shot 8). Keep one simple action per shot; hard cuts to hide tricky handoffs. The ball visibly rolls off the table during the fast shuffle, so a careful viewer can spot where it goes.
+
+PUBLISHING:
+Title: Can You Find the Ball? Most People Get This Wrong 🥤👀
+Description: Three cups, one pink ball, and a magician who is way too pleased with himself. Follow the ball under the cups — but watch closely, because it slips away right in the middle of the shuffle. Most people miss it the first time. Did you see where it went? 👀
+#shorts #findtheball #cupsandball #magictrick #braintest #stickman #cartoon #funny
+Pinned comment: Which cup did you pick: 1, 2 or 3? 👇
+Thumbnail: Shot 1 freeze-frame — the smug stickman holding the pink ball up beside his face, with the three cups on the table below.`;
+
+export const FIND_THE_BALL_SCENES: SceneDef[] = [
+  {
+    id: 1,
+    name: "Shot 1",
+    title: "The Hook",
+    timeRange: [0.0, 2.0],
+    videoPrompt:
+      "Extreme close-up of the stickman's face with a confident smirk and one raised eyebrow. He holds a bright pink ball up between two fingers right in front of his face. Smash zoom in, then a hard freeze-frame with a brief graphic flash.",
+    animationDesc:
+      "0.0-0.9s smash zoom into the smug face as he raises the pink ball between two fingers, 0.9-1.9s hard freeze-frame with a white graphic flash.",
+    soundDesc: "Dramatic whoosh at 0.0s, magic sparkle at 0.95s, record-scratch freeze at 0.9s.",
+    captionText: "FIND THE BALL.",
+    punchline: "Three cups, one ball, and a magician who is very sure of himself.",
+    characterAction: "Smirks at the camera and holds the pink ball up between two fingers.",
+    propAction: "The bright pink ball is held right in front of his face.",
+  },
+  {
+    id: 2,
+    name: "Shot 2",
+    title: "The Setup",
+    timeRange: [2.0, 6.0],
+    videoPrompt:
+      "Medium shot of the stickman standing behind the table. He lifts the teal middle cup, places the pink ball on the table under it, and sets the cup back down, clearly covering the ball. He points two fingers at his eyes and then at the camera. Keep all three cups clearly visible.",
+    animationDesc:
+      "2.0-2.5s raises the ball in his right hand, 2.5-3.05s lifts the teal middle cup with his left hand, 3.05-3.45s places the ball under it, 3.45-4.0s sets the cup back down over the ball, 4.0-4.6s points two fingers at his eyes then at the camera, 4.6-6.0s rests his hands and smirks.",
+    soundDesc: "Cup lift at 2.5s, magic sparkle 3.05s and 4.15s, cup clunk at 4.0s, sneaky pizzicato score.",
+    captionText: "WATCH CLOSELY…",
+    punchline: "He even shows you exactly where the ball goes. Trust him.",
+    characterAction: "Lifts the middle cup, places the ball under it, covers it, then points at his eyes and the camera.",
+    propAction: "The pink ball is placed on the table and covered by the teal middle cup.",
+  },
+  {
+    id: 3,
+    name: "Shot 3",
+    title: "The Slow Shuffle",
+    timeRange: [6.0, 10.0],
+    videoPrompt:
+      "Locked camera on the table. The stickman slides the cups slowly: he swaps the orange and teal cups, then swaps the orange and purple cups. The movement is slow and easy to follow, one swap at a time. He keeps looking at the camera with a smug grin.",
+    animationDesc:
+      "6.0-6.4s hands reach for the cups, 6.4-7.3s the orange and teal cups swap, 7.3-7.7s pause, 7.7-8.6s the orange and purple cups swap, 8.6-10.0s he taps the table and smirks at the camera.",
+    soundDesc: "Two long cup slides at 6.4s and 7.7s, tick-tock score.",
+    captionText: "EASY, RIGHT?",
+    punchline: "So far he has not touched the ball. Allegedly.",
+    characterAction: "Slides two cup swaps slowly while grinning at the camera.",
+    propAction: "The orange and teal cups swap, then the orange and purple cups; the ball stays hidden under the teal cup.",
+  },
+  {
+    id: 4,
+    name: "Shot 4",
+    title: "The Fast Shuffle",
+    timeRange: [10.0, 15.0],
+    videoPrompt:
+      "Same locked camera. The stickman speeds up and swaps the cups four more times, each swap still readable. His arms blur slightly with speed and his eyebrows go up and down. At about the midpoint the pink ball slips out from under the middle cup and rolls off the left edge of the table and drops out of sight while the viewer's eyes are on the cups. He does not notice it.",
+    animationDesc:
+      "10.6-11.15s, 11.3-11.85s, 12.0-12.55s and 12.7-13.25s four fast swaps, 11.36-12.45s the pink ball is revealed as the teal cup slides right off it and it rolls across to the left edge, 12.45-13.05s it drops off the table, 13.05-14.5s it lands and rolls to a stop on the floor, 13.25-14.5s he performs a fast magic flourish over the restored cup row, 14.5-15.0s hands rise.",
+    soundDesc: "Fast cup slides 10.6s / 11.3s / 12.0s / 12.7s, very quiet ball roll from 11.4s, flourish sparkle 13.25s, rising score.",
+    captionText: "NOW FASTER.",
+    punchline: "The ball has already left the show.",
+    characterAction: "Shuffles fast with blurring arms and a magic flourish, unaware of the escaping ball.",
+    propAction: "The pink ball sneaks out from under the middle cup, rolls off the table and away.",
+  },
+  {
+    id: 5,
+    name: "Shot 5",
+    title: "Pick a Cup",
+    timeRange: [15.0, 19.0],
+    videoPrompt:
+      "The cups stop sliding. The stickman slaps both hands on the table, leans toward the camera, and points straight at the viewer with a challenging smirk. Hold the pose. Camera slowly pushes in on the three cups. Countdown 3… 2… 1… added in the edit.",
+    animationDesc:
+      "15.0-15.35s both hands slap the table, 15.35-16.0s he leans in and points at the camera, 16.0-18.6s holds the challenge pose while the camera pushes in, countdown digits pop at 16.6s / 17.4s / 18.2s, 18.6-19.0s he raises one eyebrow.",
+    soundDesc: "Table slap and cup thud at 15.0s, drum roll from 15.25s, countdown beeps at 16.6s / 17.4s / 18.2s.",
+    captionText: "PICK A CUP.",
+    punchline: "The audience has been invited to lose.",
+    characterAction: "Slaps the table, leans in and points straight at the viewer.",
+    propAction: "The three cups sit still on the table while the camera pushes in.",
+  },
+  {
+    id: 6,
+    name: "Shot 6",
+    title: "Two Empty Cups",
+    timeRange: [19.0, 22.0],
+    videoPrompt:
+      "The stickman lifts the orange cup on the left: it is empty. His smirk fades slightly. He lifts the purple cup on the right: it is empty as well. His eyebrows rise in confusion. Only the middle teal cup remains covered.",
+    animationDesc:
+      "19.0-19.35s lifts the left cup (empty), 19.35-19.85s holds it up, 19.85-20.15s sets it down, 20.3-20.65s lifts the right cup (empty), 20.65-21.25s holds it up, 20.85s wah-wah trombone, 21.25-21.55s sets it down with a record scratch, 21.55-22.0s stares at the middle cup.",
+    soundDesc: "Cup lifts at 19.0s and 20.3s, wah-wah trombone at 20.85s, record scratch at 21.55s.",
+    captionText: "NOPE.",
+    punchline: "Two cups down, and the confidence is draining fast.",
+    characterAction: "Lifts the left cup, then the right cup, both empty, and looks confused.",
+    propAction: "The left and right cups are lifted and set back down, empty.",
+  },
+  {
+    id: 7,
+    name: "Shot 7",
+    title: "The Real Answer",
+    timeRange: [22.0, 27.0],
+    videoPrompt:
+      "The stickman slowly lifts the middle teal cup: also empty. He freezes, then frantically looks under each cup again, shakes the table, and stares at the camera in panic. He looks down: the pink ball is sitting on the stage floor by his foot, calmly rolling to a stop. His eyes slowly narrow in fury.",
+    animationDesc:
+      "22.0-22.48s slowly lifts the middle cup (empty), 22.48-22.95s holds it up, 22.95-23.25s sets it down, 23.25-24.55s frantically flips all three cups again and shakes the table, 24.55-24.95s stares at the camera in panic, 24.95-25.6s looks down as the ball rolls to a stop by his foot, 25.6-26.3s his eyes narrow in fury, 26.3-27.0s holds the angry stare.",
+    soundDesc: "Cup lift at 22.0s, record scratch at 22.5s, panicked tapping 23.25-24.55s, tiny ball roll 24.95s, angry sting at 25.8s.",
+    captionText: "WHERE'S THE BALL?!",
+    punchline: "It was on the floor the whole time. Did you see it?",
+    characterAction: "Lifts the last cup, panics, flips every cup, then spots the ball on the floor and rages.",
+    propAction: "All three cups are empty; the pink ball rests on the floor by his foot.",
+  },
+  {
+    id: 8,
+    name: "Shot 8",
+    title: "The End Frame",
+    timeRange: [27.0, 30.0],
+    videoPrompt:
+      "Close-up. The stickman has picked the pink ball back up and holds it between two fingers in front of his face, exactly like Shot 1. His smirk is gone: he stares into the camera, defeated and furious. Match Shot 1's head size, camera angle and centered framing as closely as possible.",
+    animationDesc:
+      "27.0-27.55s he raises the ball back up between two fingers, 27.55-30.0s defeated furious stare into the camera with a slow push in.",
+    soundDesc: "Tiny sad trombone at 27.4s, then a short silence.",
+    captionText: "DID YOU SEE IT? 👀",
+    punchline: "The trick worked perfectly. Just not for him.",
+    characterAction: "Holds the ball up between two fingers and glares into the camera, defeated.",
+    propAction: "The pink ball is held up in front of his face exactly like the opening.",
+  },
+];
+
+export const ATTEMPT_247_PROMPT = `THE ANGRY STICKMAN: ATTEMPT #247 — 30-SECOND AI VIDEO PROMPT
+
+Create a funny 30-second 2D stickman animation for YouTube Shorts, vertical 9:16, 1080×1920, 24fps.
+
+VISUAL STYLE:
+2D flat vector cartoon in clean Modern Pop style, thick black outlines, bright flat colors, smooth 24 fps motion, exaggerated cartoon physics. The main character is an angry-looking black stickman with a round white face, thick expressive eyebrows, a red beanie, and a bright yellow shirt. He is the only character. The setting is a bright, simple office room with lavender walls, a warm wooden floor, one window on the left wall, and a ceiling with a small round white ceiling fan that is not spinning. The floor is covered ankle-deep in crumpled white paper balls. On the far right side of the room stands one tall green trash bin. A small gray trash bin sits on the floor right next to the stickman's heels, mostly hidden behind his legs and the paper balls. Vertical 9:16 framing. The character and key objects stay in the center 60% of the frame. Keep the same character design, outfit, set and colors in every shot.
+
+CONTINUITY LOCK:
+There are exactly two bins: one tall green bin across the room, and one small gray bin beside the stickman's heels. There is exactly one active paper ball in play at a time, plus the covering of crumpled paper on the floor. Do not add any other character, furniture or object. Keep object sizes, proportions, room geometry and camera orientation consistent. Use hard cuts to hide difficult object handoffs. No object teleports.
+
+NEGATIVE PROMPT:
+Photorealistic, 3D render, extra characters, dialogue, speech bubbles, text, letters, numbers, scoreboard, subtitles, logos, watermarks, changing outfit, changing room colors, extra bins, blurry, distorted hands, extra limbs.
+
+SHOT 1 (0-2s) THE HOOK:
+Extreme close-up of the stickman's exhausted, determined face, one eyebrow twitching. He holds a crumpled white paper ball in front of his eyes. A few crumpled balls are visible blurred behind him. Smash zoom in, then a hard freeze-frame with a brief graphic flash (no lettering or symbols). Caption added in the edit: "ATTEMPT #247." SFX: dramatic whoosh, record-scratch freeze, sports-arena sting.
+
+SHOT 2 (2-6s) THE EASY SHOT:
+Wide shot of the whole room, with the stickman on the left and the green bin on the far right. He rolls his shoulders, takes aim, and tosses the paper ball in a gentle arc. It hits the rim of the green bin, spins out, and drops onto the floor with the other paper balls. He slumps and glares at the bin. Caption: "JUST AIM. EASY." SFX: arm whoosh, rim clank, soft thud, tiny sad wah.
+
+SHOT 3 (6-10s) THE DOORWAY SHOT:
+The stickman walks several steps back to the left, crouches, and throws a high arc. The paper ball hits the still ceiling fan, bounces straight down, and lands on top of his own beanie like a tiny hat. He freezes with the paper ball on his head. Caption: "NOW FROM FAR AWAY." SFX: throw whoosh, soft fan tink, boing, record scratch.
+
+SHOT 4 (10-14s) THE NO-LOOK SHOT:
+He turns his back to the green bin, closes his eyes, and tosses the paper ball backward over his shoulder with a cool, overconfident smirk. The paper ball flies across the room, hits the window glass, and bounces harmlessly away to the floor. He keeps his eyes closed and his smirk on for one extra beat, then peeks to see that nothing went in. Caption: "NO-LOOK SHOT." SFX: cool laid-back music note, whoosh, window knock, record scratch.
+
+SHOT 5 (14-18s) THE PLAN:
+A lightbulb pops up over the stickman's head. He picks up a fresh paper ball, measures an imaginary angle with his thumbs and fingers, and looks from the ceiling to the right wall and then to the bin, narrowing his eyes. He rubs his hands together with a confident grin and takes aim. Keep all of the walls, ceiling and green bin visible in one wide shot. Caption: "THE IMPOSSIBLE BANK SHOT." SFX: lightbulb ding, thinking pizzicato, rising musical build.
+
+SHOT 6 (18-22s) THE IMPOSSIBLE SHOT:
+Slow motion. The stickman throws the paper ball upward. It bounces off the right wall, then off the ceiling, then heads down toward the green bin. It lands on the rim, circles around the rim three times, and then wobbles right at the edge. Camera follows the paper ball closely. End the clip as the paper ball hovers at the edge, before it falls. Caption: "IT'S IN?!" with a big centred 3 / 2 / 1 pop-in, one per rim spin. FX: rim tick marks, slow-motion speed streaks. SFX: launch whoosh, two bounce bops, ticking rim spin, drum roll, held breath.
+
+SHOT 7 (22-27s) THE WIN, THEN THE TWIST:
+The paper ball falls into the green bin. The stickman freezes for one second, then jumps with both arms up as confetti bursts around him. Hard cut: the camera pulls back to a wide shot and he slowly lowers his arms and looks down. Right next to his feet, the small gray bin is clearly visible now, in plain view with nothing blocking it. He stares at it, then slowly looks at the camera as his eyebrows slam downward in fury. Captions: "IT'S IN!!!" at 22.1s, then "…WAIT." at 24.3s, then "BIN #2 💀" at 25.65s. SFX: bin thunk, victory fanfare, confetti pop, record scratch on the cut, dramatic sting.
+
+SHOT 8 (27-30s) THE END FRAME:
+Close-up. The stickman holds a fresh crumpled paper ball in front of his face, exactly like Shot 1, with a defeated, furious stare straight into the camera. Match Shot 1's head size, camera angle and centered framing as closely as possible. Hold for a fraction of a second, then cut back to the opening. Caption: "DID YOU SPOT IT? 👀". SFX: tiny sad trombone, then a short silence.
+
+CAPTIONS:
+Add in the editor. Extra-bold sans-serif, white fill, thick black outline and drop shadow. Two to four words each, one line where possible. Position about 15-35% down from the top. Avoid the bottom 20% and the right edge. Quick 0.1s scale-bounce pop-in on the beat of the sound effect. For the rim-spin countdown in Shot 6, big centred "3", "2", "1" pops, one per rim spin, in the same font and style.
+
+AUDIO:
+Upbeat sports-highlight loop at about 20-30% volume. SFX at full presence, cut precisely on the action. Dip the music during the rim spin in Shot 6, then hit the fanfare on the drop and the sting on the reveal. No spoken dialogue, logos or watermarks.
+
+PUBLISHING:
+Title: Attempt #247: The Impossible Trash Can Trickshot 🗑️🏀
+Description: 247 attempts, one impossible bank shot, and a twist you won't see coming. Did you spot the clue? #shorts #animation #stickman #funny #trickshot
+Pinned comment: Did you spot the second bin before the reveal? 👇
+Thumbnail: Shot 1 freeze-frame — the exhausted stickman holding the paper ball in front of his eyes.`;
+
+export const ATTEMPT_247_SCENES: SceneDef[] = [
+  {
+    id: 1,
+    name: "Shot 1",
+    title: "The Hook",
+    timeRange: [0.0, 2.0],
+    videoPrompt:
+      "Extreme close-up of the stickman's exhausted, determined face, one eyebrow twitching. He holds a crumpled white paper ball in front of his eyes. A few crumpled balls are blurred behind him. Smash zoom in, then a hard freeze-frame with a brief graphic flash.",
+    animationDesc:
+      "0.0-0.9s smash zoom into the exhausted face as he raises the paper ball in front of his eyes, 0.9-1.9s hard freeze-frame with a white graphic flash.",
+    soundDesc: "Dramatic whoosh at 0.05s, record-scratch freeze at 0.9s, sports sting.",
+    captionText: "ATTEMPT #247.",
+    punchline: "Two hundred and forty-six failures. This one is going in. Probably.",
+    characterAction: "Holds the paper ball in front of his exhausted face and glares.",
+    propAction: "The active paper ball is held up at eye level.",
+  },
+  {
+    id: 2,
+    name: "Shot 2",
+    title: "The Easy Shot",
+    timeRange: [2.0, 6.0],
+    videoPrompt:
+      "Wide shot of the whole room, with the stickman on the left and the green bin on the far right. He rolls his shoulders, takes aim, and tosses the paper ball in a gentle arc. It hits the rim of the green bin, spins out, and drops onto the floor with the other paper balls. He slumps and glares at the bin.",
+    animationDesc:
+      "2.0-2.9s rolls his shoulders and takes aim, 3.05s releases, 3.66s rim clank, 3.95-4.32s the ball falls to the floor, 4.32-4.78s two small bounces, 4.45-6.0s he slumps and glares.",
+    soundDesc: "Arm whoosh at 3.05s, rim clank 3.66s, soft floor thud 4.35s, tiny sad wah.",
+    captionText: "JUST AIM. EASY.",
+    punchline: "The first shot is always the easiest. Allegedly.",
+    characterAction: "Rolls his shoulders, tosses gently, then slumps and glares at the bin.",
+    propAction: "The paper ball clips the green bin rim and drops to the floor.",
+  },
+  {
+    id: 3,
+    name: "Shot 3",
+    title: "The Doorway Shot",
+    timeRange: [6.0, 10.0],
+    videoPrompt:
+      "The stickman walks several steps back to the left, crouches, and throws a high arc. The paper ball hits the still ceiling fan, bounces straight down, and lands on top of his own beanie like a tiny hat. He freezes with the paper ball on his head.",
+    animationDesc:
+      "6.0-7.15s walks back to the left, 7.15-7.5s crouches, 7.8s throws a moon shot, 8.42s the ball tinks off the ceiling fan, 8.95s it lands on his beanie, 9.0-10.0s he freezes and blinks.",
+    soundDesc: "Throw whoosh 7.8s, fan tink 8.42s, paper plop 8.95s, cartoon boing, record scratch.",
+    captionText: "NOW FROM FAR AWAY.",
+    punchline: "The fan is not spinning. It does not need to be.",
+    characterAction: "Walks back, crouches, launches a moon shot, then freezes with the ball on his beanie.",
+    propAction: "The ball hits the still ceiling fan and drops straight onto his beanie.",
+  },
+  {
+    id: 4,
+    name: "Shot 4",
+    title: "The No-Look Shot",
+    timeRange: [10.0, 14.0],
+    videoPrompt:
+      "He turns his back to the green bin, closes his eyes, and tosses the paper ball backward over his shoulder with a cool, overconfident smirk. The paper ball flies across the room, hits the window glass, and bounces harmlessly away to the floor. He keeps his eyes closed and his smirk on for one extra beat, then peeks to see that nothing went in.",
+    animationDesc:
+      "10.0-10.45s lifts the ball off his beanie, 10.45-11.0s turns his head away with his eyes shut and smirks, 11.0s flicks the ball backward, 11.32s window knock, 12.05s the ball lands, 12.4-13.15s holds the pose then peeks, 13.15-14.0s slumps.",
+    soundDesc: "Laid-back score note, whoosh 11.0s, window knock 11.32s, floor thud 12.05s, record scratch 13.15s.",
+    captionText: "NO-LOOK SHOT.",
+    punchline: "He did not look. He also did not score.",
+    characterAction: "Turns away with his eyes shut, flicks the ball backward, holds the smirk, then peeks.",
+    propAction: "The ball smacks the window glass and falls to the floor.",
+  },
+  {
+    id: 5,
+    name: "Shot 5",
+    title: "The Plan",
+    timeRange: [14.0, 18.0],
+    videoPrompt:
+      "A lightbulb pops up over the stickman's head. He picks up a fresh paper ball, measures an imaginary angle with his thumbs and fingers, and looks from the ceiling to the right wall and then to the bin, narrowing his eyes. He rubs his hands together with a confident grin and takes aim. Keep all of the walls, ceiling and green bin visible in one wide shot.",
+    animationDesc:
+      "14.0s lightbulb pops, 14.15-14.8s walks back to his mark, 14.8-15.25s squats and grabs a fresh ball off the heap, 15.55-16.25s frames up the angle, 16.25-16.75s looks ceiling-wall-bin, 16.75-17.2s rubs his hands, 17.2-18.0s takes aim.",
+    soundDesc: "Lightbulb ding 14.0s, paper crumple 15.2s, knuckle crack 17.0s, rising build.",
+    captionText: "THE IMPOSSIBLE BANK SHOT.",
+    punchline: "Wall, ceiling, bin. What could possibly go wrong?",
+    characterAction: "Gets an idea, picks up a fresh ball, measures the bank angle, rubs his hands and aims.",
+    propAction: "A fresh paper ball is pulled off the heap and a dashed bank line appears.",
+  },
+  {
+    id: 6,
+    name: "Shot 6",
+    title: "The Impossible Bank Shot",
+    timeRange: [18.0, 22.0],
+    videoPrompt:
+      "Slow motion. The stickman throws the paper ball upward. It bounces off the right wall, then off the ceiling, then heads down toward the green bin. It lands on the rim, circles around the rim three times, and then wobbles right at the edge. Camera follows the paper ball closely. End the clip as the paper ball hovers at the edge, before it falls.",
+    animationDesc:
+      "18.35s launch, 19.0s right-wall bounce, 19.5s ceiling bounce, 20.15s lands on the rim, 20.15-21.75s three slow rim circles with big 3 / 2 / 1 digits, 21.75-22.0s wobbles at the front edge.",
+    soundDesc: "Launch whoosh 18.35s, wall bounce 19.0s, ceiling bounce 19.5s, rim clink 20.15s, drum roll and countdown beeps 20.3s / 20.77s / 21.24s.",
+    captionText: "IT'S IN?!",
+    punchline: "Three bounces, three rim spins and one held breath.",
+    characterAction: "Throws, then leans in with his hands clasped and his breath held.",
+    propAction: "The ball banks off the wall and ceiling, then circles the rim three times.",
+  },
+  {
+    id: 7,
+    name: "Shot 7",
+    title: "The Win, Then The Twist",
+    timeRange: [22.0, 27.0],
+    videoPrompt:
+      "The paper ball falls into the green bin. The stickman freezes for one second, then jumps with both arms up as confetti bursts around him. Hard cut: the camera pulls back to a wide shot and he slowly lowers his arms and looks down. Right next to his feet, the small gray bin is clearly visible now, in plain view with nothing blocking it. He stares at it, then slowly looks at the camera as his eyebrows slam downward in fury.",
+    animationDesc:
+      "22.0s the ball drops in, 22.0-23.1s he freezes, 23.1-24.15s jumps with both arms up and confetti, 24.15s hard cut to the wide, 24.16-24.9s lowers his arms, 24.9-25.6s looks down at the gray bin, 25.6-26.3s stares, 26.3-27.0s looks at the camera and rages.",
+    soundDesc: "Bin thunk 22.05s, victory fanfare and confetti 23.15s, record scratch on the cut 24.15s, angry sting 25.8s.",
+    captionText: "IT'S IN!!! / …WAIT. / BIN #2 💀",
+    punchline: "It went in. It went into the wrong bin.",
+    characterAction: "Freezes, celebrates, then slowly looks down at the gray bin and rages at the camera.",
+    propAction: "The ball drops into the green bin; the small gray bin is revealed at his feet.",
+  },
+  {
+    id: 8,
+    name: "Shot 8",
+    title: "The End Frame",
+    timeRange: [27.0, 30.0],
+    videoPrompt:
+      "Close-up. The stickman holds a fresh crumpled paper ball in front of his face, exactly like Shot 1, with a defeated, furious stare straight into the camera. Match Shot 1's head size, camera angle and centered framing as closely as possible.",
+    animationDesc:
+      "27.0-27.4s raises a fresh ball in front of his face, 27.4-30.0s defeated furious stare with a slow push in.",
+    soundDesc: "Tiny sad trombone at 27.45s, then a short silence.",
+    captionText: "DID YOU SPOT IT? 👀",
+    punchline: "Two bins, 247 attempts, zero lessons learned.",
+    characterAction: "Holds a fresh ball in front of his face and glares into the camera, defeated.",
+    propAction: "The fresh paper ball is held up exactly like the opening shot.",
+  },
+];
+
+export const NEEDLE_THREAD_PROMPT = `THE ANGRY STICKMAN: THE IMPOSSIBLE NEEDLE THREAD — 30-SECOND AI VIDEO PROMPT
+
+Create a funny 30-second 2D stickman animation for YouTube Shorts, vertical 9:16, 1080×1920, 24fps.
+
+VISUAL STYLE:
+Modern Pop 2D flat vector cartoon. Thick consistent black outlines, simple geometric shapes, smooth readable movements, exaggerated facial expressions, bright solid colors. Pure white background with minimal shadows, no decorations, no gradients, no textures. Centered mobile compositions; important action inside the central 60-70% of the frame.
+
+CHARACTER:
+The angry black stickman with a round white face, thick black eyebrows, expressive eyes, a red beanie and a bright yellow shirt. Black line limbs. The head, proportions, beanie and shirt stay identical everywhere. He is extremely competitive, impatient, determined, and comically overconfident — he treats a simple sewing task like an impossible world championship.
+
+PROPS:
+One tiny silver sewing needle with a small visible eye, one piece of thick red thread (same red and same thickness everywhere; it may bend, curl, tangle and pass through the eye but never disappears or changes color), one oversized magnifying glass, two hardcover books, one ruler, one simple lever mechanism, and his red beanie as the final punchline.
+
+CONTINUITY:
+Same stickman, needle and thread through the entire story. The needle stays small with a visible eye whenever threading is in focus. The magnifying glass and the homemade machine appear only when needed. Hard cuts between difficult actions. The final gag is caused exactly by the thread catching the beanie — no second needle, no second thread, no redesign. The thread must visibly pass through the actual eye in the success scene — not merely touch the needle. No photorealism, 3D, extra characters, duplicated props, logos, watermarks, random transitions or complex backgrounds.
+
+STORY IN SIX CAPTIONED SHOTS (captions are burned in near the top; white extra-bold with a thick black outline and pop-in):
+
+SHOT 1 (0-3s) "CAN HE THREAD IT?!":
+Extreme close-up of the furious face, fast pullback to reveal the tiny needle and red thread, one confident thrust that bends and misses, a slow disbelief squint at the needle, punch-in on the angry face and a fist clench.
+
+SHOT 2 (3-7s) "TOO SMALL!":
+A careful lined-up attempt that bends away at the last moment, then a much faster attempt that curls into a tiny loop and slides around the side of the needle. Furious shaking arms and an angry point at the tiny needle. Every failure looks different.
+
+SHOT 3 (7-12s) "MAKE IT EASIER.":
+A lightbulb pops above his head. He raises an oversized magnifying glass between his face and the needle so the eye reads much larger through the lens. A confident slow guided attempt slides past and catches on the outside; a second attempt bends away. He drops his eyes into a furious side-eye at the camera.
+
+SHOT 4 (12-18s) "PLAN B.":
+A snap montage builds a ridiculous threading machine from two hardcover books, a ruler, a lever and the needle held upright in a stand, with the thread attached to the lever. He pulls the lever dramatically; the thread shoots forward, misses the eye and whips around his red beanie. The mechanism wobbles to a stop; his smile dies and his eyes drift upward to the tangled beanie. He ends fully tangled, holding the useless needle.
+
+SHOT 5 (18-24s) "ONE LAST TRY…":
+He untangles, sets everything aside, takes a deep breath and becomes perfectly still and focused. The camera pushes in as the thread tip slowly approaches the eye, fake-bends once, then passes cleanly through the real eye. He pulls a visible length through, throws both arms up and holds the threaded needle overhead. The success must be unmistakable.
+
+SHOT 6 (24-30s) "WAIT… 💀":
+Proud victory pose. A tug on the beanie: the thread is caught in its fabric, tying the beanie to the threaded needle. The beanie stretches upward, lifts completely off, and dangles from the thread while he holds the needle. Blank stare for half a second, then a slow look at the camera, brows snap down, fists clench, a full-body cartoon rage shake, extreme close-up final hold.
+
+AUDIO:
+Playful comedic score only, lower than the SFX. Tension builds through Shot 5, a satisfying sparkle and victory fanfare on the success, the fanfare cut off the instant the beanie lifts, a short silence, then a sharp comedic sting. No dialogue, no narration, no voice-over.`;
+
+export const NEEDLE_THREAD_SCENES: SceneDef[] = [
+  {
+    id: 1,
+    name: "Shot 1",
+    title: "The Impossible Challenge",
+    timeRange: [0.0, 3.0],
+    videoPrompt:
+      "Extreme close-up of the furious, determined face, then a fast pullback revealing the tiny silver needle in one hand and the thick red thread in the other against the white background. He confidently pushes the thread toward the tiny eye; it bends and misses. He freezes, squints at the needle with total disbelief, then an angry punch-in as he clenches his fist.",
+    animationDesc:
+      "0.0-0.5s extreme close-up of the face, 0.5-1.5s fast pullback to reveal needle and thread, 1.5-2.3s the thread thrust bends away and misses the eye, 2.3-3.0s disbelief squint and angry punch-in with a fist clench.",
+    soundDesc: "Fast whoosh 0.05s, tiny metallic ding 0.55s, thread flick 1.75s, short comedic sting 2.45s.",
+    captionText: "CAN HE THREAD IT?!",
+    punchline: "Three seconds to establish the world's smallest enemy.",
+    characterAction: "Holds the needle up confidently, thrusts, misses, squints in disbelief, clenches his fist.",
+    propAction: "The tiny needle and thick red thread are held large enough to read on a phone.",
+  },
+  {
+    id: 2,
+    name: "Shot 2",
+    title: "The First Failures",
+    timeRange: [3.0, 7.0],
+    videoPrompt:
+      "Medium shot. He carefully holds the needle upright in front of his face and lines the straightened red thread up with the eye. It bends away at the last moment. A much faster second attempt curls into a tiny loop and slides around the side of the needle. His eyebrows lower, his eyes widen, his arms shake, and he points angrily at the tiny needle.",
+    animationDesc:
+      "3.0-4.0s careful first attempt, 4.0-5.0s the thread bends away and misses, 5.0-6.0s fast second attempt forms a tiny loop around the shaft, 6.0-7.0s furious shaking and an angry point at the needle.",
+    soundDesc: "Rubbery boings 3.9s and 5.7s, thread squeak 5.05s, frustrated stomp 6.55s.",
+    captionText: "TOO SMALL!",
+    punchline: "The first mission failure of the thread championship.",
+    characterAction: "Lines up carefully, misses, speeds up, misses worse, rages and points at the needle.",
+    propAction: "The thread loops around the needle shaft instead of through the eye.",
+  },
+  {
+    id: 3,
+    name: "Shot 3",
+    title: "The Magnifying Glass",
+    timeRange: [7.0, 12.0],
+    videoPrompt:
+      "A lightbulb pops above his head. He grabs the oversized magnifying glass and holds it between his face and the needle so the eye reads much larger through the lens. Grinning, he slowly guides the thread toward the enlarged eye; it slides past and catches on the outside of the needle. A second guided attempt bends away too. He lowers the glass and gives the camera a furious side-eye.",
+    animationDesc:
+      "7.0-8.0s lightbulb moment, 8.0-9.0s he raises the magnifying glass, 9.0-10.2s first magnified attempt catches outside the eye, 10.2-11.0s second failure bends away, 11.0-12.0s slow furious side-eye at the camera.",
+    soundDesc: "Lightbulb ding 7.35s, magical sparkle 7.42s, soft raise whoosh 8.3s, catch squeak 9.65s, miss squeak 10.85s, descending slide whistle 11.15s.",
+    captionText: "MAKE IT EASIER.",
+    punchline: "Science said yes. The thread said no.",
+    characterAction: "Lightbulb idea, raises the glass, guides carefully, fails twice, drops into a furious side-eye.",
+    propAction: "The oversized magnifying glass enlarges only the needle eye inside the lens; the needle stays untouched outside it.",
+  },
+  {
+    id: 4,
+    name: "Shot 4",
+    title: "The Ridiculous Machine",
+    timeRange: [12.0, 18.0],
+    videoPrompt:
+      "A quick montage snaps two hardcover books, a ruler, a lever and the needle held upright in a stand into one ridiculous threading machine, the red thread attached to the lever. He presents it with a proud grin, pulls the lever dramatically, and the thread shoots forward, misses the eye and whips around his red beanie. The mechanism wobbles to a stop. His smile dies, his eyes drift upward, and he ends fully tangled holding the useless needle.",
+    animationDesc:
+      "12.0-14.0s fast snap montage of books, ruler, lever and needle stand, 14.0-15.4s proud presentation, 15.4-16.0s lever pull, 16.0-17.0s thread launches, misses and wraps the beanie, 17.0-18.0s wobble, upward glance and rage.",
+    soundDesc: "Mechanical clicks 12.3-13.9s, proud ding 14.5s, lever clunk 15.95s, spring launch 16.35s, thread whip 16.6s, fabric squeak 17.05s, record scratch 17.35s.",
+    captionText: "PLAN B.",
+    punchline: "Engineering: also defeated by a one-millimeter hole.",
+    characterAction: "Builds in a blur, presents proudly, pulls the lever, gets tangled in his own machine.",
+    propAction: "Books, ruler, lever and needle stand snap together; the launched thread wraps around the beanie.",
+  },
+  {
+    id: 5,
+    name: "Shot 5",
+    title: "One Last Try",
+    timeRange: [18.0, 24.0],
+    videoPrompt:
+      "He untangles, sets everything aside and takes a deep breath. Perfectly still, needle in one hand and the straightened thread in the other, his fury becomes total concentration. The camera pushes in as the thread tip drifts toward the eye, fakes a bend, then passes cleanly through the actual eye. He gently pulls a visible length through, then throws both arms up, holding the threaded needle overhead.",
+    animationDesc:
+      "18.0-19.0s untangle, reset and deep breath, 19.0-20.5s close-up of intense concentration, 20.5-22.6s slow approach with one fake-out bend, 22.6s the thread passes through the real eye, 22.6-23.4s he pulls a visible length through, 23.4-24.0s victory arms up with the threaded needle overhead.",
+    soundDesc: "Deep breath 18.85s, quiet heartbeats 19.2-22.1s, fake-out squeak 21.9s, delicate threading 22.58s, satisfying sparkle 22.95s, victory fanfare 23.55s.",
+    captionText: "ONE LAST TRY…",
+    punchline: "Stillness. Focus. One millimeter of history.",
+    characterAction: "Steadies completely, approaches slowly, threads the eye for real, erupts in victory.",
+    propAction: "The red thread visibly passes through the needle eye and a trailing length is pulled through.",
+  },
+  {
+    id: 6,
+    name: "Shot 6",
+    title: "The Final Twist",
+    timeRange: [24.0, 30.0],
+    videoPrompt:
+      "He proudly holds up the threaded needle. A tug: the red thread is caught through the fabric of his beanie, connecting it to the needle. The beanie stretches upward and lifts completely off while still attached to the thread. His bare head goes blank for half a second, then he looks at the needle, at the beanie, then at the camera. His brows snap down, fists clench, whole body shaking in cartoon rage. Extreme close-up final hold.",
+    animationDesc:
+      "24.0-25.0s proud victory pose, 25.0-26.0s the tug and the upward glance, 26.0-27.3s the beanie stretches and lifts off, 27.3-27.9s blank stare at the camera, 27.9-28.8s needle-then-beanie-then-camera look and rage shake, 28.8-30.0s extreme close-up furious final hold.",
+    soundDesc: "Record scratch cuts the fanfare 24.15s, tiny fabric tug 25.2s, stretch squeak 26.55s, pop-off 27.28s, short silence, angry sting 28.85s.",
+    captionText: "WAIT… 💀",
+    punchline: "Fully threaded. Fully bald. Total defeat.",
+    characterAction: "Celebrates, feels the tug, watches the beanie leave, goes blank, then erupts at the camera.",
+    propAction: "The thread stays attached to needle and beanie; the bare head and dangling beanie land the gag.",
+  },
+];
+
+export const MAGNET_TRICK_PROMPT = `THE IMPOSSIBLE MAGNET TRICK — 30-SECOND AI VIDEO PROMPT
+
+Create a funny 30-second 2D stickman animation for YouTube Shorts, vertical 9:16, 1080×1920, 24fps.
+
+VISUAL STYLE:
+Modern Pop 2D flat vector cartoon. Thick consistent black outlines, simple geometric shapes, smooth readable movements, exaggerated facial expressions, bright solid colors. Pure white background with minimal shadows, no decorations, no gradients, no textures. Centered mobile compositions; important action inside the central 60-70% of the frame.
+
+CHARACTER:
+The angry black stickman with a round white face, thick black eyebrows, expressive eyes, a red beanie and a bright yellow shirt. Black line limbs. The head, proportions, beanie and shirt stay identical everywhere. He is extremely confident, impatient, and comically overconfident — he treats a simple magnet task like an impossible world championship.
+
+PROPS:
+One red-and-blue horseshoe magnet, one tiny steel screw, one cup, metal spoons, metal forks, one metal chair, and one saucepan. Keep the screw and cup visible and consistent between scenes. Every magnet-attracted object is steel/metal colored.
+
+CONTINUITY:
+Same stickman, screw and cup through the entire story. The screw is tiny and stays beside the cup until the final success. The big magnet draws every metal object EXCEPT the screw. The screw only moves when the tiny magnet is used. Hard cuts between escalating failures. No photorealism, 3D, extra characters, duplicated props, logos, watermarks, random transitions or complex backgrounds.
+
+STORY IN SIX CAPTIONED SHOTS (captions are burned in near the top; white extra-bold with a thick black outline and pop-in):
+
+SHOT 1 (0-4s) "ONE SCREW. THAT'S IT.":
+The stickman stands at a table. A tiny steel screw sits beside an empty cup. He confidently holds a horseshoe magnet near the screw, expecting it to move. Nothing happens. He shakes the magnet, squints at the screw, and gives the camera an annoyed stare.
+
+SHOT 2 (4-9s) "WHY THE SPOONS?!":
+He waves the magnet more aggressively. Several nearby metal spoons and forks suddenly slide and fly toward it, clanging together into a ridiculous cluster. The tiny screw remains completely still. He looks at the cluster, then back at the screw, visibly furious.
+
+SHOT 3 (9-14s) "STOP ATTRACTING EVERYTHING!":
+He tries again. A metal chair begins scraping toward him across the floor. He runs sideways while still holding the magnet, and the chair slowly follows. He stops, looks behind himself, and panics.
+
+SHOT 4 (14-20s) "I REGRET EVERYTHING.":
+A comedic swarm of metal utensils flies toward the magnet. Spoons, forks, and a saucepan pile up around him. He ends up buried beneath the harmless metal clutter, with only his angry face visible. The screw remains beside the cup, untouched.
+
+SHOT 5 (20-26s) "SMALL MAGNET. SMALL TARGET.":
+He crawls out of the pile, looks at the screw, and has an idea. He puts the large magnet aside and picks up a tiny magnet. He carefully moves it toward the steel screw. The screw lifts, travels across the tabletop, and drops neatly into the cup. His angry face transforms into pure joy. Hold on the successful result.
+
+SHOT 6 (26-30s) "MISSION COMPLETE… BONK 💀":
+He celebrates by raising the tiny magnet above his head. A final metal spoon flies into frame and sticks to a small metal clip on his red beanie. The spoon pulls the beanie down over his eyes. He stands completely still for one beat, then shakes with cartoon fury. End on his furious expression.
+
+AUDIO:
+Comedic instrumental music, magnet hum, tiny screw taps, utensils clanging, chair scraping, running footsteps, saucepan clatter, dramatic idea chime, screw dropping into cup, triumphant fanfare, final spoon ping, and a comedic sting. No dialogue, no narration, no voice-over.`;
+
+export const MAGNET_TRICK_SCENES: SceneDef[] = [
+  {
+    id: 1,
+    name: "Shot 1",
+    title: "The One Screw",
+    timeRange: [0.0, 4.0],
+    videoPrompt:
+      "Medium shot at a white table. A tiny steel screw sits beside an empty metal cup. The angry stickman holds a red-and-blue horseshoe magnet near the screw, expecting it to move. Nothing happens. He shakes the magnet, squints at the screw, and gives the camera an annoyed stare.",
+    animationDesc:
+      "0.0-1.0s stand at the table with magnet and screw, 1.0-2.2s holds the magnet confidently near the screw, 2.2-3.0s shakes the magnet and squints in disbelief, 3.0-4.0s annoyed punch-in stare at the camera.",
+    soundDesc: "Magnet hum 0.5s, tiny metallic tick 1.6s, rubbery squeak 2.7s, annoyed sting 3.5s.",
+    captionText: "ONE SCREW. THAT'S IT.",
+    punchline: "The world's smallest metal object ignores him.",
+    characterAction: "Holds the magnet up confidently, shakes it, squints, glares at the camera.",
+    propAction: "The screw stays dead still beside the cup.",
+  },
+  {
+    id: 2,
+    name: "Shot 2",
+    title: "Why the Spoons",
+    timeRange: [4.0, 9.0],
+    videoPrompt:
+      "Medium shot at the table. He waves the horseshoe magnet more aggressively. Several metal spoons and forks slide and fly toward it from off-screen, clanging together into a ridiculous cluster stuck to the magnet. The tiny screw remains completely still beside the cup. He looks at the cluster, then back at the screw, visibly furious.",
+    animationDesc:
+      "4.0-5.2s waves the magnet aggressively, 5.2-6.5s spoons and forks fly and clang onto the magnet, 6.5-8.0s he stares at the cluster, then at the screw, 8.0-9.0s furious look between cluster and screw.",
+    soundDesc: "Magnet whoosh 4.6s, clangs 5.4-6.2s, metal cluster rattle 6.8s, furious grunt 8.4s.",
+    captionText: "WHY THE SPOONS?!",
+    punchline: "Everything metal answers — except the target.",
+    characterAction: "Waves the magnet, gapes at the utensil cluster, rages at the screw.",
+    propAction: "Spoons and forks stack on the big magnet; the screw never moves.",
+  },
+  {
+    id: 3,
+    name: "Shot 3",
+    title: "The Chair Chase",
+    timeRange: [9.0, 14.0],
+    videoPrompt:
+      "Medium shot at the table. He holds the magnet up again and a metal chair begins scraping across the floor toward him. He runs sideways while still holding the magnet, and the chair slowly follows. He stops, looks behind himself, and panics as the chair keeps coming.",
+    animationDesc:
+      "9.0-10.0s holds the magnet, chair starts scraping toward him, 10.0-11.5s he runs sideways with the magnet, chair trailing, 11.5-12.5s he stops and looks back, 12.5-14.0s panic as the chair keeps sliding.",
+    soundDesc: "Magnet hum 9.5s, chair scrape 10.2-11.8s, running footsteps 10.4-11.4s, panic sting 13.4s.",
+    captionText: "STOP ATTRACTING EVERYTHING!",
+    punchline: "The magnet has a bigger crush on the chair than on him.",
+    characterAction: "Runs sideways with the magnet, stops, looks behind, panics.",
+    propAction: "The metal chair slides across the floor behind the magnet.",
+  },
+  {
+    id: 4,
+    name: "Shot 4",
+    title: "The Metal Swarm",
+    timeRange: [14.0, 20.0],
+    videoPrompt:
+      "A comedic swarm of metal utensils flies toward the magnet. Spoons, forks, and a saucepan pile up around him. He ends up buried beneath the harmless metal clutter, with only his angry face visible above the pile. The screw remains beside the cup, untouched.",
+    animationDesc:
+      "14.0-15.5s spoons and forks fly toward the magnet, 15.5-17.0s a saucepan joins the pile, 17.0-18.5s he is buried under the clutter, 18.5-20.0s only his angry face shows above the pile.",
+    soundDesc: "Utensils clatter 14.8-15.8s, saucepan crash 16.2s, pile wobble 17.6s, defeated moan 19.2s.",
+    captionText: "I REGRET EVERYTHING.",
+    punchline: "Buried by his own magnetism.",
+    characterAction: "Gets buried under spoons, forks and a saucepan; only his angry face peeks out.",
+    propAction: "Spoons, forks and a saucepan stack on and around him; the screw stays by the cup.",
+  },
+  {
+    id: 5,
+    name: "Shot 5",
+    title: "Small Magnet. Small Target.",
+    timeRange: [20.0, 26.0],
+    videoPrompt:
+      "He crawls out of the pile, looks at the screw, and gets an idea — a dramatic lightbulb chime. He puts the large magnet aside and picks up a tiny magnet. Carefully he moves the tiny magnet toward the steel screw. The screw lifts off the table, travels across the tabletop, and drops neatly into the cup. His angry face transforms into pure joy. Hold on the successful result.",
+    animationDesc:
+      "20.0-21.0s crawls out and spots the screw, 21.0-22.2s lightbulb idea and swap to the tiny magnet, 22.2-24.4s slow approach, screw lifts and travels, 24.4-25.2s screw drops into the cup, 25.2-26.0s pure joy hold.",
+    soundDesc: "Crawl rustle 20.4s, idea chime 21.5s, tiny magnet ping 22.6s, screw tap 23.8s, cup drop 24.6s, triumphant fanfare 25.1s.",
+    captionText: "SMALL MAGNET. SMALL TARGET.",
+    punchline: "Wrong tool, wrong size — until now.",
+    characterAction: "Crawls out, idea chime, swaps magnets, watches the screw with joy.",
+    propAction: "The tiny magnet lifts the screw and deposits it into the cup.",
+  },
+  {
+    id: 6,
+    name: "Shot 6",
+    title: "Mission Complete Bonk",
+    timeRange: [26.0, 30.0],
+    videoPrompt:
+      "He celebrates by raising the tiny magnet above his head. A final metal spoon flies into frame and sticks to a small metal clip on his red beanie. The spoon pulls the beanie down over his eyes. He stands completely still for one beat, then shakes with cartoon fury. End on his furious expression.",
+    animationDesc:
+      "26.0-27.4s raises the tiny magnet in victory, 27.4-28.2s a spoon flies in and sticks to the beanie clip, 28.2-29.0s the spoon pulls the beanie down over his eyes, 29.0-29.6s one still beat, 29.6-30.0s cartoon fury shake, final furious hold.",
+    soundDesc: "Fanfare continues 26.2s, spoon fly-in 27.7s, spoon ping 27.9s, beanie drag 28.3s, stillness, comedic sting 29.8s.",
+    captionText: "MISSION COMPLETE… BONK 💀",
+    punchline: "Solved the screw, lost the beanie.",
+    characterAction: "Celebrates, gets bonked by the spoon, stands still, then erupts in fury.",
+    propAction: "A metal spoon sticks to a clip on his beanie and pulls it over his eyes.",
+  },
+];
+
+export const PENCIL_LANDING_PROMPT = `THE IMPOSSIBLE PENCIL LANDING — 30-SECOND AI VIDEO PROMPT
+
+Create a funny 30-second 2D stickman animation for YouTube Shorts, vertical 9:16, 1080×1920, 24fps.
+
+VISUAL STYLE:
+- Minimalist Modern Pop flat 2D vector animation, drawn on a pure white background.
+- Main character: black stickman, round white face, thick angry black eyebrows, red beanie, yellow shirt, black stick limbs.
+- Props: one yellow wooden pencil with pink eraser and sharpened graphite tip, a simple desk, and a red book.
+- Very thick black outlines, flat bright colours, expressive squash-and-stretch, soft contact shadows, no gradients or textures.
+- No dialogue, no narration, no readable text inside the picture: SFX plus an energetic Modern Pop instrumental score only.
+
+THE STORY (5 beats):
+1. 0-5s — HOOK: he flips the pencil toward the desk with confidence. It lands flat instead of upright. He stares at it and clenches his fists in anger.
+2. 5-10s — "WHY WON'T IT STAND UP?!": three quick failed attempts. The pencil rolls off the desk, bonks him harmlessly on the forehead, and disappears under a book. He stomps angrily. Quick comedic cuts.
+3. 10-15s — "PRACTICE MAKES PERFECT!": a fast training montage synced to energetic Modern Pop music. He repeatedly flicks and spins the pencil, improves his technique, and prepares one final attempt. End with a dramatic launch.
+4. 15-22s — "I ACTUALLY DID IT!!!": the pencil rotates in slow motion and lands sharpened-tip-first on the desk. It wobbles for two seconds before balancing upright. He celebrates with an exaggerated victory dance as the music peaks.
+5. 22-30s — "WAIT… THAT'S NOT THE DESK!": his celebration shakes the desk, launching the pencil into the air. The pencil spins and lands upright on top of his round head. He freezes cross-eyed, trying to look up at it, then ends with an angry expression and a comedic musical sting.
+
+Keep the same character, pencil, desk, book, and white background throughout. All pencil movements must be visible and physically understandable. The final pencil must visibly travel through the air before landing on his head. No extra characters.`;
+
+export const PENCIL_LANDING_SCENES: SceneDef[] = [
+  {
+    id: 1,
+    name: "Shot 1",
+    title: "The Flip",
+    timeRange: [0.0, 5.0],
+    videoPrompt:
+      "A stickman in a red beanie and yellow shirt stands at a desk holding a yellow pencil with a pink eraser. He flips the pencil toward the desk with a confident smirk. It lands flat instead of upright. He stares at it in disbelief, then clenches both fists in anger.",
+    animationDesc:
+      "0.0-1.3s confident hold, 1.3-2.3s smirk, 2.3-4.0s flip toward desk, 4.0-5.0s pencil lands flat, angry stare and fist clench.",
+    soundDesc: "Confident flip whoosh, flat thud, angry sting.",
+    captionText: "I WILL LAND THIS PENCIL PERFECTLY!",
+    punchline: "Confidence instantly crushed by a flat landing.",
+    characterAction: "Flips pencil, stares, clenches fists in anger.",
+    propAction: "Pencil flips and lands flat on the desk.",
+  },
+  {
+    id: 2,
+    name: "Shot 2",
+    title: "Why Won't It Stand Up?",
+    timeRange: [5.0, 10.0],
+    videoPrompt:
+      "Three quick failed attempts in rapid succession. First throw: pencil rolls off the desk. Second: pencil bonks him harmlessly on the forehead. Third: pencil drops under a red book. After each failure he reacts bigger. Ends with him stomping the ground, face red with cartoon anger.",
+    animationDesc:
+      "5.0-6.0s first throw rolls off desk, 6.0-6.6s second throw bonks forehead, 6.6-7.0s third drops under book, 7.0-8.0s reactions grow, 8.0-10.0s face goes red, stomping.",
+    soundDesc: "Roll off desk, forehead bonk, thud under book, angry foot stomp.",
+    captionText: "WHY WON'T IT STAND UP?!",
+    punchline: "Three failures, escalating frustration.",
+    characterAction: "Throws, gets bonked, stomps, turns red.",
+    propAction: "Pencil rolls off desk, bonks forehead, hides under book.",
+  },
+  {
+    id: 3,
+    name: "Shot 3",
+    title: "Practice Makes Perfect",
+    timeRange: [10.0, 15.0],
+    videoPrompt:
+      "A fast training montage synced to energetic music. He repeatedly flicks and spins the pencil, getting better each time. He catches it, balances it, and works up to one final dramatic launch from the desk.",
+    animationDesc:
+      "10.0-11.0s pick up pencil, 11.0-12.2s flick and spin, 12.2-13.6s another attempt lands flat, 13.6-14.4s spin on desk, 14.4-15.0s dramatic final launch into the air.",
+    soundDesc: "Fast flicks, pencil taps, rising music tension.",
+    captionText: "PRACTICE MAKES PERFECT!",
+    punchline: "A montage of near-misses building to one shot.",
+    characterAction: "Practices, improves, goes determined.",
+    propAction: "Pencil flicks, spins, lands, launches.",
+  },
+  {
+    id: 4,
+    name: "Shot 4",
+    title: "I Actually Did It",
+    timeRange: [15.0, 22.0],
+    videoPrompt:
+      "The pencil rotates in slow motion through the air and lands sharpened-tip-first on the desk. It wobbles for two seconds, then balances upright. The stickman freezes in shock, then breaks into an exaggerated victory dance as the music peaks.",
+    animationDesc:
+      "15.0-15.1s launch, 15.1-20.0s slow-motion rotation toward desk, 20.0-21.4s sharpened tip lands, wobbles, balances, 21.4-22.0s victory dance begins.",
+    soundDesc: "Slow-motion whooshes, clean tip-first landing plop, wobble settle, triumphant fanfare.",
+    captionText: "I ACTUALLY DID IT!!!",
+    punchline: "Slow motion pays off — the tip lands first.",
+    characterAction: "Watches in shock, then dances in victory.",
+    propAction: "Pencil rotates, lands tip-first, balances upright.",
+  },
+  {
+    id: 5,
+    name: "Shot 5",
+    title: "Wait… That's Not the Desk!",
+    timeRange: [22.0, 30.0],
+    videoPrompt:
+      "His victory dance shakes the desk, launching the pencil into the air. The pencil spins upward, passes his face, and lands upright balanced on top of his head. He freezes cross-eyed trying to look up at it, then ends with a furious angry expression and a comedic sting.",
+    animationDesc:
+      "22.0-26.0s victory dance with hops, 26.0-26.8s desk shake launches pencil, 26.8-27.6s pencil spins upward past face, 27.6-28.6s pencil lands upright on head, 28.6-30.0s cross-eyed freeze then fury.",
+    soundDesc: "Dance hops, desk shake, pencil launch whoosh, spin, wooden balancing thud, record scratch, angry sting.",
+    captionText: "WAIT… THAT'S NOT THE DESK! 💀",
+    punchline: "He landed it — on the wrong surface.",
+    characterAction: "Dances, freezes cross-eyed, gets furious.",
+    propAction: "Pencil launches, spins, lands upright on his head.",
+  },
+];
+
+export const RING_SHOT_PROMPT = `THE IMPOSSIBLE RING SHOT — 30-SECOND AI VIDEO PROMPT
+
+Create a funny 30-second 2D stickman animation for YouTube Shorts, vertical 9:16, 1080×1920, 24fps.
+
+VISUAL STYLE:
+- Minimalist Modern Pop flat 2D vector animation, drawn on a pure white background.
+- Main character: black stickman, round white face, thick angry black eyebrows, red beanie, yellow shirt, black stick limbs.
+- Props: one small red ball, five colourful circular hoops hanging in a rising zigzag, and a small cup balanced on his head.
+- Very thick black outlines, flat bright colours, expressive squash-and-stretch, soft contact shadows, no gradients or textures.
+- No dialogue, no narration, no readable text inside the picture: SFX plus an energetic background score only.
+
+THE STORY (6 beats):
+1. 0-4s — HOOK: he stands in front of the five hoops, a cup balanced on his head, holding the red ball. He studies the rig, smirks, points up at the cup, then goes determined.
+2. 4-8s — ATTEMPT #1: he throws far too hard. The ball misses the first hoop, smacks the wall, ricochets back and bonks him on the forehead. His beanie spins in the air while the cup wobbles but stays upright. He freezes, then clenches his fists in rage.
+3. 8-13s — ATTEMPT #27: a rapid montage. The ball drops through the first two hoops but misses the third. The next throw clangs off a rim and knocks him backwards. A dramatic spinning throw flops and rolls slowly between his feet. His face goes red and he stomps the ground.
+4. 13-20s — ONE LAST TRY: he takes a deep breath, picks the ball up, plants his feet and aims. The throw is slow motion: the ball slips cleanly through all five hoops, each one flashing as it passes, then arcs down toward the cup on his head.
+5. 20-26s — HE ACTUALLY DID IT: the ball drops into the cup. He slowly raises both arms, eyes sparkling, chest puffed out, then breaks into an exaggerated victory dance.
+6. 26-30s — NEVER CELEBRATE TOO EARLY: mid-dance the cup tips forward, the ball drops out, bounces off his forehead and launches his red beanie into the air. He freezes, looks up at the flying beanie, then stares straight into the camera in furious disbelief. Freeze on that face.
+
+Keep the character design, the five hoop positions, the ball colour and the cup design identical in every beat.`;
+
+export const RING_SHOT_SCENES: SceneDef[] = [
+  {
+    id: 1,
+    name: "Shot 1",
+    title: "Five Rings. One Shot.",
+    timeRange: [0.0, 4.0],
+    videoPrompt:
+      "A stickman in a red beanie and yellow shirt stands in front of five colourful hoops hanging in a rising zigzag. A small cup is balanced on his head and he holds a red ball. He studies the rig, smirks confidently, points up at the cup, then narrows his eyes with determination. End on a fast push-in to his angry, focused face.",
+    animationDesc:
+      "0.0-1.3s studies the hoops, 1.3-2.3s confident smirk, 2.3-3.1s points up at the cup, 3.1-4.0s determined stare, quick camera push-in.",
+    soundDesc: "Dramatic whoosh, confident beat, low tension riser.",
+    captionText: "5 RINGS. 1 SHOT. IMPOSSIBLE?",
+    punchline: "Five hoops, one ball, one cup balanced on his head.",
+    characterAction: "Studies the rig, smirks, points at the cup, goes determined.",
+    propAction: "Ball held at his chest, cup balanced perfectly on his beanie.",
+  },
+  {
+    id: 2,
+    name: "Shot 2",
+    title: "Attempt #1",
+    timeRange: [4.0, 8.0],
+    videoPrompt:
+      "He throws the ball far too hard. It flies straight past the first hoop, smacks the back wall, ricochets back across the room and bonks him square on the forehead. His beanie spins up into the air while the cup wobbles but somehow stays upright. He freezes with wide eyes, then clenches both fists in rage.",
+    animationDesc:
+      "4.0-4.5s wind-up, 4.75s release, 4.75-5.15s ball misses hoop one and hits the wall, 5.15-5.62s ricochet returns and bonks his forehead, 5.62-6.35s beanie spins in the air and lands back, 6.35-8.0s fists clenched, furious, small shake.",
+    soundDesc: "Fast whoosh 4.75s, wall smack 5.15s, double bonk 5.62s, spring boing 5.8s, angry sting 6.5s.",
+    captionText: "ATTEMPT #1",
+    punchline: "The wall throws it back harder than he threw it.",
+    characterAction: "Throws, gets bonked, freezes, then clenches his fists in rage.",
+    propAction: "Ball misses hoop one, ricochets off the wall, hits his forehead; beanie spins in the air.",
+  },
+  {
+    id: 3,
+    name: "Shot 3",
+    title: "Attempt #27",
+    timeRange: [8.0, 13.0],
+    videoPrompt:
+      "A rapid montage of ridiculous attempts. The ball drops through the first two hoops but misses the third. Another throw clangs off a rim and knocks him backwards. He tries a dramatic spinning throw and the ball just rolls slowly between his feet. His face turns bright red with cartoon anger and he stomps the ground.",
+    animationDesc:
+      "8.22-9.06s ball through hoops one and two, misses the third, 9.55-10.24s rim clang knocks him backwards, 10.95-11.9s spinning throw flops and rolls between his feet, 12.05-13.0s face goes red, stomps, ball pops back up into his hand.",
+    soundDesc: "Three quick whooshes, rim clang 9.78s, rubber squeaks, angry foot stomp 12.3s, comedic sting 12.6s.",
+    captionText: "ATTEMPT #27",
+    punchline: "Three more ways to fail in five seconds.",
+    characterAction: "Throws twice, is knocked backwards, flops a spin throw, turns red and stomps.",
+    propAction: "Ball passes two hoops, clangs a rim, then rolls between his feet.",
+  },
+  {
+    id: 4,
+    name: "Shot 4",
+    title: "One. Last. Try.",
+    timeRange: [13.0, 20.0],
+    videoPrompt:
+      "He takes a deep breath, plants his feet, checks the cup on his head, narrows his eyes and throws the ball in slow motion. The ball passes cleanly through all five hoops, each hoop flashing as it goes, then arcs down toward the cup on his head. His angry expression turns to shocked disbelief.",
+    animationDesc:
+      "13.0-14.4s deep breath and aim, 14.5-19.4s slow-motion ball through all five hoops with a flash on each, arcing down toward the cup, 19.4-20.0s the ball drops into the cup, he freezes in disbelief.",
+    soundDesc: "Deep inhale 13.4s, heartbeat, five satisfying whooshes 15.3-18.6s, rising tension, clean cup plop 19.4s.",
+    captionText: "ONE. LAST. TRY.",
+    punchline: "Slow motion, five hoops, one perfect arc.",
+    characterAction: "Breathes, aims, throws slowly, then stares in disbelief.",
+    propAction: "Ball passes through all five hoops and drops into the cup on his head.",
+  },
+  {
+    id: 5,
+    name: "Shot 5",
+    title: "He Actually Did It?!",
+    timeRange: [20.0, 26.0],
+    videoPrompt:
+      "The red ball sits perfectly inside the cup balanced on his head. He slowly raises both arms in victory, eyes sparkling, chest puffed out, then breaks into an exaggerated victory dance, convinced he is a legendary trickshot champion.",
+    animationDesc:
+      "20.0-21.0s wobble settles, ball rests in the cup, 21.0-22.0s disbelief, 22.0-26.0s arms up, sparkling eyes, hips wiggling, two little hops of celebration.",
+    soundDesc: "Cup settle 20.2s, sparkling chime 21.0s, triumphant fanfare 21.4s, dance beat with two hop thuds 23.1s and 24.5s.",
+    captionText: "HE ACTUALLY DID IT?!",
+    punchline: "The impossible shot is real — and he knows it.",
+    characterAction: "Disbelief, then arms up, sparkling eyes and an exaggerated victory dance.",
+    propAction: "The ball settles inside the cup and rides every hop.",
+  },
+  {
+    id: 6,
+    name: "Shot 6",
+    title: "Never Celebrate Too Early",
+    timeRange: [26.0, 30.0],
+    videoPrompt:
+      "During the victory dance the cup tips forward, the ball rolls out, drops onto his forehead with a loud bonk and launches his red beanie into the air. He stops dancing, looks up at his flying beanie, then stares straight at the camera with furious disbelief. Freeze on his furious expression for the final beat.",
+    animationDesc:
+      "26.0-26.45s dance continues, 26.45-27.05s cup tips and the ball rolls out, 27.06-27.4s ball bonks his forehead and the beanie launches, 27.35-29.05s beanie spins in the air and lands back, 27.3-28.95s he stares up at it, 28.95-30.0s furious camera stare, final freeze.",
+    soundDesc: "Cup clatter 26.5s, loud bonk 27.1s, beanie whoosh 27.35s, record scratch 27.9s, angry sting 29.0s.",
+    captionText: "NEVER CELEBRATE TOO EARLY 💀",
+    punchline: "The trick was perfect. The celebration was not.",
+    characterAction: "Freezes mid-dance, watches the beanie fly, then stares furiously into the camera.",
+    propAction: "Cup tips, ball drops out and bonks his forehead, beanie launches and lands back.",
+  },
+];
+export const DOMINO_TRICKSHOT_PROMPT = `THE IMPOSSIBLE DOMINO TRICKSHOT — 30-SECOND AI VIDEO PROMPT
+
+Create a funny 30-second 2D stickman animation for YouTube Shorts, vertical 9:16, 1080×1920, 24fps.
+
+VISUAL STYLE:
+Modern Pop flat 2D vector cartoon. Thick consistent black outlines, simple geometric shapes, smooth readable movements, exaggerated facial expressions, bright solid colors. Clean white background with minimal shadows, no decorations, no gradients, no textures. Centered mobile compositions; important action inside the central 60-70% of the frame.
+
+CHARACTER:
+The angry black stickman with a round white face, thick black eyebrows, expressive eyes, a red beanie and a bright yellow shirt. Black line limbs. The head, proportions, beanie and shirt stay identical everywhere. He is extremely competitive, impatient, and comically overconfident — he treats a simple domino chain reaction like an impossible world championship.
+
+PROPS:
+One tiny blue ball, 20 colorful dominoes (red, orange, yellow, green, blue, purple), one small ramp, one second ball (red), and one red cup on a short platform. Keep the domino colors consistent throughout. The dominoes are arranged in a line with the ramp at the end leading to the cup.
+
+CONTINUITY:
+Same stickman, blue ball, dominoes, ramp, red ball, and red cup through the entire story. The domino line stays in the same position. Hard cuts between escalating failures. No photorealism, 3D, extra characters, duplicated props, logos, watermarks, random transitions or complex backgrounds.
+
+STORY IN SIX CAPTIONED SHOTS (captions are burned in near the top; white extra-bold with a thick black outline and pop-in):
+
+SHOT 1 (0-4s) "ONE BALL. 20 DOMINOES. ONE SHOT.":
+The stickman stands beside a carefully arranged line of 20 colorful dominoes. At the end is a small ramp, a second ball, and a red cup positioned on a short platform. He holds a tiny blue ball, points at the cup, and grins confidently.
+
+SHOT 2 (4-8s) "ATTEMPT #1":
+He gently flicks the blue ball. It rolls past the first domino without touching it and falls off the table. He stares at the untouched domino line, then slowly clenches his black mitten hands.
+
+SHOT 3 (8-14s) "WHY IS EVERYTHING FALLING?!":
+He flicks too hard. The first domino falls, but it knocks the next domino sideways. The chain collapses in the wrong direction. He frantically tries to catch the falling dominoes, accidentally knocking down the remaining line with his arm.
+
+SHOT 4 (14-20s) "DON'T BLINK…":
+He takes a breath and flicks the ball with precise force. The ball hits the first domino. All 20 dominoes fall in a satisfying, perfectly timed sequence. The final domino nudges the second ball onto the ramp, sending it rolling toward the red cup.
+
+SHOT 5 (20-25s) "PERFECT CHAIN REACTION!!":
+The second ball arcs off the ramp and lands directly inside the red cup. He jumps up, raises both black mitten hands, and celebrates like a champion. The cup wobbles precariously on its platform.
+
+SHOT 6 (25-30s) "THE FINAL DOMINO GOT REVENGE 💀":
+The last wobble sends the red cup tumbling off the platform. It drops upside down over his head and covers his beanie and eyes. He freezes with his arms raised, then slowly lowers them and gives the camera an absolutely furious stare.
+
+AUDIO:
+Playful bouncy score only, lower than the SFX. Tension builds through Shot 4, a satisfying click rhythm and victory fanfare on the success, the fanfare cut off the instant the cup wobbles, a short silence, then a sharp comedic sting. No dialogue, no narration, no voice-over.`;
+
+export const DOMINO_TRICKSHOT_SCENES: SceneDef[] = [
+  {
+    id: 1,
+    name: "Shot 1",
+    title: "The Challenge",
+    timeRange: [0.0, 4.0],
+    videoPrompt:
+      "The angry stickman in red beanie and yellow shirt stands beside a carefully arranged line of 20 colorful dominoes (red, orange, yellow, green, blue, purple). At the end of the line is a small wooden ramp, a red ball, and a red cup on a short platform. He holds a tiny blue ball, points at the cup with a confident grin. Clean white background.",
+    animationDesc:
+      "0.0-1.0s he stands confidently beside the domino line, 1.0-2.5s points at the cup and grins, 2.5-3.5s holds up the blue ball and winks, 3.5-4.0s determined stare at the camera.",
+    soundDesc: "Dramatic boom at 0.05s, ticking countdown from 0.5s, confident chime at 2.0s.",
+    captionText: "ONE BALL. 20 DOMINOES. ONE SHOT.",
+    punchline: "Twenty dominoes stand between him and glory.",
+    characterAction: "Stands beside domino line, points at cup, holds up blue ball, grins confidently.",
+    propAction: "20 colorful dominoes in a line, ramp, red ball, red cup on platform, blue ball in hand.",
+  },
+  {
+    id: 2,
+    name: "Shot 2",
+    title: "First Failure",
+    timeRange: [4.0, 8.0],
+    videoPrompt:
+      "He gently flicks the blue ball with his fingers. It rolls slowly past the first domino without touching it, continuing off the edge of the table and dropping out of sight. He stares at the perfectly still domino line, eyebrows twitching, then slowly clenches both black mitten hands into tight fists.",
+    animationDesc:
+      "4.0-4.5s winds up the flick, 4.5-5.2s releases the ball, 5.2-6.0s ball rolls past first domino and falls off table, 6.0-7.0s stares at untouched dominoes, 7.0-8.0s slowly clenches fists, eyebrows twitching.",
+    soundDesc: "Soft flick at 4.5s, rolling ball 4.5-6.0s, tiny plop at 6.1s, sad trombone at 6.5s.",
+    captionText: "ATTEMPT #1",
+    punchline: "He missed the first domino. By a mile.",
+    characterAction: "Flicks ball gently, watches it miss completely, stares in disbelief, clenches fists.",
+    propAction: "Blue ball rolls past domino #1 and falls off table; all 20 dominoes remain standing.",
+  },
+  {
+    id: 3,
+    name: "Shot 3",
+    title: "Total Disaster",
+    timeRange: [8.0, 14.0],
+    videoPrompt:
+      "He flicks the blue ball way too hard. It slams into the first domino, which falls but knocks the second domino sideways instead of forward. The chain reaction collapses in a chaotic mess — dominoes falling left, right, and backwards. He frantically waves his arms trying to catch them, but his flailing arm sweeps across the table and knocks down the rest of the line.",
+    animationDesc:
+      "8.0-8.5s winds up hard, 8.5-9.0s slams ball into first domino, 9.0-10.5s chain goes sideways chaotically, 10.5-12.0s he waves arms frantically trying to catch them, 12.0-13.0s his arm sweeps and knocks down the rest, 13.0-14.0s stands amid the ruin, furious stomp.",
+    soundDesc: "Hard impact 8.7s, rapid clattering 9.0-12.0s, cartoon crash 12.5s, frustrated stomp 13.5s.",
+    captionText: "WHY IS EVERYTHING FALLING?!",
+    punchline: "His 'help' destroyed what the chaos missed.",
+    characterAction: "Flicks too hard, watches chain go wrong, flails arms to catch dominoes, accidentally knocks down the rest, stomps in fury.",
+    propAction: "Domino chain collapses sideways chaotically; his arm sweeps the remaining standing dominoes.",
+  },
+  {
+    id: 4,
+    name: "Shot 4",
+    title: "The Perfect Chain",
+    timeRange: [14.0, 20.0],
+    videoPrompt:
+      "He takes a deep breath, centers himself, and flicks the blue ball with precise, measured force. It taps the first domino perfectly. All 20 dominoes fall in a satisfying, rhythmic, perfectly timed sequence — click, click, click. The final domino tips forward and gently nudges the red ball onto the ramp. The red ball rolls smoothly up and down the ramp toward the red cup.",
+    animationDesc:
+      "14.0-15.0s deep breath, centers himself, 15.0-15.5s precise flick, 15.5-18.5s all 20 dominoes fall in perfect rhythm, 18.5-19.0s final domino nudges red ball onto ramp, 19.0-20.0s red ball rolls down ramp toward cup.",
+    soundDesc: "Deep breath 14.2s, precise tap 15.3s, rhythmic domino clicks 15.5-18.5s (one per 0.15s), rising music swell, rolling ball 19.0s.",
+    captionText: "DON'T BLINK…",
+    punchline: "Twenty dominoes. One perfect rhythm. Zero mistakes.",
+    characterAction: "Breathes, flicks with precision, watches with intense focus as the chain completes.",
+    propAction: "Blue ball hits domino #1; all 20 fall in perfect sequence; last domino nudges red ball onto ramp; red ball rolls toward cup.",
+  },
+  {
+    id: 5,
+    name: "Shot 5",
+    title: "Impossible Success",
+    timeRange: [20.0, 25.0],
+    videoPrompt:
+      "The red ball arcs off the ramp and lands directly inside the red cup with a satisfying ping. He explodes upward, both black mitten hands raised in victory, beaming with triumph. He does a little victory hop. The red cup wobbles precariously on its platform, teetering back and forth.",
+    animationDesc:
+      "20.0-20.5s red ball arcs off ramp, 20.5-21.0s ball lands in cup with ping, 21.0-22.0s jumps up with both arms raised, 22.0-24.0s victory dance with hops, 24.0-25.0s cup wobbles visibly on platform, he notices and freezes mid-hop.",
+    soundDesc: "Satisfying cup ping 20.7s, victory fanfare 21.0s, crowd cheer 21.5s, hop thuds 22.5s and 23.5s, cup wobble creak 24.5s.",
+    captionText: "PERFECT CHAIN REACTION!!",
+    punchline: "He did it. The impossible chain reaction actually worked.",
+    characterAction: "Watches ball land in cup, jumps in victory, dances, notices cup wobbling, freezes.",
+    propAction: "Red ball arcs off ramp into cup; cup wobbles on platform.",
+  },
+  {
+    id: 6,
+    name: "Shot 6",
+    title: "The Twist",
+    timeRange: [25.0, 30.0],
+    videoPrompt:
+      "The cup's final wobble sends it tumbling off the platform. It drops upside down right over his head, covering his beanie and eyes completely. He freezes with his arms still raised in victory pose. The cup sits on his shoulders like a helmet. Slowly, he lowers his arms. He gives the camera an absolutely furious, deadpan stare through the cup.",
+    animationDesc:
+      "25.0-25.5s cup wobbles one last time, 25.5-26.0s cup tips off platform and falls onto his head, 26.0-27.0s freezes with arms raised, cup covering face, 27.0-28.0s slowly lowers arms, 28.0-30.0s furious deadpan stare into camera through the cup.",
+    soundDesc: "Cup wobble creak 25.2s, hollow bonk 25.7s, record scratch 26.0s, angry sting 29.0s, then silence.",
+    captionText: "THE FINAL DOMINO GOT REVENGE 💀",
+    punchline: "The chain reaction was perfect. The cup had other plans.",
+    characterAction: "Freezes as cup lands on head, slowly lowers arms, stares furiously into camera.",
+    propAction: "Red cup falls off platform and lands upside-down on his head, covering beanie and eyes.",
+  },
+];
+
+export const ARCADE_CLAW_PROMPT = `THE ANGRY STICKMAN: THE IMPOSSIBLE CLAW MACHINE — 30-SECOND AI VIDEO PROMPT
+
+Create a funny 30-second 2D stickman animation for YouTube Shorts, vertical 9:16, 1080×1920, 24fps.
+
+VISUAL STYLE:
+Minimalist flat 2D vector animation, thick black outlines, white round stickman head, black stickman body, expressive eyebrows, exaggerated physical comedy, bright neon arcade colors, claw machines, arcade basketball, racing cabinets, pinball bumpers, and a giant teddy bear. Maintain consistent character proportions, props, and arcade layout across all scenes.
+
+SCENE 1 (0–5 seconds):
+Inside a colorful neon arcade, the angry stickman spots a giant teddy bear inside a claw machine. He holds up a single coin, inserts it into the machine, and confidently presses the button.
+Caption added during editing: "He wants to win this giant teddy bear with ONE coin!"
+Sound: Coin drop and cheerful arcade chime.
+
+SCENE 2 (5–9 seconds):
+The claw grabs the teddy bear and lifts it almost to the prize chute. At the last second, the claw opens and drops the bear back into the pile. The stickman's eye twitches and his fists clench.
+Caption: "THE CLAW DROPS IT AT THE LAST SECOND!"
+Sound: Mechanical squeak and sad trombone.
+
+SCENE 3 (9–15 seconds):
+The stickman enters revenge mode. He builds a ridiculous trickshot setup using an arcade basketball, a ramp, a pinball bumper, and nearby arcade cabinets. He aims the ball toward the claw machine's giant control button.
+Caption: "SO HE TURNS THE ENTIRE ARCADE INTO A TRICKSHOT!"
+Sound: Mechanical clanks and dramatic rising music.
+
+SCENE 4 (15–22 seconds):
+He launches the basketball. It bounces off a pinball bumper, ricochets off a racing-game cabinet, flies over several arcade machines, and lands perfectly on the claw machine's giant button. The machine activates and the claw grabs the teddy bear.
+Caption: "THAT SHOT SHOULD BE IMPOSSIBLE!"
+Sound: Rapid boings, whooshes, and a dramatic success sting.
+
+SCENE 5 (22–26 seconds):
+The claw successfully drops the giant teddy bear into the prize chute. The stickman jumps up and celebrates, then reaches inside to retrieve his prize.
+Caption: "HE ACTUALLY WON IT!"
+Sound: Victory fanfare and cheerful arcade music.
+
+SCENE 6 (26–30 seconds):
+The claw machine malfunctions. Dozens of giant teddy bears burst out of the prize chute like an avalanche, completely burying the stickman. After a brief pause, one tiny black arm emerges from the pile, still holding the original coin.
+Caption: "HE WON… THE ENTIRE INVENTORY! 💀"
+Sound: Machine alarm, plush avalanche, then a tiny coin ding. Finish on a comedic freeze-frame.
+
+CAMERA:
+Use quick cuts, close-ups of facial expressions, smooth ball tracking, clear action, and exaggerated cartoon physics. Keep every action understandable without dialogue.
+
+TEXT:
+Do not render words or captions inside the generated frames. Add the supplied captions during editing, timed to each scene. Use bold, large, high-contrast text near the top of the vertical frame.
+
+AUDIO:
+Include sound effects for coin insertion, claw movement, ball bounces, arcade alarms, the victory moment, and the final avalanche. No spoken dialogue, logos, or watermarks.`;
+
+export const ARCADE_CLAW_SCENES: SceneDef[] = [
+  {
+    id: 1,
+    name: "Scene 1",
+    title: "The Challenge",
+    timeRange: [0.0, 5.0],
+    videoPrompt:
+      "Inside a colorful neon arcade, the angry stickman spots a giant teddy bear inside a claw machine. He holds up a single coin, inserts it into the machine, and confidently presses the button.",
+    animationDesc:
+      "0.0-0.8s stickman walks to claw machine, 0.8-1.5s holds up coin with confident smirk, 1.5-2.5s inserts coin with dramatic flourish, 2.5-3.5s presses big red button with anticipation, 3.5-5.0s leans forward watching claw descend.",
+    soundDesc: "Coin drop chime at 1.5s, arcade ambient hum, cheerful button beep at 2.5s, claw motor whir at 3.0s.",
+    captionText: "He wants to win this giant teddy bear with ONE coin!",
+    punchline: "One coin, total confidence, giant teddy bear in sight.",
+    characterAction: "Walks up, holds coin high, inserts with flair, presses button eagerly, watches with hope.",
+    propAction: "Claw machine glows with neon lights; giant teddy bear sits prominently in the prize pile.",
+  },
+  {
+    id: 2,
+    name: "Scene 2",
+    title: "The Drop",
+    timeRange: [5.0, 9.0],
+    videoPrompt:
+      "The claw grabs the teddy bear and lifts it almost to the prize chute. At the last second, the claw opens and drops the bear back into the pile. The stickman's eye twitches and his fists clench.",
+    animationDesc:
+      "5.0-5.8s claw closes on bear, 5.8-7.0s claw lifts bear toward chute, 7.0-7.5s claw reaches peak height, 7.5-7.8s claw suddenly opens, 7.8-8.2s bear falls back into pile, 8.2-9.0s stickman eye twitches, fists clench, rage builds.",
+    soundDesc: "Claw motor strain at 5.0s, lifting whir, mechanical squeak at 7.5s, sad trombone at 8.0s, heavy silence.",
+    captionText: "THE CLAW DROPS IT AT THE LAST SECOND!",
+    punchline: "The cruelest mechanical betrayal in arcade history.",
+    characterAction: "Watches with widening eyes, jaw drops at the drop, eye twitches violently, fists clench in rage.",
+    propAction: "Claw grabs bear, lifts high, opens at the last inch, bear plummets back into the plush pile.",
+  },
+  {
+    id: 3,
+    name: "Scene 3",
+    title: "The Invention",
+    timeRange: [9.0, 15.0],
+    videoPrompt:
+      "The stickman enters revenge mode. He builds a ridiculous trickshot setup using an arcade basketball, a ramp, a pinball bumper, and nearby arcade cabinets. He aims the ball toward the claw machine's giant control button.",
+    animationDesc:
+      "9.0-9.5s rage spark, eyes glow red, 9.5-11.0s drags arcade basketball cabinet into position, 11.0-12.0s sets up ramp from racing game, 12.0-13.0s positions pinball bumper, 13.0-14.0s arranges cabinets as backstops, 14.0-15.0s places basketball on ramp, aims at claw button, manic grin.",
+    soundDesc: "Rage growl at 9.0s, heavy cabinet thuds, mechanical clanks, ramp scrape, dramatic rising orchestral sting from 12.0s.",
+    captionText: "SO HE TURNS THE ENTIRE ARCADE INTO A TRICKSHOT!",
+    punchline: "An entire arcade becomes a Rube Goldberg machine for one button.",
+    characterAction: "Furious assembly, dragging cabinets, positioning ramp and bumper, final aiming pose with wild eyes.",
+    propAction: "Arcade basketball, wooden ramp, pinball bumper, racing cabinet all positioned to guide ball to claw button.",
+  },
+  {
+    id: 4,
+    name: "Scene 4",
+    title: "The Impossible Shot",
+    timeRange: [15.0, 22.0],
+    videoPrompt:
+      "He launches the basketball. It bounces off a pinball bumper, ricochets off a racing-game cabinet, flies over several arcade machines, and lands perfectly on the claw machine's giant button. The machine activates and the claw grabs the teddy bear.",
+    animationDesc:
+      "15.0-15.3s launches ball with slap, 15.3-16.0s ball hits pinball bumper with loud BOING, 16.0-16.8s ricochets off racing cabinet, 16.8-18.5s flies over arcade machines in perfect arc, 18.5-19.5s lands squarely on giant claw button, 19.5-20.5s machine activates with lights and sound, 20.5-22.0s claw descends and grabs teddy bear perfectly.",
+    soundDesc: "Launch thwack at 15.0s, pinball BOING at 15.5s, cabinet ricochet at 16.2s, flight whooshes, button SLAM at 19.5s, machine activation fanfare at 20.0s, claw motor at 20.5s, success sting at 21.0s.",
+    captionText: "THAT SHOT SHOULD BE IMPOSSIBLE!",
+    punchline: "A pinball wizard shot across an entire arcade.",
+    characterAction: "Slaps ball, tracks flight with head whipping between impacts, freezes at button impact, erupts in silent victory.",
+    propAction: "Basketball ricochets off bumper, cabinet, flies over machines, hits button dead center; claw machine lights up and grabs bear.",
+  },
+  {
+    id: 5,
+    name: "Scene 5",
+    title: "The Victory",
+    timeRange: [22.0, 26.0],
+    videoPrompt:
+      "The claw successfully drops the giant teddy bear into the prize chute. The stickman jumps up and celebrates, then reaches inside to retrieve his prize.",
+    animationDesc:
+      "22.0-22.5s claw carries bear to chute, 22.5-23.5s bear drops into chute with satisfying thud, 23.5-24.0s stickman jumps and pumps fists, 24.0-25.0s victory dance, 25.0-26.0s reaches into prize chute to grab bear.",
+    soundDesc: "Claw deposit thud at 22.5s, victory fanfare from 23.5s, cheerful arcade win music, celebratory whoops.",
+    captionText: "HE ACTUALLY WON IT!",
+    punchline: "The impossible trickshot actually worked.",
+    characterAction: "Explosive celebration, fist pumps, victory dance, reaches eagerly into prize chute.",
+    propAction: "Claw deposits bear in chute; prize door opens; stickman reaches in for the giant teddy.",
+  },
+  {
+    id: 6,
+    name: "Scene 6",
+    title: "The Avalanche",
+    timeRange: [26.0, 30.0],
+    videoPrompt:
+      "The claw machine malfunctions. Dozens of giant teddy bears burst out of the prize chute like an avalanche, completely burying the stickman. After a brief pause, one tiny black arm emerges from the pile, still holding the original coin.",
+    animationDesc:
+      "26.0-26.5s machine alarm blares, lights flash red, 26.5-27.5s dozens of giant teddy bears explode from chute like avalanche, 27.5-28.5s stickman completely buried under mountain of plush, 28.5-29.0s silence, 29.0-29.5s one tiny black arm emerges from pile holding original coin, 29.5-30.0s comedic freeze-frame on the arm and coin.",
+    soundDesc: "Machine alarm at 26.0s, massive plush avalanche rumble 26.5-27.5s, muffled silence, tiny coin ding at 29.2s, record scratch freeze at 29.5s.",
+    captionText: "HE WON… THE ENTIRE INVENTORY! 💀",
+    punchline: "He wanted one bear. He got the whole warehouse.",
+    characterAction: "Buried under plush avalanche, only one arm emerges from the pile, still clutching the original coin.",
+    propAction: "Claw machine malfunctions, avalanche of giant teddy bears buries character; single arm with coin emerges from plush mountain.",
+  },
+];
+
 export const PROJECTS: Record<ProjectId, ProjectDef> = {
   'mind-traps': {
     id: 'mind-traps',
@@ -1560,6 +3323,138 @@ export const PROJECTS: Record<ProjectId, ProjectDef> = {
     hasCaptions: true,
     masterPrompt: MIND_TRAPS_PROMPT,
     scenes: MIND_TRAPS_SCENES,
+  },
+  'arcade-claw': {
+    id: 'arcade-claw',
+    title: 'Angry Stickman vs. The Impossible Claw Machine',
+    subtitle: 'The 30-Second Arcade Avalanche Comedy',
+    tagline: 'Vertical 9:16 Stickman Short · Neon Arcade Chaos · Sound Effects Only',
+    duration: 30,
+    hasAudioDialogue: false,
+    hasCaptions: true,
+    masterPrompt: ARCADE_CLAW_PROMPT,
+    scenes: ARCADE_CLAW_SCENES,
+  },
+  'diamond-heist': {
+    id: 'diamond-heist',
+    title: 'Angry Stickman: The Impossible Diamond Heist',
+    subtitle: 'The 30-Second Museum Spoon Comedy',
+    tagline: 'Vertical 9:16 Stickman Short · Minimalist Monochrome · Sound Effects Only',
+    duration: 30,
+    hasAudioDialogue: false,
+    hasCaptions: true,
+    masterPrompt: DIAMOND_HEIST_PROMPT,
+    scenes: DIAMOND_HEIST_SCENES,
+  },
+  'pancake-flip': {
+    id: 'pancake-flip',
+    title: 'Angry Stickman: The Perfect Pancake Flip',
+    subtitle: 'The 30-Second Kitchen Trickshot Comedy',
+    tagline: 'Vertical 9:16 Stickman Short · Modern Pop Color · Sound Effects Only',
+    duration: 30,
+    hasAudioDialogue: false,
+    hasCaptions: true,
+    masterPrompt: PANCAKE_FLIP_PROMPT,
+    scenes: PANCAKE_FLIP_SCENES,
+  },
+  'vending-machine': {
+    id: 'vending-machine',
+    title: 'Angry Stickman: The Vending Machine Revenge',
+    subtitle: 'The 30-Second Snack Nook Comedy',
+    tagline: 'Vertical 9:16 Stickman Short · Modern Pop Color · Sound Effects Only',
+    duration: 30,
+    hasAudioDialogue: false,
+    hasCaptions: true,
+    masterPrompt: VENDING_MACHINE_PROMPT,
+    scenes: VENDING_MACHINE_SCENES,
+  },
+  'biggest-balloon': {
+    id: 'biggest-balloon',
+    title: 'Angry Stickman: The Biggest Balloon',
+    subtitle: 'The 30-Second Balloon Anti-Pop Comedy',
+    tagline: 'Vertical 9:16 Stickman Short · Modern Pop Color · Sound Effects Only',
+    duration: 30,
+    hasAudioDialogue: false,
+    hasCaptions: true,
+    masterPrompt: BIGGEST_BALLOON_PROMPT,
+    scenes: BIGGEST_BALLOON_SCENES,
+  },
+  'find-the-ball': {
+    id: 'find-the-ball',
+    title: 'Angry Stickman: Find the Ball',
+    subtitle: 'The 30-Second Cup Shuffle Comedy',
+    tagline: 'Vertical 9:16 Stickman Short · Modern Pop Color · Sound Effects Only',
+    duration: 30,
+    hasAudioDialogue: false,
+    hasCaptions: true,
+    masterPrompt: FIND_THE_BALL_PROMPT,
+    scenes: FIND_THE_BALL_SCENES,
+  },
+  'attempt-247': {
+    id: 'attempt-247',
+    title: 'Angry Stickman: Attempt #247',
+    subtitle: 'The 30-Second Impossible Trash Can Trickshot',
+    tagline: 'Vertical 9:16 Stickman Short · Modern Pop Color · Sound Effects Only',
+    duration: 30,
+    hasAudioDialogue: false,
+    hasCaptions: true,
+    masterPrompt: ATTEMPT_247_PROMPT,
+    scenes: ATTEMPT_247_SCENES,
+  },
+  'needle-thread': {
+    id: 'needle-thread',
+    title: 'Angry Stickman: The Impossible Needle Thread',
+    subtitle: 'The 30-Second Sewing Championship Comedy',
+    tagline: 'Vertical 9:16 Stickman Short · Modern Pop Color · Sound Effects Only',
+    duration: 30,
+    hasAudioDialogue: false,
+    hasCaptions: true,
+    masterPrompt: NEEDLE_THREAD_PROMPT,
+    scenes: NEEDLE_THREAD_SCENES,
+  },
+  'magnet-trick': {
+    id: 'magnet-trick',
+    title: 'Angry Stickman: The Impossible Magnet Trick',
+    subtitle: 'The 30-Second Magnet Comedy',
+    tagline: 'Vertical 9:16 Stickman Short · Modern Pop Color · Sound Effects Only',
+    duration: 30,
+    hasAudioDialogue: false,
+    hasCaptions: true,
+    masterPrompt: MAGNET_TRICK_PROMPT,
+    scenes: MAGNET_TRICK_SCENES,
+  },
+  'ring-shot': {
+    id: 'ring-shot',
+    title: 'Angry Stickman: The Impossible Ring Shot',
+    subtitle: 'The 30-Second Five-Hoop Trickshot Comedy',
+    tagline: 'Vertical 9:16 Stickman Short · Modern Pop Color · Sound Effects Only',
+    duration: 30,
+    hasAudioDialogue: false,
+    hasCaptions: true,
+    masterPrompt: RING_SHOT_PROMPT,
+    scenes: RING_SHOT_SCENES,
+  },
+  'pencil-landing': {
+    id: 'pencil-landing',
+    title: 'Angry Stickman: The Impossible Pencil Landing',
+    subtitle: 'The 30-Second Desk-and-Pencil Comedy',
+    tagline: 'Vertical 9:16 Stickman Short · Modern Pop Color · Sound Effects Only',
+    duration: 30,
+    hasAudioDialogue: false,
+    hasCaptions: true,
+    masterPrompt: PENCIL_LANDING_PROMPT,
+    scenes: PENCIL_LANDING_SCENES,
+  },
+  'domino-trickshot': {
+    id: 'domino-trickshot',
+    title: 'Angry Stickman: The Impossible Domino Trickshot',
+    subtitle: 'The 30-Second Chain Reaction Comedy',
+    tagline: 'Vertical 9:16 Stickman Short · Modern Pop Color · Sound Effects Only',
+    duration: 30,
+    hasAudioDialogue: false,
+    hasCaptions: true,
+    masterPrompt: DOMINO_TRICKSHOT_PROMPT,
+    scenes: DOMINO_TRICKSHOT_SCENES,
   },
   'coin-flip': {
     id: 'coin-flip',
@@ -1703,7 +3598,7 @@ export interface StudioConfig {
 }
 
 export const DEFAULT_CONFIG: StudioConfig = {
-  activeProject: 'mind-traps', // The flagship Minimalist Monochrome explainer (Style 1A and 1B)
+  activeProject: 'domino-trickshot', // The latest short is the default film
   canvasTheme: 'black-on-white', // Style 1A: Black on White (toggleable to Style 1B: White on Black)
   vividAccent: '#ef4444', // Vivid Red as seen in reference image for emotions, risks & cages
   accentColor: '#000000', // Minimalist Monochrome

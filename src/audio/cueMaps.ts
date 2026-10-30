@@ -465,3 +465,729 @@ export const MIND_TRAPS_CUES: AudioCue[] = [
   { id: 'mt-clarity-chime', time: 26.6, play: (d) => soundEngine.playConfidenceDing(d) },
   { id: 'mt-thumbs-sparkle', time: 28.5, play: (d) => soundEngine.playMicSparkle(d) },
 ];
+
+/**
+ * Complete 30-second sound map for "THE ANGRY STICKMAN: THE IMPOSSIBLE
+ * CLAW MACHINE". One list drives both the preview and the export track;
+ * the chiptune score is scheduled in four 7.5-second slices.
+ */
+export const ARCADE_CLAW_CUES: AudioCue[] = [
+  { id: 'ac-score-1', time: 0.0, play: (d) => soundEngine.playArcadeClawScoreSection(d, 0, 7.5) },
+  { id: 'ac-score-2', time: 7.5, play: (d) => soundEngine.playArcadeClawScoreSection(d, 7.5, 15.0) },
+  { id: 'ac-score-3', time: 15.0, play: (d) => soundEngine.playArcadeClawScoreSection(d, 15.0, 22.5) },
+  { id: 'ac-score-4', time: 22.5, play: (d) => soundEngine.playArcadeClawScoreSection(d, 22.5, 30.0) },
+  // Scene 1 - the challenge (0-5): coin, chime, button, claw motor.
+  { id: 'ac-sparkle', time: 1.6, play: (d) => soundEngine.playMicSparkle(d) },
+  { id: 'ac-coin-up', time: 2.1, play: (d) => soundEngine.playCoinTing(d) },
+  { id: 'ac-slot', time: 2.45, play: (d) => soundEngine.playMechanicalClick(d) },
+  { id: 'ac-chime', time: 2.62, play: (d) => soundEngine.playArcadeChime(d) },
+  { id: 'ac-beep', time: 3.15, play: (d) => soundEngine.playCalculatorBeep(d) },
+  { id: 'ac-button', time: 3.3, play: (d) => soundEngine.playMechanicalClick(d) },
+  { id: 'ac-motor-1', time: 3.6, play: (d) => soundEngine.playClawMotor(d, 1.4) },
+  // Scene 2 - the drop (5-9): grip, lift, squeak, trombone, thud, twitch.
+  { id: 'ac-grip', time: 5.1, play: (d) => soundEngine.playMechanicalClick(d) },
+  { id: 'ac-lift', time: 5.8, play: (d) => soundEngine.playClawMotor(d, 1.3) },
+  { id: 'ac-strain', time: 7.12, play: (d) => soundEngine.playSqueak(d) },
+  { id: 'ac-open', time: 7.48, play: (d) => soundEngine.playMechanicalClick(d) },
+  { id: 'ac-trombone', time: 7.85, play: (d) => soundEngine.playSadTrombone(d) },
+  { id: 'ac-thud', time: 8.28, play: (d) => soundEngine.playDeskPlop(d) },
+  { id: 'ac-twitch', time: 8.6, play: (d) => soundEngine.playSqueak(d) },
+  // Scene 3 - the invention (9-15): rage, clanks and thuds of the build.
+  { id: 'ac-growl', time: 9.05, play: (d) => soundEngine.playDramaticRumble(d) },
+  { id: 'ac-knuckle', time: 9.5, play: (d) => soundEngine.playKnuckleCrack(d) },
+  { id: 'ac-cab-1', time: 10.05, play: (d) => soundEngine.playFloorThump(d) },
+  { id: 'ac-cab-2', time: 10.6, play: (d) => soundEngine.playFloorThump(d) },
+  { id: 'ac-ramp', time: 11.5, play: (d) => soundEngine.playFloorThump(d) },
+  { id: 'ac-ramp-tap', time: 11.85, play: (d) => soundEngine.playClipboardTap(d) },
+  { id: 'ac-drag', time: 12.4, play: (d) => soundEngine.playSqueak(d) },
+  { id: 'ac-bumper', time: 12.95, play: (d) => soundEngine.playFloorThump(d) },
+  { id: 'ac-stop-1', time: 13.2, play: (d) => soundEngine.playDeskPlop(d) },
+  { id: 'ac-stop-2', time: 13.6, play: (d) => soundEngine.playDeskPlop(d) },
+  { id: 'ac-ball', time: 14.3, play: (d) => soundEngine.playBasketballBounce(d) },
+  { id: 'ac-aim', time: 14.78, play: (d) => soundEngine.playConfidenceDing(d) },
+  // Scene 4 - the impossible shot (15-22): launch, boing, ricochet, sting.
+  { id: 'ac-launch', time: 15.02, play: (d) => soundEngine.playLauncherFire(d) },
+  { id: 'ac-boing', time: 15.57, play: (d) => soundEngine.playRubberBandTwang(d) },
+  { id: 'ac-ricochet', time: 16.07, play: (d) => soundEngine.playWallBounce(d) },
+  { id: 'ac-whoosh-1', time: 16.9, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'ac-whoosh-2', time: 17.9, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'ac-slam', time: 18.62, play: (d) => soundEngine.playFloorThump(d) },
+  { id: 'ac-confirm', time: 18.95, play: (d) => soundEngine.playCalculatorBeep(d) },
+  { id: 'ac-power-on', time: 19.42, play: (d) => soundEngine.playMechanicalClick(d) },
+  { id: 'ac-jingle', time: 19.62, play: (d) => soundEngine.playArcadeWinJingle(d) },
+  { id: 'ac-motor-2', time: 20.35, play: (d) => soundEngine.playClawMotor(d, 1.4) },
+  { id: 'ac-grab-2', time: 21.05, play: (d) => soundEngine.playMechanicalClick(d) },
+  { id: 'ac-motor-3', time: 21.55, play: (d) => soundEngine.playClawMotor(d, 1.1) },
+  // Scene 5 - the victory (22-26): deposit, fanfare, cheer, dance, rattle.
+  { id: 'ac-release', time: 22.58, play: (d) => soundEngine.playMechanicalClick(d) },
+  { id: 'ac-deposit', time: 23.18, play: (d) => soundEngine.playDeskPlop(d) },
+  { id: 'ac-fanfare', time: 23.45, play: (d) => soundEngine.playVictoryFanfare(d) },
+  { id: 'ac-crowd', time: 23.78, play: (d) => soundEngine.playCrowdCheer(d) },
+  { id: 'ac-hop', time: 24.45, play: (d) => soundEngine.playFootstep(true) },
+  { id: 'ac-reach', time: 24.95, play: (d) => soundEngine.playSqueak(d) },
+  { id: 'ac-rattle', time: 25.55, play: (d) => soundEngine.playDramaticRumble(d) },
+  // Scene 6 - the avalanche (26-30): alarm, plush rush, coin ding, freeze.
+  { id: 'ac-alarm', time: 26.05, play: (d) => soundEngine.playArcadeAlarm(d) },
+  { id: 'ac-avalanche', time: 26.55, play: (d) => soundEngine.playPlushAvalanche(d) },
+  { id: 'ac-alarm-2', time: 27.15, play: (d) => soundEngine.playArcadeAlarm(d) },
+  { id: 'ac-coin-end', time: 29.15, play: (d) => soundEngine.playCoinTing(d) },
+  { id: 'ac-freeze', time: 29.55, play: (d) => soundEngine.playRecordScratch(d) },
+];
+
+/**
+ * Complete 30-second sound map for "THE ANGRY STICKMAN: THE IMPOSSIBLE
+ * DIAMOND HEIST". One list drives both the preview and the export track;
+ * the score is scheduled in four 7.5-second slices with silence windows.
+ */
+export const DIAMOND_HEIST_CUES: AudioCue[] = [
+  // Score slices
+  { id: 'dh-score-1', time: 0.0, play: (d) => soundEngine.playDiamondHeistScoreSection(d, 0, 7.5) },
+  { id: 'dh-score-2', time: 7.5, play: (d) => soundEngine.playDiamondHeistScoreSection(d, 7.5, 15.0) },
+  { id: 'dh-score-3', time: 15.0, play: (d) => soundEngine.playDiamondHeistScoreSection(d, 15.0, 22.5) },
+  { id: 'dh-score-4', time: 22.5, play: (d) => soundEngine.playDiamondHeistScoreSection(d, 22.5, 30.0) },
+
+  // Scene 1 - the heist begins (0-5): sneaky pizzicato, diamond chime, spoon draw
+  { id: 'dh-chime', time: 1.0, play: (d) => soundEngine.playDiamondChime(d) },
+  { id: 'dh-spoon-draw', time: 2.0, play: (d) => soundEngine.playSpoonDraw(d) },
+
+  // Scene 2 - the alarm (5-9): laser zap, siren, cough
+  { id: 'dh-laser', time: 6.5, play: (d) => soundEngine.playLaserZap(d) },
+  { id: 'dh-siren', time: 6.5, play: (d) => soundEngine.playAlarmSiren(d, 3.5) },
+  { id: 'dh-cough', time: 8.5, play: (d) => soundEngine.playAwkwardCough(d) },
+
+  // Scene 3 - the setup (9-15): rage growl, record scratch, idea ding, bucket/tray clatter
+  { id: 'dh-growl', time: 9.0, play: (d) => soundEngine.playDramaticRumble(d) },
+  { id: 'dh-record-scratch', time: 12.0, play: (d) => soundEngine.playRecordScratch(d) },
+  { id: 'dh-idea-ding', time: 13.0, play: (d) => soundEngine.playIdeaDing(d) },
+  { id: 'dh-bucket', time: 10.5, play: (d) => soundEngine.playFloorThump(d) },
+  { id: 'dh-tray', time: 11.5, play: (d) => soundEngine.playMechanicalClick(d) },
+  { id: 'dh-mop', time: 12.5, play: (d) => soundEngine.playFloorThump(d) },
+
+  // Scene 4 - the impossible shot (15-22): flick, tray ping, wall boing, button click, case open
+  { id: 'dh-flick', time: 15.0, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'dh-tray-ping', time: 15.5, play: (d) => soundEngine.playTrayPing(d) },
+  { id: 'dh-wall-boing', time: 16.2, play: (d) => soundEngine.playWallBoing(d) },
+  { id: 'dh-button', time: 19.5, play: (d) => soundEngine.playButtonClick(d) },
+  { id: 'dh-case-open', time: 19.6, play: (d) => soundEngine.playCaseOpen(d) },
+  { id: 'dh-success-sting', time: 20.5, play: (d) => soundEngine.playConfidenceDing(d) },
+
+  // Scene 5 - the victory (22-26): scoop, alarms cut, angelic choir, fanfare
+  { id: 'dh-scoop', time: 22.5, play: (d) => soundEngine.playScoop(d) },
+  { id: 'dh-choir', time: 24.0, play: (d) => soundEngine.playAngelicChoir(d) },
+  { id: 'dh-fanfare', time: 24.5, play: (d) => soundEngine.playVictoryFanfareShort(d) },
+  { id: 'dh-celebrate-1', time: 25.0, play: (d) => soundEngine.playFootstep(true, d) },
+  { id: 'dh-celebrate-2', time: 25.4, play: (d) => soundEngine.playFootstep(true, d) },
+
+  // Scene 6 - the trap (26-30): glass clunk, camera clicks, muffled scream, freeze sting
+  { id: 'dh-glass-clunk', time: 26.5, play: (d) => soundEngine.playGlassClunk(d) },
+  { id: 'dh-camera-1', time: 27.5, play: (d) => soundEngine.playCameraClick(d) },
+  { id: 'dh-camera-2', time: 27.75, play: (d) => soundEngine.playCameraClick(d) },
+  { id: 'dh-camera-3', time: 28.0, play: (d) => soundEngine.playCameraClick(d) },
+  { id: 'dh-camera-4', time: 28.25, play: (d) => soundEngine.playCameraClick(d) },
+  { id: 'dh-camera-5', time: 28.5, play: (d) => soundEngine.playCameraClick(d) },
+  { id: 'dh-camera-6', time: 28.75, play: (d) => soundEngine.playCameraClick(d) },
+  { id: 'dh-scream', time: 29.0, play: (d) => soundEngine.playMuffledScream(d) },
+  { id: 'dh-freeze', time: 29.5, play: (d) => soundEngine.playFreezeSting(d) },
+];
+
+/**
+ * Complete 30-second sound map for "The Perfect Pancake Flip".
+ * Four 7.5s slices of the bouncy score plus one-shot SFX.
+ */
+export const PANCAKE_FLIP_CUES: AudioCue[] = [
+  // Score slices
+  { id: 'pf-score-1', time: 0.0, play: (d) => soundEngine.playPancakeScoreSection(d, 0, 7.5) },
+  { id: 'pf-score-2', time: 7.5, play: (d) => soundEngine.playPancakeScoreSection(d, 7.5, 15.0) },
+  { id: 'pf-score-3', time: 15.0, play: (d) => soundEngine.playPancakeScoreSection(d, 15.0, 22.5) },
+  { id: 'pf-score-4', time: 22.5, play: (d) => soundEngine.playPancakeScoreSection(d, 22.5, 30.0) },
+
+  // Shot 1 - the hook (0-2)
+  { id: 'pf-whoosh', time: 0.05, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'pf-freeze', time: 0.9, play: (d) => soundEngine.playRecordScratch(d) },
+
+  // Shot 2 - first failure (2-6): swoosh, boing, ceiling splat
+  { id: 'pf-pan-swoosh', time: 2.6, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'pf-boing', time: 3.1, play: (d) => soundEngine.playCartoonBoing(d) },
+  { id: 'pf-ceiling-splat', time: 3.6, play: (d) => soundEngine.playPancakeSplat(d) },
+  { id: 'pf-scratch', time: 4.4, play: (d) => soundEngine.playRecordScratch(d) },
+
+  // Shot 3 - the plan (6-10): ding, wood clack
+  { id: 'pf-idea', time: 7.2, play: (d) => soundEngine.playIdeaDing(d) },
+  { id: 'pf-wood-clack', time: 8.2, play: (d) => soundEngine.playWoodClack(d) },
+
+  // Shot 4 - second failure (10-13): slide, flop, trombone, glare
+  { id: 'pf-slide-1', time: 11.3, play: (d) => soundEngine.playPancakeSlide(d, 0.6) },
+  { id: 'pf-flop', time: 12.0, play: (d) => soundEngine.playFloorThump(d) },
+  { id: 'pf-trombone-1', time: 12.3, play: (d) => soundEngine.playSadTrombone(d) },
+
+  // Shot 5A - final launch (13-16): knuckles, breath, launch, whistle
+  { id: 'pf-knuckles', time: 13.3, play: (d) => soundEngine.playKnuckleCrack(d) },
+  { id: 'pf-breath', time: 13.8, play: (d) => soundEngine.playDeepBreath(d) },
+  { id: 'pf-launch', time: 14.5, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'pf-slide-2', time: 14.7, play: (d) => soundEngine.playPancakeSlide(d, 0.8) },
+
+  // Shot 5B - perfect landing (16-19): sparkle, plate clink
+  { id: 'pf-sparkle', time: 18.2, play: (d) => soundEngine.playMicSparkle(d) },
+  { id: 'pf-plate-clink', time: 18.4, play: (d) => soundEngine.playPlateClink(d) },
+
+  // Shot 6 - champion (19-23): fanfare, confetti, cheer
+  { id: 'pf-fanfare', time: 19.8, play: (d) => soundEngine.playVictoryFanfareShort(d) },
+  { id: 'pf-confetti', time: 20.6, play: (d) => soundEngine.playConfettiPop(d) },
+  { id: 'pf-cheer', time: 21.0, play: (d) => soundEngine.playCrowdCheer(d) },
+
+  // Shot 7 - pancake revenge (23-29): bump, wet splat, sticky slide, sting
+  { id: 'pf-bump', time: 23.4, play: (d) => soundEngine.playCounterBump(d) },
+  { id: 'pf-wet-splat', time: 24.8, play: (d) => soundEngine.playWetSplat(d) },
+  { id: 'pf-sticky-slide', time: 25.4, play: (d) => soundEngine.playPancakeSlide(d, 1.6) },
+  { id: 'pf-angry-sting', time: 27.4, play: (d) => soundEngine.playAngrySting(d) },
+
+  // Shot 8 - final gag (29-30): tiny trombone, then silence
+  { id: 'pf-trombone-2', time: 29.1, play: (d) => soundEngine.playSadTrombone(d) },
+];
+
+/**
+ * Complete 30-second sound map for "The Vending Machine Revenge".
+ * Four 7.5s slices of the bouncy score plus one-shot SFX.
+ */
+export const VENDING_MACHINE_CUES: AudioCue[] = [
+  // Score slices
+  { id: 'vm-score-1', time: 0.0, play: (d) => soundEngine.playVendingScoreSection(d, 0, 7.5) },
+  { id: 'vm-score-2', time: 7.5, play: (d) => soundEngine.playVendingScoreSection(d, 7.5, 15.0) },
+  { id: 'vm-score-3', time: 15.0, play: (d) => soundEngine.playVendingScoreSection(d, 15.0, 22.5) },
+  { id: 'vm-score-4', time: 22.5, play: (d) => soundEngine.playVendingScoreSection(d, 22.5, 30.0) },
+
+  // Shot 1 - the hook (0-2)
+  { id: 'vm-whoosh', time: 0.05, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'vm-freeze', time: 0.9, play: (d) => soundEngine.playRecordScratch(d) },
+
+  // Shot 2 - the shake (2-6)
+  { id: 'vm-rattle', time: 2.6, play: (d) => soundEngine.playVendingRattle(d, 1.7) },
+  { id: 'vm-boing', time: 4.3, play: (d) => soundEngine.playCartoonBoing(d) },
+  { id: 'vm-scratch-1', time: 4.8, play: (d) => soundEngine.playRecordScratch(d) },
+
+  // Shot 3 - second coin (6-10)
+  { id: 'vm-coin', time: 7.7, play: (d) => soundEngine.playCoinClink(d) },
+  { id: 'vm-spiral', time: 7.8, play: (d) => soundEngine.playSpiralWhirr(d) },
+  { id: 'vm-thud-1', time: 8.5, play: (d) => soundEngine.playVendingThud(d) },
+  { id: 'vm-scratch-2', time: 9.0, play: (d) => soundEngine.playRecordScratch(d) },
+
+  // Shot 4 - the broom (10-14)
+  { id: 'vm-idea', time: 10.8, play: (d) => soundEngine.playIdeaDing(d) },
+  { id: 'vm-scrape', time: 11.6, play: (d) => soundEngine.playBroomScrape(d) },
+  { id: 'vm-tug', time: 12.6, play: (d) => soundEngine.playStrainedTug(d) },
+  { id: 'vm-trombone-1', time: 13.4, play: (d) => soundEngine.playSadTrombone(d) },
+
+  // Shot 5 - flying kick (14-19)
+  { id: 'vm-step-1', time: 14.9, play: (d) => soundEngine.playFootstep(false, d) },
+  { id: 'vm-step-2', time: 15.2, play: (d) => soundEngine.playFootstep(false, d) },
+  { id: 'vm-step-3', time: 15.5, play: (d) => soundEngine.playFootstep(false, d) },
+  { id: 'vm-whistle', time: 16.0, play: (d) => soundEngine.playRisingWhistle(d, 2.2) },
+  { id: 'vm-impact', time: 18.35, play: (d) => soundEngine.playBigImpact(d) },
+
+  // Shot 6 - celebration (19-23)
+  { id: 'vm-thud-2a', time: 19.3, play: (d) => soundEngine.playVendingThud(d) },
+  { id: 'vm-thud-2b', time: 19.48, play: (d) => soundEngine.playVendingThud(d) },
+  { id: 'vm-fanfare', time: 19.8, play: (d) => soundEngine.playVictoryFanfareShort(d) },
+  { id: 'vm-confetti', time: 21.2, play: (d) => soundEngine.playConfettiPop(d) },
+  { id: 'vm-cheer', time: 21.5, play: (d) => soundEngine.playCrowdCheer(d) },
+
+  // Shot 7 - punchline (23-29)
+  { id: 'vm-bag-rip', time: 23.5, play: (d) => soundEngine.playBagRip(d) },
+  { id: 'vm-air-puff', time: 24.2, play: (d) => soundEngine.playAirPuff(d) },
+  { id: 'vm-chip-tink', time: 26.7, play: (d) => soundEngine.playTinyChipTink(d) },
+  { id: 'vm-angry', time: 27.6, play: (d) => soundEngine.playAngrySting(d) },
+
+  // Shot 8 - end frame (29-30)
+  { id: 'vm-trombone-2', time: 29.1, play: (d) => soundEngine.playSadTrombone(d) },
+];
+
+/**
+ * Complete 30-second sound map for "The Biggest Balloon".
+ * Four 7.5s slices of the bouncy score (a music drop for the shot 3 fake-out
+ * and a silence after the last trombone) plus one-shot SFX.
+ */
+export const BIGGEST_BALLOON_CUES: AudioCue[] = [
+  // Score slices
+  { id: 'bb-score-1', time: 0.0, play: (d) => soundEngine.playBalloonScoreSection(d, 0, 7.5) },
+  { id: 'bb-score-2', time: 7.5, play: (d) => soundEngine.playBalloonScoreSection(d, 7.5, 15.0) },
+  { id: 'bb-score-3', time: 15.0, play: (d) => soundEngine.playBalloonScoreSection(d, 15.0, 22.5) },
+  { id: 'bb-score-4', time: 22.5, play: (d) => soundEngine.playBalloonScoreSection(d, 22.5, 30.0) },
+
+  // Shot 1 - the hook (0-2)
+  { id: 'bb-whoosh', time: 0.05, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'bb-freeze', time: 0.9, play: (d) => soundEngine.playRecordScratch(d) },
+
+  // Shot 2 - size medium (2-6)
+  { id: 'bb-breath', time: 2.15, play: (d) => soundEngine.playDeepBreath(d) },
+  { id: 'bb-squeak-1', time: 2.8, play: (d) => soundEngine.playBalloonSqueak(0.9, d) },
+  { id: 'bb-squeak-2', time: 3.25, play: (d) => soundEngine.playBalloonSqueak(1.1, d) },
+  { id: 'bb-squeak-3', time: 3.7, play: (d) => soundEngine.playBalloonSqueak(0.95, d) },
+  { id: 'bb-squeak-4', time: 4.1, play: (d) => soundEngine.playBalloonSqueak(1.2, d) },
+  { id: 'bb-chime', time: 4.6, play: (d) => soundEngine.playCalmingChime(d) },
+
+  // Shot 3 - the fake-out (6-10)
+  { id: 'bb-stretch-1', time: 6.3, play: (d) => soundEngine.playBalloonStretch(d) },
+  { id: 'bb-stretch-2', time: 7.1, play: (d) => soundEngine.playBalloonStretch(d) },
+  { id: 'bb-drum', time: 7.5, play: (d) => soundEngine.playDramaticRumble(d) },
+  // 8.0-9.2: held breath (the score drops out here)
+  { id: 'bb-sigh', time: 9.4, play: (d) => soundEngine.playRelievedSigh(d) },
+
+  // Shot 4 - size giant (10-14)
+  { id: 'bb-stretch-3', time: 10.3, play: (d) => soundEngine.playBalloonStretch(d) },
+  { id: 'bb-stretch-4', time: 11.0, play: (d) => soundEngine.playBalloonStretch(d) },
+  { id: 'bb-knot', time: 12.2, play: (d) => soundEngine.playKnotSnap(d) },
+  { id: 'bb-fanfare', time: 12.8, play: (d) => soundEngine.playVictoryFanfareShort(d) },
+
+  // Shot 5 - uh oh (14-18)
+  { id: 'bb-gust-1', time: 14.2, play: (d) => soundEngine.playWindGust(d, 1.6) },
+  { id: 'bb-whistle', time: 15.0, play: (d) => soundEngine.playRisingWhistle(d, 1.4) },
+  { id: 'bb-scratch-1', time: 16.4, play: (d) => soundEngine.playRecordScratch(d) },
+
+  // Shot 6 - this is fine (18-22)
+  { id: 'bb-calm', time: 18.4, play: (d) => soundEngine.playCalmingChime(d) },
+  { id: 'bb-gust-2', time: 19.6, play: (d) => soundEngine.playWindGust(d, 1.8) },
+  { id: 'bb-sting', time: 21.8, play: (d) => soundEngine.playFreezeSting(d) },
+
+  // Shot 7 - the anti-pop (22-27)
+  { id: 'bb-spot', time: 22.2, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'bb-poke', time: 23.3, play: (d) => soundEngine.playNeedlePoke(d) },
+  { id: 'bb-release', time: 23.5, play: (d) => soundEngine.playAirRelease(d, 2.9) },
+  { id: 'bb-whirl', time: 24.4, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'bb-boing', time: 25.4, play: (d) => soundEngine.playCartoonBoing(d) },
+
+  // Shot 8 - end frame (27-30)
+  { id: 'bb-trombone', time: 27.4, play: (d) => soundEngine.playSadTrombone(d) },
+  { id: 'bb-final-squeak', time: 28.6, play: (d) => soundEngine.playBalloonSqueak(1.5, d) },
+];
+
+/**
+ * Complete 30-second sound map for "Find the Ball".
+ * Four 7.5s slices of the playful magic-show score (a music dip for the empty
+ * middle-cup reveal and a silence after the final trombone) plus one-shot SFX.
+ */
+export const FIND_THE_BALL_CUES: AudioCue[] = [
+  // Score slices
+  { id: 'fb-score-1', time: 0.0, play: (d) => soundEngine.playFindTheBallScoreSection(d, 0, 7.5) },
+  { id: 'fb-score-2', time: 7.5, play: (d) => soundEngine.playFindTheBallScoreSection(d, 7.5, 15.0) },
+  { id: 'fb-score-3', time: 15.0, play: (d) => soundEngine.playFindTheBallScoreSection(d, 15.0, 22.5) },
+  { id: 'fb-score-4', time: 22.5, play: (d) => soundEngine.playFindTheBallScoreSection(d, 22.5, 30.0) },
+
+  // Shot 1 - the hook (0-2)
+  { id: 'fb-whoosh', time: 0.05, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'fb-freeze', time: 0.9, play: (d) => soundEngine.playRecordScratch(d) },
+  { id: 'fb-sparkle-1', time: 0.95, play: (d) => soundEngine.playMagicSparkle(d) },
+
+  // Shot 2 - the setup (2-6)
+  { id: 'fb-lift-1', time: 2.5, play: (d) => soundEngine.playCupClunk(d) },
+  { id: 'fb-sparkle-2', time: 3.05, play: (d) => soundEngine.playMagicSparkle(d) },
+  { id: 'fb-clunk-1', time: 4.0, play: (d) => soundEngine.playCupClunk(d) },
+  { id: 'fb-sparkle-3', time: 4.15, play: (d) => soundEngine.playMagicSparkle(d) },
+
+  // Shot 3 - slow shuffle (6-10)
+  { id: 'fb-slide-1', time: 6.4, play: (d) => soundEngine.playCupSlide(d, 0.85) },
+  { id: 'fb-slide-2', time: 7.7, play: (d) => soundEngine.playCupSlide(d, 0.85) },
+
+  // Shot 4 - fast shuffle (10-15)
+  { id: 'fb-slide-3', time: 10.6, play: (d) => soundEngine.playCupSlide(d, 0.5) },
+  { id: 'fb-slide-4', time: 11.3, play: (d) => soundEngine.playCupSlide(d, 0.5) },
+  { id: 'fb-slide-5', time: 12.0, play: (d) => soundEngine.playCupSlide(d, 0.5) },
+  { id: 'fb-slide-6', time: 12.7, play: (d) => soundEngine.playCupSlide(d, 0.5) },
+  { id: 'fb-ball-roll-1', time: 11.4, play: (d) => soundEngine.playBallRoll(d, 1.6) },
+  { id: 'fb-flourish', time: 13.25, play: (d) => soundEngine.playMagicSparkle(d) },
+
+  // Shot 5 - pick a cup (15-19)
+  { id: 'fb-slap', time: 15.0, play: (d) => soundEngine.playVendingThud(d) },
+  { id: 'fb-drum-roll', time: 15.35, play: (d) => soundEngine.playDrumRoll(d, 3.2) },
+  { id: 'fb-beep-3', time: 16.6, play: (d) => soundEngine.playCountBeep(d, 1.0) },
+  { id: 'fb-beep-2', time: 17.4, play: (d) => soundEngine.playCountBeep(d, 1.12) },
+  { id: 'fb-beep-1', time: 18.2, play: (d) => soundEngine.playCountBeep(d, 1.26) },
+
+  // Shot 6 - two empty cups (19-22)
+  { id: 'fb-lift-2', time: 19.0, play: (d) => soundEngine.playCupClunk(d) },
+  { id: 'fb-clunk-2', time: 19.85, play: (d) => soundEngine.playCupClunk(d) },
+  { id: 'fb-lift-3', time: 20.3, play: (d) => soundEngine.playCupClunk(d) },
+  { id: 'fb-wah-wah', time: 20.85, play: (d) => soundEngine.playSadTrombone(d) },
+  { id: 'fb-clunk-3', time: 21.25, play: (d) => soundEngine.playCupClunk(d) },
+  { id: 'fb-scratch-1', time: 21.55, play: (d) => soundEngine.playRecordScratch(d) },
+
+  // Shot 7 - the real answer (22-27)
+  { id: 'fb-lift-4', time: 22.05, play: (d) => soundEngine.playCupClunk(d) },
+  { id: 'fb-scratch-2', time: 22.5, play: (d) => soundEngine.playRecordScratch(d) },
+  { id: 'fb-clunk-4', time: 22.95, play: (d) => soundEngine.playCupClunk(d) },
+  { id: 'fb-frantic-1', time: 23.25, play: (d) => soundEngine.playCupClunk(d) },
+  { id: 'fb-frantic-2', time: 23.7, play: (d) => soundEngine.playCupClunk(d) },
+  { id: 'fb-frantic-3', time: 24.05, play: (d) => soundEngine.playCupClunk(d) },
+  { id: 'fb-ball-roll-2', time: 24.95, play: (d) => soundEngine.playBallRoll(d, 0.6) },
+  { id: 'fb-sting', time: 25.8, play: (d) => soundEngine.playAngrySting(d) },
+
+  // Shot 8 - end frame (27-30)
+  { id: 'fb-trombone', time: 27.4, play: (d) => soundEngine.playSadTrombone(d) },
+];
+
+/**
+ * Complete 30-second sound map for "Attempt #247".
+ * Four 7.5s slices of the sports-highlight score (the music dips for the rim
+ * spin, cuts on the reveal and goes silent after the last trombone) plus the
+ * one-shot SFX.
+ */
+export const ATTEMPT_247_CUES: AudioCue[] = [
+  // Score slices
+  { id: 'a247-score-1', time: 0.0, play: (d) => soundEngine.playAttempt247ScoreSection(d, 0, 7.5) },
+  { id: 'a247-score-2', time: 7.5, play: (d) => soundEngine.playAttempt247ScoreSection(d, 7.5, 15.0) },
+  { id: 'a247-score-3', time: 15.0, play: (d) => soundEngine.playAttempt247ScoreSection(d, 15.0, 22.5) },
+  { id: 'a247-score-4', time: 22.5, play: (d) => soundEngine.playAttempt247ScoreSection(d, 22.5, 30.0) },
+
+  // Shot 1 - the hook (0-2)
+  { id: 'a247-whoosh-1', time: 0.05, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'a247-freeze', time: 0.9, play: (d) => soundEngine.playRecordScratch(d) },
+  { id: 'a247-sting-1', time: 0.92, play: (d) => soundEngine.playBigImpact(d) },
+
+  // Shot 2 - the easy shot (2-6)
+  { id: 'a247-throw-1', time: 3.02, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'a247-rim-1', time: 3.66, play: (d) => soundEngine.playRimClink(d) },
+  { id: 'a247-floor-1', time: 4.33, play: (d) => soundEngine.playPaperSlap(d) },
+  { id: 'a247-wah-1', time: 4.6, play: (d) => soundEngine.playSadTrombone(d) },
+
+  // Shot 3 - the doorway shot (6-10)
+  { id: 'a247-step-1', time: 6.1, play: (d) => soundEngine.playFootstep(false, d) },
+  { id: 'a247-step-2', time: 6.45, play: (d) => soundEngine.playFootstep(false, d) },
+  { id: 'a247-step-3', time: 6.8, play: (d) => soundEngine.playFootstep(false, d) },
+  { id: 'a247-step-4', time: 7.1, play: (d) => soundEngine.playFootstep(false, d) },
+  { id: 'a247-throw-2', time: 7.78, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'a247-fan', time: 8.42, play: (d) => soundEngine.playFanTink(d) },
+  { id: 'a247-plop-head', time: 8.93, play: (d) => soundEngine.playPaperSlap(d) },
+  { id: 'a247-boing-1', time: 8.96, play: (d) => soundEngine.playCartoonBoing(d) },
+  { id: 'a247-scratch-1', time: 9.64, play: (d) => soundEngine.playRecordScratch(d) },
+
+  // Shot 4 - the no-look shot (10-14)
+  { id: 'a247-crumple-1', time: 10.02, play: (d) => soundEngine.playPaperCrumple(d) },
+  { id: 'a247-throw-3', time: 10.95, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'a247-window', time: 11.32, play: (d) => soundEngine.playWindowKnock(d) },
+  { id: 'a247-floor-2', time: 12.06, play: (d) => soundEngine.playPaperSlap(d) },
+  { id: 'a247-scratch-2', time: 13.15, play: (d) => soundEngine.playRecordScratch(d) },
+
+  // Shot 5 - the plan (14-18)
+  { id: 'a247-idea', time: 14.0, play: (d) => soundEngine.playIdeaDing(d) },
+  { id: 'a247-sparkle-1', time: 14.06, play: (d) => soundEngine.playMagicSparkle(d) },
+  { id: 'a247-crumple-2', time: 15.2, play: (d) => soundEngine.playPaperCrumple(d) },
+  { id: 'a247-knuckles', time: 17.0, play: (d) => soundEngine.playKnuckleCrack(d) },
+
+  // Shot 6 - the impossible bank shot (18-22)
+  { id: 'a247-throw-4', time: 18.32, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'a247-wall', time: 19.0, play: (d) => soundEngine.playWallBounce(d) },
+  { id: 'a247-ceiling', time: 19.5, play: (d) => soundEngine.playPaperSlap(d) },
+  { id: 'a247-rim-2', time: 20.15, play: (d) => soundEngine.playRimClink(d) },
+  { id: 'a247-drum', time: 20.17, play: (d) => soundEngine.playDrumRoll(d, 1.55) },
+  { id: 'a247-beep-3', time: 20.3, play: (d) => soundEngine.playCountBeep(d, 1.0) },
+  { id: 'a247-beep-2', time: 20.77, play: (d) => soundEngine.playCountBeep(d, 1.12) },
+  { id: 'a247-beep-1', time: 21.24, play: (d) => soundEngine.playCountBeep(d, 1.26) },
+  { id: 'a247-breath', time: 21.62, play: (d) => soundEngine.playHeartbeat(d) },
+
+  // Shot 7 - the win, then the twist (22-27)
+  { id: 'a247-bin', time: 22.03, play: (d) => soundEngine.playBinThunk(d) },
+  { id: 'a247-freeze-2', time: 22.4, play: (d) => soundEngine.playFreezeSting(d) },
+  { id: 'a247-confetti', time: 23.12, play: (d) => soundEngine.playConfettiPop(d) },
+  { id: 'a247-fanfare', time: 23.15, play: (d) => soundEngine.playVictoryFanfareShort(d) },
+  { id: 'a247-crowd', time: 23.18, play: (d) => soundEngine.playCrowdCheer(d) },
+  { id: 'a247-scratch-3', time: 24.15, play: (d) => soundEngine.playRecordScratch(d) },
+  { id: 'a247-sting-2', time: 25.8, play: (d) => soundEngine.playAngrySting(d) },
+
+  // Shot 8 - end frame (27-30)
+  { id: 'a247-crumple-3', time: 27.02, play: (d) => soundEngine.playPaperCrumple(d) },
+  { id: 'a247-trombone', time: 27.45, play: (d) => soundEngine.playSadTrombone(d) },
+];
+
+/**
+ * Complete 30-second sound map for "The Impossible Needle Thread".
+ * Four 7.5s slices of the bouncy sewing-championship score (a quiet dip for
+ * the Shot 5 heartbeats and hard silence after the beanie pops off) plus
+ * one-shot SFX for every gag.
+ */
+export const NEEDLE_THREAD_CUES: AudioCue[] = [
+  // Score slices
+  { id: 'nt-score-1', time: 0.0, play: (d) => soundEngine.playNeedleThreadScoreSection(d, 0, 7.5) },
+  { id: 'nt-score-2', time: 7.5, play: (d) => soundEngine.playNeedleThreadScoreSection(d, 7.5, 15.0) },
+  { id: 'nt-score-3', time: 15.0, play: (d) => soundEngine.playNeedleThreadScoreSection(d, 15.0, 22.5) },
+  { id: 'nt-score-4', time: 22.5, play: (d) => soundEngine.playNeedleThreadScoreSection(d, 22.5, 30.0) },
+
+  // Shot 1 - the hook (0-3)
+  { id: 'nt-whoosh-1', time: 0.05, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'nt-ding', time: 0.55, play: (d) => soundEngine.playCoinTing(d) },
+  { id: 'nt-flick', time: 1.75, play: (d) => soundEngine.playSqueak(d) },
+  { id: 'nt-sting-1', time: 2.45, play: (d) => soundEngine.playFreezeSting(d) },
+
+  // Shot 2 - first failures (3-7)
+  { id: 'nt-boing-1', time: 3.9, play: (d) => soundEngine.playCartoonBoing(d) },
+  { id: 'nt-squeak-1', time: 5.05, play: (d) => soundEngine.playSqueak(d) },
+  { id: 'nt-boing-2', time: 5.7, play: (d) => soundEngine.playCartoonBoing(d) },
+  { id: 'nt-stomp', time: 6.55, play: (d) => soundEngine.playFloorThump(d) },
+
+  // Shot 3 - the magnifying glass (7-12)
+  { id: 'nt-bulb', time: 7.35, play: (d) => soundEngine.playIdeaDing(d) },
+  { id: 'nt-sparkle-1', time: 7.42, play: (d) => soundEngine.playMagicSparkle(d) },
+  { id: 'nt-whoosh-2', time: 8.3, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'nt-catch', time: 9.65, play: (d) => soundEngine.playArmCrossSqueak(d) },
+  { id: 'nt-squeak-2', time: 10.85, play: (d) => soundEngine.playSqueak(d) },
+  { id: 'nt-whistle', time: 11.15, play: (d) => soundEngine.playSlideWhistle(d) },
+
+  // Shot 4 - the ridiculous machine (12-18)
+  { id: 'nt-clack-1', time: 12.3, play: (d) => soundEngine.playWoodClack(d) },
+  { id: 'nt-clack-2', time: 12.65, play: (d) => soundEngine.playWoodClack(d) },
+  { id: 'nt-click-1', time: 13.0, play: (d) => soundEngine.playMechanicalClick(d) },
+  { id: 'nt-clack-3', time: 13.35, play: (d) => soundEngine.playWoodClack(d) },
+  { id: 'nt-click-2', time: 13.7, play: (d) => soundEngine.playMechanicalClick(d) },
+  { id: 'nt-clamp', time: 13.98, play: (d) => soundEngine.playMechanicalClick(d) },
+  { id: 'nt-proud', time: 14.5, play: (d) => soundEngine.playConfidenceDing(d) },
+  { id: 'nt-lever', time: 15.95, play: (d) => soundEngine.playMechanicalClick(d) },
+  { id: 'nt-clunk', time: 16.0, play: (d) => soundEngine.playWoodClack(d) },
+  { id: 'nt-spring', time: 16.33, play: (d) => soundEngine.playLauncherFire(d) },
+  { id: 'nt-whip', time: 16.6, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'nt-fabric', time: 17.02, play: (d) => soundEngine.playBalloonStretch(d) },
+  { id: 'nt-scratch-1', time: 17.35, play: (d) => soundEngine.playRecordScratch(d) },
+
+  // Shot 5 - one last try (18-24)
+  { id: 'nt-breath', time: 18.85, play: (d) => soundEngine.playDeepBreath(d) },
+  { id: 'nt-heart-1', time: 19.2, play: (d) => soundEngine.playHeartbeat(d) },
+  { id: 'nt-heart-2', time: 20.0, play: (d) => soundEngine.playHeartbeat(d) },
+  { id: 'nt-heart-3', time: 20.8, play: (d) => soundEngine.playHeartbeat(d) },
+  { id: 'nt-heart-4', time: 21.6, play: (d) => soundEngine.playHeartbeat(d) },
+  { id: 'nt-heart-5', time: 22.2, play: (d) => soundEngine.playHeartbeat(d) },
+  { id: 'nt-fakeout', time: 21.92, play: (d) => soundEngine.playSqueak(d) },
+  { id: 'nt-thread', time: 22.58, play: (d) => soundEngine.playNeedlePoke(d) },
+  { id: 'nt-sparkle-2', time: 22.95, play: (d) => soundEngine.playMagicSparkle(d) },
+  { id: 'nt-fanfare', time: 23.55, play: (d) => soundEngine.playVictoryFanfareShort(d) },
+
+  // Shot 6 - the final twist (24-30)
+  { id: 'nt-scratch-2', time: 24.15, play: (d) => soundEngine.playRecordScratch(d) },
+  { id: 'nt-tug', time: 25.2, play: (d) => soundEngine.playStrainedTug(d) },
+  { id: 'nt-stretch', time: 26.55, play: (d) => soundEngine.playBalloonStretch(d) },
+  { id: 'nt-pop', time: 27.28, play: (d) => soundEngine.playBigImpact(d) },
+  { id: 'nt-sting-2', time: 28.85, play: (d) => soundEngine.playAngrySting(d) },
+];
+
+export const MAGNET_TRICK_CUES: AudioCue[] = [
+  // Score-like slices (4 x 7.5s comedic underscore).
+  { id: 'mt-score-1', time: 0.0, play: (d) => soundEngine.playVictoryFanfareShort(d) },
+  { id: 'mt-score-2', time: 7.5, play: (d) => soundEngine.playMagicSparkle(d) },
+  { id: 'mt-score-3', time: 15.0, play: (d) => soundEngine.playWoodClack(d) },
+  { id: 'mt-score-4', time: 22.5, play: (d) => soundEngine.playCoinTing(d) },
+
+  // Shot 1 - the hook (0-4)
+  { id: 'mt-hum-1', time: 0.5, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'mt-tick', time: 1.6, play: (d) => soundEngine.playCoinTing(d) },
+  { id: 'mt-squeak-1', time: 2.7, play: (d) => soundEngine.playSqueak(d) },
+  { id: 'mt-sting-1', time: 3.5, play: (d) => soundEngine.playAngrySting(d) },
+
+  // Shot 2 - why the spoons (4-9)
+  { id: 'mt-wave', time: 4.6, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'mt-clang-1', time: 5.4, play: (d) => soundEngine.playWoodClack(d) },
+  { id: 'mt-clang-2', time: 5.8, play: (d) => soundEngine.playWoodClack(d) },
+  { id: 'mt-rattle', time: 6.2, play: (d) => soundEngine.playCartoonBoing(d) },
+  { id: 'mt-grunt', time: 8.4, play: (d) => soundEngine.playSqueak(d) },
+
+  // Shot 3 - the chair chase (9-14)
+  { id: 'mt-hum-2', time: 9.5, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'mt-scrape', time: 10.2, play: (d) => soundEngine.playFloorThump(d) },
+  { id: 'mt-steps', time: 10.6, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'mt-panic', time: 13.4, play: (d) => soundEngine.playRecordScratch(d) },
+
+  // Shot 4 - the metal swarm (14-20)
+  { id: 'mt-clatter-1', time: 14.8, play: (d) => soundEngine.playWoodClack(d) },
+  { id: 'mt-clatter-2', time: 15.4, play: (d) => soundEngine.playWoodClack(d) },
+  { id: 'mt-pan', time: 16.2, play: (d) => soundEngine.playBigImpact(d) },
+  { id: 'mt-wobble', time: 17.6, play: (d) => soundEngine.playBalloonStretch(d) },
+  { id: 'mt-moan', time: 19.2, play: (d) => soundEngine.playSqueak(d) },
+
+  // Shot 5 - small magnet, small target (20-26)
+  { id: 'mt-crawl', time: 20.4, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'mt-idea', time: 21.5, play: (d) => soundEngine.playIdeaDing(d) },
+  { id: 'mt-ping', time: 22.6, play: (d) => soundEngine.playCoinTing(d) },
+  { id: 'mt-tap', time: 23.8, play: (d) => soundEngine.playCoinTing(d) },
+  { id: 'mt-drop', time: 24.6, play: (d) => soundEngine.playCoinTing(d) },
+  { id: 'mt-fanfare', time: 25.1, play: (d) => soundEngine.playVictoryFanfareShort(d) },
+
+  // Shot 6 - mission complete bonk (26-30)
+  { id: 'mt-fanfare-2', time: 26.2, play: (d) => soundEngine.playVictoryFanfareShort(d) },
+  { id: 'mt-spoon', time: 27.7, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'mt-spoon-ping', time: 27.9, play: (d) => soundEngine.playCoinTing(d) },
+  { id: 'mt-drag', time: 28.3, play: (d) => soundEngine.playBalloonStretch(d) },
+  { id: 'mt-sting', time: 29.8, play: (d) => soundEngine.playAngrySting(d) },
+];
+
+export const RING_SHOT_CUES: AudioCue[] = [
+  // Score slices (4 x 7.5s sports underscore).
+  { id: 'rs-score-1', time: 0.0, play: (d) => soundEngine.playRingShotScoreSection(d, 0, 7.5) },
+  { id: 'rs-score-2', time: 7.5, play: (d) => soundEngine.playRingShotScoreSection(d, 7.5, 15.0) },
+  { id: 'rs-score-3', time: 15.0, play: (d) => soundEngine.playRingShotScoreSection(d, 15.0, 22.5) },
+  { id: 'rs-score-4', time: 22.5, play: (d) => soundEngine.playRingShotScoreSection(d, 22.5, 30.0) },
+
+  // Shot 1 - the hook (0-4)
+  { id: 'rs-hum-1', time: 0.4, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'rs-smirk', time: 1.5, play: (d) => soundEngine.playCoinTing(d) },
+  { id: 'rs-point', time: 2.5, play: (d) => soundEngine.playCoinTing(d) },
+  { id: 'rs-sting-1', time: 3.4, play: (d) => soundEngine.playAngrySting(d) },
+
+  // Shot 2 - attempt #1 (4-8)
+  { id: 'rs-windup', time: 4.3, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'rs-throw-1', time: 4.75, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'rs-wall', time: 5.15, play: (d) => soundEngine.playBigImpact(d) },
+  { id: 'rs-bonk-1', time: 5.62, play: (d) => soundEngine.playBigImpact(d) },
+  { id: 'rs-boing-1', time: 5.82, play: (d) => soundEngine.playCartoonBoing(d) },
+  { id: 'rs-land-1', time: 6.2, play: (d) => soundEngine.playFloorThump(d) },
+  { id: 'rs-sting-2', time: 6.6, play: (d) => soundEngine.playAngrySting(d) },
+
+  // Shot 3 - attempt #27 (8-13)
+  { id: 'rs-throw-2', time: 8.22, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'rs-hoop-1', time: 8.42, play: (d) => soundEngine.playCoinTing(d) },
+  { id: 'rs-hoop-2', time: 8.82, play: (d) => soundEngine.playCoinTing(d) },
+  { id: 'rs-throw-3', time: 9.55, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'rs-rim', time: 9.78, play: (d) => soundEngine.playWoodClack(d) },
+  { id: 'rs-knock', time: 10.26, play: (d) => soundEngine.playCartoonBoing(d) },
+  { id: 'rs-throw-4', time: 10.95, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'rs-squeak', time: 11.5, play: (d) => soundEngine.playSqueak(d) },
+  { id: 'rs-stomp', time: 12.25, play: (d) => soundEngine.playBigImpact(d) },
+  { id: 'rs-sting-3', time: 12.6, play: (d) => soundEngine.playAngrySting(d) },
+
+  // Shot 4 - one last try (13-20)
+  { id: 'rs-inhale', time: 13.4, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'rs-release', time: 14.5, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'rs-through-1', time: 15.32, play: (d) => soundEngine.playCoinTing(d) },
+  { id: 'rs-through-2', time: 16.13, play: (d) => soundEngine.playCoinTing(d) },
+  { id: 'rs-through-3', time: 16.95, play: (d) => soundEngine.playCoinTing(d) },
+  { id: 'rs-through-4', time: 17.77, play: (d) => soundEngine.playCoinTing(d) },
+  { id: 'rs-through-5', time: 18.58, play: (d) => soundEngine.playCoinTing(d) },
+  { id: 'rs-plop', time: 19.4, play: (d) => soundEngine.playCoinTing(d) },
+
+  // Shot 5 - he actually did it (20-26)
+  { id: 'rs-wobble', time: 20.2, play: (d) => soundEngine.playCartoonBoing(d) },
+  { id: 'rs-sparkle', time: 21.0, play: (d) => soundEngine.playMagicSparkle(d) },
+  { id: 'rs-fanfare', time: 21.4, play: (d) => soundEngine.playVictoryFanfareShort(d) },
+  { id: 'rs-hop-1', time: 23.1, play: (d) => soundEngine.playFloorThump(d) },
+  { id: 'rs-hop-2', time: 24.5, play: (d) => soundEngine.playFloorThump(d) },
+
+  // Shot 6 - never celebrate too early (26-30)
+  { id: 'rs-clatter', time: 26.5, play: (d) => soundEngine.playWoodClack(d) },
+  { id: 'rs-bonk-2', time: 27.1, play: (d) => soundEngine.playBigImpact(d) },
+  { id: 'rs-launch', time: 27.35, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'rs-scratch', time: 27.9, play: (d) => soundEngine.playRecordScratch(d) },
+  { id: 'rs-sting-4', time: 29.0, play: (d) => soundEngine.playAngrySting(d) },
+];
+
+export const PENCIL_LANDING_CUES: AudioCue[] = [
+  // Score slices (4 x 7.5s Modern Pop underscore).
+  { id: 'pl-score-1', time: 0.0, play: (d) => soundEngine.playPencilLandingScoreSection(d, 0, 7.5) },
+  { id: 'pl-score-2', time: 7.5, play: (d) => soundEngine.playPencilLandingScoreSection(d, 7.5, 15.0) },
+  { id: 'pl-score-3', time: 15.0, play: (d) => soundEngine.playPencilLandingScoreSection(d, 15.0, 22.5) },
+  { id: 'pl-score-4', time: 22.5, play: (d) => soundEngine.playPencilLandingScoreSection(d, 22.5, 30.0) },
+
+  // Shot 1 - the flip (0-5)
+  { id: 'pl-wind', time: 2.7, play: (d) => soundEngine.playSqueak(d) },
+  { id: 'pl-flip', time: 4.0, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'pl-land-flat', time: 4.85, play: (d) => soundEngine.playWoodClack(d) },
+  { id: 'pl-sting-1', time: 4.95, play: (d) => soundEngine.playAngrySting(d) },
+
+  // Shot 2 - why won't it stand up (5-10)
+  { id: 'pl-throw-1', time: 5.25, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'pl-roll', time: 5.55, play: (d) => soundEngine.playWoodClack(d) },
+  { id: 'pl-edge', time: 5.95, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'pl-floor', time: 6.05, play: (d) => soundEngine.playFloorThump(d) },
+  { id: 'pl-bonk-1', time: 6.45, play: (d) => soundEngine.playBigImpact(d) },
+  { id: 'pl-boing-1', time: 6.55, play: (d) => soundEngine.playCartoonBoing(d) },
+  { id: 'pl-under-book', time: 7.15, play: (d) => soundEngine.playWoodClack(d) },
+  { id: 'pl-stomp', time: 8.5, play: (d) => soundEngine.playBigImpact(d) },
+  { id: 'pl-sting-2', time: 9.0, play: (d) => soundEngine.playAngrySting(d) },
+
+  // Shot 3 - practice makes perfect (10-15)
+  { id: 'pl-pull-out', time: 10.0, play: (d) => soundEngine.playCoinTing(d) },
+  { id: 'pl-flick-1', time: 11.4, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'pl-flat-1', time: 12.1, play: (d) => soundEngine.playWoodClack(d) },
+  { id: 'pl-flick-2', time: 12.6, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'pl-flat-2', time: 13.4, play: (d) => soundEngine.playWoodClack(d) },
+  { id: 'pl-launch-1', time: 13.9, play: (d) => soundEngine.playWhoosh(d) },
+
+  // Shot 4 - I actually did it (15-22)
+  { id: 'pl-slowmo', time: 15.4, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'pl-plop', time: 19.8, play: (d) => soundEngine.playCoinTing(d) },
+  { id: 'pl-wobble', time: 20.0, play: (d) => soundEngine.playCartoonBoing(d) },
+  { id: 'pl-fanfare', time: 21.2, play: (d) => soundEngine.playVictoryFanfareShort(d) },
+
+  // Shot 5 - wait… that's not the desk (22-30)
+  { id: 'pl-hop-1', time: 23.0, play: (d) => soundEngine.playFloorThump(d) },
+  { id: 'pl-hop-2', time: 24.4, play: (d) => soundEngine.playFloorThump(d) },
+  { id: 'pl-shake', time: 26.0, play: (d) => soundEngine.playWoodClack(d) },
+  { id: 'pl-launch-2', time: 26.4, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'pl-spin-2', time: 26.7, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'pl-balance', time: 27.8, play: (d) => soundEngine.playCoinTing(d) },
+  { id: 'pl-wobble-2', time: 27.9, play: (d) => soundEngine.playCartoonBoing(d) },
+  { id: 'pl-scratch', time: 28.35, play: (d) => soundEngine.playRecordScratch(d) },
+  { id: 'pl-sting-3', time: 29.1, play: (d) => soundEngine.playAngrySting(d) },
+];
+
+/**
+ * Complete 30-second sound map for "The Impossible Domino Trickshot".
+ * Four 7.5s slices of the bouncy score plus one-shot SFX for every gag.
+ */
+export const DOMINO_TRICKSHOT_CUES: AudioCue[] = [
+  // Score slices
+  { id: 'dt-score-1', time: 0.0, play: (d) => soundEngine.playDominoTrickshotScoreSection(d, 0, 7.5) },
+  { id: 'dt-score-2', time: 7.5, play: (d) => soundEngine.playDominoTrickshotScoreSection(d, 7.5, 15.0) },
+  { id: 'dt-score-3', time: 15.0, play: (d) => soundEngine.playDominoTrickshotScoreSection(d, 15.0, 22.5) },
+  { id: 'dt-score-4', time: 22.5, play: (d) => soundEngine.playDominoTrickshotScoreSection(d, 22.5, 30.0) },
+
+  // Shot 1 - The Challenge (0-4s)
+  { id: 'dt-boom', time: 0.05, play: (d) => soundEngine.playDramaticBoom(d) },
+  { id: 'dt-countdown', time: 0.5, play: (d) => soundEngine.playTickingCountdown(d, 3.0) },
+  { id: 'dt-confident-chime', time: 2.0, play: (d) => soundEngine.playConfidenceDing(d) },
+
+  // Shot 2 - First Failure (4-8s)
+  { id: 'dt-flick-1', time: 4.5, play: (d) => soundEngine.playSoftFlick(d) },
+  { id: 'dt-roll', time: 4.5, play: (d) => soundEngine.playBallRoll(d, 1.5) },
+  { id: 'dt-plop-1', time: 6.1, play: (d) => soundEngine.playTinyPlop(d) },
+  { id: 'dt-trombone-1', time: 6.5, play: (d) => soundEngine.playSadTrombone(d) },
+
+  // Shot 3 - Total Disaster (8-14s)
+  { id: 'dt-hard-flick', time: 8.7, play: (d) => soundEngine.playHardFlick(d) },
+  { id: 'dt-domino-chaos', time: 9.0, play: (d) => soundEngine.playDominoClatter(d, 3.0) },
+  { id: 'dt-crash-1', time: 12.5, play: (d) => soundEngine.playCartoonCrash(d) },
+  { id: 'dt-stomp', time: 13.5, play: (d) => soundEngine.playFloorThump(d) },
+
+  // Shot 4 - The Perfect Chain (14-20s)
+  { id: 'dt-breath', time: 14.2, play: (d) => soundEngine.playDeepBreath(d) },
+  { id: 'dt-precise-tap', time: 15.3, play: (d) => soundEngine.playPreciseTap(d) },
+  { id: 'dt-domino-click-1', time: 15.5, play: (d) => soundEngine.playDominoClick(d) },
+  { id: 'dt-domino-click-2', time: 15.65, play: (d) => soundEngine.playDominoClick(d) },
+  { id: 'dt-domino-click-3', time: 15.8, play: (d) => soundEngine.playDominoClick(d) },
+  { id: 'dt-domino-click-4', time: 15.95, play: (d) => soundEngine.playDominoClick(d) },
+  { id: 'dt-domino-click-5', time: 16.1, play: (d) => soundEngine.playDominoClick(d) },
+  { id: 'dt-domino-click-6', time: 16.25, play: (d) => soundEngine.playDominoClick(d) },
+  { id: 'dt-domino-click-7', time: 16.4, play: (d) => soundEngine.playDominoClick(d) },
+  { id: 'dt-domino-click-8', time: 16.55, play: (d) => soundEngine.playDominoClick(d) },
+  { id: 'dt-domino-click-9', time: 16.7, play: (d) => soundEngine.playDominoClick(d) },
+  { id: 'dt-domino-click-10', time: 16.85, play: (d) => soundEngine.playDominoClick(d) },
+  { id: 'dt-domino-click-11', time: 17.0, play: (d) => soundEngine.playDominoClick(d) },
+  { id: 'dt-domino-click-12', time: 17.15, play: (d) => soundEngine.playDominoClick(d) },
+  { id: 'dt-domino-click-13', time: 17.3, play: (d) => soundEngine.playDominoClick(d) },
+  { id: 'dt-domino-click-14', time: 17.45, play: (d) => soundEngine.playDominoClick(d) },
+  { id: 'dt-domino-click-15', time: 17.6, play: (d) => soundEngine.playDominoClick(d) },
+  { id: 'dt-domino-click-16', time: 17.75, play: (d) => soundEngine.playDominoClick(d) },
+  { id: 'dt-domino-click-17', time: 17.9, play: (d) => soundEngine.playDominoClick(d) },
+  { id: 'dt-domino-click-18', time: 18.05, play: (d) => soundEngine.playDominoClick(d) },
+  { id: 'dt-domino-click-19', time: 18.2, play: (d) => soundEngine.playDominoClick(d) },
+  { id: 'dt-domino-click-20', time: 18.35, play: (d) => soundEngine.playDominoClick(d) },
+  { id: 'dt-rising-music', time: 15.5, play: (d) => soundEngine.playRisingMusicSwelling(d) },
+  { id: 'dt-red-ball-roll', time: 19.0, play: (d) => soundEngine.playBallRoll(d, 1.0) },
+
+  // Shot 5 - Impossible Success (20-25s)
+  { id: 'dt-cup-ping', time: 20.7, play: (d) => soundEngine.playCupPing(d) },
+  { id: 'dt-fanfare', time: 21.0, play: (d) => soundEngine.playVictoryFanfare(d) },
+  { id: 'dt-cheer', time: 21.5, play: (d) => soundEngine.playCrowdCheer(d) },
+  { id: 'dt-hop-1', time: 22.5, play: (d) => soundEngine.playFloorThump(d) },
+  { id: 'dt-hop-2', time: 23.5, play: (d) => soundEngine.playFloorThump(d) },
+  { id: 'dt-cup-wobble', time: 24.5, play: (d) => soundEngine.playCupWobbleCreak(d) },
+
+  // Shot 6 - The Twist (25-30s)
+  { id: 'dt-final-wobble', time: 25.2, play: (d) => soundEngine.playCupWobbleCreak(d) },
+  { id: 'dt-hollow-bonk', time: 25.7, play: (d) => soundEngine.playHollowBonk(d) },
+  { id: 'dt-record-scratch', time: 26.0, play: (d) => soundEngine.playRecordScratch(d) },
+  { id: 'dt-angry-sting', time: 29.0, play: (d) => soundEngine.playAngrySting(d) },
+];

@@ -32,6 +32,7 @@ export type ProjectId =
   | 'coin-flip'
   | 'pencil-landing'
   | 'domino-trickshot'
+  | 'balloon-pop-jackpot'
   | 'dart-shot'
   | 'ping-pong-revenge'
   | 'trick-shot-champion'
@@ -3312,6 +3313,112 @@ export const ARCADE_CLAW_SCENES: SceneDef[] = [
   },
 ];
 
+export const BALLOON_POP_PROMPT = `THE BALLOON POP JACKPOT — 30-SECOND AI VIDEO PROMPT
+
+Create a funny 30-second 2D stickman animation for YouTube Shorts, vertical 9:16, 1080×1920, 24fps.
+
+VISUAL STYLE:
+Modern Pop flat 2D vector cartoon. Thick consistent black outlines, simple geometric shapes, smooth readable movements, exaggerated facial expressions, bright solid colors. Warm cream carnival tent, a wooden dart booth with a navy target board, ten colorful balloons in two neat rows, one giant golden balloon in the middle, a golden trophy display above the booth, LED bulbs, rainbow decorations and prize shelves. No gradients, no textures, no watermark, no logo.
+
+CHARACTER (LOCKED):
+Round white head, two small black oval eyes, thick black eyebrows, simple black mouth, yellow short-sleeved shirt, blue trousers, black shoes, red beanie with a red pompom, thin black limbs and black mitten hands.
+
+SHOT 1 (0-6s) — THE CHALLENGE:
+He stands at the counter, points up at the golden trophy over the booth, pounds one fist into the other palm and gives the camera a cocky nod. Caption: "POP 10 BALLOONS TO WIN!"
+
+SHOT 2 (6-12s) — THREE TERRIBLE DARTS:
+Three visibly travelling darts miss: one sticks in the booth frame, one thunks into the floor, and the third grazes a blue balloon so it only shakes and wobbles — it must NOT pop. He stares at the untouched board, then clenches his fists. Caption: "WHY CAN'T HE HIT ONE?!"
+
+SHOT 3 (12-18s) — THREE QUICK POPS:
+Three fast darts pop three balloons with confetti bursts. A hidden compartment in the counter bursts open and a stream of balloons sweeps the remaining row away; the lead balloon knocks his beanie off, he catches it and puts it back on, now angrier. Caption: "HE'S FINALLY ON FIRE!"
+
+SHOT 4 (18-24s) — JACKPOT:
+Only the giant golden balloon is left. Long suspense, a slow aim, a perfect hit: golden confetti, rainbow lights and a burst of sparkles. He jumps with both fists raised. Caption: "JACKPOT! ONE LAST BALLOON!"
+
+SHOT 5 (24-30s) — THE PRIZE IS A BALLOON:
+The trophy display case swings open and reveals a gigantic golden balloon that visibly rises and inflates until it bursts over him. He emerges from the gold foil with a tiny golden balloon tied to his beanie and gives the camera a furious deadpan stare. Caption: "WAIT... THE PRIZE IS A BALLOON?!"
+
+SOUND:
+Bouncy carnival comedy score plus procedural SFX only. Dart whooshes and wooden thunks, balloon pops, a bass-drum roll before the golden hit, a victory fanfare, a record scratch and an angry sting. No dialogue, no narration, no voice-over.`;
+
+export const BALLOON_POP_SCENES: SceneDef[] = [
+  {
+    id: 1,
+    name: "Shot 1",
+    title: "The Challenge",
+    timeRange: [0.0, 6.0],
+    videoPrompt:
+      "The angry stickman (round white head, red beanie, yellow shirt, blue trousers, black shoes) stands at the counter of a carnival dart booth. Behind him: a navy target board with ten colorful balloons in two neat rows (red, blue, yellow, green, purple, pink), one giant golden balloon in the center, a golden trophy display above, LED bulbs, rainbow decorations and prize shelves. He points up at the golden trophy, then pounds a fist into his palm with a cocky grin.",
+    animationDesc:
+      "0.0-1.15s he smirks at the camera with a cocky nod, 1.15-2.35s he points up at the trophy case above the booth, 2.35-3.5s he holds the point and grins, 3.5-4.55s he pounds one fist into the other palm, 4.55-6.0s he leans forward with a determined stare, ready to throw.",
+    soundDesc: "Carnival calliope score, booth light shimmer at 0.6s, confident chime at 2.0s, fist clap at 4.4s.",
+    captionText: "POP 10 BALLOONS TO WIN!",
+    punchline: "Ten balloons stand between him and the golden trophy.",
+    characterAction: "Points at the trophy, nods cockily, clenches his fists.",
+    propAction: "Ten colorful balloons, one giant golden balloon, trophy case glowing above the booth.",
+  },
+  {
+    id: 2,
+    name: "Shot 2",
+    title: "Three Terrible Darts",
+    timeRange: [6.0, 12.0],
+    videoPrompt:
+      "Same carnival booth and character. He throws three darts in a row. The first dart sticks in the wooden booth frame above the board, the second thunks into the sawdust floor, and the third just grazes a blue balloon — the balloon shakes and wobbles but does not pop. He freezes, blinks, then clenches his fists in frustration.",
+    animationDesc:
+      "6.5s first dart launches and thunks into the frame at 6.95s. 8.3s second dart launches and sticks in the floor at 8.78s. 9.7s third dart launches, grazes the blue balloon at 10.02s and falls to the floor by 10.75s; the blue balloon wobbles but stays intact. 10.85-12.0s he stares at the board and clenches his fists.",
+    soundDesc: "Dart whooshes at 6.5s / 8.3s / 9.7s, wooden thunk at 6.95s, floor thunk at 8.78s, balloon wobble squeak at 10.1s, frustrated sting at 11.0s.",
+    captionText: "WHY CAN'T HE HIT ONE?!",
+    punchline: "Three darts, zero pops.",
+    characterAction: "Throws three darts, misses each time, freezes, then clenches his fists.",
+    propAction: "Dart 1 sticks in the frame, dart 2 in the floor, dart 3 grazes the blue balloon without popping it.",
+  },
+  {
+    id: 3,
+    name: "Shot 3",
+    title: "Three Quick Pops",
+    timeRange: [12.0, 18.0],
+    videoPrompt:
+      "Three rapid darts pop three balloons in puffs of confetti. The counter hatch bursts open and a stream of colorful balloons sweeps across the board, clearing the remaining row. The lead balloon bounces off his head and knocks the red beanie into the air; he catches it and puts it back on, angrier than before.",
+    animationDesc:
+      "12.6s red balloon pops, 13.4s purple balloon pops, 14.2s yellow balloon pops, each with confetti. 14.9s the hidden counter hatch flips open, 15.0-16.3s a stream of balloons jets up and sweeps the remaining seven balloons away while the lead balloon bonks his beanie off; 16.35-17.0s he catches it, 17.0-17.45s he puts it back on, 17.45-18.0s he scowls at the board.",
+    soundDesc: "Dart whooshes at 12.35s / 13.15s / 13.95s, three balloon pops at 12.6s / 13.4s / 14.2s, hatch clunk at 14.9s, balloon rush 15.0-16.3s, comedic boing at 15.45s, beanie rustle at 17.0s, angry sting at 17.5s.",
+    captionText: "HE'S FINALLY ON FIRE!",
+    punchline: "Three perfect pops — then the booth fights back.",
+    characterAction: "Pops three balloons, gets his beanie knocked off, catches it and puts it back on, scowling.",
+    propAction: "Hidden counter compartment releases a balloon stream that sweeps the board and knocks the beanie loose.",
+  },
+  {
+    id: 4,
+    name: "Shot 4",
+    title: "Jackpot",
+    timeRange: [18.0, 24.0],
+    videoPrompt:
+      "Only the giant golden balloon remains in the middle of the board. The camera pushes in. He takes a long breath, aims carefully with a slow lean, and throws one perfect dart. The golden balloon bursts into gold confetti, rainbow lights sweep the booth and sparkles fill the frame. He jumps with both fists raised in triumph.",
+    animationDesc:
+      "18.0-20.25s suspense as he stares at the golden balloon, 20.25-21.35s a slow, deliberate aim, 21.3s the dart launches and hits at 21.6s: golden confetti burst, rainbow light sweep, sparkles. 22.25-24.0s he jumps with both fists raised in a victory dance.",
+    soundDesc: "Drum roll 18.2-21.2s, dart whoosh at 21.3s, golden pop at 21.6s, victory fanfare 21.7-23.6s, happy hops at 22.25s / 23.05s.",
+    captionText: "JACKPOT! ONE LAST BALLOON!",
+    punchline: "One balloon left, one perfect shot.",
+    characterAction: "Aims slowly, throws the perfect dart, then jumps with both fists raised.",
+    propAction: "Golden balloon bursts into gold confetti; rainbow lights sweep the booth.",
+  },
+  {
+    id: 5,
+    name: "Shot 5",
+    title: "The Prize Is A Balloon",
+    timeRange: [24.0, 30.0],
+    videoPrompt:
+      "The golden trophy display case swings open above the booth revealing a gigantic golden balloon that visibly rises and inflates. It bursts over him in a storm of gold foil and streamers. He emerges with a tiny golden balloon tied to his beanie and gives the camera a furious deadpan stare.",
+    animationDesc:
+      "24.0-24.5s the trophy case doors swing open, 24.5-25.3s a huge golden balloon begins to rise and inflate from the case, 25.3-27.3s it grows past the frame while he braces and squeezes his eyes shut, 27.4s it bursts in gold confetti and streamers, 27.4-28.2s he is buried under falling gold foil, 28.2-28.55s he pops out with a tiny golden balloon on his beanie, 28.55-30.0s the camera pushes into a furious stare with a twitching eyebrow.",
+    soundDesc: "Case mechanism at 24.4s, balloon inflate 25.3-27.3s, giant burst at 27.4s, foil rain 27.4-28.3s, tiny squeak at 28.35s, record scratch at 28.2s, angry sting at 29.0s.",
+    captionText: "WAIT... THE PRIZE IS A BALLOON?!",
+    punchline: "He won the whole jackpot: one tiny balloon.",
+    characterAction: "Braces for the burst, is buried in gold foil, emerges with a tiny balloon on his beanie, stares furiously.",
+    propAction: "Trophy case opens, giant golden balloon inflates and bursts, tiny golden balloon tied to the beanie.",
+  },
+];
+
 export const PROJECTS: Record<ProjectId, ProjectDef> = {
   'mind-traps': {
     id: 'mind-traps',
@@ -3456,6 +3563,17 @@ export const PROJECTS: Record<ProjectId, ProjectDef> = {
     masterPrompt: DOMINO_TRICKSHOT_PROMPT,
     scenes: DOMINO_TRICKSHOT_SCENES,
   },
+  'balloon-pop-jackpot': {
+    id: 'balloon-pop-jackpot',
+    title: 'Angry Stickman: The Balloon Pop Jackpot',
+    subtitle: 'The 30-Second Carnival Booth Comedy',
+    tagline: 'Vertical 9:16 Stickman Short · Modern Pop Color · Sound Effects Only',
+    duration: 30,
+    hasAudioDialogue: false,
+    hasCaptions: true,
+    masterPrompt: BALLOON_POP_PROMPT,
+    scenes: BALLOON_POP_SCENES,
+  },
   'coin-flip': {
     id: 'coin-flip',
     title: 'Angry Stickman vs. The Impossible Coin Flip',
@@ -3598,7 +3716,7 @@ export interface StudioConfig {
 }
 
 export const DEFAULT_CONFIG: StudioConfig = {
-  activeProject: 'domino-trickshot', // The latest short is the default film
+  activeProject: 'balloon-pop-jackpot', // The latest short is the default film
   canvasTheme: 'black-on-white', // Style 1A: Black on White (toggleable to Style 1B: White on Black)
   vividAccent: '#ef4444', // Vivid Red as seen in reference image for emotions, risks & cages
   accentColor: '#000000', // Minimalist Monochrome

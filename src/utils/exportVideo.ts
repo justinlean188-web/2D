@@ -20,6 +20,7 @@ import { MagnetTrickRenderer } from '../animation/magnetTrickRenderer';
 import { RingShotRenderer } from '../animation/ringShotRenderer';
 import { PencilLandingRenderer } from '../animation/pencilLandingRenderer';
 import { DominoTrickshotRenderer } from '../animation/dominoTrickshotRenderer';
+import { BalloonPopJackpotRenderer } from '../animation/balloonPopJackpotRenderer';
 import { MindTrapsRenderer } from '../animation/mindTrapsRenderer';
 import { SequelPaperBallRenderer } from '../animation/sequelPaperBallRenderer';
 import {
@@ -42,6 +43,7 @@ import {
   RING_SHOT_CUES,
   PENCIL_LANDING_CUES,
   DOMINO_TRICKSHOT_CUES,
+  BALLOON_POP_JACKPOT_CUES,
   PAPER_BALL_PART3_CUES,
   PAPER_BALL_PART4_CUES,
   PAPER_BALL_SEQUEL_CUES,
@@ -188,6 +190,8 @@ export async function exportVideo(options: ExportOptions): Promise<ExportResult>
       ? new PencilLandingRenderer()
       : config.activeProject === 'domino-trickshot'
       ? new DominoTrickshotRenderer()
+      : config.activeProject === 'balloon-pop-jackpot'
+      ? new BalloonPopJackpotRenderer()
       : config.activeProject === 'coin-flip'
       ? new CoinFlipRenderer()
       : config.activeProject === 'dart-shot'
@@ -245,6 +249,8 @@ export async function exportVideo(options: ExportOptions): Promise<ExportResult>
       ? 'pencil-landing'
       : config.activeProject === 'domino-trickshot'
       ? 'domino-trickshot'
+      : config.activeProject === 'balloon-pop-jackpot'
+      ? 'balloon-pop-jackpot'
       : config.activeProject === 'coin-flip'
       ? 'coin-flip'
       : config.activeProject === 'dart-shot'
@@ -817,6 +823,17 @@ export async function exportVideo(options: ExportOptions): Promise<ExportResult>
             // The four dt-score-* cues each schedule one 7.5s slice of the
             // bouncy score; every other cue is a one-shot on its beat.
             for (const cue of DOMINO_TRICKSHOT_CUES) {
+              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
+                cue.play(dest);
+                triggeredCues.add(cue.id);
+              }
+            }
+          }
+        } else if (config.activeProject === 'balloon-pop-jackpot') {
+          if (config.enableSFX) {
+            // The four bp-score-* cues each schedule one 7.5s slice of the
+            // carnival score; every other cue is a one-shot on its beat.
+            for (const cue of BALLOON_POP_JACKPOT_CUES) {
               if (animT >= cue.time && !triggeredCues.has(cue.id)) {
                 cue.play(dest);
                 triggeredCues.add(cue.id);

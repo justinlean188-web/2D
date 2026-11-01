@@ -1191,3 +1191,67 @@ export const DOMINO_TRICKSHOT_CUES: AudioCue[] = [
   { id: 'dt-record-scratch', time: 26.0, play: (d) => soundEngine.playRecordScratch(d) },
   { id: 'dt-angry-sting', time: 29.0, play: (d) => soundEngine.playAngrySting(d) },
 ];
+
+/**
+ * Complete 30-second sound map for "The Balloon Pop Jackpot".
+ * Four 7.5s slices of the carnival score plus one-shot SFX for every gag.
+ */
+export const BALLOON_POP_JACKPOT_CUES: AudioCue[] = [
+  // Score slices
+  { id: 'bp-score-1', time: 0.0, play: (d) => soundEngine.playBalloonPopScoreSection(d, 0, 7.5) },
+  { id: 'bp-score-2', time: 7.5, play: (d) => soundEngine.playBalloonPopScoreSection(d, 7.5, 15.0) },
+  { id: 'bp-score-3', time: 15.0, play: (d) => soundEngine.playBalloonPopScoreSection(d, 15.0, 22.5) },
+  { id: 'bp-score-4', time: 22.5, play: (d) => soundEngine.playBalloonPopScoreSection(d, 22.5, 30.0) },
+
+  // Shot 1 - The Challenge (0-6s)
+  { id: 'bp-booth-lights', time: 0.6, play: (d) => soundEngine.playBoothLights(d) },
+  { id: 'bp-confident-ding', time: 2.0, play: (d) => soundEngine.playConfidenceDing(d) },
+  { id: 'bp-fist-clap', time: 4.4, play: (d) => soundEngine.playKnuckleCrack(d) },
+
+  // Shot 2 - Three Terrible Darts (6-12s)
+  { id: 'bp-miss-1-whoosh', time: 6.5, play: (d) => soundEngine.playDartWhoosh(d) },
+  { id: 'bp-miss-1-thunk', time: 6.95, play: (d) => soundEngine.playDartThunkWood(d) },
+  { id: 'bp-miss-2-whoosh', time: 8.3, play: (d) => soundEngine.playDartWhoosh(d) },
+  { id: 'bp-miss-2-floor', time: 8.78, play: (d) => soundEngine.playFloorThump(d) },
+  { id: 'bp-miss-3-whoosh', time: 9.7, play: (d) => soundEngine.playDartWhoosh(d) },
+  { id: 'bp-graze-wobble', time: 10.1, play: (d) => soundEngine.playBalloonSqueak(1.18, d) },
+  { id: 'bp-miss-sting', time: 11.0, play: (d) => soundEngine.playAngrySting(d) },
+
+  // Shot 3 - Three Quick Pops (12-18s)
+  { id: 'bp-pop-1-whoosh', time: 12.35, play: (d) => soundEngine.playDartWhoosh(d) },
+  { id: 'bp-pop-1', time: 12.6, play: (d) => soundEngine.playBalloonPop(d) },
+  { id: 'bp-pop-1-confetti', time: 12.64, play: (d) => soundEngine.playConfettiPop(d) },
+  { id: 'bp-pop-2-whoosh', time: 13.15, play: (d) => soundEngine.playDartWhoosh(d) },
+  { id: 'bp-pop-2', time: 13.4, play: (d) => soundEngine.playBalloonPop(d) },
+  { id: 'bp-pop-2-confetti', time: 13.44, play: (d) => soundEngine.playConfettiPop(d) },
+  { id: 'bp-pop-3-whoosh', time: 13.95, play: (d) => soundEngine.playDartWhoosh(d) },
+  { id: 'bp-pop-3', time: 14.2, play: (d) => soundEngine.playBalloonPop(d) },
+  { id: 'bp-pop-3-confetti', time: 14.24, play: (d) => soundEngine.playConfettiPop(d) },
+  { id: 'bp-hatch-open', time: 14.9, play: (d) => soundEngine.playMechanicalClick(d) },
+  { id: 'bp-balloon-rush', time: 15.0, play: (d) => soundEngine.playBalloonStretch(d) },
+  { id: 'bp-balloon-rush-whoosh', time: 15.05, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'bp-beanie-boing', time: 15.45, play: (d) => soundEngine.playCartoonBoing(d) },
+  { id: 'bp-beanie-rustle', time: 17.0, play: (d) => soundEngine.playPaperCrumple(d) },
+  { id: 'bp-angry-sting', time: 17.5, play: (d) => soundEngine.playAngrySting(d) },
+
+  // Shot 4 - Jackpot (18-24s)
+  { id: 'bp-drum-roll', time: 18.2, play: (d) => soundEngine.playDrumRoll(d, 3.0) },
+  { id: 'bp-jackpot-whoosh', time: 21.3, play: (d) => soundEngine.playDartWhoosh(d) },
+  { id: 'bp-golden-pop', time: 21.6, play: (d) => soundEngine.playGoldenPop(d) },
+  { id: 'bp-golden-confetti', time: 21.64, play: (d) => soundEngine.playConfettiPop(d) },
+  { id: 'bp-golden-sparkle', time: 21.9, play: (d) => soundEngine.playPrizeSparkle(d) },
+  { id: 'bp-victory-fanfare', time: 21.7, play: (d) => soundEngine.playVictoryFanfare(d) },
+  { id: 'bp-hop-1', time: 22.25, play: (d) => soundEngine.playFloorThump(d) },
+  { id: 'bp-hop-2', time: 23.05, play: (d) => soundEngine.playFloorThump(d) },
+  { id: 'bp-hop-3', time: 23.75, play: (d) => soundEngine.playFloorThump(d) },
+
+  // Shot 5 - The Prize Is A Balloon (24-30s)
+  { id: 'bp-case-open', time: 24.4, play: (d) => soundEngine.playCaseOpen(d) },
+  { id: 'bp-giant-inflate', time: 25.3, play: (d) => soundEngine.playBalloonInflate(d, 2.1) },
+  { id: 'bp-giant-burst', time: 27.4, play: (d) => soundEngine.playBigImpact(d) },
+  { id: 'bp-giant-pop', time: 27.42, play: (d) => soundEngine.playGoldenPop(d) },
+  { id: 'bp-foil-rain', time: 27.5, play: (d) => soundEngine.playConfettiPop(d) },
+  { id: 'bp-record-scratch', time: 28.25, play: (d) => soundEngine.playRecordScratch(d) },
+  { id: 'bp-tiny-balloon', time: 28.4, play: (d) => soundEngine.playBalloonSqueak(1.72, d) },
+  { id: 'bp-final-sting', time: 29.0, play: (d) => soundEngine.playAngrySting(d) },
+];

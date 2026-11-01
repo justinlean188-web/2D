@@ -27,6 +27,7 @@ export const AudioLab: React.FC<AudioLabProps> = ({ config, setConfig }) => {
   const isAttempt247 = config.activeProject === 'attempt-247';
   const isArcadeClaw = config.activeProject === 'arcade-claw';
   const isDominoTrickshot = config.activeProject === 'domino-trickshot';
+  const isBalloonPop = config.activeProject === 'balloon-pop-jackpot';
   const soundEffects = [
     // Paper Ball Ricochet Effects
     {
@@ -1474,6 +1475,79 @@ export const AudioLab: React.FC<AudioLabProps> = ({ config, setConfig }) => {
         setTimeout(() => soundEngine.playAngrySting(), 4000);
       },
     },
+    // Balloon Pop Jackpot Effects
+    {
+      project: 'balloon-pop-jackpot' as const,
+      name: 'Carnival Booth',
+      time: 'Balloon Pop Jackpot (0.0s - 0.6s)',
+      desc: 'Booth light shimmer and a confident chime as he points at the trophy.',
+      trigger: () => {
+        soundEngine.playBoothLights();
+        setTimeout(() => soundEngine.playConfidenceDing(), 1400);
+      },
+    },
+    {
+      project: 'balloon-pop-jackpot' as const,
+      name: 'Three Terrible Darts',
+      time: 'Balloon Pop Jackpot (6.5s - 11.0s)',
+      desc: 'Dart whooshes, a wooden thunk, a floor thunk, a balloon wobble squeak, then an angry sting.',
+      trigger: () => {
+        soundEngine.playDartWhoosh();
+        setTimeout(() => soundEngine.playDartThunkWood(), 450);
+        setTimeout(() => soundEngine.playDartWhoosh(), 1800);
+        setTimeout(() => soundEngine.playFloorThump(), 2280);
+        setTimeout(() => soundEngine.playDartWhoosh(), 3200);
+        setTimeout(() => soundEngine.playBalloonSqueak(1.18), 3600);
+        setTimeout(() => soundEngine.playAngrySting(), 4500);
+      },
+    },
+    {
+      project: 'balloon-pop-jackpot' as const,
+      name: 'Three Quick Pops',
+      time: 'Balloon Pop Jackpot (12.35s - 15.45s)',
+      desc: 'Three dart whooshes, three balloon pops with confetti, then a cartoon boing as the beanie flies off.',
+      trigger: () => {
+        soundEngine.playDartWhoosh();
+        setTimeout(() => soundEngine.playBalloonPop(), 250);
+        setTimeout(() => soundEngine.playConfettiPop(), 290);
+        setTimeout(() => soundEngine.playDartWhoosh(), 800);
+        setTimeout(() => soundEngine.playBalloonPop(), 1050);
+        setTimeout(() => soundEngine.playDartWhoosh(), 1600);
+        setTimeout(() => soundEngine.playBalloonPop(), 1850);
+        setTimeout(() => soundEngine.playMechanicalClick(), 2550);
+        setTimeout(() => soundEngine.playCartoonBoing(), 3100);
+      },
+    },
+    {
+      project: 'balloon-pop-jackpot' as const,
+      name: 'Jackpot',
+      time: 'Balloon Pop Jackpot (18.2s - 23.6s)',
+      desc: 'A long drum roll, one perfect dart, a golden pop, sparkles and a victory fanfare.',
+      trigger: () => {
+        soundEngine.playDrumRoll(undefined, 3.0);
+        setTimeout(() => soundEngine.playDartWhoosh(), 3100);
+        setTimeout(() => soundEngine.playGoldenPop(), 3400);
+        setTimeout(() => soundEngine.playConfettiPop(), 3440);
+        setTimeout(() => soundEngine.playPrizeSparkle(), 3700);
+        setTimeout(() => soundEngine.playVictoryFanfare(), 3500);
+      },
+    },
+    {
+      project: 'balloon-pop-jackpot' as const,
+      name: 'The Prize Is A Balloon',
+      time: 'Balloon Pop Jackpot (24.4s - 29.0s)',
+      desc: 'The trophy case opens, a giant balloon inflates and bursts, a record scratch, a tiny balloon squeak and an angry sting.',
+      trigger: () => {
+        soundEngine.playCaseOpen();
+        setTimeout(() => soundEngine.playBalloonInflate(undefined, 2.1), 900);
+        setTimeout(() => soundEngine.playBigImpact(), 3000);
+        setTimeout(() => soundEngine.playGoldenPop(), 3020);
+        setTimeout(() => soundEngine.playConfettiPop(), 3100);
+        setTimeout(() => soundEngine.playRecordScratch(), 3850);
+        setTimeout(() => soundEngine.playBalloonSqueak(1.72), 4000);
+        setTimeout(() => soundEngine.playAngrySting(), 4600);
+      },
+    },
   ];
   const visibleEffects = soundEffects.filter((effect) => effect.project === config.activeProject);
 
@@ -1507,6 +1581,8 @@ export const AudioLab: React.FC<AudioLabProps> = ({ config, setConfig }) => {
             ? 'The Angry Stickman: The Impossible Claw Machine is a 30-second neon arcade comedy with a fully procedural 132 bpm chiptune sliced into four 7.5-second sections (silence windows for the gag beats, a sting at the button and a fanfare in the chute) — plus coin and slot clicks, claw motors, the bumper boing, the cabinet ricochet, the win jingle, the alarm strobe and the plush avalanche. No external audio files.'
             : isDominoTrickshot
             ? 'The Angry Stickman: The Impossible Domino Trickshot is a 30-second chain reaction comedy with a fully procedural 124 bpm bouncy score sliced into four 7.5-second sections (music dip during the cup wobble, silence after the final sting) — plus dramatic boom, ticking countdown, soft flick, hard flick, 20 rhythmic domino clicks, rising swell, cup ping, victory fanfare, crowd cheer, hollow bonk, record scratch, and angry sting. No external audio files.'
+            : isBalloonPop
+            ? 'The Angry Stickman: The Balloon Pop Jackpot is a 30-second carnival-booth comedy with a fully procedural carnival score sliced into four 7.5-second sections — plus booth light shimmer, dart whooshes and wooden thunks, balloon wobble squeaks, three confetti balloon pops, a cartoon boing for the beanie, a long drum roll, a golden pop with sparkles, a victory fanfare, the trophy case opening, a giant balloon inflate and burst, a record scratch, a tiny balloon squeak and the angry sting. No external audio files.'
             : isCoinFlip
             ? 'The Angry Stickman vs. The Impossible Coin Flip is a 30-second one-room comedy with a fully procedural score: a smug showman strut, a mechanical engineering march, a rage tremolo that cuts dead on the final flick, a pinball ricochet, a tiny victory fanfare and a record scratch — plus the rim tings, the forehead bonk, the rubber-band launch, the glass splashes and the gold coin ring that ends the film. No external audio files.'
             : isDartShot

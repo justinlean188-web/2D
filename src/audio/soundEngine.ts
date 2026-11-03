@@ -4221,6 +4221,21 @@ class SoundEngine {
         [329.63, 415.3, 493.88],
       ],
     });
+
+  }
+
+  public playCandyClawScoreSection(dest?: AudioNode, start = 0, end = 7.5) {
+    this.scoreSlice(dest, start, end, {
+      bpm: 155,
+      wave: 'square',
+      level: 0.42,
+      chords: [
+        [293.66, 369.99, 440.0],    // D4 + F#4 + A4 (D major)
+        [329.63, 415.3, 493.88],   // E4 + G#4 + B4 (E major)
+        [277.18, 349.23, 415.3],   // C#4 + F4 + G#4 (C# minor / F major)
+        [293.66, 369.99, 440.0],   // D4 + F#4 + A4 (D major)
+      ],
+    });
   }
 
   // ---- carnival + balloon SFX for "The Balloon Pop Jackpot" ----

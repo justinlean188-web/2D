@@ -28,6 +28,7 @@ export const AudioLab: React.FC<AudioLabProps> = ({ config, setConfig }) => {
   const isArcadeClaw = config.activeProject === 'arcade-claw';
   const isDominoTrickshot = config.activeProject === 'domino-trickshot';
   const isBalloonPop = config.activeProject === 'balloon-pop-jackpot';
+  const isCandyClaw = config.activeProject === 'candy-claw';
   const soundEffects = [
     // Paper Ball Ricochet Effects
     {
@@ -1548,6 +1549,74 @@ export const AudioLab: React.FC<AudioLabProps> = ({ config, setConfig }) => {
         setTimeout(() => soundEngine.playAngrySting(), 4600);
       },
     },
+    // Candy Claw Disaster Effects
+    {
+      project: 'candy-claw' as const,
+      name: 'Carnival Booth',
+      time: 'Candy Claw Disaster (0.0s - 0.5s)',
+      desc: 'Booth light shimmer, token clink, machine chime, and magical sparkle.',
+      trigger: () => {
+        soundEngine.playBoothLights();
+        setTimeout(() => soundEngine.playCoinClink(), 3300);
+        setTimeout(() => soundEngine.playArcadeChime(), 4000);
+        setTimeout(() => soundEngine.playMagicSparkle(), 4400);
+      },
+    },
+    {
+      project: 'candy-claw' as const,
+      name: 'The First Grab',
+      time: 'Candy Claw Disaster (6.5s - 11.0s)',
+      desc: 'Claw motor, button click, mechanical click, rising whistle, cartoon boing for slip, floor thump, angry sting.',
+      trigger: () => {
+        soundEngine.playClawMotor(undefined, 1.5);
+        setTimeout(() => soundEngine.playButtonClick(), 1500);
+        setTimeout(() => soundEngine.playMechanicalClick(), 1600);
+        setTimeout(() => soundEngine.playRisingWhistle(undefined, 0.7), 1700);
+        setTimeout(() => soundEngine.playCartoonBoing(), 3300);
+        setTimeout(() => soundEngine.playFloorThump(), 3700);
+        setTimeout(() => soundEngine.playAngrySting(), 4600);
+      },
+    },
+    {
+      project: 'candy-claw' as const,
+      name: 'The Perfect Grab',
+      time: 'Candy Claw Disaster (12.7s - 18.0s)',
+      desc: 'Deep breath, claw motor, button click, mechanical click, rising whistle, victory fanfare, happy hops.',
+      trigger: () => {
+        soundEngine.playDeepBreath();
+        setTimeout(() => soundEngine.playClawMotor(undefined, 0.9), 1400);
+        setTimeout(() => soundEngine.playButtonClick(), 1500);
+        setTimeout(() => soundEngine.playMechanicalClick(), 1600);
+        setTimeout(() => soundEngine.playRisingWhistle(undefined, 0.9), 1700);
+        setTimeout(() => soundEngine.playVictoryFanfareShort(), 3800);
+        setTimeout(() => soundEngine.playFloorThump(), 4100);
+        setTimeout(() => soundEngine.playFloorThump(), 4800);
+      },
+    },
+    {
+      project: 'candy-claw' as const,
+      name: 'Candy Overload',
+      time: 'Candy Claw Disaster (18.9s - 24.0s)',
+      desc: 'Arcade alarm, mechanical click, plush avalanche, dramatic rumble.',
+      trigger: () => {
+        soundEngine.playArcadeAlarm();
+        setTimeout(() => soundEngine.playMechanicalClick(), 750);
+        setTimeout(() => soundEngine.playPlushAvalanche(), 1100);
+        setTimeout(() => soundEngine.playDramaticRumble(), 3150);
+      },
+    },
+    {
+      project: 'candy-claw' as const,
+      name: 'Buried in Candy',
+      time: 'Candy Claw Disaster (24.4s - 29.0s)',
+      desc: 'Big impact, cartoon crash, balloon squeak, freeze sting.',
+      trigger: () => {
+        soundEngine.playBigImpact();
+        setTimeout(() => soundEngine.playCartoonCrash(), 600);
+        setTimeout(() => soundEngine.playBalloonSqueak(1.5), 4000);
+        setTimeout(() => soundEngine.playFreezeSting(), 4600);
+      },
+    },
   ];
   const visibleEffects = soundEffects.filter((effect) => effect.project === config.activeProject);
 
@@ -1583,6 +1652,8 @@ export const AudioLab: React.FC<AudioLabProps> = ({ config, setConfig }) => {
             ? 'The Angry Stickman: The Impossible Domino Trickshot is a 30-second chain reaction comedy with a fully procedural 124 bpm bouncy score sliced into four 7.5-second sections (music dip during the cup wobble, silence after the final sting) — plus dramatic boom, ticking countdown, soft flick, hard flick, 20 rhythmic domino clicks, rising swell, cup ping, victory fanfare, crowd cheer, hollow bonk, record scratch, and angry sting. No external audio files.'
             : isBalloonPop
             ? 'The Angry Stickman: The Balloon Pop Jackpot is a 30-second carnival-booth comedy with a fully procedural carnival score sliced into four 7.5-second sections — plus booth light shimmer, dart whooshes and wooden thunks, balloon wobble squeaks, three confetti balloon pops, a cartoon boing for the beanie, a long drum roll, a golden pop with sparkles, a victory fanfare, the trophy case opening, a giant balloon inflate and burst, a record scratch, a tiny balloon squeak and the angry sting. No external audio files.'
+            : isCandyClaw
+            ? 'The Angry Stickman: The Candy Claw Disaster is a 30-second neon arcade comedy with a fully procedural carnival score sliced into four 7.5-second sections — plus booth lights, claw motor whirs, button clicks, mechanical clicks, rising whistles, cartoon boings, victory fanfares, arcade alarms, plush avalanches, dramatic rumbles, big impacts, cartoon crashes, balloon squeaks, and freeze stings. No external audio files.'
             : isCoinFlip
             ? 'The Angry Stickman vs. The Impossible Coin Flip is a 30-second one-room comedy with a fully procedural score: a smug showman strut, a mechanical engineering march, a rage tremolo that cuts dead on the final flick, a pinball ricochet, a tiny victory fanfare and a record scratch — plus the rim tings, the forehead bonk, the rubber-band launch, the glass splashes and the gold coin ring that ends the film. No external audio files.'
             : isDartShot

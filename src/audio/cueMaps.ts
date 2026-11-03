@@ -1255,3 +1255,54 @@ export const BALLOON_POP_JACKPOT_CUES: AudioCue[] = [
   { id: 'bp-tiny-balloon', time: 28.4, play: (d) => soundEngine.playBalloonSqueak(1.72, d) },
   { id: 'bp-final-sting', time: 29.0, play: (d) => soundEngine.playAngrySting(d) },
 ];
+
+/**
+ * Complete 30-second sound map for "The Candy Claw Disaster".
+ * Four 7.5s slices of the carnival score plus one-shot SFX for every gag.
+ */
+export const CANDY_CLAW_CUES: AudioCue[] = [
+  // Score slices
+  { id: 'cc-score-1', time: 0.0, play: (d) => soundEngine.playCandyClawScoreSection(d, 0, 7.5) },
+  { id: 'cc-score-2', time: 7.5, play: (d) => soundEngine.playCandyClawScoreSection(d, 7.5, 15.0) },
+  { id: 'cc-score-3', time: 15.0, play: (d) => soundEngine.playCandyClawScoreSection(d, 15.0, 22.5) },
+  { id: 'cc-score-4', time: 22.5, play: (d) => soundEngine.playCandyClawScoreSection(d, 22.5, 30.0) },
+
+  // Shot 1 - The Giant Candy Prize (0-6s)
+  { id: 'cc-booth-lights', time: 0.5, play: (d) => soundEngine.playBoothLights(d) },
+  { id: 'cc-token-clink', time: 3.8, play: (d) => soundEngine.playCoinClink(d) },
+  { id: 'cc-machine-chime', time: 4.5, play: (d) => soundEngine.playArcadeChime(d) },
+  { id: 'cc-magic-sparkle', time: 4.9, play: (d) => soundEngine.playMagicSparkle(d) },
+
+  // Shot 2 - The First Grab (6-12s)
+  { id: 'cc-grab-1-joy', time: 6.45, play: (d) => soundEngine.playClawMotor(d, 1.5) },
+  { id: 'cc-grab-1-button', time: 7.95, play: (d) => soundEngine.playButtonClick(d) },
+  { id: 'cc-grab-1-motor', time: 8.0, play: (d) => soundEngine.playClawMotor(d, 0.8) },
+  { id: 'cc-grab-1-click', time: 8.85, play: (d) => soundEngine.playMechanicalClick(d) },
+  { id: 'cc-grab-1-lift', time: 8.9, play: (d) => soundEngine.playRisingWhistle(d, 0.7) },
+  { id: 'cc-grab-1-slip', time: 9.7, play: (d) => soundEngine.playCartoonBoing(d) },
+  { id: 'cc-grab-1-bounce', time: 10.15, play: (d) => soundEngine.playFloorThump(d) },
+  { id: 'cc-grab-1-fail', time: 11.0, play: (d) => soundEngine.playAngrySting(d) },
+
+  // Shot 3 - The Perfect Grab (12-18s)
+  { id: 'cc-breath', time: 12.65, play: (d) => soundEngine.playDeepBreath(d) },
+  { id: 'cc-grab-2-joy', time: 14.0, play: (d) => soundEngine.playClawMotor(d, 0.9) },
+  { id: 'cc-grab-2-button', time: 14.9, play: (d) => soundEngine.playButtonClick(d) },
+  { id: 'cc-grab-2-motor', time: 15.0, play: (d) => soundEngine.playClawMotor(d, 0.5) },
+  { id: 'cc-grab-2-click', time: 15.4, play: (d) => soundEngine.playMechanicalClick(d) },
+  { id: 'cc-grab-2-lift', time: 15.5, play: (d) => soundEngine.playRisingWhistle(d, 0.9) },
+  { id: 'cc-victory-fanfare', time: 16.4, play: (d) => soundEngine.playVictoryFanfareShort(d) },
+  { id: 'cc-hop-1', time: 16.55, play: (d) => soundEngine.playFloorThump(d) },
+  { id: 'cc-hop-2', time: 17.25, play: (d) => soundEngine.playFloorThump(d) },
+
+  // Shot 4 - Candy Overload (18-24s)
+  { id: 'cc-warning-beep', time: 18.85, play: (d) => soundEngine.playArcadeAlarm(d) },
+  { id: 'cc-dispenser-open', time: 19.6, play: (d) => soundEngine.playMechanicalClick(d) },
+  { id: 'cc-candy-pour', time: 19.7, play: (d) => soundEngine.playPlushAvalanche(d) },
+  { id: 'cc-avalanche-rumble', time: 22.0, play: (d) => soundEngine.playDramaticRumble(d) },
+
+  // Shot 5 - Buried in Candy (24-30s)
+  { id: 'cc-final-avalanche', time: 24.4, play: (d) => soundEngine.playBigImpact(d) },
+  { id: 'cc-buried', time: 25.0, play: (d) => soundEngine.playCartoonCrash(d) },
+  { id: 'cc-lollipop-land', time: 28.4, play: (d) => soundEngine.playBalloonSqueak(1.5, d) },
+  { id: 'cc-freeze-sting', time: 29.0, play: (d) => soundEngine.playFreezeSting(d) },
+];

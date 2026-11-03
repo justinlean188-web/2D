@@ -15,6 +15,7 @@ export interface SceneDef {
   propAction?: string;
 }
 
+import { CANDY_CLAW_PROMPT, CANDY_CLAW_SCENES } from './constants/candyClawConstants';
 export type CanvasTheme = 'black-on-white' | 'white-on-black';
 
 export type ProjectId =
@@ -33,6 +34,7 @@ export type ProjectId =
   | 'pencil-landing'
   | 'domino-trickshot'
   | 'balloon-pop-jackpot'
+  | 'candy-claw'
   | 'dart-shot'
   | 'ping-pong-revenge'
   | 'trick-shot-champion'
@@ -3574,6 +3576,17 @@ export const PROJECTS: Record<ProjectId, ProjectDef> = {
     masterPrompt: BALLOON_POP_PROMPT,
     scenes: BALLOON_POP_SCENES,
   },
+  'candy-claw': {
+    id: 'candy-claw',
+    title: 'Angry Stickman: The Candy Claw Disaster',
+    subtitle: 'The 30-Second Neon Arcade Comedy',
+    tagline: 'Vertical 9:16 Stickman Short · Modern Pop Color · Sound Effects Only',
+    duration: 30,
+    hasAudioDialogue: false,
+    hasCaptions: true,
+    masterPrompt: CANDY_CLAW_PROMPT,
+    scenes: CANDY_CLAW_SCENES,
+  },
   'coin-flip': {
     id: 'coin-flip',
     title: 'Angry Stickman vs. The Impossible Coin Flip',
@@ -3716,7 +3729,7 @@ export interface StudioConfig {
 }
 
 export const DEFAULT_CONFIG: StudioConfig = {
-  activeProject: 'balloon-pop-jackpot', // The latest short is the default film
+  activeProject: 'candy-claw', // The latest short is the default film
   canvasTheme: 'black-on-white', // Style 1A: Black on White (toggleable to Style 1B: White on Black)
   vividAccent: '#ef4444', // Vivid Red as seen in reference image for emotions, risks & cages
   accentColor: '#000000', // Minimalist Monochrome

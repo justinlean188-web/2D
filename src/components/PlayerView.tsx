@@ -35,6 +35,7 @@ import { RingShotRenderer } from '../animation/ringShotRenderer';
 import { PencilLandingRenderer } from '../animation/pencilLandingRenderer';
 import { DominoTrickshotRenderer } from '../animation/dominoTrickshotRenderer';
 import { BalloonPopJackpotRenderer } from '../animation/balloonPopJackpotRenderer';
+import { CandyClawRenderer } from '../animation/candyClawRenderer';
 import { MachineRenderer } from '../animation/machineRenderer';
 import { SequelPaperBallRenderer } from '../animation/sequelPaperBallRenderer';
 import { MindTrapsRenderer } from '../animation/mindTrapsRenderer';
@@ -59,6 +60,7 @@ import {
   PENCIL_LANDING_CUES,
   DOMINO_TRICKSHOT_CUES,
   BALLOON_POP_JACKPOT_CUES,
+  CANDY_CLAW_CUES,
   PAPER_BALL_PART3_CUES,
   PAPER_BALL_PART4_CUES,
   PAPER_BALL_SEQUEL_CUES,
@@ -117,6 +119,9 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
   const balloonPopJackpotRendererRef = useRef<BalloonPopJackpotRenderer>(
     new BalloonPopJackpotRenderer()
   );
+  const candyClawRendererRef = useRef<CandyClawRenderer>(
+    new CandyClawRenderer()
+  );
   const mindTrapsRendererRef = useRef<MindTrapsRenderer>(new MindTrapsRenderer());
   const [speed, setSpeed] = useState<number>(1.0);
   const [isLooping, setIsLooping] = useState<boolean>(true);
@@ -163,6 +168,8 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
   const isDominoTrickshotProject = config.activeProject === 'domino-trickshot';
   // The balloon-pop-jackpot short burns captions near the top of the frame.
   const isBalloonPopProject = config.activeProject === 'balloon-pop-jackpot';
+  // The candy-claw short burns captions near the top of the frame.
+  const isCandyClawProject = config.activeProject === 'candy-claw';
 
   // Current active scene
   const activeScene =
@@ -292,6 +299,11 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
 
     if (config.activeProject === 'balloon-pop-jackpot') {
       for (const cue of BALLOON_POP_JACKPOT_CUES) setCueState(cue.id, cue.time);
+      return;
+    }
+
+    if (config.activeProject === 'candy-claw') {
+      for (const cue of CANDY_CLAW_CUES) setCueState(cue.id, cue.time);
       return;
     }
 
@@ -715,6 +727,25 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
         return;
       }
 
+      if (config.activeProject === 'candy-claw') {
+        if (!config.enableSFX) return;
+        for (const cue of CANDY_CLAW_CUES) {
+          if (cues.has(cue.id)) continue;
+          if (cue.id.startsWith('cc-score-')) {
+            if (t >= cue.time && t < cue.time + 7.6) {
+              cue.play();
+              cues.add(cue.id);
+            }
+            continue;
+          }
+          if (t >= cue.time && t - cue.time < 0.75) {
+            cue.play();
+            cues.add(cue.id);
+          }
+        }
+        return;
+      }
+
       if (config.activeProject === 'paper-ball') {
         if (!config.enableSFX) return;
         if (t >= 2.0 && !cues.has('toss')) {
@@ -906,6 +937,8 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
             dominoTrickshotRendererRef.current.render(ctx, renderTime, config);
           } else if (config.activeProject === 'balloon-pop-jackpot') {
             balloonPopJackpotRendererRef.current.render(ctx, renderTime, config);
+          } else if (config.activeProject === 'candy-claw') {
+            candyClawRendererRef.current.render(ctx, renderTime, config);
           } else if (config.activeProject === 'paper-ball') {
             paperBallRendererRef.current.render(ctx, renderTime, config);
           } else {
@@ -989,6 +1022,8 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
         ? 'domino-trickshot'
         : config.activeProject === 'balloon-pop-jackpot'
         ? 'balloon-pop-jackpot'
+        : config.activeProject === 'candy-claw'
+        ? 'candy-claw'
         : config.activeProject === 'trick-shot-champion'
         ? 'trick-shot-champion'
         : config.activeProject === 'pop-star'
@@ -1100,7 +1135,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
             />
 
             {/* Preview caption overlay for burned-in caption shorts */}
-            {(isDiamondHeistProject || isPancakeFlipProject || isVendingMachineProject || isBiggestBalloonProject || isFindTheBallProject || isAttempt247Project || isNeedleThreadProject || isDominoTrickshotProject || isBalloonPopProject) && activeScene?.captionText && (
+            {(isDiamondHeistProject || isPancakeFlipProject || isVendingMachineProject || isBiggestBalloonProject || isFindTheBallProject || isAttempt247Project || isNeedleThreadProject || isDominoTrickshotProject || isBalloonPopProject || isCandyClawProject) && activeScene?.captionText && (
               <div className="absolute top-4 left-0 right-0 z-20 pointer-events-none flex justify-center">
                 <div className="bg-black/70 text-white text-sm font-bold px-3 py-1 rounded-md max-w-[90%] text-center">
                   {activeScene.captionText}
@@ -1412,12 +1447,13 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
                   !isFindTheBallProject &&
                   !isAttempt247Project &&
                   !isDominoTrickshotProject &&
-                  !isBalloonPopProject
+                  !isBalloonPopProject &&
+                  !isCandyClawProject
                 ) {
                   setConfig({ ...config, showCaptions: !config.showCaptions });
                 }
               }}
-              disabled={!currentProject.hasCaptions || isPopProject || isTrickShotProject || isPingPongProject || isDartProject || isCoinFlipProject || isArcadeClawProject || isDiamondHeistProject || isPancakeFlipProject || isVendingMachineProject || isBiggestBalloonProject || isFindTheBallProject || isAttempt247Project || isNeedleThreadProject || isRingShotProject || isPencilLandingProject || isDominoTrickshotProject || isBalloonPopProject}
+              disabled={!currentProject.hasCaptions || isPopProject || isTrickShotProject || isPingPongProject || isDartProject || isCoinFlipProject || isArcadeClawProject || isDiamondHeistProject || isPancakeFlipProject || isVendingMachineProject || isBiggestBalloonProject || isFindTheBallProject || isAttempt247Project || isNeedleThreadProject || isRingShotProject || isPencilLandingProject || isDominoTrickshotProject || isBalloonPopProject || isCandyClawProject}
               className={`p-3 rounded-xl border flex items-center justify-between transition-colors ${
                 !currentProject.hasCaptions || isPopProject || isTrickShotProject || isPingPongProject || isDartProject || isCoinFlipProject || isArcadeClawProject || isDiamondHeistProject || isPancakeFlipProject || isVendingMachineProject || isBiggestBalloonProject || isFindTheBallProject || isAttempt247Project || isNeedleThreadProject || isRingShotProject || isPencilLandingProject || isDominoTrickshotProject || isBalloonPopProject
                   ? 'bg-slate-950/50 border-slate-900 text-slate-600 cursor-not-allowed opacity-60'
@@ -1429,7 +1465,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
               <div className="text-left">
                 <div className="text-xs font-semibold">In-Video Captions</div>
                 <div className="text-[11px] text-slate-400">
-                  {(isPingPongProject || isDartProject || isCoinFlipProject || isArcadeClawProject || isDiamondHeistProject || isPancakeFlipProject || isVendingMachineProject || isBiggestBalloonProject || isFindTheBallProject || isAttempt247Project || isNeedleThreadProject || isRingShotProject || isPencilLandingProject || isDominoTrickshotProject || isBalloonPopProject)
+                  {(isPingPongProject || isDartProject || isCoinFlipProject || isArcadeClawProject || isDiamondHeistProject || isPancakeFlipProject || isVendingMachineProject || isBiggestBalloonProject || isFindTheBallProject || isAttempt247Project || isNeedleThreadProject || isRingShotProject || isPencilLandingProject || isDominoTrickshotProject || isBalloonPopProject || isCandyClawProject)
                     ? 'Burned-in scene captions'
                     : isPopProject || isTrickShotProject
                     ? 'Burned-in narration captions'

@@ -61,8 +61,16 @@ const RED_CUP_H = 104;
 const RED_CUP_MOUTH_RY = 10;
 
 const BALL_R = 15;
-const REL_X = 600;
-const REL_Y = 990;
+// Throw geometry: the corridor x >= 600 keeps the ball and the right hand
+// clear of the head (which spans x 440-580).
+const HOLD_X = 620;
+const HOLD_Y = 985;
+const WIND_X = 620;
+const WIND_Y = 875;
+const REL_X = 645;
+const REL_Y = 950;
+const FOLLOW_X = 668;
+const FOLLOW_Y = 1000;
 
 const AVALANCHE_START = 24.5;
 const AVALANCHE_END = 29.5;
@@ -101,6 +109,7 @@ interface Pose {
   gripL: boolean;
   gripR: boolean;
   beanieOn: boolean;
+  hideArms: boolean;
 }
 
 interface CaptionLine {
@@ -750,82 +759,70 @@ export class CupInCupRenderer {
       return air(handX, handY);
     }
 
-    // Shot 2: bounce, clang off the outside of the blue rim, fall back.
+    // Shot 2: drops onto the outside of the blue rim and rattles away.
     if (t < 12.0) {
       if (t < 7.0) {
         const u = clamp((t - 6.5) / 0.5, 0, 1);
-        return air(bez(REL_X, 606, 620, u), bez(REL_Y, 1020, 1105, u), u * 12);
+        return air(bez(REL_X, 640, 652, u), bez(REL_Y, 1010, 1034, u), u * 10);
       }
-      if (t < 7.3) {
-        const u = clamp((t - 7.0) / 0.3, 0, 1);
-        return air(bez(620, 636, 650, u), bez(1105, 1080, 1040, u), 12 + u * 8);
+      if (t < 7.25) {
+        const u = clamp((t - 7.0) / 0.25, 0, 1);
+        return air(bez(652, 668, 678, u), bez(1034, 1004, 976, u), 10 + u * 8);
       }
-      if (t < 7.6) {
-        const u = clamp((t - 7.3) / 0.3, 0, 1);
-        return air(bez(650, 636, 614, u), bez(1040, 995, 968, u), 20 + u * 8);
+      if (t < 7.85) {
+        const u = clamp((t - 7.25) / 0.6, 0, 1);
+        return air(bez(678, 666, 650, u), bez(976, 1052, 1105, u), 18 + u * 10);
       }
-      if (t < 8.3) {
-        const u = clamp((t - 7.6) / 0.7, 0, 1);
-        return air(bez(614, 560, 520, u), bez(968, 1040, 1105, u), 28 + u * 12);
-      }
-      return air(520, 1105, 40);
+      return air(648, 1105, 30);
     }
 
-    // Shot 3: bounce, hop over the blue rim, land beside the red cup.
+    // Shot 3: he picks it up and drops it into the blue cup beside the red.
     if (t < 18.0) {
-      if (t < 12.6) return air(520, 1105, 40);
-      if (t < 13.0) return air(handX, handY);
-      if (t < 13.45) {
-        const u = clamp((t - 13.0) / 0.45, 0, 1);
-        return air(bez(REL_X, 606, 620, u), bez(REL_Y, 1020, 1105, u), u * 14);
+      if (t < 12.4) return air(648, 1105, 30);
+      if (t < 12.9) return air(handX, handY);
+      if (t < 13.3) {
+        const u = clamp((t - 12.9) / 0.4, 0, 1);
+        return air(bez(REL_X, 656, 670, u), bez(REL_Y, 990, 1012, u), u * 12);
       }
-      if (t < 14.0) {
-        const u = clamp((t - 13.45) / 0.55, 0, 1);
-        return air(bez(620, 640, 662, u), bez(1105, 1045, 1024, u), 14 + u * 12);
+      if (t < 13.75) {
+        const u = clamp((t - 13.3) / 0.45, 0, 1);
+        return air(bez(670, 688, 704, u), bez(1012, 992, 998, u), 12 + u * 8);
       }
-      if (t < 14.45) {
-        const u = clamp((t - 14.0) / 0.45, 0, 1);
-        return air(bez(662, 682, 700, u), bez(1024, 992, 986, u), 26 + u * 8);
+      if (t < 14.3) {
+        const u = clamp((t - 13.75) / 0.55, 0, 1);
+        return air(bez(704, 722, 734, u), bez(998, 1014, 1032, u), 20 + u * 8);
       }
-      if (t < 15.0) {
-        const u = clamp((t - 14.45) / 0.55, 0, 1);
-        return air(bez(700, 720, 730, u), bez(986, 1004, 1030, u), 34 + u * 8);
+      if (t < 14.5) {
+        const u = clamp((t - 14.3) / 0.2, 0, 1);
+        return inCup(734, 1032 - Math.sin(u * Math.PI) * 4, 'blue');
       }
-      if (t < 15.2) {
-        const u = clamp((t - 15.0) / 0.2, 0, 1);
-        return inCup(730, 1030 - Math.sin(u * Math.PI) * 4, 'blue');
-      }
-      return inCup(730, 1030, 'blue');
+      return inCup(734, 1032, 'blue');
     }
 
     // Shot 4: he plucks the ball out, winds up, and drops it in the red cup.
     if (t < 24.0) {
       if (t < 20.0) return air(handX, handY);
-      if (t < 20.5) {
-        const u = clamp((t - 20.0) / 0.5, 0, 1);
-        return air(bez(REL_X, 606, 620, u), bez(REL_Y, 1020, 1105, u), u * 12);
+      if (t < 20.45) {
+        const u = clamp((t - 20.0) / 0.45, 0, 1);
+        return air(bez(REL_X, 658, 672, u), bez(REL_Y, 992, 1006, u), u * 12);
       }
-      if (t < 21.1) {
-        const u = clamp((t - 20.5) / 0.6, 0, 1);
-        return air(bez(620, 640, 664, u), bez(1105, 1042, 1020, u), 12 + u * 10);
+      if (t < 20.85) {
+        const u = clamp((t - 20.45) / 0.4, 0, 1);
+        return air(bez(672, 686, 698, u), bez(1006, 984, 986, u), 12 + u * 8);
+      }
+      if (t < 21.4) {
+        const u = clamp((t - 20.85) / 0.55, 0, 1);
+        return air(bez(698, 700, 700, u), bez(986, 1000, 1014, u), 20 + u * 8);
       }
       if (t < 21.6) {
-        const u = clamp((t - 21.1) / 0.5, 0, 1);
-        return air(bez(664, 682, 696, u), bez(1020, 982, 984, u), 22 + u * 6);
+        const u = clamp((t - 21.4) / 0.2, 0, 1);
+        return inCup(700, 1014 - Math.sin(u * Math.PI) * 4, 'red');
       }
-      if (t < 22.2) {
-        const u = clamp((t - 21.6) / 0.6, 0, 1);
-        return air(bez(696, 699, 700, u), bez(984, 1000, 1012, u), 28 + u * 8);
-      }
-      if (t < 22.5) {
-        const u = clamp((t - 22.2) / 0.3, 0, 1);
-        return inCup(700, 1012 - Math.sin(u * Math.PI) * 5, 'red');
-      }
-      return inCup(700, 1012, 'red');
+      return inCup(700, 1014, 'red');
     }
 
     // Shot 5: the winning ball rides out the avalanche.
-    return inCup(700, 1012, 'red');
+    return inCup(700, 1014, 'red');
   }
 
   private drawAvalancheOverlay(ctx: CanvasRenderingContext2D, t: number) {
@@ -969,6 +966,7 @@ export class CupInCupRenderer {
       gripL: false,
       gripR: false,
       beanieOn: true,
+      hideArms: false,
     };
   }
 
@@ -991,7 +989,7 @@ export class CupInCupRenderer {
         p.headTurn = 8;
         p.pointL = true;
         p.handL = h(150, 1020);
-        p.handR = h(70, 1030);
+        p.handR = { x: HOLD_X, y: HOLD_Y };
       } else if (t < 3.2) {
         p.look = 'front';
         p.brow = 'cocky';
@@ -1000,7 +998,7 @@ export class CupInCupRenderer {
         p.headTurn = 0;
         p.pointL = true;
         p.handL = h(140, 1050);
-        p.handR = h(60, 1010);
+        p.handR = h(120, 1000);
       } else if (t < 4.4) {
         p.look = 'front';
         p.brow = 'cocky';
@@ -1008,8 +1006,8 @@ export class CupInCupRenderer {
         p.mouth = 'grin';
         p.headTurn = 0;
         p.pointL = true;
-        p.handL = h(120, 1080);
-        p.handR = h(55, 980);
+        p.handL = h(130, 1080);
+        p.handR = h(110, 975);
       } else if (t < 5.6) {
         p.look = 'right';
         p.brow = 'determined';
@@ -1017,8 +1015,8 @@ export class CupInCupRenderer {
         p.mouth = 'grit';
         p.headTurn = 6;
         p.lean = -0.04;
-        p.handL = h(-50, 1120);
-        p.handR = h(5, 940);
+        p.handL = h(-40, 1120);
+        p.handR = { x: WIND_X, y: WIND_Y + 15 };
       } else {
         p.look = 'right';
         p.brow = 'determined';
@@ -1026,8 +1024,8 @@ export class CupInCupRenderer {
         p.mouth = 'grit';
         p.headTurn = 6;
         p.lean = -0.06;
-        p.handL = h(-60, 1130);
-        p.handR = h(0, 930);
+        p.handL = h(-45, 1125);
+        p.handR = { x: WIND_X, y: WIND_Y };
       }
     } else if (t < 12.0) {
       // Shot 2 - the first throw.
@@ -1038,8 +1036,8 @@ export class CupInCupRenderer {
         p.mouth = 'grit';
         p.headTurn = 6;
         p.lean = -0.06;
-        p.handL = h(-60, 1130);
-        p.handR = h(0, 930);
+        p.handL = h(-45, 1125);
+        p.handR = { x: WIND_X, y: WIND_Y };
       } else if (t < 6.7) {
         p.look = 'right';
         p.brow = 'angry';
@@ -1047,31 +1045,31 @@ export class CupInCupRenderer {
         p.mouth = 'grit';
         p.headTurn = 10;
         p.lean = 0.12;
-        p.handL = h(-30, 1100);
-        p.handR = h(90, 990);
+        p.handL = h(-30, 1120);
+        p.handR = { x: REL_X, y: REL_Y };
       } else if (t < 7.6) {
         p.look = 'right';
         p.brow = 'raised';
         p.eye = 'wide';
         p.mouth = 'o';
         p.headTurn = 10;
-        p.handR = h(65, 1050);
-        p.handL = h(-40, 1120);
+        p.handR = { x: FOLLOW_X, y: FOLLOW_Y };
+        p.handL = h(-35, 1125);
       } else if (t < 8.3) {
         p.look = 'front';
         p.brow = 'raised';
         p.eye = 'wide';
         p.mouth = 'o';
         p.headTurn = 0;
-        p.handR = h(40, 1080);
-        p.handL = h(-60, 1120);
+        p.handR = h(145, 1035);
+        p.handL = h(-55, 1130);
       } else if (t < 9.0) {
         p.look = 'front';
         p.brow = 'angry';
         p.eye = 'squint';
         p.mouth = 'grit';
-        p.handR = h(30, 1120);
-        p.handL = h(-90, 1100);
+        p.handR = h(105, 1145);
+        p.handL = h(-85, 1150);
         p.fistL = true;
         p.fistR = true;
       } else {
@@ -1080,37 +1078,29 @@ export class CupInCupRenderer {
         p.eye = 'squint';
         p.mouth = 'frown';
         p.headDrop = 6;
-        p.handL = h(-70, 1180);
-        p.handR = h(70, 1180);
+        p.handL = h(-75, 1180);
+        p.handR = h(85, 1180);
         p.fistL = true;
         p.fistR = true;
       }
     } else if (t < 18.0) {
       // Shot 3 - so close, wrong cup.
-      if (t < 12.3) {
+      if (t < 12.4) {
         p.look = 'down';
         p.brow = 'determined';
         p.eye = 'squint';
         p.mouth = 'flat';
         p.headDrop = 4;
-        p.handL = h(-60, 1160);
-        p.handR = h(10, 1105);
-      } else if (t < 12.6) {
-        p.look = 'down';
-        p.brow = 'determined';
-        p.eye = 'squint';
-        p.mouth = 'flat';
-        p.headDrop = 4;
-        p.handL = h(-60, 1160);
-        p.handR = h(10, 1105);
+        p.handL = h(-55, 1165);
+        p.handR = h(130, 1105);
       } else if (t < 12.9) {
         p.look = 'right';
         p.brow = 'determined';
         p.eye = 'squint';
         p.mouth = 'grit';
         p.headTurn = 6;
-        p.handL = h(-50, 1130);
-        p.handR = h(10, 1010);
+        p.handL = h(-50, 1150);
+        p.handR = h(120, 1010);
       } else if (t < 13.2) {
         p.look = 'right';
         p.brow = 'angry';
@@ -1118,41 +1108,41 @@ export class CupInCupRenderer {
         p.mouth = 'grit';
         p.headTurn = 10;
         p.lean = 0.12;
-        p.handL = h(-30, 1100);
-        p.handR = h(90, 990);
+        p.handL = h(-30, 1120);
+        p.handR = { x: REL_X, y: REL_Y };
       } else if (t < 14.4) {
         p.look = 'right';
         p.brow = 'raised';
         p.eye = 'wide';
         p.mouth = 'o';
         p.headTurn = 10;
-        p.handR = h(65, 1050);
-        p.handL = h(-40, 1120);
+        p.handR = { x: FOLLOW_X, y: FOLLOW_Y };
+        p.handL = h(-35, 1125);
       } else if (t < 15.2) {
-        p.look = 'down';
+        p.look = 'right';
         p.brow = 'raised';
         p.eye = 'wide';
         p.mouth = 'o';
-        p.headTurn = 6;
+        p.headTurn = 8;
         p.headDrop = 4;
-        p.handR = h(100, 1050);
-        p.handL = h(20, 1100);
+        p.handR = h(170, 1010);
+        p.handL = h(105, 1050);
       } else if (t < 16.2) {
         p.look = 'down';
         p.brow = 'sad';
         p.eye = 'wide';
         p.mouth = 'o';
         p.headDrop = 8;
-        p.handL = h(-10, 1040);
-        p.handR = h(50, 1020);
+        p.handL = h(90, 1060);
+        p.handR = h(145, 1055);
       } else if (t < 17.0) {
         p.look = 'front';
         p.brow = 'angry';
         p.eye = 'squint';
         p.mouth = 'grit';
         p.headTurn = 0;
-        p.handL = h(-80, 1100);
-        p.handR = h(50, 1100);
+        p.handL = h(-85, 1150);
+        p.handR = h(105, 1145);
         p.fistL = true;
         p.fistR = true;
       } else {
@@ -1161,8 +1151,8 @@ export class CupInCupRenderer {
         p.eye = 'squint';
         p.mouth = 'frown';
         p.headDrop = 8;
-        p.handL = h(-70, 1160);
-        p.handR = h(40, 1160);
+        p.handL = h(-75, 1180);
+        p.handR = h(85, 1180);
       }
     } else if (t < 24.0) {
       // Shot 4 - the perfect one.
@@ -1173,7 +1163,7 @@ export class CupInCupRenderer {
         p.mouth = 'grit';
         p.headDrop = 5;
         p.lean = 0.06;
-        p.handL = h(-60, 1140);
+        p.handL = h(-55, 1160);
         p.handR = h(220, 1030);
       } else if (t < 18.8) {
         p.look = 'right';
@@ -1181,16 +1171,16 @@ export class CupInCupRenderer {
         p.eye = 'squint';
         p.mouth = 'flat';
         p.headTurn = 8;
-        p.handL = h(-60, 1130);
-        p.handR = h(150, 1010);
+        p.handL = h(-50, 1150);
+        p.handR = h(180, 1010);
       } else if (t < 19.3) {
         p.look = 'front';
         p.brow = 'cocky';
         p.eye = 'squint';
         p.mouth = 'smirk';
         p.headTurn = 0;
-        p.handL = h(-70, 1120);
-        p.handR = h(70, 1020);
+        p.handL = h(-40, 1130);
+        p.handR = h(110, 1000);
       } else if (t < 19.9) {
         p.look = 'right';
         p.brow = 'determined';
@@ -1198,8 +1188,8 @@ export class CupInCupRenderer {
         p.mouth = 'grit';
         p.headTurn = 6;
         p.lean = -0.05;
-        p.handL = h(-55, 1120);
-        p.handR = h(0, 930);
+        p.handL = h(-45, 1125);
+        p.handR = { x: WIND_X, y: WIND_Y + 15 };
       } else if (t < 20.2) {
         p.look = 'right';
         p.brow = 'angry';
@@ -1207,16 +1197,16 @@ export class CupInCupRenderer {
         p.mouth = 'grit';
         p.headTurn = 10;
         p.lean = 0.12;
-        p.handL = h(-30, 1100);
-        p.handR = h(90, 990);
+        p.handL = h(-30, 1120);
+        p.handR = { x: REL_X, y: REL_Y };
       } else if (t < 21.3) {
         p.look = 'right';
         p.brow = 'raised';
         p.eye = 'wide';
         p.mouth = 'o';
         p.headTurn = 10;
-        p.handR = h(65, 1050);
-        p.handL = h(-40, 1120);
+        p.handR = { x: FOLLOW_X, y: FOLLOW_Y };
+        p.handL = h(-35, 1125);
       } else if (t < 22.2) {
         p.look = 'right';
         p.brow = 'raised';
@@ -1224,24 +1214,24 @@ export class CupInCupRenderer {
         p.mouth = 'o';
         p.headTurn = 12;
         p.headDrop = -2;
-        p.handR = h(120, 1040);
-        p.handL = h(30, 1080);
+        p.handR = h(175, 1005);
+        p.handL = h(105, 1050);
       } else if (t < 23.1) {
         p.look = 'right';
         p.brow = 'raised';
         p.eye = 'wide';
         p.mouth = 'grin';
         p.headTurn = 10;
-        p.handL = h(-20, 1030);
-        p.handR = h(80, 1000);
+        p.handL = h(90, 1030);
+        p.handR = h(160, 1000);
       } else {
         p.look = 'front';
         p.brow = 'raised';
         p.eye = 'happy';
         p.mouth = 'grin';
         p.headTurn = 0;
-        p.handL = h(-140, 990);
-        p.handR = h(130, 990);
+        p.handL = h(-90, 975);
+        p.handR = h(100, 975);
         p.fistL = true;
         p.fistR = true;
       }
@@ -1252,8 +1242,8 @@ export class CupInCupRenderer {
         p.brow = 'raised';
         p.eye = 'happy';
         p.mouth = 'grin';
-        p.handL = h(-140, 990);
-        p.handR = h(130, 990);
+        p.handL = h(-90, 975);
+        p.handR = h(100, 975);
         p.fistL = true;
         p.fistR = true;
       } else if (t < 25.4) {
@@ -1262,15 +1252,15 @@ export class CupInCupRenderer {
         p.eye = 'wide';
         p.mouth = 'o';
         p.headDrop = -6;
-        p.handL = h(-80, 940);
-        p.handR = h(80, 940);
+        p.handL = h(-100, 930);
+        p.handR = h(110, 930);
       } else if (t < 26.4) {
         p.look = 'up';
         p.brow = 'raised';
         p.eye = 'wide';
         p.mouth = 'o';
         p.headDrop = -8;
-        p.handL = h(-120, 1000);
+        p.handL = h(-110, 1000);
         p.handR = h(120, 1000);
       } else if (t < 27.6) {
         p.look = 'up';
@@ -1278,36 +1268,34 @@ export class CupInCupRenderer {
         p.eye = 'shut';
         p.mouth = 'flat';
         p.headDrop = -4;
-        p.handL = h(-55, 910);
-        p.handR = h(55, 910);
+        p.handL = h(-110, 940);
+        p.handR = h(110, 940);
       } else if (t < 28.9) {
         p.look = 'front';
         p.brow = 'sad';
         p.eye = 'wide';
         p.mouth = 'flat';
-        p.handL = h(-60, 1200);
-        p.handR = h(60, 1200);
+        // Buried: the cups landing on him swallow the arms.
+        p.hideArms = true;
       } else if (t < 29.4) {
         p.look = 'up';
         p.brow = 'raised';
         p.eye = 'wide';
         p.mouth = 'o';
         p.headDrop = -3;
-        p.handL = h(-60, 1200);
-        p.handR = h(60, 1200);
+        p.hideArms = true;
       } else {
         p.look = 'front';
         p.brow = 'angry';
         p.eye = 'squint';
         p.mouth = 'grit';
-        p.handL = h(-60, 1200);
-        p.handR = h(60, 1200);
+        p.hideArms = true;
       }
     }
 
     // Ball ownership drives the hand pose, and must match ballAt exactly.
     p.holdBallR =
-      (t >= 0.9 && t < 6.5) || (t >= 12.6 && t < 13.0) || (t >= 18.0 && t < 20.0);
+      (t >= 0.9 && t < 6.5) || (t >= 12.4 && t < 12.9) || (t >= 18.0 && t < 20.0);
 
     return p;
   }
@@ -1452,6 +1440,10 @@ export class CupInCupRenderer {
     };
 
     if (layer === 'body') {
+      if (pose.hideArms) {
+        ctx.restore();
+        return;
+      }
       drawLimb(arms.l);
       drawLimb(arms.r);
 
@@ -1480,6 +1472,10 @@ export class CupInCupRenderer {
       const head = this.headPoint(pose, hipX, hipY);
       this.drawHead(ctx, head.x, head.y, pose, t);
     } else {
+      if (pose.hideArms) {
+        ctx.restore();
+        return;
+      }
       // Fingers curl back over the ball or a held prop.
       if (pose.gripL) {
         drawHand(ctx, arms.l, { side: 'left', pose: 'grip', layer: 'overlay' });

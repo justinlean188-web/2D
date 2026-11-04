@@ -1306,3 +1306,192 @@ export const CANDY_CLAW_CUES: AudioCue[] = [
   { id: 'cc-lollipop-land', time: 28.4, play: (d) => soundEngine.playBalloonSqueak(1.5, d) },
   { id: 'cc-freeze-sting', time: 29.0, play: (d) => soundEngine.playFreezeSting(d) },
 ];
+
+/**
+ * 30-second sound map for "The Impossible Plate Spin".
+ * Four 7.5s circus-score slices plus one-shots for every plate placement,
+ * the wobble, the flight and the beanie landing.
+ */
+export const PLATE_SPIN_CUES: AudioCue[] = [
+  // Score slices
+  { id: 'ps-score-1', time: 0.0, play: (d) => soundEngine.playPlateSpinScoreSection(d, 0, 7.5) },
+  { id: 'ps-score-2', time: 7.5, play: (d) => soundEngine.playPlateSpinScoreSection(d, 7.5, 15.0) },
+  { id: 'ps-score-3', time: 15.0, play: (d) => soundEngine.playPlateSpinScoreSection(d, 15.0, 22.5) },
+  { id: 'ps-score-4', time: 22.5, play: (d) => soundEngine.playPlateSpinScoreSection(d, 22.5, 30.0) },
+
+  // Shot 1 - The Challenge (0-6s)
+  { id: 'ps-step-1', time: 0.35, play: (d) => soundEngine.playFootstep(false, d) },
+  { id: 'ps-step-2', time: 0.9, play: (d) => soundEngine.playFootstep(false, d) },
+  { id: 'ps-step-3', time: 1.45, play: (d) => soundEngine.playFootstep(false, d) },
+  { id: 'ps-sign-sparkle', time: 2.0, play: (d) => soundEngine.playMagicSparkle(d) },
+  { id: 'ps-determined-ding', time: 2.55, play: (d) => soundEngine.playIdeaDing(d) },
+  { id: 'ps-crate-rattle', time: 3.6, play: (d) => soundEngine.playWoodClack(d) },
+  { id: 'ps-plate-1-pick', time: 4.15, play: (d) => soundEngine.playMechanicalClick(d) },
+  { id: 'ps-plate-1-throw', time: 4.47, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'ps-plate-1-clink', time: 4.92, play: (d) => soundEngine.playPlateClink(d) },
+  { id: 'ps-plate-1-whirr', time: 4.94, play: (d) => soundEngine.playPlateWhir(d, 0.9) },
+
+  // Shot 2 - Three Plates (6-12s)
+  { id: 'ps-plate-2-pick', time: 6.5, play: (d) => soundEngine.playWoodClack(d) },
+  { id: 'ps-plate-2-throw', time: 6.6, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'ps-plate-2-clink', time: 7.05, play: (d) => soundEngine.playPlateClink(d) },
+  { id: 'ps-plate-2-whirr', time: 7.08, play: (d) => soundEngine.playPlateWhir(d, 0.8) },
+  { id: 'ps-plate-3-pick', time: 8.7, play: (d) => soundEngine.playWoodClack(d) },
+  { id: 'ps-plate-3-throw', time: 8.8, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'ps-plate-3-clink', time: 9.25, play: (d) => soundEngine.playPlateClink(d) },
+  { id: 'ps-plate-3-whirr', time: 9.28, play: (d) => soundEngine.playPlateWhir(d, 1.0) },
+  { id: 'ps-three-confident', time: 10.5, play: (d) => soundEngine.playConfidenceDing(d) },
+
+  // Shot 3 - Ten Plates (12-18s)
+  { id: 'ps-plate-4-pick', time: 12.13, play: (d) => soundEngine.playWoodClack(d) },
+  { id: 'ps-plate-4-throw', time: 12.25, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'ps-plate-4-clink', time: 12.7, play: (d) => soundEngine.playPlateClink(d) },
+  { id: 'ps-plate-5-pick', time: 12.63, play: (d) => soundEngine.playWoodClack(d) },
+  { id: 'ps-plate-5-throw', time: 12.75, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'ps-plate-5-clink', time: 13.2, play: (d) => soundEngine.playPlateClink(d) },
+  { id: 'ps-plate-6-pick', time: 13.13, play: (d) => soundEngine.playWoodClack(d) },
+  { id: 'ps-plate-6-throw', time: 13.25, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'ps-plate-6-clink', time: 13.7, play: (d) => soundEngine.playPlateClink(d) },
+  { id: 'ps-plate-7-pick', time: 13.63, play: (d) => soundEngine.playWoodClack(d) },
+  { id: 'ps-plate-7-throw', time: 13.75, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'ps-plate-7-clink', time: 14.2, play: (d) => soundEngine.playPlateClink(d) },
+  { id: 'ps-plate-8-pick', time: 14.13, play: (d) => soundEngine.playWoodClack(d) },
+  { id: 'ps-plate-8-throw', time: 14.25, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'ps-plate-8-clink', time: 14.7, play: (d) => soundEngine.playPlateClink(d) },
+  { id: 'ps-plate-9-pick', time: 14.63, play: (d) => soundEngine.playWoodClack(d) },
+  { id: 'ps-plate-9-throw', time: 14.75, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'ps-plate-9-clink', time: 15.2, play: (d) => soundEngine.playPlateClink(d) },
+  { id: 'ps-plate-10-pick', time: 15.13, play: (d) => soundEngine.playWoodClack(d) },
+  { id: 'ps-plate-10-throw', time: 15.25, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'ps-plate-10-clink', time: 15.7, play: (d) => soundEngine.playPlateClink(d) },
+  { id: 'ps-ten-plates-whirr', time: 15.75, play: (d) => soundEngine.playPlateWhir(d, 1.4) },
+  { id: 'ps-row-wobble', time: 16.95, play: (d) => soundEngine.playPlateWobble(d) },
+  { id: 'ps-row-sparkle', time: 17.35, play: (d) => soundEngine.playMagicSparkle(d) },
+  { id: 'ps-proud-ding', time: 17.6, play: (d) => soundEngine.playConfidenceDing(d) },
+
+  // Shot 4 - The Wobble (18-24s)
+  { id: 'ps-victory-fanfare', time: 18.2, play: (d) => soundEngine.playVictoryFanfareShort(d) },
+  { id: 'ps-hop-1', time: 18.28, play: (d) => soundEngine.playFloorThump(d) },
+  { id: 'ps-hop-2', time: 18.72, play: (d) => soundEngine.playFloorThump(d) },
+  { id: 'ps-wobble-creak', time: 19.5, play: (d) => soundEngine.playPlateWobble(d) },
+  { id: 'ps-wobble-tense', time: 20.3, play: (d) => soundEngine.playRisingMusicSwelling(d) },
+  { id: 'ps-plate-slip', time: 21.05, play: (d) => soundEngine.playSlideWhistle(d) },
+  { id: 'ps-plate-fly', time: 21.12, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'ps-plate-fly-whistle', time: 21.18, play: (d) => soundEngine.playSpinWhistle(d) },
+  { id: 'ps-plate-fly-whirr', time: 21.9, play: (d) => soundEngine.playPlateWhir(d, 1.3) },
+  { id: 'ps-plate-drop-hush', time: 23.4, play: (d) => soundEngine.playSoftFlick(d) },
+
+  // Shot 5 - The Record (24-30s)
+  { id: 'ps-plate-land-clink', time: 24.3, play: (d) => soundEngine.playPlateClink(d) },
+  { id: 'ps-plate-land-plop', time: 24.33, play: (d) => soundEngine.playTinyPlop(d) },
+  { id: 'ps-shock-scratch', time: 24.6, play: (d) => soundEngine.playRecordScratch(d) },
+  { id: 'ps-beanie-whirr', time: 24.9, play: (d) => soundEngine.playPlateWhir(d, 1.2) },
+  { id: 'ps-proud-finger', time: 26.8, play: (d) => soundEngine.playIdeaDing(d) },
+  { id: 'ps-record-sparkle', time: 27.6, play: (d) => soundEngine.playPrizeSparkle(d) },
+  { id: 'ps-end-sting', time: 29.2, play: (d) => soundEngine.playFreezeSting(d) },
+];
+
+/**
+ * 30-second sound map for "The Three-Wall Ping-Pong Shot".
+ * Four 7.5s score slices plus one-shots for paddle hits, wall bounces,
+ * the beanie bonk, the dramatic slow-mo, the cup plink, and the avalanche.
+ */
+export const THREE_WALL_PING_PONG_CUES: AudioCue[] = [
+  // Score slices
+  { id: 'twpp-score-1', time: 0.0, play: (d) => soundEngine.playThreeWallPingPongScoreSection(d, 0, 7.5) },
+  { id: 'twpp-score-2', time: 7.5, play: (d) => soundEngine.playThreeWallPingPongScoreSection(d, 7.5, 15.0) },
+  { id: 'twpp-score-3', time: 15.0, play: (d) => soundEngine.playThreeWallPingPongScoreSection(d, 15.0, 22.5) },
+  { id: 'twpp-score-4', time: 22.5, play: (d) => soundEngine.playThreeWallPingPongScoreSection(d, 22.5, 30.0) },
+
+  // Shot 1 - The Setup (0-6s)
+  { id: 'twpp-confident', time: 1.5, play: (d) => soundEngine.playConfidenceDing(d) },
+  { id: 'twpp-paddle-grip', time: 3.0, play: (d) => soundEngine.playMechanicalClick(d) },
+  { id: 'twpp-windup-whoosh', time: 4.0, play: (d) => soundEngine.playWhoosh(d) },
+
+  // Shot 2 - The First Fail (6-12s)
+  { id: 'twpp-paddle-hit-1', time: 6.5, play: (d) => soundEngine.playPaddleHit(d) },
+  { id: 'twpp-ball-flight-1', time: 6.5, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'twpp-wall-hit-1', time: 7.8, play: (d) => soundEngine.playWallBounce(d) },
+  { id: 'twpp-ricochet-boing', time: 8.0, play: (d) => soundEngine.playCartoonBoing(d) },
+  { id: 'twpp-beanie-bonk', time: 8.5, play: (d) => soundEngine.playHeadBonk(d) },
+  { id: 'twpp-angry-sting', time: 9.0, play: (d) => soundEngine.playAngrySting(d) },
+  { id: 'twpp-ball-plop', time: 9.8, play: (d) => soundEngine.playDeskPlop(d) },
+
+  // Shot 3 - So Close (12-18s)
+  { id: 'twpp-deep-breath', time: 12.3, play: (d) => soundEngine.playDeepBreath(d) },
+  { id: 'twpp-paddle-hit-2', time: 12.8, play: (d) => soundEngine.playPaddleHit(d) },
+  { id: 'twpp-wall-hit-1b', time: 13.8, play: (d) => soundEngine.playWallBounce(d) },
+  { id: 'twpp-wall-hit-2', time: 15.0, play: (d) => soundEngine.playWallBounce(d) },
+  { id: 'twpp-wall-hit-3', time: 16.2, play: (d) => soundEngine.playWallBounce(d) },
+  { id: 'twpp-near-miss', time: 17.2, play: (d) => soundEngine.playSlideWhistle(d) },
+  { id: 'twpp-sad-trombone', time: 17.6, play: (d) => soundEngine.playSadTrombone(d) },
+
+  // Shot 4 - The Perfect Shot (18-24s)
+  { id: 'twpp-slowmo-swell', time: 18.5, play: (d) => soundEngine.playRisingMusicSwelling(d) },
+  { id: 'twpp-paddle-hit-perfect', time: 20.0, play: (d) => soundEngine.playPaddleHit(d) },
+  { id: 'twpp-wall-chime-1', time: 20.8, play: (d) => soundEngine.playMagicSparkle(d) },
+  { id: 'twpp-wall-chime-2', time: 21.8, play: (d) => soundEngine.playMagicSparkle(d) },
+  { id: 'twpp-wall-chime-3', time: 22.8, play: (d) => soundEngine.playMagicSparkle(d) },
+  { id: 'twpp-cup-plink', time: 23.5, play: (d) => soundEngine.playCupPing(d) },
+  { id: 'twpp-victory-fanfare', time: 23.7, play: (d) => soundEngine.playVictoryFanfareShort(d) },
+  { id: 'twpp-happy-hop', time: 23.9, play: (d) => soundEngine.playFloorThump(d) },
+
+  // Shot 5 - Too Many Balls (24-30s)
+  { id: 'twpp-cup-rattle', time: 24.2, play: (d) => soundEngine.playMechanicalClick(d) },
+  { id: 'twpp-avalanche-rumble', time: 24.5, play: (d) => soundEngine.playDramaticRumble(d) },
+  { id: 'twpp-balls-cascade', time: 25.0, play: (d) => soundEngine.playPlushAvalanche(d) },
+  { id: 'twpp-beanie-rise', time: 27.5, play: (d) => soundEngine.playSoftFlick(d) },
+  { id: 'twpp-freeze-sting', time: 29.0, play: (d) => soundEngine.playFreezeSting(d) },
+];
+
+/**
+ * 30-second sound map for "The Impossible Cup-in-Cup Shot".
+ * Four 7.5s score slices plus one-shots for cup clicks, paddle hits,
+ * table bounces, rim clangs, suspense swells, soft plinks, and avalanche.
+ */
+export const CUP_IN_CUP_CUES: AudioCue[] = [
+  // Score slices
+  { id: 'cic-score-1', time: 0.0, play: (d) => soundEngine.playCupInCupScoreSection(d, 0, 7.5) },
+  { id: 'cic-score-2', time: 7.5, play: (d) => soundEngine.playCupInCupScoreSection(d, 7.5, 15.0) },
+  { id: 'cic-score-3', time: 15.0, play: (d) => soundEngine.playCupInCupScoreSection(d, 15.0, 22.5) },
+  { id: 'cic-score-4', time: 22.5, play: (d) => soundEngine.playCupInCupScoreSection(d, 22.5, 30.0) },
+
+  // Shot 1 - The Setup (0-6s)
+  { id: 'cic-cup-place-1', time: 1.5, play: (d) => soundEngine.playMechanicalClick(d) },
+  { id: 'cic-cup-place-2', time: 2.2, play: (d) => soundEngine.playMechanicalClick(d) },
+  { id: 'cic-cup-place-3', time: 3.0, play: (d) => soundEngine.playMechanicalClick(d) },
+  { id: 'cic-ball-pickup', time: 3.5, play: (d) => soundEngine.playMechanicalClick(d) },
+  { id: 'cic-confident', time: 4.0, play: (d) => soundEngine.playConfidenceDing(d) },
+
+  // Shot 2 - First Failure (6-12s)
+  { id: 'cic-paddle-hit-1', time: 6.5, play: (d) => soundEngine.playPaddleHit(d) },
+  { id: 'cic-ball-bounce-1', time: 7.2, play: (d) => soundEngine.playWallBounce(d) },
+  { id: 'cic-rim-clang-1', time: 7.4, play: (d) => soundEngine.playRimClink(d) },
+  { id: 'cic-angry-sting-1', time: 7.8, play: (d) => soundEngine.playAngrySting(d) },
+
+  // Shot 3 - So Close (12-18s)
+  { id: 'cic-deep-breath', time: 12.3, play: (d) => soundEngine.playDeepBreath(d) },
+  { id: 'cic-paddle-hit-2', time: 13.0, play: (d) => soundEngine.playPaddleHit(d) },
+  { id: 'cic-ball-bounce-2', time: 14.2, play: (d) => soundEngine.playWallBounce(d) },
+  { id: 'cic-suspense-swell', time: 14.5, play: (d) => soundEngine.playRisingMusicSwelling(d) },
+  { id: 'cic-soft-plink', time: 15.5, play: (d) => soundEngine.playCupPing(d) },
+  { id: 'cic-record-scratch', time: 16.0, play: (d) => soundEngine.playRecordScratch(d) },
+  { id: 'cic-sad-trombone', time: 16.5, play: (d) => soundEngine.playSadTrombone(d) },
+
+  // Shot 4 - Perfect Shot (18-24s)
+  { id: 'cic-slowmo-swell', time: 18.5, play: (d) => soundEngine.playRisingMusicSwelling(d) },
+  { id: 'cic-paddle-hit-perfect', time: 20.0, play: (d) => soundEngine.playPaddleHit(d) },
+  { id: 'cic-ball-bounce-perfect', time: 21.5, play: (d) => soundEngine.playWallBounce(d) },
+  { id: 'cic-chime-1', time: 22.0, play: (d) => soundEngine.playMagicSparkle(d) },
+  { id: 'cic-perfect-plink', time: 23.0, play: (d) => soundEngine.playCupPing(d) },
+  { id: 'cic-victory-fanfare', time: 23.3, play: (d) => soundEngine.playVictoryFanfareShort(d) },
+  { id: 'cic-happy-hop', time: 23.5, play: (d) => soundEngine.playFloorThump(d) },
+
+  // Shot 5 - Avalanche (24-30s)
+  { id: 'cic-table-bump', time: 24.5, play: (d) => soundEngine.playFloorThump(d) },
+  { id: 'cic-wobble-creak', time: 25.0, play: (d) => soundEngine.playCupWobbleCreak(d) },
+  { id: 'cic-avalanche-rumble', time: 25.5, play: (d) => soundEngine.playDramaticRumble(d) },
+  { id: 'cic-avalanche-cascade', time: 26.0, play: (d) => soundEngine.playPlushAvalanche(d) },
+  { id: 'cic-beanie-rise', time: 28.0, play: (d) => soundEngine.playSoftFlick(d) },
+  { id: 'cic-freeze-sting', time: 29.0, play: (d) => soundEngine.playFreezeSting(d) },
+];

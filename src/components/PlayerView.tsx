@@ -36,6 +36,9 @@ import { PencilLandingRenderer } from '../animation/pencilLandingRenderer';
 import { DominoTrickshotRenderer } from '../animation/dominoTrickshotRenderer';
 import { BalloonPopJackpotRenderer } from '../animation/balloonPopJackpotRenderer';
 import { CandyClawRenderer } from '../animation/candyClawRenderer';
+import { PlateSpinRenderer } from '../animation/plateSpinRenderer';
+import { ThreeWallPingPongRenderer } from '../animation/threeWallPingPongRenderer';
+import { CupInCupRenderer } from '../animation/cupInCupRenderer';
 import { MachineRenderer } from '../animation/machineRenderer';
 import { SequelPaperBallRenderer } from '../animation/sequelPaperBallRenderer';
 import { MindTrapsRenderer } from '../animation/mindTrapsRenderer';
@@ -61,6 +64,9 @@ import {
   DOMINO_TRICKSHOT_CUES,
   BALLOON_POP_JACKPOT_CUES,
   CANDY_CLAW_CUES,
+  PLATE_SPIN_CUES,
+  THREE_WALL_PING_PONG_CUES,
+  CUP_IN_CUP_CUES,
   PAPER_BALL_PART3_CUES,
   PAPER_BALL_PART4_CUES,
   PAPER_BALL_SEQUEL_CUES,
@@ -122,6 +128,15 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
   const candyClawRendererRef = useRef<CandyClawRenderer>(
     new CandyClawRenderer()
   );
+  const plateSpinRendererRef = useRef<PlateSpinRenderer>(
+    new PlateSpinRenderer()
+  );
+  const threeWallPingPongRendererRef = useRef<ThreeWallPingPongRenderer>(
+    new ThreeWallPingPongRenderer()
+  );
+  const cupInCupRendererRef = useRef<CupInCupRenderer>(
+    new CupInCupRenderer()
+  );
   const mindTrapsRendererRef = useRef<MindTrapsRenderer>(new MindTrapsRenderer());
   const [speed, setSpeed] = useState<number>(1.0);
   const [isLooping, setIsLooping] = useState<boolean>(true);
@@ -170,6 +185,10 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
   const isBalloonPopProject = config.activeProject === 'balloon-pop-jackpot';
   // The candy-claw short burns captions near the top of the frame.
   const isCandyClawProject = config.activeProject === 'candy-claw';
+  // The plate-spin short burns its five circus captions near the top too.
+  const isPlateSpinProject = config.activeProject === 'plate-spin';
+  const isThreeWallPingPongProject = config.activeProject === 'three-wall-ping-pong';
+  const isCupInCupProject = config.activeProject === 'cup-in-cup';
 
   // Current active scene
   const activeScene =
@@ -304,6 +323,21 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
 
     if (config.activeProject === 'candy-claw') {
       for (const cue of CANDY_CLAW_CUES) setCueState(cue.id, cue.time);
+      return;
+    }
+
+    if (config.activeProject === 'plate-spin') {
+      for (const cue of PLATE_SPIN_CUES) setCueState(cue.id, cue.time);
+      return;
+    }
+
+    if (config.activeProject === 'three-wall-ping-pong') {
+      for (const cue of THREE_WALL_PING_PONG_CUES) setCueState(cue.id, cue.time);
+      return;
+    }
+
+    if (config.activeProject === 'cup-in-cup') {
+      for (const cue of CUP_IN_CUP_CUES) setCueState(cue.id, cue.time);
       return;
     }
 
@@ -746,6 +780,63 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
         return;
       }
 
+      if (config.activeProject === 'plate-spin') {
+        if (!config.enableSFX) return;
+        for (const cue of PLATE_SPIN_CUES) {
+          if (cues.has(cue.id)) continue;
+          if (cue.id.startsWith('ps-score-')) {
+            if (t >= cue.time && t < cue.time + 7.6) {
+              cue.play();
+              cues.add(cue.id);
+            }
+            continue;
+          }
+          if (t >= cue.time && t - cue.time < 0.75) {
+            cue.play();
+            cues.add(cue.id);
+          }
+        }
+        return;
+      }
+
+      if (config.activeProject === 'three-wall-ping-pong') {
+        if (!config.enableSFX) return;
+        for (const cue of THREE_WALL_PING_PONG_CUES) {
+          if (cues.has(cue.id)) continue;
+          if (cue.id.startsWith('twpp-score-')) {
+            if (t >= cue.time && t < cue.time + 7.6) {
+              cue.play();
+              cues.add(cue.id);
+            }
+            continue;
+          }
+          if (t >= cue.time && t - cue.time < 0.75) {
+            cue.play();
+            cues.add(cue.id);
+          }
+        }
+        return;
+      }
+
+      if (config.activeProject === 'cup-in-cup') {
+        if (!config.enableSFX) return;
+        for (const cue of CUP_IN_CUP_CUES) {
+          if (cues.has(cue.id)) continue;
+          if (cue.id.startsWith('cic-score-')) {
+            if (t >= cue.time && t < cue.time + 7.6) {
+              cue.play();
+              cues.add(cue.id);
+            }
+            continue;
+          }
+          if (t >= cue.time && t - cue.time < 0.75) {
+            cue.play();
+            cues.add(cue.id);
+          }
+        }
+        return;
+      }
+
       if (config.activeProject === 'paper-ball') {
         if (!config.enableSFX) return;
         if (t >= 2.0 && !cues.has('toss')) {
@@ -939,6 +1030,12 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
             balloonPopJackpotRendererRef.current.render(ctx, renderTime, config);
           } else if (config.activeProject === 'candy-claw') {
             candyClawRendererRef.current.render(ctx, renderTime, config);
+          } else if (config.activeProject === 'plate-spin') {
+            plateSpinRendererRef.current.render(ctx, renderTime, config);
+          } else if (config.activeProject === 'three-wall-ping-pong') {
+            threeWallPingPongRendererRef.current.render(ctx, renderTime, config);
+          } else if (config.activeProject === 'cup-in-cup') {
+            cupInCupRendererRef.current.render(ctx, renderTime, config);
           } else if (config.activeProject === 'paper-ball') {
             paperBallRendererRef.current.render(ctx, renderTime, config);
           } else {
@@ -1024,6 +1121,12 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
         ? 'balloon-pop-jackpot'
         : config.activeProject === 'candy-claw'
         ? 'candy-claw'
+        : config.activeProject === 'plate-spin'
+        ? 'plate-spin'
+        : config.activeProject === 'three-wall-ping-pong'
+        ? 'three-wall-ping-pong'
+        : config.activeProject === 'cup-in-cup'
+        ? 'cup-in-cup'
         : config.activeProject === 'trick-shot-champion'
         ? 'trick-shot-champion'
         : config.activeProject === 'pop-star'
@@ -1135,7 +1238,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
             />
 
             {/* Preview caption overlay for burned-in caption shorts */}
-            {(isDiamondHeistProject || isPancakeFlipProject || isVendingMachineProject || isBiggestBalloonProject || isFindTheBallProject || isAttempt247Project || isNeedleThreadProject || isDominoTrickshotProject || isBalloonPopProject || isCandyClawProject) && activeScene?.captionText && (
+            {(isDiamondHeistProject || isPancakeFlipProject || isVendingMachineProject || isBiggestBalloonProject || isFindTheBallProject || isAttempt247Project || isNeedleThreadProject || isDominoTrickshotProject || isBalloonPopProject || isCandyClawProject || isPlateSpinProject || isThreeWallPingPongProject || isCupInCupProject) && activeScene?.captionText && (
               <div className="absolute top-4 left-0 right-0 z-20 pointer-events-none flex justify-center">
                 <div className="bg-black/70 text-white text-sm font-bold px-3 py-1 rounded-md max-w-[90%] text-center">
                   {activeScene.captionText}
@@ -1448,14 +1551,15 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
                   !isAttempt247Project &&
                   !isDominoTrickshotProject &&
                   !isBalloonPopProject &&
-                  !isCandyClawProject
+                  !isCandyClawProject &&
+                  !isPlateSpinProject
                 ) {
                   setConfig({ ...config, showCaptions: !config.showCaptions });
                 }
               }}
-              disabled={!currentProject.hasCaptions || isPopProject || isTrickShotProject || isPingPongProject || isDartProject || isCoinFlipProject || isArcadeClawProject || isDiamondHeistProject || isPancakeFlipProject || isVendingMachineProject || isBiggestBalloonProject || isFindTheBallProject || isAttempt247Project || isNeedleThreadProject || isRingShotProject || isPencilLandingProject || isDominoTrickshotProject || isBalloonPopProject || isCandyClawProject}
+              disabled={!currentProject.hasCaptions || isPopProject || isTrickShotProject || isPingPongProject || isDartProject || isCoinFlipProject || isArcadeClawProject || isDiamondHeistProject || isPancakeFlipProject || isVendingMachineProject || isBiggestBalloonProject || isFindTheBallProject || isAttempt247Project || isNeedleThreadProject || isRingShotProject || isPencilLandingProject || isDominoTrickshotProject || isBalloonPopProject || isCandyClawProject || isPlateSpinProject || isThreeWallPingPongProject || isCupInCupProject}
               className={`p-3 rounded-xl border flex items-center justify-between transition-colors ${
-                !currentProject.hasCaptions || isPopProject || isTrickShotProject || isPingPongProject || isDartProject || isCoinFlipProject || isArcadeClawProject || isDiamondHeistProject || isPancakeFlipProject || isVendingMachineProject || isBiggestBalloonProject || isFindTheBallProject || isAttempt247Project || isNeedleThreadProject || isRingShotProject || isPencilLandingProject || isDominoTrickshotProject || isBalloonPopProject
+                !currentProject.hasCaptions || isPopProject || isTrickShotProject || isPingPongProject || isDartProject || isCoinFlipProject || isArcadeClawProject || isDiamondHeistProject || isPancakeFlipProject || isVendingMachineProject || isBiggestBalloonProject || isFindTheBallProject || isAttempt247Project || isNeedleThreadProject || isRingShotProject || isPencilLandingProject || isDominoTrickshotProject || isBalloonPopProject || isCandyClawProject || isPlateSpinProject || isThreeWallPingPongProject || isCupInCupProject
                   ? 'bg-slate-950/50 border-slate-900 text-slate-600 cursor-not-allowed opacity-60'
                   : config.showCaptions
                   ? 'bg-slate-900 border-slate-700 text-white cursor-pointer'
@@ -1465,7 +1569,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
               <div className="text-left">
                 <div className="text-xs font-semibold">In-Video Captions</div>
                 <div className="text-[11px] text-slate-400">
-                  {(isPingPongProject || isDartProject || isCoinFlipProject || isArcadeClawProject || isDiamondHeistProject || isPancakeFlipProject || isVendingMachineProject || isBiggestBalloonProject || isFindTheBallProject || isAttempt247Project || isNeedleThreadProject || isRingShotProject || isPencilLandingProject || isDominoTrickshotProject || isBalloonPopProject || isCandyClawProject)
+                  {(isPingPongProject || isDartProject || isCoinFlipProject || isArcadeClawProject || isDiamondHeistProject || isPancakeFlipProject || isVendingMachineProject || isBiggestBalloonProject || isFindTheBallProject || isAttempt247Project || isNeedleThreadProject || isRingShotProject || isPencilLandingProject || isDominoTrickshotProject || isBalloonPopProject || isCandyClawProject || isPlateSpinProject || isThreeWallPingPongProject || isCupInCupProject)
                     ? 'Burned-in scene captions'
                     : isPopProject || isTrickShotProject
                     ? 'Burned-in narration captions'
@@ -1476,7 +1580,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
               </div>
               <span
                 className={`text-xs font-mono ${
-                  isPopProject || isTrickShotProject || isPingPongProject || isDartProject || isCoinFlipProject || isArcadeClawProject || isDiamondHeistProject || isPancakeFlipProject || isVendingMachineProject || isBiggestBalloonProject || isFindTheBallProject || isAttempt247Project
+                  isPopProject || isTrickShotProject || isPingPongProject || isDartProject || isCoinFlipProject || isArcadeClawProject || isDiamondHeistProject || isPancakeFlipProject || isVendingMachineProject || isBiggestBalloonProject || isFindTheBallProject || isAttempt247Project || isThreeWallPingPongProject || isCupInCupProject
                     ? 'text-emerald-400'
                     : !currentProject.hasCaptions
                     ? 'text-slate-600'
@@ -1485,7 +1589,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
                     : 'text-slate-600'
                 }`}
               >
-                {isPopProject || isTrickShotProject || isPingPongProject || isDartProject || isCoinFlipProject || isArcadeClawProject || isDiamondHeistProject || isPancakeFlipProject || isVendingMachineProject || isBiggestBalloonProject || isFindTheBallProject || isAttempt247Project
+                {isPopProject || isTrickShotProject || isPingPongProject || isDartProject || isCoinFlipProject || isArcadeClawProject || isDiamondHeistProject || isPancakeFlipProject || isVendingMachineProject || isBiggestBalloonProject || isFindTheBallProject || isAttempt247Project || isPlateSpinProject || isThreeWallPingPongProject || isCupInCupProject
                   ? 'ON'
                   : !currentProject.hasCaptions
                   ? 'NONE'

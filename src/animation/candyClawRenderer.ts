@@ -1,4 +1,5 @@
 import type { StudioConfig } from '../types';
+import { drawHand, HandStyle } from './handRenderer';
 
 const TAU = Math.PI * 2;
 const WIDTH = 1080;
@@ -111,6 +112,8 @@ interface Pose {
   fistL: boolean;
   fistR: boolean;
   pointR: boolean;
+  gripL: boolean;
+  gripR: boolean;
   beanieOn: boolean;
 }
 
@@ -1535,6 +1538,12 @@ export class CandyClawRenderer {
       }
     }
 
+    // Derive grip states from hand positions and actions
+    // Right hand grips: joystick (6.45-7.95), button (7.95), lollipop (15.5+)
+    p.gripR = (t >= 6.45 && t < 7.95) || t >= 15.5;
+    // Left hand rarely grips
+    p.gripL = false;
+
     return p;
   }
 
@@ -1557,6 +1566,8 @@ export class CandyClawRenderer {
       fistL: false,
       fistR: false,
       pointR: false,
+      gripL: false,
+      gripR: false,
       beanieOn: true,
     };
   }
@@ -1681,35 +1692,17 @@ export class CandyClawRenderer {
     drawLimb(arms.l);
     drawLimb(arms.r);
 
-    const drawHand = (a: Arm, fist: boolean, point: boolean) => {
-      const r = fist ? 16 : 12;
-      ctx.fillStyle = WHITE;
-      ctx.strokeStyle = INK;
-      ctx.lineWidth = 5;
-      ctx.beginPath();
-      ctx.arc(a.hx, a.hy, r, 0, TAU);
-      ctx.fill();
-      ctx.stroke();
-      if (point) {
-        const dx = a.hx - a.ex;
-        const dy = a.hy - a.ey;
-        const len = Math.max(1, Math.hypot(dx, dy));
-        ctx.strokeStyle = INK;
-        ctx.lineWidth = 15;
-        ctx.beginPath();
-        ctx.moveTo(a.hx, a.hy);
-        ctx.lineTo(a.hx + (dx / len) * 34, a.hy + (dy / len) * 34);
-        ctx.stroke();
-        ctx.strokeStyle = WHITE;
-        ctx.lineWidth = 7;
-        ctx.beginPath();
-        ctx.moveTo(a.hx, a.hy);
-        ctx.lineTo(a.hx + (dx / len) * 32, a.hy + (dy / len) * 32);
-        ctx.stroke();
-      }
+    const leftHandStyle: HandStyle = {
+      side: 'left',
+      pose: pose.gripL ? 'grip' : pose.fistL ? 'fist' : 'relaxed',
     };
-    drawHand(arms.l, pose.fistL, false);
-    drawHand(arms.r, pose.fistR, pose.pointR);
+    const rightHandStyle: HandStyle = {
+      side: 'right',
+      pose: pose.gripR ? 'grip' : pose.fistR ? 'fist' : pose.pointR ? 'point' : 'relaxed',
+    };
+
+    drawHand(ctx, arms.l, leftHandStyle);
+    drawHand(ctx, arms.r, rightHandStyle);
 
     if (layer === 'front') {
       const head = this.headPoint(pose, hipX, hipY);

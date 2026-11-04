@@ -29,6 +29,9 @@ export const AudioLab: React.FC<AudioLabProps> = ({ config, setConfig }) => {
   const isDominoTrickshot = config.activeProject === 'domino-trickshot';
   const isBalloonPop = config.activeProject === 'balloon-pop-jackpot';
   const isCandyClaw = config.activeProject === 'candy-claw';
+  const isPlateSpin = config.activeProject === 'plate-spin';
+  const isThreeWallPingPong = config.activeProject === 'three-wall-ping-pong';
+  const isCupInCup = config.activeProject === 'cup-in-cup';
   const soundEffects = [
     // Paper Ball Ricochet Effects
     {
@@ -1617,6 +1620,233 @@ export const AudioLab: React.FC<AudioLabProps> = ({ config, setConfig }) => {
         setTimeout(() => soundEngine.playFreezeSting(), 4600);
       },
     },
+    // The Impossible Plate Spin Effects
+    {
+      project: 'plate-spin' as const,
+      name: 'The First Plate',
+      time: 'Plate Spin (0.0s - 5.2s)',
+      desc: 'Footsteps, a sign sparkle, a determined ding, the crate rattle, the plate whoosh, a clean clink and the first spin whirr.',
+      trigger: () => {
+        soundEngine.playFootstep();
+        setTimeout(() => soundEngine.playFootstep(), 550);
+        setTimeout(() => soundEngine.playFootstep(), 1100);
+        setTimeout(() => soundEngine.playMagicSparkle(), 1900);
+        setTimeout(() => soundEngine.playIdeaDing(), 2450);
+        setTimeout(() => soundEngine.playWoodClack(), 3500);
+        setTimeout(() => soundEngine.playWhoosh(), 4370);
+        setTimeout(() => soundEngine.playPlateClink(), 4820);
+        setTimeout(() => soundEngine.playPlateWhir(undefined, 0.9), 4840);
+      },
+    },
+    {
+      project: 'plate-spin' as const,
+      name: 'Three Plates',
+      time: 'Plate Spin (6.5s - 10.6s)',
+      desc: 'Two more crate grabs, two plate whooshes, two light clinks and a confident ding.',
+      trigger: () => {
+        soundEngine.playWoodClack();
+        setTimeout(() => soundEngine.playWhoosh(), 100);
+        setTimeout(() => soundEngine.playPlateClink(), 550);
+        setTimeout(() => soundEngine.playPlateWhir(undefined, 0.8), 580);
+        setTimeout(() => soundEngine.playWoodClack(), 2200);
+        setTimeout(() => soundEngine.playWhoosh(), 2300);
+        setTimeout(() => soundEngine.playPlateClink(), 2750);
+        setTimeout(() => soundEngine.playPlateWhir(undefined, 1.0), 2780);
+        setTimeout(() => soundEngine.playConfidenceDing(), 4000);
+      },
+    },
+    {
+      project: 'plate-spin' as const,
+      name: 'Ten Plate Montage',
+      time: 'Plate Spin (12.1s - 17.6s)',
+      desc: 'Seven rapid crate grabs, seven whooshes and clinks, the ten-plate whirr, a nervous wobble and a proud ding.',
+      trigger: () => {
+        for (let i = 0; i < 7; i++) {
+          const at = i * 500;
+          setTimeout(() => soundEngine.playWoodClack(), at);
+          setTimeout(() => soundEngine.playWhoosh(), at + 120);
+          setTimeout(() => soundEngine.playPlateClink(), at + 570);
+        }
+        setTimeout(() => soundEngine.playPlateWhir(undefined, 1.4), 3650);
+        setTimeout(() => soundEngine.playPlateWobble(), 4850);
+        setTimeout(() => soundEngine.playMagicSparkle(), 5250);
+        setTimeout(() => soundEngine.playConfidenceDing(), 5500);
+      },
+    },
+    {
+      project: 'plate-spin' as const,
+      name: 'The Wobble & Flight',
+      time: 'Plate Spin (18.2s - 23.6s)',
+      desc: 'Victory fanfare, happy hops, a wobbling creak, rising tension, the slip, the flying-plate whistle and a hush.',
+      trigger: () => {
+        soundEngine.playVictoryFanfareShort();
+        setTimeout(() => soundEngine.playFloorThump(), 80);
+        setTimeout(() => soundEngine.playFloorThump(), 520);
+        setTimeout(() => soundEngine.playPlateWobble(), 1300);
+        setTimeout(() => soundEngine.playRisingMusicSwelling(), 2100);
+        setTimeout(() => soundEngine.playSlideWhistle(), 2850);
+        setTimeout(() => soundEngine.playWhoosh(), 2920);
+        setTimeout(() => soundEngine.playSpinWhistle(), 2980);
+        setTimeout(() => soundEngine.playPlateWhir(undefined, 1.3), 3700);
+        setTimeout(() => soundEngine.playSoftFlick(), 5200);
+      },
+    },
+    {
+      project: 'plate-spin' as const,
+      name: 'The Beanie Record',
+      time: 'Plate Spin (24.3s - 29.2s)',
+      desc: 'A gentle plate clink and tiny plop on the beanie, a record scratch, the beanie-plate whirr, a proud ding, sparkles and the freeze sting.',
+      trigger: () => {
+        soundEngine.playPlateClink();
+        setTimeout(() => soundEngine.playTinyPlop(), 30);
+        setTimeout(() => soundEngine.playRecordScratch(), 300);
+        setTimeout(() => soundEngine.playPlateWhir(undefined, 1.2), 600);
+        setTimeout(() => soundEngine.playIdeaDing(), 2500);
+        setTimeout(() => soundEngine.playPrizeSparkle(), 3300);
+        setTimeout(() => soundEngine.playFreezeSting(), 4900);
+      },
+    },
+    // The Three-Wall Ping-Pong Shot Effects
+    {
+      project: 'three-wall-ping-pong' as const,
+      name: 'The Setup',
+      time: 'Three-Wall Ping-Pong (0.0s - 4.5s)',
+      desc: 'Confident ding, paddle grip click, wind-up whoosh.',
+      trigger: () => {
+        soundEngine.playConfidenceDing();
+        setTimeout(() => soundEngine.playMechanicalClick(), 1500);
+        setTimeout(() => soundEngine.playWhoosh(), 2500);
+      },
+    },
+    {
+      project: 'three-wall-ping-pong' as const,
+      name: 'The First Fail',
+      time: 'Three-Wall Ping-Pong (6.5s - 10.0s)',
+      desc: 'Paddle hit, ball flight, wall bounce, ricochet boing, beanie bonk, angry sting, ball plop.',
+      trigger: () => {
+        soundEngine.playPaddleHit();
+        soundEngine.playWhoosh();
+        setTimeout(() => soundEngine.playWallBounce(), 1300);
+        setTimeout(() => soundEngine.playCartoonBoing(), 1500);
+        setTimeout(() => soundEngine.playHeadBonk(), 2000);
+        setTimeout(() => soundEngine.playAngrySting(), 2500);
+        setTimeout(() => soundEngine.playDeskPlop(), 3300);
+      },
+    },
+    {
+      project: 'three-wall-ping-pong' as const,
+      name: 'So Close',
+      time: 'Three-Wall Ping-Pong (12.3s - 17.6s)',
+      desc: 'Deep breath, paddle hit, three clean wall bounces, near-miss slide, sad trombone.',
+      trigger: () => {
+        soundEngine.playDeepBreath();
+        setTimeout(() => soundEngine.playPaddleHit(), 500);
+        setTimeout(() => soundEngine.playWallBounce(), 1500);
+        setTimeout(() => soundEngine.playWallBounce(), 2700);
+        setTimeout(() => soundEngine.playWallBounce(), 3900);
+        setTimeout(() => soundEngine.playSlideWhistle(), 4900);
+        setTimeout(() => soundEngine.playSadTrombone(), 5300);
+      },
+    },
+    {
+      project: 'three-wall-ping-pong' as const,
+      name: 'The Perfect Shot',
+      time: 'Three-Wall Ping-Pong (18.5s - 23.9s)',
+      desc: 'Slow-mo swell, perfect paddle hit, three resonant wall chimes, cup plink, victory fanfare, happy hop.',
+      trigger: () => {
+        soundEngine.playRisingMusicSwelling();
+        setTimeout(() => soundEngine.playPaddleHit(), 1500);
+        setTimeout(() => soundEngine.playMagicSparkle(), 2300);
+        setTimeout(() => soundEngine.playMagicSparkle(), 3300);
+        setTimeout(() => soundEngine.playMagicSparkle(), 4300);
+        setTimeout(() => soundEngine.playCupPing(), 5000);
+        setTimeout(() => soundEngine.playVictoryFanfareShort(), 5200);
+        setTimeout(() => soundEngine.playFloorThump(), 5400);
+      },
+    },
+    {
+      project: 'three-wall-ping-pong' as const,
+      name: 'Too Many Balls',
+      time: 'Three-Wall Ping-Pong (24.2s - 29.0s)',
+      desc: 'Cup rattle, avalanche rumble, balls cascade, beanie rise, freeze sting.',
+      trigger: () => {
+        soundEngine.playMechanicalClick();
+        setTimeout(() => soundEngine.playDramaticRumble(), 300);
+        setTimeout(() => soundEngine.playPlushAvalanche(), 800);
+        setTimeout(() => soundEngine.playSoftFlick(), 3300);
+        setTimeout(() => soundEngine.playFreezeSting(), 4800);
+      },
+    },
+    // The Impossible Cup-in-Cup Shot Effects
+    {
+      project: 'cup-in-cup' as const,
+      name: 'The Setup',
+      time: 'Cup-in-Cup (0.0s - 4.5s)',
+      desc: 'Cup placement clicks, ball pickup, confident ding.',
+      trigger: () => {
+        soundEngine.playMechanicalClick();
+        setTimeout(() => soundEngine.playMechanicalClick(), 700);
+        setTimeout(() => soundEngine.playMechanicalClick(), 1200);
+        setTimeout(() => soundEngine.playMechanicalClick(), 2000);
+        setTimeout(() => soundEngine.playConfidenceDing(), 3500);
+      },
+    },
+    {
+      project: 'cup-in-cup' as const,
+      name: 'First Failure',
+      time: 'Cup-in-Cup (6.5s - 8.5s)',
+      desc: 'Paddle hit, ball bounce, rim clang, angry sting.',
+      trigger: () => {
+        soundEngine.playPaddleHit();
+        setTimeout(() => soundEngine.playWallBounce(), 700);
+        setTimeout(() => soundEngine.playRimClink(), 900);
+        setTimeout(() => soundEngine.playAngrySting(), 1300);
+      },
+    },
+    {
+      project: 'cup-in-cup' as const,
+      name: 'Almost Perfect',
+      time: 'Cup-in-Cup (12.3s - 16.5s)',
+      desc: 'Deep breath, paddle hit, bounce, suspense swell, soft plink, record scratch, sad trombone.',
+      trigger: () => {
+        soundEngine.playDeepBreath();
+        setTimeout(() => soundEngine.playPaddleHit(), 500);
+        setTimeout(() => soundEngine.playWallBounce(), 1900);
+        setTimeout(() => soundEngine.playRisingMusicSwelling(), 2200);
+        setTimeout(() => soundEngine.playCupPing(), 3200);
+        setTimeout(() => soundEngine.playRecordScratch(), 3700);
+        setTimeout(() => soundEngine.playSadTrombone(), 4200);
+      },
+    },
+    {
+      project: 'cup-in-cup' as const,
+      name: 'The Perfect Shot',
+      time: 'Cup-in-Cup (18.5s - 23.5s)',
+      desc: 'Slow-mo swell, paddle thock, bounce, resonant chime, perfect plink, victory fanfare, happy hop.',
+      trigger: () => {
+        soundEngine.playRisingMusicSwelling();
+        setTimeout(() => soundEngine.playPaddleHit(), 1500);
+        setTimeout(() => soundEngine.playWallBounce(), 3000);
+        setTimeout(() => soundEngine.playMagicSparkle(), 3500);
+        setTimeout(() => soundEngine.playCupPing(), 4500);
+        setTimeout(() => soundEngine.playVictoryFanfareShort(), 4800);
+        setTimeout(() => soundEngine.playFloorThump(), 5000);
+      },
+    },
+    {
+      project: 'cup-in-cup' as const,
+      name: 'The Cup Avalanche',
+      time: 'Cup-in-Cup (24.5s - 29.0s)',
+      desc: 'Table bump, wobble creak, avalanche rumble, cups cascading, beanie rise, freeze sting.',
+      trigger: () => {
+        soundEngine.playFloorThump();
+        setTimeout(() => soundEngine.playCupWobbleCreak(), 500);
+        setTimeout(() => soundEngine.playDramaticRumble(), 1000);
+        setTimeout(() => soundEngine.playPlushAvalanche(), 1500);
+        setTimeout(() => soundEngine.playSoftFlick(), 3500);
+        setTimeout(() => soundEngine.playFreezeSting(), 4500);
+      },
+    },
   ];
   const visibleEffects = soundEffects.filter((effect) => effect.project === config.activeProject);
 
@@ -1654,6 +1884,12 @@ export const AudioLab: React.FC<AudioLabProps> = ({ config, setConfig }) => {
             ? 'The Angry Stickman: The Balloon Pop Jackpot is a 30-second carnival-booth comedy with a fully procedural carnival score sliced into four 7.5-second sections — plus booth light shimmer, dart whooshes and wooden thunks, balloon wobble squeaks, three confetti balloon pops, a cartoon boing for the beanie, a long drum roll, a golden pop with sparkles, a victory fanfare, the trophy case opening, a giant balloon inflate and burst, a record scratch, a tiny balloon squeak and the angry sting. No external audio files.'
             : isCandyClaw
             ? 'The Angry Stickman: The Candy Claw Disaster is a 30-second neon arcade comedy with a fully procedural carnival score sliced into four 7.5-second sections — plus booth lights, claw motor whirs, button clicks, mechanical clicks, rising whistles, cartoon boings, victory fanfares, arcade alarms, plush avalanches, dramatic rumbles, big impacts, cartoon crashes, balloon squeaks, and freeze stings. No external audio files.'
+            : isPlateSpin
+            ? 'The Angry Stickman: The Impossible Plate Spin is a 30-second circus-booth comedy with a fully procedural 160 bpm carnival score sliced into four 7.5-second sections — plus footsteps, crate rattles, ten plate whooshes and clinks, spinning whirrs, a nervous wobble, a rising tension swell, the flying-plate whistle, a record scratch, a proud ding and the freeze sting. No external audio files.'
+            : isThreeWallPingPong
+            ? 'The Angry Stickman: The Three-Wall Ping-Pong Shot is a 30-second trickshot comedy with a fully procedural 140 bpm playful score sliced into four 7.5-second sections — plus paddle hits, three distinct wall bounces, a beanie bonk, slow-mo swell, resonant wall chimes, a cup plink, victory fanfare, an avalanche rumble and a freeze sting. No external audio files.'
+            : isCupInCup
+            ? 'The Angry Stickman: The Impossible Cup-in-Cup Shot is a 30-second cup trickshot comedy with a fully procedural 135 bpm playful score sliced into four 7.5-second sections — plus cup clicks, paddle hits, table bounces, rim clangs, suspense swells, soft plinks, victory fanfares, cup tower wobbles, avalanche rumbles, and a freeze sting. No external audio files.'
             : isCoinFlip
             ? 'The Angry Stickman vs. The Impossible Coin Flip is a 30-second one-room comedy with a fully procedural score: a smug showman strut, a mechanical engineering march, a rage tremolo that cuts dead on the final flick, a pinball ricochet, a tiny victory fanfare and a record scratch — plus the rim tings, the forehead bonk, the rubber-band launch, the glass splashes and the gold coin ring that ends the film. No external audio files.'
             : isDartShot

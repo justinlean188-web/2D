@@ -16,6 +16,9 @@ export interface SceneDef {
 }
 
 import { CANDY_CLAW_PROMPT, CANDY_CLAW_SCENES } from './constants/candyClawConstants';
+import { PLATE_SPIN_PROMPT, PLATE_SPIN_SCENES } from './constants/plateSpinConstants';
+import { THREE_WALL_PING_PONG_PROMPT, THREE_WALL_PING_PONG_SCENES } from './constants/threeWallPingPongConstants';
+import { CUP_IN_CUP_PROMPT, CUP_IN_CUP_SCENES } from './constants/cupInCupConstants';
 export type CanvasTheme = 'black-on-white' | 'white-on-black';
 
 export type ProjectId =
@@ -35,6 +38,9 @@ export type ProjectId =
   | 'domino-trickshot'
   | 'balloon-pop-jackpot'
   | 'candy-claw'
+  | 'plate-spin'
+  | 'three-wall-ping-pong'
+  | 'cup-in-cup'
   | 'dart-shot'
   | 'ping-pong-revenge'
   | 'trick-shot-champion'
@@ -3587,6 +3593,39 @@ export const PROJECTS: Record<ProjectId, ProjectDef> = {
     masterPrompt: CANDY_CLAW_PROMPT,
     scenes: CANDY_CLAW_SCENES,
   },
+  'plate-spin': {
+    id: 'plate-spin',
+    title: 'Angry Stickman: The Impossible Plate Spin',
+    subtitle: 'The 30-Second Circus Booth Comedy',
+    tagline: 'Vertical 9:16 Stickman Short · Modern Pop Color · Sound Effects Only',
+    duration: 30,
+    hasAudioDialogue: false,
+    hasCaptions: true,
+    masterPrompt: PLATE_SPIN_PROMPT,
+    scenes: PLATE_SPIN_SCENES,
+  },
+  'three-wall-ping-pong': {
+    id: 'three-wall-ping-pong',
+    title: 'Angry Stickman: The Three-Wall Ping-Pong Shot',
+    subtitle: 'The 30-Second Trickshot Comedy',
+    tagline: 'Vertical 9:16 Stickman Short · Modern Pop Color · Sound Effects Only',
+    duration: 30,
+    hasAudioDialogue: false,
+    hasCaptions: true,
+    masterPrompt: THREE_WALL_PING_PONG_PROMPT,
+    scenes: THREE_WALL_PING_PONG_SCENES,
+  },
+  'cup-in-cup': {
+    id: 'cup-in-cup',
+    title: 'Angry Stickman: The Impossible Cup-in-Cup Shot',
+    subtitle: 'The 30-Second Cup Trickshot Comedy',
+    tagline: 'Vertical 9:16 Stickman Short · Modern Pop Color · Sound Effects Only',
+    duration: 30,
+    hasAudioDialogue: false,
+    hasCaptions: true,
+    masterPrompt: CUP_IN_CUP_PROMPT,
+    scenes: CUP_IN_CUP_SCENES,
+  },
   'coin-flip': {
     id: 'coin-flip',
     title: 'Angry Stickman vs. The Impossible Coin Flip',
@@ -3729,7 +3768,7 @@ export interface StudioConfig {
 }
 
 export const DEFAULT_CONFIG: StudioConfig = {
-  activeProject: 'candy-claw', // The latest short is the default film
+  activeProject: 'cup-in-cup', // The latest short is the default film
   canvasTheme: 'black-on-white', // Style 1A: Black on White (toggleable to Style 1B: White on Black)
   vividAccent: '#ef4444', // Vivid Red as seen in reference image for emotions, risks & cages
   accentColor: '#000000', // Minimalist Monochrome

@@ -22,6 +22,9 @@ import { PencilLandingRenderer } from '../animation/pencilLandingRenderer';
 import { DominoTrickshotRenderer } from '../animation/dominoTrickshotRenderer';
 import { BalloonPopJackpotRenderer } from '../animation/balloonPopJackpotRenderer';
 import { CandyClawRenderer } from '../animation/candyClawRenderer';
+import { PlateSpinRenderer } from '../animation/plateSpinRenderer';
+import { ThreeWallPingPongRenderer } from '../animation/threeWallPingPongRenderer';
+import { CupInCupRenderer } from '../animation/cupInCupRenderer';
 import { MindTrapsRenderer } from '../animation/mindTrapsRenderer';
 import { SequelPaperBallRenderer } from '../animation/sequelPaperBallRenderer';
 import {
@@ -46,6 +49,9 @@ import {
   DOMINO_TRICKSHOT_CUES,
   BALLOON_POP_JACKPOT_CUES,
   CANDY_CLAW_CUES,
+  PLATE_SPIN_CUES,
+  THREE_WALL_PING_PONG_CUES,
+  CUP_IN_CUP_CUES,
   PAPER_BALL_PART3_CUES,
   PAPER_BALL_PART4_CUES,
   PAPER_BALL_SEQUEL_CUES,
@@ -196,6 +202,12 @@ export async function exportVideo(options: ExportOptions): Promise<ExportResult>
       ? new BalloonPopJackpotRenderer()
       : config.activeProject === 'candy-claw'
       ? new CandyClawRenderer()
+      : config.activeProject === 'plate-spin'
+      ? new PlateSpinRenderer()
+      : config.activeProject === 'three-wall-ping-pong'
+      ? new ThreeWallPingPongRenderer()
+      : config.activeProject === 'cup-in-cup'
+      ? new CupInCupRenderer()
       : config.activeProject === 'coin-flip'
       ? new CoinFlipRenderer()
       : config.activeProject === 'dart-shot'
@@ -257,6 +269,12 @@ export async function exportVideo(options: ExportOptions): Promise<ExportResult>
       ? 'balloon-pop-jackpot'
       : config.activeProject === 'candy-claw'
       ? 'candy-claw'
+      : config.activeProject === 'plate-spin'
+      ? 'plate-spin'
+      : config.activeProject === 'three-wall-ping-pong'
+      ? 'three-wall-ping-pong'
+      : config.activeProject === 'cup-in-cup'
+      ? 'cup-in-cup'
       : config.activeProject === 'coin-flip'
       ? 'coin-flip'
       : config.activeProject === 'dart-shot'
@@ -851,6 +869,39 @@ export async function exportVideo(options: ExportOptions): Promise<ExportResult>
             // The four cc-score-* cues each schedule one 7.5s slice of the
             // carnival score; every other cue is a one-shot on its beat.
             for (const cue of CANDY_CLAW_CUES) {
+              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
+                cue.play(dest);
+                triggeredCues.add(cue.id);
+              }
+            }
+          }
+        } else if (config.activeProject === 'plate-spin') {
+          if (config.enableSFX) {
+            // The four ps-score-* cues each schedule one 7.5s slice of the
+            // circus score; every other cue is a one-shot on its beat.
+            for (const cue of PLATE_SPIN_CUES) {
+              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
+                cue.play(dest);
+                triggeredCues.add(cue.id);
+              }
+            }
+          }
+        } else if (config.activeProject === 'three-wall-ping-pong') {
+          if (config.enableSFX) {
+            // The four twpp-score-* cues each schedule one 7.5s slice of the
+            // playful score; every other cue is a one-shot on its beat.
+            for (const cue of THREE_WALL_PING_PONG_CUES) {
+              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
+                cue.play(dest);
+                triggeredCues.add(cue.id);
+              }
+            }
+          }
+        } else if (config.activeProject === 'cup-in-cup') {
+          if (config.enableSFX) {
+            // The four cic-score-* cues each schedule one 7.5s slice of the
+            // playful score; every other cue is a one-shot on its beat.
+            for (const cue of CUP_IN_CUP_CUES) {
               if (animT >= cue.time && !triggeredCues.has(cue.id)) {
                 cue.play(dest);
                 triggeredCues.add(cue.id);

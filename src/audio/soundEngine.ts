@@ -3581,12 +3581,6 @@ class SoundEngine {
     ]);
   }
 
-  public playCupPing(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 't', f: 1500, d: 0.5, g: 0.22, f2: 800, w: 'sine' },
-    ]);
-  }
-
   public playCupSlide(dest?: AudioNode, duration?: number) {
     this.sfx(dest, [
       { k: 'n', f: 900, d: 0.3, g: 0.1, f2: 700, ft: 'bandpass', q: 2.5 },
@@ -3714,6 +3708,93 @@ class SoundEngine {
       { k: 't', f: 2600, d: 0.2, g: 0.12, f2: 2200, w: 'sine' },
       { k: 't', f: 3400, d: 0.25, g: 0.08, f2: 3000, w: 'sine', t: 0.04 },
     ]);
+  }
+
+  /** Soft circular whirr of a plate spinning on a stick tip. */
+  public playPlateWhir(dest?: AudioNode, duration = 1.0) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+    try {
+      const now = ctx.currentTime;
+      const dur = Math.max(0.2, duration);
+      const osc = ctx.createOscillator();
+      const ring = ctx.createOscillator();
+      const trem = ctx.createOscillator();
+      const tremGain = ctx.createGain();
+      const gain = ctx.createGain();
+      const ringGain = ctx.createGain();
+
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(680, now);
+      osc.frequency.linearRampToValueAtTime(860, now + dur * 0.4);
+      osc.frequency.linearRampToValueAtTime(740, now + dur);
+
+      trem.type = 'sine';
+      trem.frequency.setValueAtTime(16, now);
+      tremGain.gain.setValueAtTime(45, now);
+      trem.connect(tremGain);
+      tremGain.connect(osc.frequency);
+
+      ring.type = 'sine';
+      ring.frequency.setValueAtTime(1720, now);
+      ringGain.gain.setValueAtTime(0.018 * this.volume, now);
+      ringGain.gain.exponentialRampToValueAtTime(0.001, now + dur);
+
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.linearRampToValueAtTime(0.055 * this.volume, now + 0.07);
+      gain.gain.setValueAtTime(0.05 * this.volume, now + dur * 0.68);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + dur);
+
+      osc.connect(gain);
+      ring.connect(ringGain);
+      this.routeOutput(gain, dest);
+      this.routeOutput(ringGain, dest);
+      osc.start(now);
+      trem.start(now);
+      ring.start(now);
+      osc.stop(now + dur);
+      trem.stop(now + dur);
+      ring.stop(now + dur);
+    } catch {}
+  }
+
+  /** Wobbly plate losing its balance: a nervous rising and falling creak. */
+  public playPlateWobble(dest?: AudioNode) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+    try {
+      const now = ctx.currentTime;
+      const dur = 1.2;
+      const osc = ctx.createOscillator();
+      const vibrato = ctx.createOscillator();
+      const vibratoGain = ctx.createGain();
+      const gain = ctx.createGain();
+
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(300, now);
+      osc.frequency.linearRampToValueAtTime(560, now + dur * 0.55);
+      osc.frequency.linearRampToValueAtTime(330, now + dur);
+
+      vibrato.type = 'sine';
+      vibrato.frequency.setValueAtTime(11, now);
+      vibratoGain.gain.setValueAtTime(38, now);
+      vibrato.connect(vibratoGain);
+      vibratoGain.connect(osc.frequency);
+
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.linearRampToValueAtTime(0.07 * this.volume, now + 0.06);
+      gain.gain.setValueAtTime(0.065 * this.volume, now + dur - 0.25);
+      gain.gain.exponentialRampToValueAtTime(0.0002, now + dur);
+
+      osc.connect(gain);
+      this.routeOutput(gain, dest);
+      osc.start(now);
+      vibrato.start(now);
+      osc.stop(now + dur);
+      vibrato.stop(now + dur);
+    } catch {}
   }
 
   public playPlushAvalanche(dest?: AudioNode) {
@@ -4236,6 +4317,64 @@ class SoundEngine {
         [293.66, 369.99, 440.0],   // D4 + F#4 + A4 (D major)
       ],
     });
+  }
+
+  public playPlateSpinScoreSection(dest?: AudioNode, start = 0, end = 7.5) {
+    this.scoreSlice(dest, start, end, {
+      bpm: 160,
+      wave: 'square',
+      level: 0.4,
+      chords: [
+        [523.25, 659.25, 783.99],  // C5 + E5 + G5 (C major)
+        [349.23, 440.0, 523.25],   // F4 + A4 + C5 (F major)
+        [392.0, 493.88, 587.33],   // G4 + B4 + D5 (G major)
+        [523.25, 659.25, 783.99],  // C5 + E5 + G5 (C major)
+      ],
+    });
+  }
+
+  public playThreeWallPingPongScoreSection(dest?: AudioNode, start = 0, end = 7.5) {
+    this.scoreSlice(dest, start, end, {
+      bpm: 140,
+      wave: 'triangle',
+      level: 0.42,
+      chords: [
+        [440.0, 554.37, 659.25],  // A4 + C#5 + E5 (A major)
+        [523.25, 659.25, 783.99], // C5 + E5 + G5 (C major)
+        [493.88, 622.25, 739.99], // B4 + D#5 + F#5 (B major)
+        [440.0, 554.37, 659.25],  // A4 + C#5 + E5 (A major)
+      ],
+    });
+  }
+
+  public playCupInCupScoreSection(dest?: AudioNode, start = 0, end = 7.5) {
+    this.scoreSlice(dest, start, end, {
+      bpm: 135,
+      wave: 'triangle',
+      level: 0.4,
+      chords: [
+        [392.0, 493.88, 587.33],  // G4 + B4 + D5 (G major)
+        [523.25, 659.25, 783.99], // C5 + E5 + G5 (C major)
+        [440.0, 554.37, 659.25],  // A4 + C#5 + E5 (A major)
+        [392.0, 493.88, 587.33],  // G4 + B4 + D5 (G major)
+      ],
+    });
+  }
+
+  // ---- Three-Wall Ping-Pong SFX ----
+  public playPaddleHit(dest?: AudioNode) {
+    this.sfx(dest, [
+      { k: 't', f: 800, d: 0.08, g: 0.25, f2: 400, w: 'triangle' },
+      { k: 'n', f: 1200, d: 0.06, g: 0.15, f2: 600, ft: 'bandpass', q: 3 },
+    ]);
+  }
+
+  public playCupPing(dest?: AudioNode) {
+    this.sfx(dest, [
+      { k: 't', f: 2200, d: 0.3, g: 0.18, f2: 1800, w: 'sine' },
+      { k: 't', f: 3300, d: 0.25, g: 0.1, f2: 2600, w: 'sine', t: 0.03 },
+      { k: 't', f: 4400, d: 0.2, g: 0.06, f2: 3500, w: 'sine', t: 0.06 },
+    ]);
   }
 
   // ---- carnival + balloon SFX for "The Balloon Pop Jackpot" ----

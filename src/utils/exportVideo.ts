@@ -26,6 +26,7 @@ import { PlateSpinRenderer } from '../animation/plateSpinRenderer';
 import { ThreeWallPingPongRenderer } from '../animation/threeWallPingPongRenderer';
 import { CupInCupRenderer } from '../animation/cupInCupRenderer';
 import { YoYoRevengeRenderer } from '../animation/yoYoRevengeRenderer';
+import { YoBanditRenderer } from '../animation/yoBanditRenderer';
 import { MindTrapsRenderer } from '../animation/mindTrapsRenderer';
 import { SequelPaperBallRenderer } from '../animation/sequelPaperBallRenderer';
 import {
@@ -54,6 +55,7 @@ import {
   THREE_WALL_PING_PONG_CUES,
   CUP_IN_CUP_CUES,
   YO_YO_REVENGE_CUES,
+  YO_BANDIT_CUES,
   PAPER_BALL_PART3_CUES,
   PAPER_BALL_PART4_CUES,
   PAPER_BALL_SEQUEL_CUES,
@@ -212,6 +214,8 @@ export async function exportVideo(options: ExportOptions): Promise<ExportResult>
       ? new CupInCupRenderer()
       : config.activeProject === 'yo-yo-revenge'
       ? new YoYoRevengeRenderer()
+      : config.activeProject === 'rubber-band'
+      ? new YoBanditRenderer()
       : config.activeProject === 'coin-flip'
       ? new CoinFlipRenderer()
       : config.activeProject === 'dart-shot'
@@ -281,6 +285,8 @@ export async function exportVideo(options: ExportOptions): Promise<ExportResult>
       ? 'cup-in-cup'
       : config.activeProject === 'yo-yo-revenge'
       ? 'yo-yo-revenge'
+      : config.activeProject === 'rubber-band'
+      ? 'rubber-band'
       : config.activeProject === 'coin-flip'
       ? 'coin-flip'
       : config.activeProject === 'dart-shot'
@@ -919,6 +925,17 @@ export async function exportVideo(options: ExportOptions): Promise<ExportResult>
             // The four yyr-score-* cues each schedule one 7.5s slice of the
             // playful score; every other cue is a one-shot on its beat.
             for (const cue of YO_YO_REVENGE_CUES) {
+              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
+                cue.play(dest);
+                triggeredCues.add(cue.id);
+              }
+            }
+          }
+        } else if (config.activeProject === 'rubber-band') {
+          if (config.enableSFX) {
+            // The four yb-score-* cues each schedule one 7.5s slice of the
+            // playful score; every other cue is a one-shot on its beat.
+            for (const cue of YO_BANDIT_CUES) {
               if (animT >= cue.time && !triggeredCues.has(cue.id)) {
                 cue.play(dest);
                 triggeredCues.add(cue.id);

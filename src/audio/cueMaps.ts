@@ -1551,3 +1551,52 @@ export const YO_YO_REVENGE_CUES: AudioCue[] = [
   { id: 'yyr-fall-whistle', time: 28.6, play: (d) => soundEngine.playSlideWhistle(d) },
   { id: 'yyr-freeze', time: 29.5, play: (d) => soundEngine.playFreezeSting(d) },
 ];
+
+/**
+ * 30-second sound map for "The Rubber Band Trickshot".
+ * Four 7.5s score slices plus one-shots for rubber band twangs, paper whooshes,
+ * bin wobbles, the forehead bonk, the celebration, and the freeze.
+ */
+export const YO_BANDIT_CUES: AudioCue[] = [
+  // Score slices
+  { id: 'yb-score-1', time: 0.0, play: (d) => soundEngine.playRubberBandScoreSection(d, 0, 7.5) },
+  { id: 'yb-score-2', time: 7.5, play: (d) => soundEngine.playRubberBandScoreSection(d, 7.5, 15.0) },
+  { id: 'yb-score-3', time: 15.0, play: (d) => soundEngine.playRubberBandScoreSection(d, 15.0, 22.5) },
+  { id: 'yb-score-4', time: 22.5, play: (d) => soundEngine.playRubberBandScoreSection(d, 22.5, 30.0) },
+
+  // Scene 1 - The Impossible Target (0-5s)
+  { id: 'yb-band-twang', time: 1.5, play: (d) => soundEngine.playRubberBandTwang(d) },
+  { id: 'yb-challenge', time: 2.5, play: (d) => soundEngine.playConfidenceDing(d) },
+  { id: 'yb-point', time: 3.4, play: (d) => soundEngine.playPreciseTap(d) },
+
+  // Scene 2 - Way Too High! (5-11s)
+  { id: 'yb-release-1', time: 5.2, play: (d) => soundEngine.playRubberBandTwang(d) },
+  { id: 'yb-whoosh-1', time: 5.8, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'yb-high-arc', time: 7.0, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'yb-wall-hit', time: 8.0, play: (d) => soundEngine.playCartoonBoing(d) },
+  { id: 'yb-angry', time: 9.0, play: (d) => soundEngine.playAngrySting(d) },
+
+  // Scene 3 - Too Low! (11-17s)
+  { id: 'yb-release-2', time: 12.2, play: (d) => soundEngine.playRubberBandTwang(d) },
+  { id: 'yb-whoosh-2', time: 13.2, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'yb-floor-thump', time: 14.7, play: (d) => soundEngine.playFloorThump(d) },
+  { id: 'yb-bounce-1', time: 15.2, play: (d) => soundEngine.playCartoonBoing(d) },
+  { id: 'yb-bounce-2', time: 15.5, play: (d) => soundEngine.playCartoonBoing(d) },
+  { id: 'yb-roll', time: 15.8, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'yb-frustrated', time: 16.5, play: (d) => soundEngine.playRelievedSigh(d) },
+
+  // Scene 4 - Perfect Shot! (17-24s)
+  { id: 'yb-release-3', time: 17.5, play: (d) => soundEngine.playRubberBandTwang(d) },
+  { id: 'yb-whoosh-3', time: 18.5, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'yb-rim-click', time: 20.5, play: (d) => soundEngine.playCupPing(d) },
+  { id: 'yb-drop', time: 21.2, play: (d) => soundEngine.playPreciseTap(d) },
+  { id: 'yb-celebrate', time: 22.0, play: (d) => soundEngine.playVictoryFanfareShort(d) },
+
+  // Scene 5 - The Bin's Revenge! (24-30s)
+  { id: 'yb-bin-snap', time: 24.5, play: (d) => soundEngine.playKnotSnap(d) },
+  { id: 'yb-bin-wobble', time: 25.0, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'yb-bin-bonk', time: 26.0, play: (d) => soundEngine.playHeadBonk(d) },
+  { id: 'yb-shocked', time: 26.5, play: (d) => soundEngine.playAngrySting(d) },
+  { id: 'yb-whistle', time: 27.5, play: (d) => soundEngine.playSlideWhistle(d) },
+  { id: 'yb-freeze', time: 29.0, play: (d) => soundEngine.playFreezeSting(d) },
+];

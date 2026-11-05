@@ -4375,6 +4375,20 @@ class SoundEngine {
     });
   }
 
+  public playRubberBandScoreSection(dest?: AudioNode, start = 0, end = 7.5) {
+    this.scoreSlice(dest, start, end, {
+      bpm: 138,
+      wave: 'triangle',
+      level: 0.4,
+      chords: [
+        [261.63, 329.63, 392.0],  // C4 + E4 + G4 (C major)
+        [349.23, 440.0, 523.25],  // F4 + A4 + C5 (F major)
+        [392.0, 493.88, 587.33],  // G4 + B4 + D5 (G major)
+        [261.63, 329.63, 392.0],  // C4 + E4 + G4 (C major)
+      ],
+    });
+  }
+
   // ---- Three-Wall Ping-Pong SFX ----
   public playPaddleHit(dest?: AudioNode) {
     this.sfx(dest, [

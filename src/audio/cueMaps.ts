@@ -1495,3 +1495,59 @@ export const CUP_IN_CUP_CUES: AudioCue[] = [
   { id: 'cic-beanie-rise', time: 28.0, play: (d) => soundEngine.playSoftFlick(d) },
   { id: 'cic-freeze-sting', time: 29.0, play: (d) => soundEngine.playFreezeSting(d) },
 ];
+
+/**
+ * 30-second sound map for "The Yo-Yo Revenge".
+ * Four 7.5s score slices plus one-shots for string twangs, swing whirrs,
+ * cup pings, the forehead bonk, the beanie pop and the freeze.
+ */
+export const YO_YO_REVENGE_CUES: AudioCue[] = [
+  // Score slices
+  { id: 'yyr-score-1', time: 0.0, play: (d) => soundEngine.playYoyoScoreSection(d, 0, 7.5) },
+  { id: 'yyr-score-2', time: 7.5, play: (d) => soundEngine.playYoyoScoreSection(d, 7.5, 15.0) },
+  { id: 'yyr-score-3', time: 15.0, play: (d) => soundEngine.playYoyoScoreSection(d, 15.0, 22.5) },
+  { id: 'yyr-score-4', time: 22.5, play: (d) => soundEngine.playYoyoScoreSection(d, 22.5, 30.0) },
+
+  // Shot 1 - The Challenge (0-5s)
+  { id: 'yyr-string-twang', time: 1.5, play: (d) => soundEngine.playRubberBandTwang(d) },
+  { id: 'yyr-confident', time: 2.7, play: (d) => soundEngine.playConfidenceDing(d) },
+  { id: 'yyr-cup-settle', time: 3.4, play: (d) => soundEngine.playPreciseTap(d) },
+  { id: 'yyr-windup', time: 4.6, play: (d) => soundEngine.playWhoosh(d) },
+
+  // Shot 2 - First Failure (5-11s)
+  { id: 'yyr-release', time: 5.15, play: (d) => soundEngine.playRubberBandTwang(d) },
+  { id: 'yyr-swing-1', time: 5.9, play: (d) => soundEngine.playSpiralWhirr(d) },
+  { id: 'yyr-high-pass', time: 6.7, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'yyr-cup-wobble', time: 6.95, play: (d) => soundEngine.playCupWobbleCreak(d) },
+  { id: 'yyr-near-miss', time: 7.75, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'yyr-boing', time: 8.0, play: (d) => soundEngine.playCartoonBoing(d) },
+  { id: 'yyr-angry-sting', time: 9.0, play: (d) => soundEngine.playAngrySting(d) },
+
+  // Shot 3 - The Impossible Route (11-17s)
+  { id: 'yyr-idea', time: 11.3, play: (d) => soundEngine.playIdeaDing(d) },
+  { id: 'yyr-drop', time: 12.0, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'yyr-leg-whirr', time: 12.9, play: (d) => soundEngine.playSpiralWhirr(d) },
+  { id: 'yyr-wrap', time: 14.1, play: (d) => soundEngine.playStrainedTug(d) },
+  { id: 'yyr-ankle', time: 14.7, play: (d) => soundEngine.playSqueak(d) },
+  { id: 'yyr-balance', time: 15.4, play: (d) => soundEngine.playCartoonBoing(d) },
+  { id: 'yyr-sigh', time: 16.2, play: (d) => soundEngine.playRelievedSigh(d) },
+
+  // Shot 4 - Perfect Trickshot (17-24s)
+  { id: 'yyr-breath', time: 17.4, play: (d) => soundEngine.playDeepBreath(d) },
+  { id: 'yyr-flick', time: 19.2, play: (d) => soundEngine.playSoftFlick(d) },
+  { id: 'yyr-leg-whirr-2', time: 20.0, play: (d) => soundEngine.playSpiralWhirr(d) },
+  { id: 'yyr-rise', time: 21.0, play: (d) => soundEngine.playRisingWhistle(d) },
+  { id: 'yyr-cup-ping', time: 21.7, play: (d) => soundEngine.playCupPing(d) },
+  { id: 'yyr-sparkle', time: 21.9, play: (d) => soundEngine.playMagicSparkle(d) },
+  { id: 'yyr-victory', time: 22.7, play: (d) => soundEngine.playVictoryFanfareShort(d) },
+
+  // Shot 5 - The Yo-Yo Gets Revenge (24-30s)
+  { id: 'yyr-proud', time: 24.4, play: (d) => soundEngine.playConfidenceDing(d) },
+  { id: 'yyr-string-snap', time: 25.0, play: (d) => soundEngine.playKnotSnap(d) },
+  { id: 'yyr-revenge-whoosh', time: 25.4, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'yyr-bonk', time: 26.2, play: (d) => soundEngine.playHeadBonk(d) },
+  { id: 'yyr-beanie-pop', time: 26.24, play: (d) => soundEngine.playCartoonBoing(d) },
+  { id: 'yyr-wobble', time: 26.8, play: (d) => soundEngine.playSqueak(d) },
+  { id: 'yyr-fall-whistle', time: 28.6, play: (d) => soundEngine.playSlideWhistle(d) },
+  { id: 'yyr-freeze', time: 29.5, play: (d) => soundEngine.playFreezeSting(d) },
+];

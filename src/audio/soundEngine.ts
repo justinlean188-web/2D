@@ -4361,6 +4361,20 @@ class SoundEngine {
     });
   }
 
+  public playYoyoScoreSection(dest?: AudioNode, start = 0, end = 7.5) {
+    this.scoreSlice(dest, start, end, {
+      bpm: 142,
+      wave: 'triangle',
+      level: 0.42,
+      chords: [
+        [293.66, 369.99, 440.0],  // D4 + F#4 + A4 (D major)
+        [349.23, 440.0, 523.25],  // F4 + A4 + C5 (F major)
+        [392.0, 493.88, 587.33],  // G4 + B4 + D5 (G major)
+        [293.66, 369.99, 440.0],  // D4 + F#4 + A4 (D major)
+      ],
+    });
+  }
+
   // ---- Three-Wall Ping-Pong SFX ----
   public playPaddleHit(dest?: AudioNode) {
     this.sfx(dest, [

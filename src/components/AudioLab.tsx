@@ -32,6 +32,7 @@ export const AudioLab: React.FC<AudioLabProps> = ({ config, setConfig }) => {
   const isPlateSpin = config.activeProject === 'plate-spin';
   const isThreeWallPingPong = config.activeProject === 'three-wall-ping-pong';
   const isCupInCup = config.activeProject === 'cup-in-cup';
+  const isYoYoRevenge = config.activeProject === 'yo-yo-revenge';
   const soundEffects = [
     // Paper Ball Ricochet Effects
     {
@@ -1847,6 +1848,80 @@ export const AudioLab: React.FC<AudioLabProps> = ({ config, setConfig }) => {
         setTimeout(() => soundEngine.playFreezeSting(), 4500);
       },
     },
+    // The Yo-Yo Revenge Effects
+    {
+      project: 'yo-yo-revenge' as const,
+      name: 'The Challenge',
+      time: 'Yo-Yo Revenge (0.0s - 5.0s)',
+      desc: 'String twang, confident ding, cup settle, wind-up whoosh.',
+      trigger: () => {
+        soundEngine.playRubberBandTwang();
+        setTimeout(() => soundEngine.playConfidenceDing(), 1200);
+        setTimeout(() => soundEngine.playPreciseTap(), 1900);
+        setTimeout(() => soundEngine.playWhoosh(), 3100);
+      },
+    },
+    {
+      project: 'yo-yo-revenge' as const,
+      name: 'Too High!',
+      time: 'Yo-Yo Revenge (5.1s - 9.5s)',
+      desc: 'Release twang, swing whirr, high-pass whoosh, cup wobble, near-miss whoosh, cartoon boing, angry sting.',
+      trigger: () => {
+        soundEngine.playRubberBandTwang();
+        setTimeout(() => soundEngine.playSpiralWhirr(), 750);
+        setTimeout(() => soundEngine.playWhoosh(), 1550);
+        setTimeout(() => soundEngine.playCupWobbleCreak(), 1800);
+        setTimeout(() => soundEngine.playWhoosh(), 2600);
+        setTimeout(() => soundEngine.playCartoonBoing(), 2850);
+        setTimeout(() => soundEngine.playAngrySting(), 3850);
+      },
+    },
+    {
+      project: 'yo-yo-revenge' as const,
+      name: 'Around the Table',
+      time: 'Yo-Yo Revenge (11.0s - 16.5s)',
+      desc: 'Idea ding, drop whoosh, leg whirr, strained wrap, ankle squeak, balance boing, relieved sigh.',
+      trigger: () => {
+        soundEngine.playIdeaDing();
+        setTimeout(() => soundEngine.playWhoosh(), 700);
+        setTimeout(() => soundEngine.playSpiralWhirr(), 1600);
+        setTimeout(() => soundEngine.playStrainedTug(), 2800);
+        setTimeout(() => soundEngine.playSqueak(), 3400);
+        setTimeout(() => soundEngine.playCartoonBoing(), 4100);
+        setTimeout(() => soundEngine.playRelievedSigh(), 4900);
+      },
+    },
+    {
+      project: 'yo-yo-revenge' as const,
+      name: 'Perfect Shot',
+      time: 'Yo-Yo Revenge (17.0s - 23.5s)',
+      desc: 'Deep breath, soft flick, leg whirr, rising whistle, cup ping, magic sparkle, victory fanfare.',
+      trigger: () => {
+        soundEngine.playDeepBreath();
+        setTimeout(() => soundEngine.playSoftFlick(), 1800);
+        setTimeout(() => soundEngine.playSpiralWhirr(), 2600);
+        setTimeout(() => soundEngine.playRisingWhistle(), 3600);
+        setTimeout(() => soundEngine.playCupPing(), 4300);
+        setTimeout(() => soundEngine.playMagicSparkle(), 4500);
+        setTimeout(() => soundEngine.playVictoryFanfareShort(), 5300);
+      },
+    },
+    {
+      project: 'yo-yo-revenge' as const,
+      name: 'Yo-Yo Revenge',
+      time: 'Yo-Yo Revenge (24.0s - 29.5s)',
+      desc: 'Proud ding, taut-string snap, whoosh, forehead bonk, beanie-pop boing, wobble, descending whistle, freeze sting.',
+      trigger: () => {
+        soundEngine.playConfidenceDing();
+        setTimeout(() => soundEngine.playKnotSnap(), 600);
+        setTimeout(() => soundEngine.playWhoosh(), 1000);
+        setTimeout(() => soundEngine.playHeadBonk(), 1800);
+        setTimeout(() => soundEngine.playCartoonBoing(), 1850);
+        setTimeout(() => soundEngine.playSqueak(), 2400);
+        setTimeout(() => soundEngine.playSlideWhistle(), 4200);
+        setTimeout(() => soundEngine.playFreezeSting(), 5100);
+      },
+    },
   ];
   const visibleEffects = soundEffects.filter((effect) => effect.project === config.activeProject);
 
@@ -1890,6 +1965,8 @@ export const AudioLab: React.FC<AudioLabProps> = ({ config, setConfig }) => {
             ? 'The Angry Stickman: The Three-Wall Ping-Pong Shot is a 30-second trickshot comedy with a fully procedural 140 bpm playful score sliced into four 7.5-second sections — plus paddle hits, three distinct wall bounces, a beanie bonk, slow-mo swell, resonant wall chimes, a cup plink, victory fanfare, an avalanche rumble and a freeze sting. No external audio files.'
             : isCupInCup
             ? 'The Angry Stickman: The Impossible Cup-in-Cup Shot is a 30-second cup trickshot comedy with a fully procedural 135 bpm playful score sliced into four 7.5-second sections — plus cup clicks, paddle hits, table bounces, rim clangs, suspense swells, soft plinks, victory fanfares, cup tower wobbles, avalanche rumbles, and a freeze sting. No external audio files.'
+            : isYoYoRevenge
+            ? 'The Angry Stickman: The Yo-Yo Revenge is a 30-second trickshot comedy with a fully procedural 142 bpm playful score sliced into four 7.5-second sections, plus string twangs, swing whirrs, a wobbling cup, an angry sting, the leg-wrap loops, a rising whistle, the cup ping, a victory fanfare, the taut-string snap, the forehead bonk, a beanie-pop boing, a descending whistle and the freeze sting. No external audio files.'
             : isCoinFlip
             ? 'The Angry Stickman vs. The Impossible Coin Flip is a 30-second one-room comedy with a fully procedural score: a smug showman strut, a mechanical engineering march, a rage tremolo that cuts dead on the final flick, a pinball ricochet, a tiny victory fanfare and a record scratch — plus the rim tings, the forehead bonk, the rubber-band launch, the glass splashes and the gold coin ring that ends the film. No external audio files.'
             : isDartShot

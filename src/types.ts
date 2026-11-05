@@ -20,6 +20,7 @@ import { PLATE_SPIN_PROMPT, PLATE_SPIN_SCENES } from './constants/plateSpinConst
 import { THREE_WALL_PING_PONG_PROMPT, THREE_WALL_PING_PONG_SCENES } from './constants/threeWallPingPongConstants';
 import { CUP_IN_CUP_PROMPT, CUP_IN_CUP_SCENES } from './constants/cupInCupConstants';
 import { YO_YO_REVENGE_PROMPT, YO_YO_REVENGE_SCENES } from './constants/yoYoRevengeConstants';
+import { YO_BANDIT_PROMPT, YO_BANDIT_SCENES } from './constants/yoBanditConstants';
 export type CanvasTheme = 'black-on-white' | 'white-on-black';
 
 export type ProjectId =
@@ -42,6 +43,7 @@ export type ProjectId =
   | 'plate-spin'
   | 'three-wall-ping-pong'
   | 'cup-in-cup'
+  | 'rubber-band'
   | 'yo-yo-revenge'
   | 'dart-shot'
   | 'ping-pong-revenge'
@@ -52,7 +54,8 @@ export type ProjectId =
   | 'paper-ball-sequel'
   | 'paper-ball-30'
   | 'paper-ball'
-  | 'shadow-quit';
+  | 'shadow-quit'
+  | 'rubber-band'
 
 export interface ProjectDef {
   id: ProjectId;
@@ -3627,6 +3630,17 @@ export const PROJECTS: Record<ProjectId, ProjectDef> = {
     hasCaptions: true,
     masterPrompt: CUP_IN_CUP_PROMPT,
     scenes: CUP_IN_CUP_SCENES,
+  },
+  'rubber-band': {
+    id: 'rubber-band',
+    title: 'Angry Stickman: The Rubber Band Trickshot',
+    subtitle: 'The 30-Second Rubber Band Trickshot Comedy',
+    tagline: 'Vertical 9:16 Stickman Short · Modern Pop Color · Sound Effects Only',
+    duration: 30,
+    hasAudioDialogue: false,
+    hasCaptions: true,
+    masterPrompt: YO_BANDIT_PROMPT,
+    scenes: YO_BANDIT_SCENES,
   },
   'yo-yo-revenge': {
     id: 'yo-yo-revenge',

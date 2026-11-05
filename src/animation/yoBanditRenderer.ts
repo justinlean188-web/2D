@@ -721,31 +721,44 @@ export class YoBanditRenderer {
       this.drawShoe(ctx, cx - 35 - pose.stance, FLOOR_Y - 20, 0);
       this.drawShoe(ctx, cx + 35 + pose.stance, FLOOR_Y - 20, 0);
 
-      // Arms
-      const drawLimb = (arm: Arm, isLeft: boolean) => {
-        ctx.strokeStyle = INK; ctx.lineWidth = 10; ctx.lineCap = 'round';
-        ctx.beginPath(); ctx.moveTo(arm.sx, arm.sy); ctx.lineTo(arm.ex, arm.ey); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(arm.ex, arm.ey); ctx.lineTo(arm.hx, arm.hy); ctx.stroke();
-        ctx.strokeStyle = SHIRT; ctx.lineWidth = 6;
-        ctx.beginPath(); ctx.moveTo(arm.sx, arm.sy); ctx.lineTo(arm.ex, arm.ey); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(arm.ex, arm.ey); ctx.lineTo(arm.hx, arm.hy); ctx.stroke();
-
-        // Sleeves
-        ctx.fillStyle = SHIRT; ctx.strokeStyle = INK; ctx.lineWidth = 3;
-        ctx.beginPath(); ctx.ellipse(arm.ex, arm.ey, 18, 12, 0, 0, TAU); ctx.fill(); ctx.stroke();
+      // Thin black arms (match yoYoRevengeRenderer style)
+      const drawLimb = (arm: Arm) => {
+        ctx.strokeStyle = INK;
+        ctx.lineWidth = 15;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.moveTo(arm.sx, arm.sy);
+        ctx.lineTo(arm.ex, arm.ey);
+        ctx.lineTo(arm.hx, arm.hy);
+        ctx.stroke();
       };
-      drawLimb(arms.l, true); drawLimb(arms.r, false);
+      drawLimb(arms.l); drawLimb(arms.r);
+      this.drawSleeve(ctx, arms.l);
+      this.drawSleeve(ctx, arms.r);
+
+      // Full mitten hands.
+      const leftHandStyle: HandStyle = {
+        side: 'left',
+        pose: pose.pointL ? 'point' : pose.gripL ? 'grip' : pose.fistL ? 'fist' : 'relaxed',
+        layer: 'full',
+        rotation: pose.rotL,
+      };
+      drawHand(ctx, arms.l, leftHandStyle);
+      // The right hand is always wrapped around the launcher/band.
+      drawHand(ctx, arms.r, { side: 'right', pose: 'grip', layer: 'full' });
 
     } else if (layer === 'head') {
       const head = this.headPoint(pose);
       this.drawHead(ctx, head.x, head.y, pose, t, hipY - 170, cx);
     } else {
-      // Hands overlay
+      // Fingers curl back over the string and any held prop.
       if (pose.gripL) {
         drawHand(ctx, arms.l, { side: 'left', pose: 'grip', layer: 'overlay' });
       }
       drawHand(ctx, arms.r, { side: 'right', pose: 'grip', layer: 'overlay' });
-      if (pose.pointL) { /* pointing hand drawn in body layer */ }
+      if (pose.pointL) {
+        // no overlay needed for the pointing hand
+      }
     }
   }
 
@@ -857,6 +870,38 @@ export class YoBanditRenderer {
     ctx.fillStyle = 'rgba(255,255,255,0.3)';
     ctx.beginPath(); ctx.roundRect(-24, -8, 14, 6, 3); ctx.fill();
     ctx.restore();
+  }
+
+  private drawSleeve(ctx: CanvasRenderingContext2D, arm: Arm) {
+    const dx = arm.ex - arm.sx;
+    const dy = arm.ey - arm.sy;
+    const len = Math.max(1, Math.hypot(dx, dy));
+    const ux = dx / len;
+    const uy = dy / len;
+    const draw = (width: number, color: string) => {
+      ctx.strokeStyle = color;
+      ctx.lineWidth = width;
+      ctx.beginPath();
+      ctx.moveTo(arm.sx, arm.sy);
+      ctx.lineTo(arm.sx + ux * 34, arm.sy + uy * 34);
+      ctx.stroke();
+    };
+    draw(36, INK);
+    draw(27, SHIRT);
+
+    // Cuff line.
+    ctx.strokeStyle = SHIRT_DEEP;
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(
+      arm.sx + ux * 32 - uy * 13,
+      arm.sy + uy * 32 + ux * 13
+    );
+    ctx.lineTo(
+      arm.sx + ux * 32 + uy * 13,
+      arm.sy + uy * 32 - ux * 13
+    );
+    ctx.stroke();
   }
 
   private drawFlyingBeanie(ctx: CanvasRenderingContext2D, t: number) {

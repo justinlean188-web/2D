@@ -34,6 +34,7 @@ export const AudioLab: React.FC<AudioLabProps> = ({ config, setConfig }) => {
   const isCupInCup = config.activeProject === 'cup-in-cup';
   const isYoYoRevenge = config.activeProject === 'yo-yo-revenge';
   const isDesertIsland = config.activeProject === 'desert-island';
+  const isShrinkingRemote = config.activeProject === 'shrinking-remote';
   const soundEffects = [
     // Paper Ball Ricochet Effects
     {
@@ -1995,6 +1996,80 @@ export const AudioLab: React.FC<AudioLabProps> = ({ config, setConfig }) => {
         setTimeout(() => soundEngine.playFreezeSting(), 4500);
       },
     },
+    // The Shrinking Remote Effects
+    {
+      project: 'shrinking-remote' as const,
+      name: 'The Mysterious Remote',
+      time: 'Shrinking Remote (0.0s - 6.0s)',
+      desc: 'Notebook tap, magical hum, remote click, purple beam zap, shrinking whoosh, surprised boing.',
+      trigger: () => {
+        soundEngine.playMechanicalClick();
+        setTimeout(() => soundEngine.playShrinkBeam(), 500);
+        setTimeout(() => soundEngine.playRemoteClick(), 1550);
+        setTimeout(() => soundEngine.playShrinkBeam(), 1600);
+        setTimeout(() => soundEngine.playShrinkDown(), 1900);
+        setTimeout(() => soundEngine.playCartoonBoing(), 2800);
+      },
+    },
+    {
+      project: 'shrinking-remote' as const,
+      name: 'I\'m a Genius!',
+      time: 'Shrinking Remote (6.0s - 12.0s)',
+      desc: 'Remote clicks, three beam zaps and shrink whooshes, victory fanfare, ominous rumble.',
+      trigger: () => {
+        soundEngine.playRemoteClick();
+        setTimeout(() => soundEngine.playShrinkBeam(), 50);
+        setTimeout(() => soundEngine.playShrinkDown(), 300);
+        setTimeout(() => soundEngine.playRemoteClick(), 1250);
+        setTimeout(() => soundEngine.playShrinkBeam(), 1300);
+        setTimeout(() => soundEngine.playShrinkDown(), 1500);
+        setTimeout(() => soundEngine.playVictoryFanfareShort(), 3100);
+        setTimeout(() => soundEngine.playDramaticRumble(), 4900);
+      },
+    },
+    {
+      project: 'shrinking-remote' as const,
+      name: 'Oops!',
+      time: 'Shrinking Remote (12.0s - 18.0s)',
+      desc: 'Beam zap, long shrinking whoosh, remote floor thump, bounce, shocked boing.',
+      trigger: () => {
+        soundEngine.playShrinkBeam();
+        setTimeout(() => soundEngine.playShrinkDown(), 100);
+        setTimeout(() => soundEngine.playFloorThump(), 850);
+        setTimeout(() => soundEngine.playCartoonBoing(), 1100);
+        setTimeout(() => soundEngine.playCartoonBoing(), 2600);
+      },
+    },
+    {
+      project: 'shrinking-remote' as const,
+      name: 'Giant Bedroom Survival',
+      time: 'Shrinking Remote (18.0s - 24.0s)',
+      desc: 'Tiny footsteps, pencil tap, giant sneaker slide, panic boing, jump whoosh, pillow poof, sneaker thud.',
+      trigger: () => {
+        soundEngine.playFootstep(false);
+        setTimeout(() => soundEngine.playMechanicalClick(), 700);
+        setTimeout(() => soundEngine.playSneakerSlide(), 1500);
+        setTimeout(() => soundEngine.playCartoonBoing(), 1900);
+        setTimeout(() => soundEngine.playWhoosh(), 2100);
+        setTimeout(() => soundEngine.playPillowPoof(), 2700);
+        setTimeout(() => soundEngine.playFloorThump(), 3100);
+      },
+    },
+    {
+      project: 'shrinking-remote' as const,
+      name: 'That Was Not Reset!',
+      time: 'Shrinking Remote (24.0s - 30.0s)',
+      desc: 'Jump whoosh, tiny footsteps, purple button click, beam, furniture shrink, sad trombone, freeze sting.',
+      trigger: () => {
+        soundEngine.playWhoosh();
+        setTimeout(() => soundEngine.playFootstep(false), 800);
+        setTimeout(() => soundEngine.playRemoteClick(), 1900);
+        setTimeout(() => soundEngine.playShrinkBeam(), 1950);
+        setTimeout(() => soundEngine.playShrinkDown(), 2200);
+        setTimeout(() => soundEngine.playSadTrombone(), 3700);
+        setTimeout(() => soundEngine.playFreezeSting(), 4900);
+      },
+    },
   ];
   const visibleEffects = soundEffects.filter((effect) => effect.project === config.activeProject);
 
@@ -2042,6 +2117,8 @@ export const AudioLab: React.FC<AudioLabProps> = ({ config, setConfig }) => {
             ? 'The Angry Stickman: The Yo-Yo Revenge is a 30-second trickshot comedy with a fully procedural 142 bpm playful score sliced into four 7.5-second sections, plus string twangs, swing whirrs, a wobbling cup, an angry sting, the leg-wrap loops, a rising whistle, the cup ping, a victory fanfare, the taut-string snap, the forehead bonk, a beanie-pop boing, a descending whistle and the freeze sting. No external audio files.'
             : isDesertIsland
             ? 'The Angry Stickman: Stranded on a Desert Island is a 30-second survival comedy with a fully procedural 110 bpm tropical score sliced into four 7.5-second sections — plus ocean waves, tropical birds, wood tapping, hut collapse, fishing line creaks, fish splash, coconut rolling, uplifting fanfare, airplane engine, coconut fall, beanie pop, sad trombone, and freeze sting. No external audio files.'
+            : isShrinkingRemote
+            ? 'The Angry Stickman: The Shrinking Remote Control is a 30-second bedroom comedy with a fully procedural 120 bpm playful score sliced into four 7.5-second sections — plus remote clicks, purple beam zaps, shrinking whooshes, tiny footsteps, pencil taps, a giant sneaker slide, a pillow poof, a sad trombone and the freeze sting. No external audio files.'
             : isCoinFlip
             ? 'The Angry Stickman vs. The Impossible Coin Flip is a 30-second one-room comedy with a fully procedural score: a smug showman strut, a mechanical engineering march, a rage tremolo that cuts dead on the final flick, a pinball ricochet, a tiny victory fanfare and a record scratch — plus the rim tings, the forehead bonk, the rubber-band launch, the glass splashes and the gold coin ring that ends the film. No external audio files.'
             : isDartShot

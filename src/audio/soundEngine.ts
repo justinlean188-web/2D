@@ -4538,7 +4538,59 @@ class SoundEngine {
       osc.start(now);
       osc.stop(now + 4);
     } catch {}
-  }}
+  }
+
+  // ---- The Shrinking Remote score + SFX ----
+  public playShrinkingRemoteScoreSection(dest?: AudioNode, start = 0, end = 7.5) {
+    this.scoreSlice(dest, start, end, {
+      bpm: 120,
+      wave: 'triangle',
+      level: 0.32,
+      chords: [
+        [261.63, 329.63, 392.0],
+        [349.23, 440.0, 523.25],
+        [392.0, 493.88, 587.33],
+        [261.63, 329.63, 392.0],
+      ],
+    });
+  }
+
+  public playRemoteClick(dest?: AudioNode) {
+    this.sfx(dest, [
+      { k: 't', f: 1600, f2: 700, d: 0.05, g: 0.16, w: 'square' },
+      { k: 'n', f: 3200, f2: 1400, d: 0.035, g: 0.08, ft: 'bandpass', q: 4 },
+    ]);
+  }
+
+  public playShrinkBeam(dest?: AudioNode) {
+    this.sfx(dest, [
+      { k: 't', f: 420, f2: 1500, d: 0.22, g: 0.14, w: 'sine' },
+      { k: 't', f: 900, f2: 2400, d: 0.2, g: 0.08, w: 'triangle', t: 0.04 },
+      { k: 'n', f: 1800, f2: 5200, d: 0.18, g: 0.05, ft: 'bandpass', q: 2 },
+    ]);
+  }
+
+  public playShrinkDown(dest?: AudioNode) {
+    this.sfx(dest, [
+      { k: 't', f: 1200, f2: 180, d: 0.55, g: 0.15, w: 'sine' },
+      { k: 't', f: 1800, f2: 300, d: 0.45, g: 0.08, w: 'triangle', t: 0.05 },
+    ]);
+  }
+
+  public playSneakerSlide(dest?: AudioNode) {
+    this.sfx(dest, [
+      { k: 'n', f: 900, f2: 300, d: 0.9, g: 0.16, ft: 'bandpass', q: 1.2 },
+      { k: 't', f: 140, f2: 90, d: 0.9, g: 0.06, w: 'sawtooth' },
+    ]);
+  }
+
+  public playPillowPoof(dest?: AudioNode) {
+    this.sfx(dest, [
+      { k: 'n', f: 700, f2: 220, d: 0.24, g: 0.1, ft: 'lowpass' },
+      { k: 't', f: 180, f2: 90, d: 0.22, g: 0.12, w: 'sine' },
+    ]);
+  }
+}
 
 export const soundEngine = new SoundEngine();
 

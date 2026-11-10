@@ -22,6 +22,7 @@ import { CUP_IN_CUP_PROMPT, CUP_IN_CUP_SCENES } from './constants/cupInCupConsta
 import { YO_YO_REVENGE_PROMPT, YO_YO_REVENGE_SCENES } from './constants/yoYoRevengeConstants';
 import { YO_BANDIT_PROMPT, YO_BANDIT_SCENES } from './constants/yoBanditConstants';
 import { DESERT_ISLAND_PROMPT, DESERT_ISLAND_SCENES } from './constants/desertIslandConstants';
+import { SHRINKING_REMOTE_PROMPT, SHRINKING_REMOTE_SCENES } from './constants/shrinkingRemoteConstants';
 export type CanvasTheme = 'black-on-white' | 'white-on-black';
 
 export type ProjectId =
@@ -47,6 +48,7 @@ export type ProjectId =
   | 'rubber-band'
   | 'yo-yo-revenge'
   | 'desert-island'
+  | 'shrinking-remote'
   | 'dart-shot'
   | 'ping-pong-revenge'
   | 'trick-shot-champion'
@@ -3655,6 +3657,17 @@ export const PROJECTS: Record<ProjectId, ProjectDef> = {
     masterPrompt: DESERT_ISLAND_PROMPT,
     scenes: DESERT_ISLAND_SCENES,
   },
+  'shrinking-remote': {
+    id: 'shrinking-remote',
+    title: 'Angry Stickman: The Shrinking Remote Control',
+    subtitle: 'The 30-Second Bedroom Shrink Comedy',
+    tagline: 'Vertical 9:16 Stickman Short · Modern Pop Color · Sound Effects Only',
+    duration: 30,
+    hasAudioDialogue: false,
+    hasCaptions: true,
+    masterPrompt: SHRINKING_REMOTE_PROMPT,
+    scenes: SHRINKING_REMOTE_SCENES,
+  },
   'yo-yo-revenge': {
     id: 'yo-yo-revenge',
     title: 'Angry Stickman: The Yo-Yo Revenge',
@@ -3808,7 +3821,7 @@ export interface StudioConfig {
 }
 
 export const DEFAULT_CONFIG: StudioConfig = {
-  activeProject: 'desert-island', // The latest short is the default film
+  activeProject: 'shrinking-remote', // The latest short is the default film
   canvasTheme: 'black-on-white', // Style 1A: Black on White (toggleable to Style 1B: White on Black)
   vividAccent: '#ef4444', // Vivid Red as seen in reference image for emotions, risks & cages
   accentColor: '#000000', // Minimalist Monochrome

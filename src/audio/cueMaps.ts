@@ -1655,3 +1655,66 @@ export const DESERT_ISLAND_CUES: AudioCue[] = [
   { id: 'di-sad-trombone', time: 27.0, play: (d) => soundEngine.playSadTrombone(d) },
   { id: 'di-freeze', time: 29.5, play: (d) => soundEngine.playFreezeSting(d) },
 ];
+
+/**
+ * 30-second sound map for "The Shrinking Remote Control".
+ * Four 7.5s score slices plus remote clicks, magical beam zaps, shrinking
+ * whooshes, tiny footsteps, the giant sneaker slide, a pillow poof and the
+ * defeated freeze sting.
+ */
+export const SHRINKING_REMOTE_CUES: AudioCue[] = [
+  // Score slices
+  { id: 'sr-score-1', time: 0.0, play: (d) => soundEngine.playShrinkingRemoteScoreSection(d, 0, 7.5) },
+  { id: 'sr-score-2', time: 7.5, play: (d) => soundEngine.playShrinkingRemoteScoreSection(d, 7.5, 15.0) },
+  { id: 'sr-score-3', time: 15.0, play: (d) => soundEngine.playShrinkingRemoteScoreSection(d, 15.0, 22.5) },
+  { id: 'sr-score-4', time: 22.5, play: (d) => soundEngine.playShrinkingRemoteScoreSection(d, 22.5, 30.0) },
+
+  // Scene 1 - The Mysterious Remote (0-6s)
+  { id: 'sr-notebook-tap', time: 1.9, play: (d) => soundEngine.playMechanicalClick(d) },
+  { id: 'sr-magic-hum', time: 2.4, play: (d) => soundEngine.playShrinkBeam(d) },
+  { id: 'sr-click-chair', time: 3.95, play: (d) => soundEngine.playRemoteClick(d) },
+  { id: 'sr-beam-chair', time: 4.0, play: (d) => soundEngine.playShrinkBeam(d) },
+  { id: 'sr-shrink-chair', time: 4.3, play: (d) => soundEngine.playShrinkDown(d) },
+  { id: 'sr-surprise', time: 5.2, play: (d) => soundEngine.playCartoonBoing(d) },
+
+  // Scene 2 - Shrinking Everything (6-12s)
+  { id: 'sr-click-desk', time: 6.6, play: (d) => soundEngine.playRemoteClick(d) },
+  { id: 'sr-beam-desk', time: 6.65, play: (d) => soundEngine.playShrinkBeam(d) },
+  { id: 'sr-shrink-desk', time: 6.9, play: (d) => soundEngine.playShrinkDown(d) },
+  { id: 'sr-click-lamp', time: 7.85, play: (d) => soundEngine.playRemoteClick(d) },
+  { id: 'sr-beam-lamp', time: 7.9, play: (d) => soundEngine.playShrinkBeam(d) },
+  { id: 'sr-shrink-lamp', time: 8.1, play: (d) => soundEngine.playShrinkDown(d) },
+  { id: 'sr-click-shelf', time: 8.75, play: (d) => soundEngine.playRemoteClick(d) },
+  { id: 'sr-beam-shelf', time: 8.8, play: (d) => soundEngine.playShrinkBeam(d) },
+  { id: 'sr-shrink-shelf', time: 9.0, play: (d) => soundEngine.playShrinkDown(d) },
+  { id: 'sr-celebrate', time: 9.7, play: (d) => soundEngine.playVictoryFanfareShort(d) },
+  { id: 'sr-ominous', time: 11.5, play: (d) => soundEngine.playDramaticRumble(d) },
+
+  // Scene 3 - Oops! (12-18s)
+  { id: 'sr-beam-self', time: 12.15, play: (d) => soundEngine.playShrinkBeam(d) },
+  { id: 'sr-shrink-self', time: 12.25, play: (d) => soundEngine.playShrinkDown(d) },
+  { id: 'sr-remote-drop', time: 13.0, play: (d) => soundEngine.playFloorThump(d) },
+  { id: 'sr-remote-bounce', time: 13.25, play: (d) => soundEngine.playCartoonBoing(d) },
+  { id: 'sr-shock', time: 14.6, play: (d) => soundEngine.playCartoonBoing(d) },
+
+  // Scene 4 - Giant Bedroom Survival (18-24s)
+  { id: 'sr-tiny-step-1', time: 18.2, play: (d) => soundEngine.playFootstep(false, d) },
+  { id: 'sr-tiny-step-2', time: 19.4, play: (d) => soundEngine.playFootstep(false, d) },
+  { id: 'sr-pencil-tap', time: 19.9, play: (d) => soundEngine.playMechanicalClick(d) },
+  { id: 'sr-sneaker', time: 21.4, play: (d) => soundEngine.playSneakerSlide(d) },
+  { id: 'sr-panic', time: 21.8, play: (d) => soundEngine.playCartoonBoing(d) },
+  { id: 'sr-jump', time: 22.0, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'sr-pillow', time: 22.6, play: (d) => soundEngine.playPillowPoof(d) },
+  { id: 'sr-sneaker-stop', time: 23.0, play: (d) => soundEngine.playFloorThump(d) },
+
+  // Scene 5 - The Wrong Button (24-30s)
+  { id: 'sr-jump-remote', time: 24.1, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'sr-walk-1', time: 24.9, play: (d) => soundEngine.playFootstep(false, d) },
+  { id: 'sr-walk-2', time: 25.2, play: (d) => soundEngine.playFootstep(false, d) },
+  { id: 'sr-click-purple', time: 26.0, play: (d) => soundEngine.playRemoteClick(d) },
+  { id: 'sr-beam-all', time: 26.05, play: (d) => soundEngine.playShrinkBeam(d) },
+  { id: 'sr-shrink-all', time: 26.3, play: (d) => soundEngine.playShrinkDown(d) },
+  { id: 'sr-click-red', time: 27.8, play: (d) => soundEngine.playRemoteClick(d) },
+  { id: 'sr-sad', time: 28.2, play: (d) => soundEngine.playSadTrombone(d) },
+  { id: 'sr-freeze', time: 29.4, play: (d) => soundEngine.playFreezeSting(d) },
+];

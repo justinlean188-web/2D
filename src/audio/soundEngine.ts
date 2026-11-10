@@ -4389,6 +4389,19 @@ class SoundEngine {
     });
   }
 
+  public playDesertIslandScoreSection(dest?: AudioNode, start = 0, end = 7.5) {
+    this.scoreSlice(dest, start, end, {
+      bpm: 110,
+      wave: "sine",
+      level: 0.35,
+      chords: [
+        [261.63, 329.63, 392.0],
+        [293.66, 369.99, 440.0],
+        [329.63, 415.30, 493.88],
+        [261.63, 329.63, 392.0],
+      ],
+    });
+  }
   // ---- Three-Wall Ping-Pong SFX ----
   public playPaddleHit(dest?: AudioNode) {
     this.sfx(dest, [
@@ -4471,6 +4484,60 @@ class SoundEngine {
       { k: 't', f: 1000, f2: 600, d: 0.06, g: 0.1, w: 'triangle' },
       { k: 'n', f: 2600, f2: 1200, d: 0.04, g: 0.05, ft: 'bandpass', q: 3 },
     ]);
+  }
+  // ---- Desert Island SFX ----
+  public playTropicalBirds(dest?: AudioNode) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+    try {
+      const now = ctx.currentTime;
+      const chirps = [
+        { freq: 2200, start: 0.0, dur: 0.15 },
+        { freq: 1800, start: 0.2, dur: 0.15 },
+        { freq: 2500, start: 0.5, dur: 0.12 },
+        { freq: 2000, start: 0.7, dur: 0.15 },
+      ];
+      chirps.forEach((c) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(c.freq, now + c.start);
+        gain.gain.setValueAtTime(0.0, now + c.start);
+        gain.gain.linearRampToValueAtTime(0.15 * this.volume, now + c.start + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + c.start + c.dur);
+        osc.connect(gain);
+        this.routeOutput(gain, dest);
+        osc.start(now + c.start);
+        osc.stop(now + c.start + c.dur);
+      });
+    } catch {}
+  }
+
+  public playPlaneEngine(dest?: AudioNode) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+    try {
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const filter = ctx.createBiquadFilter();
+      const gain = ctx.createGain();
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(80, now);
+      osc.frequency.exponentialRampToValueAtTime(120, now + 2);
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(300, now);
+      filter.Q.setValueAtTime(2, now);
+      gain.gain.setValueAtTime(0.0, now);
+      gain.gain.linearRampToValueAtTime(0.1 * this.volume, now + 0.5);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 4);
+      osc.connect(filter);
+      filter.connect(gain);
+      this.routeOutput(gain, dest);
+      osc.start(now);
+      osc.stop(now + 4);
+    } catch {}
   }}
 
 export const soundEngine = new SoundEngine();

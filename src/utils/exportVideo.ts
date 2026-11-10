@@ -27,6 +27,7 @@ import { ThreeWallPingPongRenderer } from '../animation/threeWallPingPongRendere
 import { CupInCupRenderer } from '../animation/cupInCupRenderer';
 import { YoYoRevengeRenderer } from '../animation/yoYoRevengeRenderer';
 import { YoBanditRenderer } from '../animation/yoBanditRenderer';
+import { DesertIslandRenderer } from '../animation/desertIslandRenderer';
 import { MindTrapsRenderer } from '../animation/mindTrapsRenderer';
 import { SequelPaperBallRenderer } from '../animation/sequelPaperBallRenderer';
 import {
@@ -56,6 +57,7 @@ import {
   CUP_IN_CUP_CUES,
   YO_YO_REVENGE_CUES,
   YO_BANDIT_CUES,
+  DESERT_ISLAND_CUES,
   PAPER_BALL_PART3_CUES,
   PAPER_BALL_PART4_CUES,
   PAPER_BALL_SEQUEL_CUES,
@@ -216,6 +218,8 @@ export async function exportVideo(options: ExportOptions): Promise<ExportResult>
       ? new YoYoRevengeRenderer()
       : config.activeProject === 'rubber-band'
       ? new YoBanditRenderer()
+      : config.activeProject === 'desert-island'
+      ? new DesertIslandRenderer()
       : config.activeProject === 'coin-flip'
       ? new CoinFlipRenderer()
       : config.activeProject === 'dart-shot'
@@ -287,6 +291,8 @@ export async function exportVideo(options: ExportOptions): Promise<ExportResult>
       ? 'yo-yo-revenge'
       : config.activeProject === 'rubber-band'
       ? 'rubber-band'
+      : config.activeProject === 'desert-island'
+      ? 'desert-island'
       : config.activeProject === 'coin-flip'
       ? 'coin-flip'
       : config.activeProject === 'dart-shot'
@@ -936,6 +942,17 @@ export async function exportVideo(options: ExportOptions): Promise<ExportResult>
             // The four yb-score-* cues each schedule one 7.5s slice of the
             // playful score; every other cue is a one-shot on its beat.
             for (const cue of YO_BANDIT_CUES) {
+              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
+                cue.play(dest);
+                triggeredCues.add(cue.id);
+              }
+            }
+          }
+        } else if (config.activeProject === 'desert-island') {
+          if (config.enableSFX) {
+            // The four di-score-* cues each schedule one 7.5s slice of the
+            // tropical score; every other cue is a one-shot on its beat.
+            for (const cue of DESERT_ISLAND_CUES) {
               if (animT >= cue.time && !triggeredCues.has(cue.id)) {
                 cue.play(dest);
                 triggeredCues.add(cue.id);

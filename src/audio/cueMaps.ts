@@ -1600,3 +1600,58 @@ export const YO_BANDIT_CUES: AudioCue[] = [
   { id: 'yb-whistle', time: 27.5, play: (d) => soundEngine.playSlideWhistle(d) },
   { id: 'yb-freeze', time: 29.0, play: (d) => soundEngine.playFreezeSting(d) },
 ];
+
+/**
+ * 30-second sound map for "Stranded on a Desert Island".
+ * Four 7.5s score slices plus one-shots for ocean waves, tropical birds,
+ * wood tapping, hut collapse, fishing line, fish splash, coconuts rolling,
+ * airplane engine, coconut fall, beanie pop, sad trombone, and freeze sting.
+ */
+export const DESERT_ISLAND_CUES: AudioCue[] = [
+  // Score slices
+  { id: 'di-score-1', time: 0.0, play: (d) => soundEngine.playDesertIslandScoreSection(d, 0, 7.5) },
+  { id: 'di-score-2', time: 7.5, play: (d) => soundEngine.playDesertIslandScoreSection(d, 7.5, 15.0) },
+  { id: 'di-score-3', time: 15.0, play: (d) => soundEngine.playDesertIslandScoreSection(d, 15.0, 22.5) },
+  { id: 'di-score-4', time: 22.5, play: (d) => soundEngine.playDesertIslandScoreSection(d, 22.5, 30.0) },
+
+  // Scene 1 - No Way Home (0-6s)
+  { id: 'di-waves', time: 0.5, play: (d) => soundEngine.playWaterSplash(d, 0.3) },
+  { id: 'di-birds', time: 1.0, play: (d) => soundEngine.playTropicalBirds(d) },
+  { id: 'di-challenge', time: 2.0, play: (d) => soundEngine.playDramaticRumble(d) },
+
+  // Scene 2 - Building a Shelter (6-12s)
+  { id: 'di-wood-tap-1', time: 6.5, play: (d) => soundEngine.playMechanicalClick(d) },
+  { id: 'di-leaves-rustle', time: 7.5, play: (d) => soundEngine.playPaperSlap(d) },
+  { id: 'di-wood-tap-2', time: 8.5, play: (d) => soundEngine.playMechanicalClick(d) },
+  { id: 'di-confident', time: 9.5, play: (d) => soundEngine.playConfidenceDing(d) },
+  { id: 'di-creak', time: 10.0, play: (d) => soundEngine.playCupWobbleCreak(d) },
+  { id: 'di-collapse', time: 10.5, play: (d) => soundEngine.playTrashCrash(d) },
+  { id: 'di-leaf-flutter', time: 11.5, play: (d) => soundEngine.playPaperSlap(d) },
+
+  // Scene 3 - The Fishing Disaster (12-18s)
+  { id: 'di-water-lap', time: 12.2, play: (d) => soundEngine.playWaterSplash(d, 0.2) },
+  { id: 'di-line-creak', time: 14.5, play: (d) => soundEngine.playRubberBandTwang(d) },
+  { id: 'di-excited', time: 15.0, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'di-rod-bend', time: 15.2, play: (d) => soundEngine.playStrainedTug(d) },
+  { id: 'di-fish-splash', time: 15.6, play: (d) => soundEngine.playWaterSplash(d, 1.0) },
+  { id: 'di-failure', time: 16.0, play: (d) => soundEngine.playSadTrombone(d) },
+  { id: 'di-drip', time: 17.0, play: (d) => soundEngine.playWaterSplash(d, 0.1) },
+
+  // Scene 4 - The Rescue Signal (18-24s)
+  { id: 'di-coconut-roll', time: 18.5, play: (d) => soundEngine.playFloorThump(d) },
+  { id: 'di-coconut-thud', time: 19.5, play: (d) => soundEngine.playMechanicalClick(d) },
+  { id: 'di-uplifting', time: 21.0, play: (d) => soundEngine.playVictoryFanfareShort(d) },
+  { id: 'di-plane-engine', time: 21.5, play: (d) => soundEngine.playPlaneEngine(d) },
+  { id: 'di-excited-jump', time: 22.0, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'di-jump', time: 22.5, play: (d) => soundEngine.playCartoonBoing(d) },
+
+  // Scene 5 - Worst Timing Ever (24-30s)
+  { id: 'di-coconut-loosen', time: 25.0, play: (d) => soundEngine.playCupWobbleCreak(d) },
+  { id: 'di-coconut-fall', time: 25.3, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'di-coconut-bounce', time: 25.6, play: (d) => soundEngine.playCartoonBoing(d) },
+  { id: 'di-beanie-pop', time: 25.8, play: (d) => soundEngine.playCartoonBoing(d) },
+  { id: 'di-beanie-land', time: 26.2, play: (d) => soundEngine.playFloorThump(d) },
+  { id: 'di-plane-pass', time: 26.5, play: (d) => soundEngine.playPlaneEngine(d) },
+  { id: 'di-sad-trombone', time: 27.0, play: (d) => soundEngine.playSadTrombone(d) },
+  { id: 'di-freeze', time: 29.5, play: (d) => soundEngine.playFreezeSting(d) },
+];

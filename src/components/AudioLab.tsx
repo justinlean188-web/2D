@@ -33,6 +33,7 @@ export const AudioLab: React.FC<AudioLabProps> = ({ config, setConfig }) => {
   const isThreeWallPingPong = config.activeProject === 'three-wall-ping-pong';
   const isCupInCup = config.activeProject === 'cup-in-cup';
   const isYoYoRevenge = config.activeProject === 'yo-yo-revenge';
+  const isDesertIsland = config.activeProject === 'desert-island';
   const soundEffects = [
     // Paper Ball Ricochet Effects
     {
@@ -1922,6 +1923,78 @@ export const AudioLab: React.FC<AudioLabProps> = ({ config, setConfig }) => {
         setTimeout(() => soundEngine.playFreezeSting(), 5100);
       },
     },
+    // Desert Island Effects
+    {
+      project: 'desert-island' as const,
+      name: 'No Way Home',
+      time: 'Desert Island (0.0s - 6.0s)',
+      desc: 'Ocean waves, tropical birds, dramatic rumble.',
+      trigger: () => {
+         soundEngine.playWaterSplash(undefined, 0.3);
+        setTimeout(() => soundEngine.playTropicalBirds(), 500);
+        setTimeout(() => soundEngine.playDramaticRumble(), 1500);
+      },
+    },
+    {
+      project: 'desert-island' as const,
+      name: 'Building a Shelter',
+      time: 'Desert Island (6.0s - 12.0s)',
+      desc: 'Wood tapping, leaves rustling, hut collapse, leaf flutter.',
+      trigger: () => {
+        soundEngine.playMechanicalClick();
+        setTimeout(() => soundEngine.playPaperSlap(), 1000);
+        setTimeout(() => soundEngine.playMechanicalClick(), 2000);
+        setTimeout(() => soundEngine.playConfidenceDing(), 3000);
+        setTimeout(() => soundEngine.playCupWobbleCreak(), 3500);
+        setTimeout(() => soundEngine.playTrashCrash(), 4000);
+        setTimeout(() => soundEngine.playPaperSlap(), 5000);
+      },
+    },
+    {
+      project: 'desert-island' as const,
+      name: 'Fishing Disaster',
+      time: 'Desert Island (12.0s - 18.0s)',
+      desc: 'Water lapping, line creak, excited whoosh, rod bend, fish splash, sad trombone.',
+      trigger: () => {
+         soundEngine.playWaterSplash(undefined, 0.2);
+        setTimeout(() => soundEngine.playRubberBandTwang(), 2300);
+        setTimeout(() => soundEngine.playWhoosh(), 2800);
+        setTimeout(() => soundEngine.playStrainedTug(), 3000);
+         soundEngine.playWaterSplash(undefined, 1.0);
+        setTimeout(() => soundEngine.playSadTrombone(), 3800);
+         soundEngine.playWaterSplash(undefined, 0.1);
+      },
+    },
+    {
+      project: 'desert-island' as const,
+      name: 'Rescue Signal',
+      time: 'Desert Island (18.0s - 24.0s)',
+      desc: 'Coconut rolling, uplifting fanfare, airplane engine, excited whoosh, jump boing.',
+      trigger: () => {
+        soundEngine.playFloorThump();
+        setTimeout(() => soundEngine.playMechanicalClick(), 1000);
+        setTimeout(() => soundEngine.playVictoryFanfareShort(), 2500);
+        setTimeout(() => soundEngine.playPlaneEngine(), 3000);
+        setTimeout(() => soundEngine.playWhoosh(), 3500);
+        setTimeout(() => soundEngine.playCartoonBoing(), 4000);
+      },
+    },
+    {
+      project: 'desert-island' as const,
+      name: 'Worst Timing Ever',
+      time: 'Desert Island (24.0s - 30.0s)',
+      desc: 'Coconut creak, fall whoosh, beanie pop, plane pass, sad trombone, freeze sting.',
+      trigger: () => {
+        soundEngine.playCupWobbleCreak();
+        setTimeout(() => soundEngine.playWhoosh(), 300);
+        setTimeout(() => soundEngine.playCartoonBoing(), 600);
+        setTimeout(() => soundEngine.playCartoonBoing(), 800);
+        setTimeout(() => soundEngine.playFloorThump(), 1200);
+        setTimeout(() => soundEngine.playPlaneEngine(), 1500);
+        setTimeout(() => soundEngine.playSadTrombone(), 2000);
+        setTimeout(() => soundEngine.playFreezeSting(), 4500);
+      },
+    },
   ];
   const visibleEffects = soundEffects.filter((effect) => effect.project === config.activeProject);
 
@@ -1967,6 +2040,8 @@ export const AudioLab: React.FC<AudioLabProps> = ({ config, setConfig }) => {
             ? 'The Angry Stickman: The Impossible Cup-in-Cup Shot is a 30-second cup trickshot comedy with a fully procedural 135 bpm playful score sliced into four 7.5-second sections — plus cup clicks, paddle hits, table bounces, rim clangs, suspense swells, soft plinks, victory fanfares, cup tower wobbles, avalanche rumbles, and a freeze sting. No external audio files.'
             : isYoYoRevenge
             ? 'The Angry Stickman: The Yo-Yo Revenge is a 30-second trickshot comedy with a fully procedural 142 bpm playful score sliced into four 7.5-second sections, plus string twangs, swing whirrs, a wobbling cup, an angry sting, the leg-wrap loops, a rising whistle, the cup ping, a victory fanfare, the taut-string snap, the forehead bonk, a beanie-pop boing, a descending whistle and the freeze sting. No external audio files.'
+            : isDesertIsland
+            ? 'The Angry Stickman: Stranded on a Desert Island is a 30-second survival comedy with a fully procedural 110 bpm tropical score sliced into four 7.5-second sections — plus ocean waves, tropical birds, wood tapping, hut collapse, fishing line creaks, fish splash, coconut rolling, uplifting fanfare, airplane engine, coconut fall, beanie pop, sad trombone, and freeze sting. No external audio files.'
             : isCoinFlip
             ? 'The Angry Stickman vs. The Impossible Coin Flip is a 30-second one-room comedy with a fully procedural score: a smug showman strut, a mechanical engineering march, a rage tremolo that cuts dead on the final flick, a pinball ricochet, a tiny victory fanfare and a record scratch — plus the rim tings, the forehead bonk, the rubber-band launch, the glass splashes and the gold coin ring that ends the film. No external audio files.'
             : isDartShot

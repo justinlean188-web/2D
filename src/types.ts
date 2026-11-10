@@ -21,6 +21,7 @@ import { THREE_WALL_PING_PONG_PROMPT, THREE_WALL_PING_PONG_SCENES } from './cons
 import { CUP_IN_CUP_PROMPT, CUP_IN_CUP_SCENES } from './constants/cupInCupConstants';
 import { YO_YO_REVENGE_PROMPT, YO_YO_REVENGE_SCENES } from './constants/yoYoRevengeConstants';
 import { YO_BANDIT_PROMPT, YO_BANDIT_SCENES } from './constants/yoBanditConstants';
+import { DESERT_ISLAND_PROMPT, DESERT_ISLAND_SCENES } from './constants/desertIslandConstants';
 export type CanvasTheme = 'black-on-white' | 'white-on-black';
 
 export type ProjectId =
@@ -45,6 +46,7 @@ export type ProjectId =
   | 'cup-in-cup'
   | 'rubber-band'
   | 'yo-yo-revenge'
+  | 'desert-island'
   | 'dart-shot'
   | 'ping-pong-revenge'
   | 'trick-shot-champion'
@@ -3642,6 +3644,17 @@ export const PROJECTS: Record<ProjectId, ProjectDef> = {
     masterPrompt: YO_BANDIT_PROMPT,
     scenes: YO_BANDIT_SCENES,
   },
+  'desert-island': {
+    id: 'desert-island',
+    title: 'Angry Stickman: Stranded on a Desert Island',
+    subtitle: 'The 30-Second Survival Comedy',
+    tagline: 'Vertical 9:16 Stickman Short · Modern Pop Color · Sound Effects Only',
+    duration: 30,
+    hasAudioDialogue: false,
+    hasCaptions: true,
+    masterPrompt: DESERT_ISLAND_PROMPT,
+    scenes: DESERT_ISLAND_SCENES,
+  },
   'yo-yo-revenge': {
     id: 'yo-yo-revenge',
     title: 'Angry Stickman: The Yo-Yo Revenge',
@@ -3795,7 +3808,7 @@ export interface StudioConfig {
 }
 
 export const DEFAULT_CONFIG: StudioConfig = {
-  activeProject: 'yo-yo-revenge', // The latest short is the default film
+  activeProject: 'desert-island', // The latest short is the default film
   canvasTheme: 'black-on-white', // Style 1A: Black on White (toggleable to Style 1B: White on Black)
   vividAccent: '#ef4444', // Vivid Red as seen in reference image for emotions, risks & cages
   accentColor: '#000000', // Minimalist Monochrome

@@ -1123,7 +1123,10 @@ export class ShrinkingRemoteRenderer {
     const shoulderY = hipY - 170;
     const bodyTopX = x + Math.sin(pose.lean) * 170;
     const headX = bodyTopX + Math.sin(pose.headTilt) * 10;
-    return { x: headX, y: shoulderY - 140 + pose.headDrop };
+    // Shoulder is ~170 above the hip; head radius is HEAD_R. Place the head so
+    // its bottom edge just touches the top of the neck (shoulderY - 20), giving
+    // a continuous head -> neck -> body join with no gap.
+    return { x: headX, y: shoulderY - 20 - HEAD_R + pose.headDrop };
   }
 
   private drawBody(
@@ -1717,7 +1720,7 @@ export class ShrinkingRemoteRenderer {
     if (travel >= 1) {
       for (let i = 0; i < 3; i++) {
         const u = (t - start) * 6 + i * 0.33;
-        const radius = 18 + Math.sin(u * Math.PI) * 34;
+        const radius = Math.max(1, 18 + Math.sin(u * Math.PI) * 34);
         ctx.strokeStyle = PURPLE_LIGHT;
         ctx.lineWidth = 3;
         ctx.beginPath();

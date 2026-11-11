@@ -1718,3 +1718,62 @@ export const SHRINKING_REMOTE_CUES: AudioCue[] = [
   { id: 'sr-sad', time: 28.2, play: (d) => soundEngine.playSadTrombone(d) },
   { id: 'sr-freeze', time: 29.4, play: (d) => soundEngine.playFreezeSting(d) },
 ];
+
+/**
+ * 30-second sound map for "The Magic Paintbrush".
+ * Four 7.5s score slices plus paint swishes, magical sparkles, transformation
+ * dings, monster footsteps, cartoon running and funny impacts.
+ */
+export const MAGIC_PAINTBRUSH_CUES: AudioCue[] = [
+  // Score slices
+  { id: 'mp-score-1', time: 0.0, play: (d) => soundEngine.playMagicPaintbrushScoreSection(d, 0, 7.5) },
+  { id: 'mp-score-2', time: 7.5, play: (d) => soundEngine.playMagicPaintbrushScoreSection(d, 7.5, 15.0) },
+  { id: 'mp-score-3', time: 15.0, play: (d) => soundEngine.playMagicPaintbrushScoreSection(d, 15.0, 22.5) },
+  { id: 'mp-score-4', time: 22.5, play: (d) => soundEngine.playMagicPaintbrushScoreSection(d, 22.5, 30.0) },
+
+  // Scene 1 - The Magic Discovery (0-6s)
+  { id: 'mp-box-creak', time: 1.3, play: (d) => soundEngine.playFunnyImpact(d) },
+  { id: 'mp-shimmer', time: 2.0, play: (d) => soundEngine.playMagicSparkle(d) },
+  { id: 'mp-pickup', time: 2.4, play: (d) => soundEngine.playPaintSwish(d) },
+  { id: 'mp-swish', time: 3.3, play: (d) => soundEngine.playPaintSwish(d) },
+  { id: 'mp-sparkle', time: 4.3, play: (d) => soundEngine.playMagicSparkle(d) },
+  { id: 'mp-apple-drop', time: 4.9, play: (d) => soundEngine.playTransformDing(d) },
+  { id: 'mp-surprise', time: 5.4, play: (d) => soundEngine.playCartoonBoing(d) },
+
+  // Scene 2 - Creating Anything (6-12s)
+  { id: 'mp-swish-2', time: 6.1, play: (d) => soundEngine.playPaintSwish(d) },
+  { id: 'mp-stair-chime', time: 6.9, play: (d) => soundEngine.playMagicSparkle(d) },
+  { id: 'mp-transform', time: 7.6, play: (d) => soundEngine.playTransformDing(d) },
+  { id: 'mp-fanfare-1', time: 8.2, play: (d) => soundEngine.playVictoryFanfareShort(d) },
+  { id: 'mp-cake-swish', time: 9.0, play: (d) => soundEngine.playPaintSwish(d) },
+  { id: 'mp-cake-transform', time: 10.0, play: (d) => soundEngine.playTransformDing(d) },
+  { id: 'mp-celebrate', time: 10.7, play: (d) => soundEngine.playVictoryFanfareShort(d) },
+
+  // Scene 3 - The Terrible Drawing (12-18s)
+  { id: 'mp-monster-swish', time: 12.8, play: (d) => soundEngine.playPaintSwish(d) },
+  { id: 'mp-purple-hum', time: 13.6, play: (d) => soundEngine.playMagicSparkle(d) },
+  { id: 'mp-shake', time: 14.4, play: (d) => soundEngine.playDramaticRumble(d) },
+  { id: 'mp-head-pop', time: 15.2, play: (d) => soundEngine.playFunnyImpact(d) },
+  { id: 'mp-monster-bounce', time: 15.9, play: (d) => soundEngine.playCartoonBoing(d) },
+  { id: 'mp-shock', time: 16.8, play: (d) => soundEngine.playCartoonBoing(d) },
+
+  // Scene 4 - The Monster Chase (18-24s)
+  { id: 'mp-monster-step-1', time: 18.3, play: (d) => soundEngine.playMonsterFootstep(d) },
+  { id: 'mp-monster-step-2', time: 19.1, play: (d) => soundEngine.playMonsterFootstep(d) },
+  { id: 'mp-run', time: 19.6, play: (d) => soundEngine.playCartoonRun(d) },
+  { id: 'mp-cake-bump', time: 20.3, play: (d) => soundEngine.playFunnyImpact(d) },
+  { id: 'mp-frosting-splat', time: 20.5, play: (d) => soundEngine.playFunnyImpact(d) },
+  { id: 'mp-stairs', time: 21.1, play: (d) => soundEngine.playCartoonRun(d) },
+  { id: 'mp-cage-swish', time: 22.0, play: (d) => soundEngine.playPaintSwish(d) },
+  { id: 'mp-cage-glow', time: 23.0, play: (d) => soundEngine.playMagicSparkle(d) },
+
+  // Scene 5 - The Final Mistake (24-30s)
+  { id: 'mp-cage-slam', time: 24.1, play: (d) => soundEngine.playFunnyImpact(d) },
+  { id: 'mp-realisation', time: 25.2, play: (d) => soundEngine.playCartoonBoing(d) },
+  { id: 'mp-wave-chime', time: 25.9, play: (d) => soundEngine.playMagicSparkle(d) },
+  { id: 'mp-disappointed', time: 26.7, play: (d) => soundEngine.playSadTrombone(d) },
+  { id: 'mp-brush-pickup', time: 27.4, play: (d) => soundEngine.playPaintSwish(d) },
+  { id: 'mp-tiny-draw', time: 28.3, play: (d) => soundEngine.playPaintSwish(d) },
+  { id: 'mp-tiny-transform', time: 28.9, play: (d) => soundEngine.playTransformDing(d) },
+  { id: 'mp-freeze', time: 29.6, play: (d) => soundEngine.playFreezeSting(d) },
+];

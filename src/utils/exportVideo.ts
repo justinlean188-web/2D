@@ -29,6 +29,7 @@ import { YoYoRevengeRenderer } from '../animation/yoYoRevengeRenderer';
 import { YoBanditRenderer } from '../animation/yoBanditRenderer';
 import { DesertIslandRenderer } from '../animation/desertIslandRenderer';
 import { ShrinkingRemoteRenderer } from '../animation/shrinkingRemoteRenderer';
+import { MagicPaintbrushRenderer } from '../animation/magicPaintbrushRenderer';
 import { MindTrapsRenderer } from '../animation/mindTrapsRenderer';
 import { SequelPaperBallRenderer } from '../animation/sequelPaperBallRenderer';
 import {
@@ -60,6 +61,7 @@ import {
   YO_BANDIT_CUES,
   DESERT_ISLAND_CUES,
   SHRINKING_REMOTE_CUES,
+  MAGIC_PAINTBRUSH_CUES,
   PAPER_BALL_PART3_CUES,
   PAPER_BALL_PART4_CUES,
   PAPER_BALL_SEQUEL_CUES,
@@ -224,6 +226,8 @@ export async function exportVideo(options: ExportOptions): Promise<ExportResult>
       ? new DesertIslandRenderer()
       : config.activeProject === 'shrinking-remote'
       ? new ShrinkingRemoteRenderer()
+      : config.activeProject === 'magic-paintbrush'
+      ? new MagicPaintbrushRenderer()
       : config.activeProject === 'coin-flip'
       ? new CoinFlipRenderer()
       : config.activeProject === 'dart-shot'
@@ -299,6 +303,8 @@ export async function exportVideo(options: ExportOptions): Promise<ExportResult>
       ? 'desert-island'
       : config.activeProject === 'shrinking-remote'
       ? 'shrinking-remote'
+      : config.activeProject === 'magic-paintbrush'
+      ? 'magic-paintbrush'
       : config.activeProject === 'coin-flip'
       ? 'coin-flip'
       : config.activeProject === 'dart-shot'
@@ -970,6 +976,17 @@ export async function exportVideo(options: ExportOptions): Promise<ExportResult>
             // The four sr-score-* cues each schedule one 7.5s slice of the
             // playful score; every other cue is a one-shot on its beat.
             for (const cue of SHRINKING_REMOTE_CUES) {
+              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
+                cue.play(dest);
+                triggeredCues.add(cue.id);
+              }
+            }
+          }
+        } else if (config.activeProject === 'magic-paintbrush') {
+          if (config.enableSFX) {
+            // The four mp-score-* cues each schedule one 7.5s slice of the
+            // playful score; every other cue is a one-shot on its beat.
+            for (const cue of MAGIC_PAINTBRUSH_CUES) {
               if (animT >= cue.time && !triggeredCues.has(cue.id)) {
                 cue.play(dest);
                 triggeredCues.add(cue.id);

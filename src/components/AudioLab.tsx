@@ -35,6 +35,7 @@ export const AudioLab: React.FC<AudioLabProps> = ({ config, setConfig }) => {
   const isYoYoRevenge = config.activeProject === 'yo-yo-revenge';
   const isDesertIsland = config.activeProject === 'desert-island';
   const isShrinkingRemote = config.activeProject === 'shrinking-remote';
+  const isMagicPaintbrush = config.activeProject === 'magic-paintbrush';
   const soundEffects = [
     // Paper Ball Ricochet Effects
     {
@@ -2070,6 +2071,83 @@ export const AudioLab: React.FC<AudioLabProps> = ({ config, setConfig }) => {
         setTimeout(() => soundEngine.playFreezeSting(), 4900);
       },
     },
+    // The Magic Paintbrush Effects
+    {
+      project: 'magic-paintbrush' as const,
+      name: 'The Magic Discovery',
+      time: 'Magic Paintbrush (0.0s - 6.0s)',
+      desc: 'Box creak, magical shimmer, paint swish, sparkle chime, transform ding, surprised boing.',
+      trigger: () => {
+        soundEngine.playFunnyImpact();
+        setTimeout(() => soundEngine.playMagicSparkle(), 700);
+        setTimeout(() => soundEngine.playPaintSwish(), 1400);
+        setTimeout(() => soundEngine.playPaintSwish(), 2400);
+        setTimeout(() => soundEngine.playMagicSparkle(), 3400);
+        setTimeout(() => soundEngine.playTransformDing(), 4000);
+        setTimeout(() => soundEngine.playCartoonBoing(), 4500);
+      },
+    },
+    {
+      project: 'magic-paintbrush' as const,
+      name: 'I Can Create Anything!',
+      time: 'Magic Paintbrush (6.0s - 12.0s)',
+      desc: 'Paint swish, staircase chime, transform ding, fanfare, cake swish, transform ding, celebration fanfare.',
+      trigger: () => {
+        soundEngine.playPaintSwish();
+        setTimeout(() => soundEngine.playMagicSparkle(), 800);
+        setTimeout(() => soundEngine.playTransformDing(), 1500);
+        setTimeout(() => soundEngine.playVictoryFanfareShort(), 2100);
+        setTimeout(() => soundEngine.playPaintSwish(), 2900);
+        setTimeout(() => soundEngine.playTransformDing(), 3900);
+        setTimeout(() => soundEngine.playVictoryFanfareShort(), 4600);
+      },
+    },
+    {
+      project: 'magic-paintbrush' as const,
+      name: 'The Terrible Drawing',
+      time: 'Magic Paintbrush (12.0s - 18.0s)',
+      desc: 'Monster swish, purple hum, shake rumble, head pop, monster bounce, shock boing.',
+      trigger: () => {
+        soundEngine.playPaintSwish();
+        setTimeout(() => soundEngine.playMagicSparkle(), 800);
+        setTimeout(() => soundEngine.playDramaticRumble(), 1600);
+        setTimeout(() => soundEngine.playFunnyImpact(), 2300);
+        setTimeout(() => soundEngine.playCartoonBoing(), 2600);
+        setTimeout(() => soundEngine.playCartoonBoing(), 3600);
+      },
+    },
+    {
+      project: 'magic-paintbrush' as const,
+      name: 'The Monster Chase',
+      time: 'Magic Paintbrush (18.0s - 24.0s)',
+      desc: 'Monster footsteps, cartoon run, cake bump, frosting splat, stairs, cage swish, cage glow.',
+      trigger: () => {
+        soundEngine.playMonsterFootstep();
+        setTimeout(() => soundEngine.playMonsterFootstep(), 800);
+        setTimeout(() => soundEngine.playCartoonRun(), 1300);
+        setTimeout(() => soundEngine.playFunnyImpact(), 2000);
+        setTimeout(() => soundEngine.playFunnyImpact(), 2200);
+        setTimeout(() => soundEngine.playCartoonRun(), 2800);
+        setTimeout(() => soundEngine.playPaintSwish(), 3700);
+        setTimeout(() => soundEngine.playMagicSparkle(), 4700);
+      },
+    },
+    {
+      project: 'magic-paintbrush' as const,
+      name: 'The Final Mistake',
+      time: 'Magic Paintbrush (24.0s - 30.0s)',
+      desc: 'Cage slam, realisation boing, wave chime, sad trombone, brush pickup, tiny draw, tiny transform, freeze sting.',
+      trigger: () => {
+        soundEngine.playFunnyImpact();
+        setTimeout(() => soundEngine.playCartoonBoing(), 1100);
+        setTimeout(() => soundEngine.playMagicSparkle(), 1800);
+        setTimeout(() => soundEngine.playSadTrombone(), 2600);
+        setTimeout(() => soundEngine.playPaintSwish(), 3400);
+        setTimeout(() => soundEngine.playPaintSwish(), 3900);
+        setTimeout(() => soundEngine.playTransformDing(), 4500);
+        setTimeout(() => soundEngine.playFreezeSting(), 5500);
+      },
+    },
   ];
   const visibleEffects = soundEffects.filter((effect) => effect.project === config.activeProject);
 
@@ -2119,6 +2197,8 @@ export const AudioLab: React.FC<AudioLabProps> = ({ config, setConfig }) => {
             ? 'The Angry Stickman: Stranded on a Desert Island is a 30-second survival comedy with a fully procedural 110 bpm tropical score sliced into four 7.5-second sections — plus ocean waves, tropical birds, wood tapping, hut collapse, fishing line creaks, fish splash, coconut rolling, uplifting fanfare, airplane engine, coconut fall, beanie pop, sad trombone, and freeze sting. No external audio files.'
             : isShrinkingRemote
             ? 'The Angry Stickman: The Shrinking Remote Control is a 30-second bedroom comedy with a fully procedural 120 bpm playful score sliced into four 7.5-second sections — plus remote clicks, purple beam zaps, shrinking whooshes, tiny footsteps, pencil taps, a giant sneaker slide, a pillow poof, a sad trombone and the freeze sting. No external audio files.'
+            : isMagicPaintbrush
+            ? 'The Angry Stickman: The Magic Paintbrush is a 30-second magic comedy with a fully procedural 128 bpm playful score sliced into four 7.5-second sections — plus paint swishes, magical sparkles, transformation dings, monster footsteps, cartoon running and funny impacts. No external audio files.'
             : isCoinFlip
             ? 'The Angry Stickman vs. The Impossible Coin Flip is a 30-second one-room comedy with a fully procedural score: a smug showman strut, a mechanical engineering march, a rage tremolo that cuts dead on the final flick, a pinball ricochet, a tiny victory fanfare and a record scratch — plus the rim tings, the forehead bonk, the rubber-band launch, the glass splashes and the gold coin ring that ends the film. No external audio files.'
             : isDartShot

@@ -4590,6 +4590,56 @@ class SoundEngine {
       { k: 't', f: 180, f2: 90, d: 0.22, g: 0.12, w: 'sine' },
     ]);
   }
+
+  // ---- The Magic Paintbrush score + SFX ----
+  public playMagicPaintbrushScoreSection(dest?: AudioNode, start = 0, end = 7.5) {
+    this.scoreSlice(dest, start, end, {
+      bpm: 128,
+      wave: 'triangle',
+      level: 0.34,
+      chords: [
+        [261.63, 329.63, 392.0],
+        [349.23, 440.0, 523.25],
+        [392.0, 493.88, 587.33],
+        [329.63, 415.30, 493.88],
+      ],
+    });
+  }
+
+  public playPaintSwish(dest?: AudioNode) {
+    this.sfx(dest, [
+      { k: 't', f: 900, f2: 200, d: 0.18, g: 0.14, w: 'sawtooth' },
+      { k: 'n', f: 4000, f2: 1200, d: 0.16, g: 0.07, ft: 'bandpass', q: 2 },
+    ]);
+  }
+
+  public playTransformDing(dest?: AudioNode) {
+    this.sfx(dest, [
+      { k: 't', f: 800, f2: 1600, d: 0.2, g: 0.16, w: 'sine' },
+      { k: 't', f: 1200, f2: 2400, d: 0.18, g: 0.1, w: 'triangle', t: 0.06 },
+    ]);
+  }
+
+  public playMonsterFootstep(dest?: AudioNode) {
+    this.sfx(dest, [
+      { k: 't', f: 90, f2: 40, d: 0.18, g: 0.2, w: 'sine' },
+      { k: 'n', f: 200, f2: 100, d: 0.16, g: 0.12, ft: 'bandpass', q: 1.5 },
+    ]);
+  }
+
+  public playCartoonRun(dest?: AudioNode) {
+    this.sfx(dest, [
+      { k: 't', f: 220, f2: 120, d: 0.1, g: 0.14, w: 'triangle' },
+      { k: 't', f: 300, f2: 160, d: 0.1, g: 0.1, w: 'triangle', t: 0.1 },
+    ]);
+  }
+
+  public playFunnyImpact(dest?: AudioNode) {
+    this.sfx(dest, [
+      { k: 't', f: 150, f2: 80, d: 0.25, g: 0.22, w: 'sine' },
+      { k: 'n', f: 500, f2: 250, d: 0.2, g: 0.12, ft: 'lowpass' },
+    ]);
+  }
 }
 
 export const soundEngine = new SoundEngine();
@@ -4611,28 +4661,21 @@ export function speakVoiceOver(
     utterance.volume = options?.volume ?? 1.0;
 
     const voices = window.speechSynthesis.getVoices();
-    const englishVoice =
-      voices.find(
-        (v) =>
-          v.lang.startsWith('en') &&
-          (v.name.includes('Natural') ||
-            v.name.includes('Google') ||
-            v.name.includes('Samantha') ||
-            v.name.includes('Daniel'))
-      ) || voices.find((v) => v.lang.startsWith('en'));
-
-    if (englishVoice) {
-      utterance.voice = englishVoice;
-    }
+    const englishVoice = voices.find(
+      (v) =>
+        v.lang.startsWith('en') &&
+        (v.name.includes('Natural') ||
+          v.name.includes('Google') ||
+          v.name.includes('Samantha') ||
+          v.name.includes('Victoria'))
+    );
+    if (englishVoice) utterance.voice = englishVoice;
 
     window.speechSynthesis.speak(utterance);
   } catch {}
 }
 
 export function stopVoiceOver() {
-  if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
-    try {
-      window.speechSynthesis.cancel();
-    } catch {}
-  }
+  if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
+  window.speechSynthesis.cancel();
 }

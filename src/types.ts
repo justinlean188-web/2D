@@ -23,6 +23,7 @@ import { YO_YO_REVENGE_PROMPT, YO_YO_REVENGE_SCENES } from './constants/yoYoReve
 import { YO_BANDIT_PROMPT, YO_BANDIT_SCENES } from './constants/yoBanditConstants';
 import { DESERT_ISLAND_PROMPT, DESERT_ISLAND_SCENES } from './constants/desertIslandConstants';
 import { SHRINKING_REMOTE_PROMPT, SHRINKING_REMOTE_SCENES } from './constants/shrinkingRemoteConstants';
+import { MAGIC_PAINTBRUSH_PROMPT, MAGIC_PAINTBRUSH_SCENES } from './constants/magicPaintbrushConstants';
 export type CanvasTheme = 'black-on-white' | 'white-on-black';
 
 export type ProjectId =
@@ -49,6 +50,7 @@ export type ProjectId =
   | 'yo-yo-revenge'
   | 'desert-island'
   | 'shrinking-remote'
+  | 'magic-paintbrush'
   | 'dart-shot'
   | 'ping-pong-revenge'
   | 'trick-shot-champion'
@@ -3667,6 +3669,17 @@ export const PROJECTS: Record<ProjectId, ProjectDef> = {
     hasCaptions: true,
     masterPrompt: SHRINKING_REMOTE_PROMPT,
     scenes: SHRINKING_REMOTE_SCENES,
+  },
+  'magic-paintbrush': {
+    id: 'magic-paintbrush',
+    title: 'Angry Stickman: The Magic Paintbrush',
+    subtitle: 'The 30-Second Magic Comedy',
+    tagline: 'Vertical 9:16 Stickman Short · Modern Pop Color · Sound Effects Only',
+    duration: 30,
+    hasAudioDialogue: false,
+    hasCaptions: true,
+    masterPrompt: MAGIC_PAINTBRUSH_PROMPT,
+    scenes: MAGIC_PAINTBRUSH_SCENES,
   },
   'yo-yo-revenge': {
     id: 'yo-yo-revenge',

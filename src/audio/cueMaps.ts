@@ -1777,3 +1777,66 @@ export const MAGIC_PAINTBRUSH_CUES: AudioCue[] = [
   { id: 'mp-tiny-transform', time: 28.9, play: (d) => soundEngine.playTransformDing(d) },
   { id: 'mp-freeze', time: 29.6, play: (d) => soundEngine.playFreezeSting(d) },
 ];
+
+/**
+ * 30-second sound map for "The Giant Balloon Prison".
+ * Four 7.5s playful score slices plus hand-pump squeaks, balloon stretch and
+ * inflate layers, wooden creaks, elastic stretches, a rocket launch, the
+ * beanie whoosh and a freeze sting.
+ */
+export const GIANT_BALLOON_PRISON_CUES: AudioCue[] = [
+  // Score slices
+  { id: 'gb-score-1', time: 0.0, play: (d) => soundEngine.playGiantBalloonScoreSection(d, 0, 7.5) },
+  { id: 'gb-score-2', time: 7.5, play: (d) => soundEngine.playGiantBalloonScoreSection(d, 7.5, 15.0) },
+  { id: 'gb-score-3', time: 15.0, play: (d) => soundEngine.playGiantBalloonScoreSection(d, 15.0, 22.5) },
+  { id: 'gb-score-4', time: 22.5, play: (d) => soundEngine.playGiantBalloonScoreSection(d, 22.5, 30.0) },
+
+  // Shot 1 - The Tiny Balloon (0-6s)
+  { id: 'gb-balloon-squeak', time: 1.7, play: (d) => soundEngine.playBalloonSqueak(1.35, d) },
+  { id: 'gb-pump-pickup', time: 2.4, play: (d) => soundEngine.playSqueak(d) },
+  { id: 'gb-pump-connect', time: 3.0, play: (d) => soundEngine.playHandPump(d) },
+  { id: 'gb-pump-1', time: 3.6, play: (d) => soundEngine.playHandPump(d) },
+  { id: 'gb-pump-2', time: 4.0, play: (d) => soundEngine.playHandPump(d) },
+  { id: 'gb-pump-3', time: 4.4, play: (d) => soundEngine.playHandPump(d) },
+  { id: 'gb-pump-4', time: 4.8, play: (d) => soundEngine.playHandPump(d) },
+  { id: 'gb-inflate-1', time: 4.9, play: (d) => soundEngine.playBalloonInflate(d, 1.1) },
+  { id: 'gb-proud', time: 5.5, play: (d) => soundEngine.playMagicSparkle(d) },
+
+  // Shot 2 - Too Much Air (6-12s)
+  { id: 'gb-stretch-1', time: 6.3, play: (d) => soundEngine.playBalloonStretch(d) },
+  { id: 'gb-sofa-slide', time: 7.7, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'gb-table-slide', time: 8.6, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'gb-lamp-creak', time: 9.2, play: (d) => soundEngine.playWoodCreak(d) },
+  { id: 'gb-press', time: 10.2, play: (d) => soundEngine.playElasticStretch(d) },
+  { id: 'gb-panic-squeak', time: 10.9, play: (d) => soundEngine.playSqueak(d) },
+
+  // Shot 3 - The House Gets Trapped (12-18s)
+  { id: 'gb-stretch-2', time: 12.2, play: (d) => soundEngine.playBalloonStretch(d) },
+  { id: 'gb-roof-creak', time: 13.5, play: (d) => soundEngine.playWoodCreak(d) },
+  { id: 'gb-inflate-2', time: 14.5, play: (d) => soundEngine.playBalloonInflate(d, 1.9) },
+  { id: 'gb-face-appears', time: 15.8, play: (d) => soundEngine.playMagicSparkle(d) },
+  { id: 'gb-shock', time: 16.9, play: (d) => soundEngine.playSpringBoing(d) },
+  { id: 'gb-rumble-1', time: 17.3, play: (d) => soundEngine.playDramaticRumble(d) },
+
+  // Shot 4 - The Balloon Prison (18-24s)
+  { id: 'gb-house-lift', time: 18.9, play: (d) => soundEngine.playDramaticRumble(d) },
+  { id: 'gb-run', time: 19.6, play: (d) => soundEngine.playCartoonRun(d) },
+  { id: 'gb-door', time: 20.4, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'gb-angry', time: 21.4, play: (d) => soundEngine.playSpringBoing(d, 0.6) },
+  { id: 'gb-punch', time: 22.0, play: (d) => soundEngine.playFunnyImpact(d) },
+  { id: 'gb-elastic', time: 22.35, play: (d) => soundEngine.playElasticStretch(d) },
+  { id: 'gb-boing', time: 22.7, play: (d) => soundEngine.playSpringBoing(d, 1.4) },
+  { id: 'gb-sofa-land', time: 23.4, play: (d) => soundEngine.playFunnyImpact(d) },
+
+  // Shot 5 - The Worst Escape (24-30s)
+  { id: 'gb-spot-knot', time: 24.5, play: (d) => soundEngine.playSqueak(d) },
+  { id: 'gb-reach', time: 25.2, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'gb-knot-grab', time: 25.7, play: (d) => soundEngine.playBalloonSqueak(0.8, d) },
+  { id: 'gb-knot-pop', time: 26.1, play: (d) => soundEngine.playAirPuff(d) },
+  { id: 'gb-air-blast', time: 26.35, play: (d) => soundEngine.playAirRelease(d, 0.9) },
+  { id: 'gb-house-land', time: 27.1, play: (d) => soundEngine.playHouseThud(d) },
+  { id: 'gb-fanfare', time: 27.6, play: (d) => soundEngine.playVictoryFanfareShort(d) },
+  { id: 'gb-rocket', time: 28.0, play: (d) => soundEngine.playRocketLaunch(d) },
+  { id: 'gb-beanie', time: 28.4, play: (d) => soundEngine.playBeanieWhoosh(d) },
+  { id: 'gb-freeze', time: 29.5, play: (d) => soundEngine.playFreezeSting(d) },
+];

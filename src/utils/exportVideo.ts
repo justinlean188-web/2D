@@ -30,6 +30,7 @@ import { YoBanditRenderer } from '../animation/yoBanditRenderer';
 import { DesertIslandRenderer } from '../animation/desertIslandRenderer';
 import { ShrinkingRemoteRenderer } from '../animation/shrinkingRemoteRenderer';
 import { MagicPaintbrushRenderer } from '../animation/magicPaintbrushRenderer';
+import { GiantBalloonPrisonRenderer } from '../animation/giantBalloonPrisonRenderer';
 import { MindTrapsRenderer } from '../animation/mindTrapsRenderer';
 import { SequelPaperBallRenderer } from '../animation/sequelPaperBallRenderer';
 import {
@@ -62,6 +63,7 @@ import {
   DESERT_ISLAND_CUES,
   SHRINKING_REMOTE_CUES,
   MAGIC_PAINTBRUSH_CUES,
+  GIANT_BALLOON_PRISON_CUES,
   PAPER_BALL_PART3_CUES,
   PAPER_BALL_PART4_CUES,
   PAPER_BALL_SEQUEL_CUES,
@@ -228,6 +230,8 @@ export async function exportVideo(options: ExportOptions): Promise<ExportResult>
       ? new ShrinkingRemoteRenderer()
       : config.activeProject === 'magic-paintbrush'
       ? new MagicPaintbrushRenderer()
+      : config.activeProject === 'giant-balloon-prison'
+      ? new GiantBalloonPrisonRenderer()
       : config.activeProject === 'coin-flip'
       ? new CoinFlipRenderer()
       : config.activeProject === 'dart-shot'
@@ -305,6 +309,8 @@ export async function exportVideo(options: ExportOptions): Promise<ExportResult>
       ? 'shrinking-remote'
       : config.activeProject === 'magic-paintbrush'
       ? 'magic-paintbrush'
+      : config.activeProject === 'giant-balloon-prison'
+      ? 'giant-balloon-prison'
       : config.activeProject === 'coin-flip'
       ? 'coin-flip'
       : config.activeProject === 'dart-shot'
@@ -987,6 +993,17 @@ export async function exportVideo(options: ExportOptions): Promise<ExportResult>
             // The four mp-score-* cues each schedule one 7.5s slice of the
             // playful score; every other cue is a one-shot on its beat.
             for (const cue of MAGIC_PAINTBRUSH_CUES) {
+              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
+                cue.play(dest);
+                triggeredCues.add(cue.id);
+              }
+            }
+          }
+        } else if (config.activeProject === 'giant-balloon-prison') {
+          if (config.enableSFX) {
+            // Four gb-score-* cues schedule the 7.5s score slices; every other
+            // cue is a one-shot on its beat.
+            for (const cue of GIANT_BALLOON_PRISON_CUES) {
               if (animT >= cue.time && !triggeredCues.has(cue.id)) {
                 cue.play(dest);
                 triggeredCues.add(cue.id);

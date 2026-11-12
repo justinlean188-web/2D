@@ -4402,6 +4402,21 @@ class SoundEngine {
       ],
     });
   }
+
+  public playGiantBalloonScoreSection(dest?: AudioNode, start = 0, end = 7.5) {
+    this.scoreSlice(dest, start, end, {
+      bpm: 132,
+      wave: "triangle",
+      level: 0.4,
+      chords: [
+        [261.63, 329.63, 392.0],  // C4 + E4 + G4 (C major)
+        [293.66, 349.23, 440.0],  // D4 + F4 + A4 (D minor)
+        [349.23, 440.0, 523.25],  // F4 + A4 + C5 (F major)
+        [329.63, 415.3, 493.88],  // E4 + G#4 + B4 (E major)
+      ],
+    });
+  }
+
   // ---- Three-Wall Ping-Pong SFX ----
   public playPaddleHit(dest?: AudioNode) {
     this.sfx(dest, [
@@ -4461,6 +4476,54 @@ class SoundEngine {
       layers.push({ k: 'n', f: 900 + p * 1200, d: 0.12, g: 0.03, ft: 'bandpass', q: 2, t: at });
     }
     this.sfx(dest, layers);
+  }
+
+  // ---- Giant Balloon Prison SFX ----
+  public playHandPump(dest?: AudioNode) {
+    this.sfx(dest, [
+      { k: 'n', f: 1800, f2: 900, d: 0.09, g: 0.13, ft: 'bandpass', q: 2.5 },
+      { k: 't', f: 620, f2: 980, d: 0.1, g: 0.07, w: 'triangle' },
+      { k: 't', f: 320, f2: 180, d: 0.07, g: 0.06, w: 'sine', t: 0.03 },
+    ]);
+  }
+
+  public playWoodCreak(dest?: AudioNode) {
+    this.sfx(dest, [
+      { k: 't', f: 180, f2: 90, d: 0.55, g: 0.1, w: 'sawtooth' },
+      { k: 'n', f: 700, f2: 380, d: 0.45, g: 0.06, ft: 'bandpass', q: 6 },
+    ]);
+  }
+
+  public playElasticStretch(dest?: AudioNode) {
+    this.sfx(dest, [
+      { k: 't', f: 240, f2: 760, d: 0.42, g: 0.11, w: 'triangle' },
+      { k: 'n', f: 1400, f2: 2600, d: 0.38, g: 0.05, ft: 'bandpass', q: 3 },
+    ]);
+  }
+
+  public playBeanieWhoosh(dest?: AudioNode) {
+    this.sfx(dest, [
+      { k: 'n', f: 2400, f2: 900, d: 0.45, g: 0.14, ft: 'bandpass', q: 1.6 },
+      { k: 't', f: 1500, f2: 2600, d: 0.4, g: 0.05, w: 'sine' },
+    ]);
+  }
+
+  public playRocketLaunch(dest?: AudioNode) {
+    const layers: SfxLayer[] = [
+      { k: 't', f: 90, f2: 260, d: 1.1, g: 0.16, w: 'sawtooth' },
+      { k: 'n', f: 900, f2: 3200, d: 1.0, g: 0.14, ft: 'bandpass', q: 1.4 },
+    ];
+    for (let at = 0; at < 1.0; at += 0.14) {
+      layers.push({ k: 'n', f: 2200 + at * 900, d: 0.12, g: 0.05, ft: 'highpass', t: at });
+    }
+    this.sfx(dest, layers);
+  }
+
+  public playHouseThud(dest?: AudioNode) {
+    this.sfx(dest, [
+      { k: 't', f: 90, f2: 44, d: 0.5, g: 0.34, w: 'sine' },
+      { k: 'n', f: 620, f2: 180, d: 0.3, g: 0.16, ft: 'lowpass' },
+    ]);
   }
 
   public playBoothLights(dest?: AudioNode) {

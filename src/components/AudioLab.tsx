@@ -36,6 +36,7 @@ export const AudioLab: React.FC<AudioLabProps> = ({ config, setConfig }) => {
   const isDesertIsland = config.activeProject === 'desert-island';
   const isShrinkingRemote = config.activeProject === 'shrinking-remote';
   const isMagicPaintbrush = config.activeProject === 'magic-paintbrush';
+  const isGiantBalloonPrison = config.activeProject === 'giant-balloon-prison';
   const soundEffects = [
     // Paper Ball Ricochet Effects
     {
@@ -2148,6 +2149,86 @@ export const AudioLab: React.FC<AudioLabProps> = ({ config, setConfig }) => {
         setTimeout(() => soundEngine.playFreezeSting(), 5500);
       },
     },
+    // The Giant Balloon Prison Effects
+    {
+      project: 'giant-balloon-prison' as const,
+      name: 'The Tiny Balloon',
+      time: 'Giant Balloon Prison (0.0s - 6.0s)',
+      desc: 'Balloon squeak, pump pickup, pump clicks, four hand-pump squirts, balloon inflate, proud sparkle.',
+      trigger: () => {
+        soundEngine.playBalloonSqueak(1.35);
+        setTimeout(() => soundEngine.playSqueak(), 700);
+        setTimeout(() => soundEngine.playHandPump(), 1300);
+        setTimeout(() => soundEngine.playHandPump(), 1900);
+        setTimeout(() => soundEngine.playHandPump(), 2300);
+        setTimeout(() => soundEngine.playHandPump(), 2700);
+        setTimeout(() => soundEngine.playHandPump(), 3100);
+        setTimeout(() => soundEngine.playBalloonInflate(undefined, 1.1), 3200);
+        setTimeout(() => soundEngine.playMagicSparkle(), 3800);
+      },
+    },
+    {
+      project: 'giant-balloon-prison' as const,
+      name: 'Too Much Air',
+      time: 'Giant Balloon Prison (6.0s - 12.0s)',
+      desc: 'Balloon stretch, sofa whoosh, table whoosh, lamp creak, elastic press, panicked squeak.',
+      trigger: () => {
+        soundEngine.playBalloonStretch();
+        setTimeout(() => soundEngine.playWhoosh(), 1400);
+        setTimeout(() => soundEngine.playWhoosh(), 2300);
+        setTimeout(() => soundEngine.playWoodCreak(), 2900);
+        setTimeout(() => soundEngine.playElasticStretch(), 3900);
+        setTimeout(() => soundEngine.playSqueak(), 4600);
+      },
+    },
+    {
+      project: 'giant-balloon-prison' as const,
+      name: 'The House Gets Trapped',
+      time: 'Giant Balloon Prison (12.0s - 18.0s)',
+      desc: 'Balloon stretch, roof creak, big inflate, shimmer as the face appears, shock boing, dramatic rumble.',
+      trigger: () => {
+        soundEngine.playBalloonStretch();
+        setTimeout(() => soundEngine.playWoodCreak(), 1300);
+        setTimeout(() => soundEngine.playBalloonInflate(undefined, 1.9), 2300);
+        setTimeout(() => soundEngine.playMagicSparkle(), 3600);
+        setTimeout(() => soundEngine.playSpringBoing(), 4700);
+        setTimeout(() => soundEngine.playDramaticRumble(), 5100);
+      },
+    },
+    {
+      project: 'giant-balloon-prison' as const,
+      name: 'The Balloon Prison',
+      time: 'Giant Balloon Prison (18.0s - 24.0s)',
+      desc: 'House-lift rumble, cartoon run, door whoosh, angry sting, punch impact, elastic stretch, spring boing, sofa landing.',
+      trigger: () => {
+        soundEngine.playDramaticRumble();
+        setTimeout(() => soundEngine.playCartoonRun(), 700);
+        setTimeout(() => soundEngine.playWhoosh(), 1500);
+        setTimeout(() => soundEngine.playSpringBoing(undefined, 0.6), 2500);
+        setTimeout(() => soundEngine.playFunnyImpact(), 3100);
+        setTimeout(() => soundEngine.playElasticStretch(), 3450);
+        setTimeout(() => soundEngine.playSpringBoing(undefined, 1.4), 3800);
+        setTimeout(() => soundEngine.playFunnyImpact(), 4500);
+      },
+    },
+    {
+      project: 'giant-balloon-prison' as const,
+      name: 'The Worst Escape',
+      time: 'Giant Balloon Prison (24.0s - 30.0s)',
+      desc: 'Spot the knot, reach whoosh, knot squeak, knot pop, air blast, house thud, victory fanfare, rocket launch, beanie whoosh, freeze sting.',
+      trigger: () => {
+        soundEngine.playSqueak();
+        setTimeout(() => soundEngine.playWhoosh(), 700);
+        setTimeout(() => soundEngine.playBalloonSqueak(0.8), 1200);
+        setTimeout(() => soundEngine.playAirPuff(), 1600);
+        setTimeout(() => soundEngine.playAirRelease(undefined, 0.9), 1850);
+        setTimeout(() => soundEngine.playHouseThud(), 2600);
+        setTimeout(() => soundEngine.playVictoryFanfareShort(), 3100);
+        setTimeout(() => soundEngine.playRocketLaunch(), 3500);
+        setTimeout(() => soundEngine.playBeanieWhoosh(), 3900);
+        setTimeout(() => soundEngine.playFreezeSting(), 5000);
+      },
+    },
   ];
   const visibleEffects = soundEffects.filter((effect) => effect.project === config.activeProject);
 
@@ -2199,6 +2280,8 @@ export const AudioLab: React.FC<AudioLabProps> = ({ config, setConfig }) => {
             ? 'The Angry Stickman: The Shrinking Remote Control is a 30-second bedroom comedy with a fully procedural 120 bpm playful score sliced into four 7.5-second sections — plus remote clicks, purple beam zaps, shrinking whooshes, tiny footsteps, pencil taps, a giant sneaker slide, a pillow poof, a sad trombone and the freeze sting. No external audio files.'
             : isMagicPaintbrush
             ? 'The Angry Stickman: The Magic Paintbrush is a 30-second magic comedy with a fully procedural 128 bpm playful score sliced into four 7.5-second sections — plus paint swishes, magical sparkles, transformation dings, monster footsteps, cartoon running and funny impacts. No external audio files.'
+            : isGiantBalloonPrison
+            ? 'The Angry Stickman: The Giant Balloon Prison is a 30-second balloon comedy with a fully procedural 132 bpm playful score sliced into four 7.5-second sections — plus hand-pump squirts, balloon squeaks, stretch and inflate layers, wooden creaks, elastic boings, a knot pop, an air blast, a rocket launch, the beanie whoosh and a freeze sting. No external audio files.'
             : isCoinFlip
             ? 'The Angry Stickman vs. The Impossible Coin Flip is a 30-second one-room comedy with a fully procedural score: a smug showman strut, a mechanical engineering march, a rage tremolo that cuts dead on the final flick, a pinball ricochet, a tiny victory fanfare and a record scratch — plus the rim tings, the forehead bonk, the rubber-band launch, the glass splashes and the gold coin ring that ends the film. No external audio files.'
             : isDartShot

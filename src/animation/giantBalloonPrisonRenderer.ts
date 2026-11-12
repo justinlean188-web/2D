@@ -64,7 +64,7 @@ const CHIMNEY_W = 96;
 const CHIMNEY_TOP = 392;
 const DOOR_X = 130;
 const DOOR_W = 130;
-const DOOR_TOP = 1160;
+const DOOR_TOP = 850;
 const WINDOW_X = 720;
 const WINDOW_W = 210;
 const WINDOW_Y = 900;
@@ -697,8 +697,8 @@ const POSE_PATCHES: { t: number; p?: PosePatch }[] = [
       beanieOn: false,
       fistL: true,
       fistR: true,
-      handL: { x: 170, y: 1040 },
-      handR: { x: 330, y: 1030 },
+      handL: { x: 235, y: 1160 },
+      handR: { x: 330, y: 1150 },
     },
   },
   { t: 29.6, p: { mouth: 'grit', brow: 'angry', eye: 'squint', beanieOn: false } },
@@ -753,11 +753,12 @@ const BALLOON_KEYS: BalloonKey[] = [
   { t: 12.0, x: 588, y: 1030, r: 500 },
   { t: 13.4, x: 556, y: 950, r: 700 },
   { t: 14.4, x: 540, y: 880, r: 940 },
-  { t: 27.8, x: 540, y: 880, r: 940 },
-  { t: 28.2, x: 556, y: 640, r: 900 },
-  { t: 28.7, x: 596, y: 120, r: 780 },
-  { t: 29.1, x: 620, y: -600, r: 620 },
-  { t: 30.0, x: 640, y: -1700, r: 470 },
+  { t: 27.7, x: 540, y: 880, r: 940 },
+  { t: 28.0, x: 556, y: 620, r: 930 },
+  { t: 28.2, x: 576, y: 100, r: 910 },
+  { t: 28.45, x: 600, y: -1000, r: 860 },
+  { t: 29.1, x: 630, y: -2600, r: 720 },
+  { t: 30.0, x: 660, y: -3600, r: 600 },
 ];
 
 // Where Stickman drags the knot once he grabs it through the open front door.
@@ -802,8 +803,8 @@ const CAMERA_KEYS: CameraKey[] = [
   { t: 27.4, x: 300, y: 1000, zoom: 1.2 },
   { t: 27.9, x: 280, y: 960, zoom: 1.05 },
   { t: 28.4, x: 300, y: 900, zoom: 1.3 },
-  { t: 29.0, x: 250, y: 900, zoom: 2.7 },
-  { t: 30.0, x: 250, y: 890, zoom: 3.0 },
+  { t: 29.0, x: 196, y: 930, zoom: 2.9 },
+  { t: 30.0, x: 196, y: 925, zoom: 3.1 },
 ];
 
 interface Arm {
@@ -838,12 +839,13 @@ export class GiantBalloonPrisonRenderer {
     ctx.clip();
     ctx.translate(0, -lift);
 
+    this.drawBalloonBack(ctx, t);
     this.drawHouse(ctx, t);
     this.drawFurniture(ctx, t);
     this.drawProps(ctx, t);
-    // The balloon shell sits over the room and the house, but behind the
+    // The front of the shell sits over the room and the house, but behind the
     // stickman so he stays readable while he is trapped inside it.
-    this.drawBalloon(ctx, t);
+    this.drawBalloonFront(ctx, t);
     this.drawCharacter(ctx, t);
     this.drawNeckAndKnot(ctx, t);
     this.drawFlyingBeanie(ctx, t);
@@ -1035,7 +1037,10 @@ export class GiantBalloonPrisonRenderer {
 
   private drawHouse(ctx: CanvasRenderingContext2D, t: number) {
     const roofLift = this.roofLift(t);
-    const enclose = smooth(inv(14.2, 15.4, t));
+    // The room sees the red balloon wall while the shell surrounds the house;
+    // once it rockets away the door and window return to normal.
+    const enclose =
+      smooth(inv(14.2, 15.4, t)) * (1 - smooth(inv(28.0, 28.7, t)));
 
     // Chimney (behind the roof).
     ctx.save();
@@ -1127,7 +1132,8 @@ export class GiantBalloonPrisonRenderer {
   }
 
   private drawDoor(ctx: CanvasRenderingContext2D, t: number, enclose: number) {
-    const open = smooth(inv(20.0, 20.7, t)) * 0.9;
+    const open =
+      smooth(inv(20.0, 20.7, t)) * 0.9 * (1 - smooth(inv(28.0, 28.7, t)));
     ctx.save();
     ctx.translate(DOOR_X, 0);
 
@@ -1160,18 +1166,22 @@ export class GiantBalloonPrisonRenderer {
     ctx.stroke();
     ctx.fillStyle = DOOR_DARK;
     ctx.beginPath();
-    ctx.rect(14, 26, DOOR_W - 28, 128);
+    ctx.rect(14, 30, DOOR_W - 28, 170);
     ctx.fill();
     ctx.stroke();
     ctx.beginPath();
-    ctx.rect(14, 176, DOOR_W - 28, 128);
+    ctx.rect(14, 215, DOOR_W - 28, 170);
+    ctx.fill();
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.rect(14, 400, DOOR_W - 28, 170);
     ctx.fill();
     ctx.stroke();
     ctx.fillStyle = DOOR_KNOB;
     ctx.strokeStyle = INK;
     ctx.lineWidth = 4;
     ctx.beginPath();
-    ctx.arc(DOOR_W - 24, 186, 11, 0, TAU);
+    ctx.arc(DOOR_W - 24, 330, 11, 0, TAU);
     ctx.fill();
     ctx.stroke();
     ctx.restore();
@@ -1196,18 +1206,19 @@ export class GiantBalloonPrisonRenderer {
     ctx.rect(WINDOW_X, WINDOW_Y, WINDOW_W, WINDOW_H);
     ctx.fill();
 
-    // Outside detail: sky, a cloud and the red balloon wall once it surrounds us.
-    if (enclose < 0.5) {
-      ctx.fillStyle = CLOUD;
-      ctx.beginPath();
-      ctx.ellipse(WINDOW_X + 62, WINDOW_Y + 76, 42, 22, 0, 0, TAU);
-      ctx.ellipse(WINDOW_X + 116, WINDOW_Y + 62, 32, 18, 0, 0, TAU);
-      ctx.fill();
-      ctx.fillStyle = LAWN;
-      ctx.beginPath();
-      ctx.rect(WINDOW_X, WINDOW_Y + WINDOW_H - 62, WINDOW_W, 62);
-      ctx.fill();
-    } else {
+    // Outside detail: sky, a cloud, the lawn, and the red balloon wall that
+    // fades in once the shell surrounds the house.
+    ctx.fillStyle = CLOUD;
+    ctx.beginPath();
+    ctx.ellipse(WINDOW_X + 62, WINDOW_Y + 76, 42, 22, 0, 0, TAU);
+    ctx.ellipse(WINDOW_X + 116, WINDOW_Y + 62, 32, 18, 0, 0, TAU);
+    ctx.fill();
+    ctx.fillStyle = LAWN;
+    ctx.beginPath();
+    ctx.rect(WINDOW_X, WINDOW_Y + WINDOW_H - 62, WINDOW_W, 62);
+    ctx.fill();
+
+    if (enclose > 0.001) {
       ctx.fillStyle = '#d94b58';
       ctx.globalAlpha = enclose;
       ctx.beginPath();
@@ -1853,12 +1864,14 @@ export class GiantBalloonPrisonRenderer {
     return { x: lerp(a.x, b.x, u), y: lerp(a.y, b.y, u), r: lerp(a.r, b.r, u) };
   }
 
-  private drawBalloon(ctx: CanvasRenderingContext2D, t: number) {
+  private drawBalloonBack(ctx: CanvasRenderingContext2D, t: number) {
     const b = this.balloonState(t);
     if (b.r < 1) return;
-    const rim = clamp(b.r * 0.022, 4, 16);
+    const fade = 1 - smooth(inv(28.05, 28.5, t));
+    if (fade <= 0.001) return;
 
     ctx.save();
+    ctx.globalAlpha = fade;
 
     // Contact shadow while it still rests on the table.
     if (b.r < 320) {
@@ -1868,13 +1881,51 @@ export class GiantBalloonPrisonRenderer {
       ctx.fill();
     }
 
-    // Transparent body: the house and Stickman stay visible through it.
+    // Pale red skin behind the house: the room stays crisp while the world
+    // outside it reads as the inside of a balloon.
     ctx.beginPath();
     ctx.arc(b.x, b.y, b.r, 0, TAU);
-    ctx.fillStyle = 'rgba(230,57,70,0.17)';
+    ctx.fillStyle = 'rgba(255,140,150,0.74)';
     ctx.fill();
-    ctx.strokeStyle = 'rgba(230,57,70,0.30)';
-    ctx.lineWidth = Math.max(8, b.r * 0.075);
+
+    ctx.restore();
+  }
+
+  private drawBalloonFront(ctx: CanvasRenderingContext2D, t: number) {
+    const b = this.balloonState(t);
+    if (b.r < 1) return;
+    const fade = 1 - smooth(inv(28.05, 28.5, t));
+    if (fade <= 0.001) return;
+    const rim = clamp(b.r * 0.03, 5, 30);
+    const band = clamp(b.r * 0.055, 8, 56);
+
+    ctx.save();
+    ctx.globalAlpha = fade;
+
+    // While the balloon is small it is a solid red toy; as it grows into a
+    // shell the body fades so the house inside stays crisp.
+    const solid = 1 - smooth(clamp((b.r - 560) / 180, 0, 1));
+    if (solid > 0.001) {
+      const tone = clamp((b.r - 120) / 320, 0, 1);
+      ctx.globalAlpha = fade * solid * lerp(1, 0.82, tone);
+      ctx.fillStyle = this.mixHex(BALLOON, '#ff8f99', tone);
+      ctx.beginPath();
+      ctx.arc(b.x, b.y, b.r, 0, TAU);
+      ctx.fill();
+      ctx.globalAlpha = fade;
+    }
+
+    // Slight red wash over the room so the house feels enclosed.
+    ctx.beginPath();
+    ctx.arc(b.x, b.y, b.r, 0, TAU);
+    ctx.fillStyle = 'rgba(230,57,70,0.07)';
+    ctx.fill();
+
+    // Thick band of stretched red material just inside the rim.
+    ctx.beginPath();
+    ctx.arc(b.x, b.y, b.r - band * 0.55, 0, TAU);
+    ctx.strokeStyle = 'rgba(230,57,70,0.34)';
+    ctx.lineWidth = band;
     ctx.stroke();
 
     // Thick dark-red outline.
@@ -1886,7 +1937,7 @@ export class GiantBalloonPrisonRenderer {
 
     // Glossy highlight.
     const gl = clamp(b.r * 0.30, 10, 240);
-    ctx.fillStyle = 'rgba(255,255,255,0.42)';
+    ctx.fillStyle = 'rgba(255,255,255,0.48)';
     ctx.beginPath();
     ctx.ellipse(b.x - b.r * 0.40, b.y - b.r * 0.44, gl * 0.44, gl * 0.26, -0.72, 0, TAU);
     ctx.fill();
@@ -1894,18 +1945,19 @@ export class GiantBalloonPrisonRenderer {
     ctx.arc(b.x - b.r * 0.52, b.y - b.r * 0.14, gl * 0.11, 0, TAU);
     ctx.fill();
 
-    // Mischievous face, only once the balloon is enormous.
+    // Mischievous face, only once the balloon is enormous. It sits on the
+    // upper shell so it reads as the balloon's face, not the roof's.
     const faceIn = smooth(inv(15.6, 16.6, t));
     if (faceIn > 0.001 && b.r > 480) {
-      const eyeDX = b.r * 0.16;
-      const eyeY = b.y - b.r * 0.42;
-      const eyeW = Math.max(9, b.r * 0.026);
-      const eyeH = Math.max(15, b.r * 0.05);
-      ctx.globalAlpha = faceIn;
+      const eyeDX = b.r * 0.15;
+      const eyeY = b.y - b.r * 0.72;
+      const eyeW = Math.max(8, b.r * 0.022);
+      const eyeH = Math.max(14, b.r * 0.045);
+      ctx.globalAlpha = fade * faceIn;
       ctx.fillStyle = INK;
       for (const s of [-1, 1]) {
         ctx.beginPath();
-        ctx.ellipse(b.x + s * eyeDX, eyeY, eyeW, eyeH, 0, 0, TAU);
+        ctx.ellipse(b.x + s * eyeDX, eyeY, eyeW, eyeH, s * -0.16, 0, TAU);
         ctx.fill();
       }
       ctx.fillStyle = WHITE;
@@ -1918,9 +1970,9 @@ export class GiantBalloonPrisonRenderer {
       ctx.lineWidth = Math.max(6, b.r * 0.019);
       ctx.lineCap = 'round';
       ctx.beginPath();
-      ctx.arc(b.x, eyeY + b.r * 0.22, b.r * 0.155, 0.18 * Math.PI, 0.82 * Math.PI);
+      ctx.arc(b.x, eyeY + b.r * 0.14, b.r * 0.10, 0.15 * Math.PI, 0.85 * Math.PI);
       ctx.stroke();
-      ctx.globalAlpha = 1;
+      ctx.globalAlpha = fade;
     }
 
     ctx.restore();
@@ -1932,30 +1984,34 @@ export class GiantBalloonPrisonRenderer {
     const blend = smooth(clamp((b.r - 500) / 120, 0, 1));
     const sphereX = b.x - b.r * 0.36;
     const sphereY = b.y + b.r * 0.93;
-    const riseX = t > 27.8 ? b.x - 540 : 0;
-    const riseY = t > 27.8 ? b.y - 720 : 0;
 
-    const baseX = lerp(sphereX, 240 + riseX, blend);
-    const baseY = lerp(sphereY, 1165 + riseY, blend);
+    const baseX = lerp(sphereX, 240, blend);
+    const baseY = lerp(sphereY, 1165, blend);
     const hang = clamp(b.r * 0.16, 22, 130);
 
     let pull = 0;
-    if (t > 25.3) {
-      pull = smooth(inv(25.3, 26.0, t));
-      if (t > 26.0) pull = 1 - smooth(inv(26.0, 26.8, t));
+    if (t > 25.55) {
+      pull = smooth(inv(25.55, 26.1, t));
+      if (t > 26.1) pull = 1 - smooth(inv(26.1, 26.9, t));
     }
 
     return {
-      x: lerp(baseX + 12, KNOT_PULLED.x + riseX, pull),
-      y: lerp(baseY + hang, KNOT_PULLED.y + riseY, pull),
+      x: lerp(baseX + 12, KNOT_PULLED.x, pull),
+      y: lerp(baseY + hang, KNOT_PULLED.y, pull),
       baseX,
       baseY,
     };
   }
 
   private drawNeckAndKnot(ctx: CanvasRenderingContext2D, t: number) {
+    // The knot is yanked out of the doorway as the shell starts to rocket.
+    const fade = 1 - smooth(inv(27.7, 28.1, t));
+    if (fade <= 0.001) return;
     const b = this.balloonState(t);
     const k = this.knotAt(t, b);
+
+    ctx.save();
+    ctx.globalAlpha = fade;
 
     const w0 = clamp(b.r * 0.10, 10, 44);
     const w1 = clamp(b.r * 0.07, 8, 30);
@@ -1997,6 +2053,8 @@ export class GiantBalloonPrisonRenderer {
     ctx.closePath();
     ctx.fill();
     ctx.stroke();
+
+    ctx.restore();
   }
 
   // ------------------------------------------------------------------

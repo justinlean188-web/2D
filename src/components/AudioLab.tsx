@@ -37,6 +37,7 @@ export const AudioLab: React.FC<AudioLabProps> = ({ config, setConfig }) => {
   const isShrinkingRemote = config.activeProject === 'shrinking-remote';
   const isMagicPaintbrush = config.activeProject === 'magic-paintbrush';
   const isGiantBalloonPrison = config.activeProject === 'giant-balloon-prison';
+  const isPopUpTent = config.activeProject === 'pop-up-tent';
   const soundEffects = [
     // Paper Ball Ricochet Effects
     {
@@ -2229,6 +2230,97 @@ export const AudioLab: React.FC<AudioLabProps> = ({ config, setConfig }) => {
         setTimeout(() => soundEngine.playFreezeSting(), 5000);
       },
     },
+    // The Giant Pop-Up Tent Effects
+    {
+      project: 'pop-up-tent' as const,
+      name: 'The Tiny Tent',
+      time: 'Pop-Up Tent (0.0s - 6.0s)',
+      desc: 'Notice squeak, walk whoosh, pickup squeak, fabric rustle, proud sparkle, throw whoosh, package plop, wiggle squeak.',
+      trigger: () => {
+        soundEngine.playSqueak();
+        setTimeout(() => soundEngine.playWhoosh(), 700);
+        setTimeout(() => soundEngine.playSqueak(), 1400);
+        setTimeout(() => soundEngine.playBalloonSqueak(1.4), 2000);
+        setTimeout(() => soundEngine.playMagicSparkle(), 2800);
+        setTimeout(() => soundEngine.playWhoosh(), 3600);
+        setTimeout(() => soundEngine.playDeskPlop(), 4200);
+        setTimeout(() => soundEngine.playBalloonSqueak(1.2), 4800);
+      },
+    },
+    {
+      project: 'pop-up-tent' as const,
+      name: 'Too Big!',
+      time: 'Pop-Up Tent (6.0s - 12.0s)',
+      desc: 'Big tent pop, spring burst, jump whoosh, fabric stretch, sofa slide, elastic stretch, wooden creak, settle boing, shock squeak.',
+      trigger: () => {
+        soundEngine.playBalloonPop();
+        setTimeout(() => soundEngine.playSpringBoing(undefined, 1.6), 60);
+        setTimeout(() => soundEngine.playWhoosh(), 150);
+        setTimeout(() => soundEngine.playBalloonStretch(), 500);
+        setTimeout(() => soundEngine.playWhoosh(), 1300);
+        setTimeout(() => soundEngine.playElasticStretch(), 2200);
+        setTimeout(() => soundEngine.playWoodCreak(), 3000);
+        setTimeout(() => soundEngine.playSpringBoing(undefined, 0.7), 3600);
+        setTimeout(() => soundEngine.playSqueak(), 4200);
+      },
+    },
+    {
+      project: 'pop-up-tent' as const,
+      name: 'The House Disappears',
+      time: 'Pop-Up Tent (12.0s - 18.0s)',
+      desc: 'Fabric stretch, wooden creak, wall rumble, big inflate, roof creak, deep rumble, pole slide whoosh, grab squeak, drag whoosh, stumble impact.',
+      trigger: () => {
+        soundEngine.playBalloonStretch();
+        setTimeout(() => soundEngine.playWoodCreak(), 700);
+        setTimeout(() => soundEngine.playDramaticRumble(), 1200);
+        setTimeout(() => soundEngine.playBalloonInflate(undefined, 1.8), 2000);
+        setTimeout(() => soundEngine.playWoodCreak(), 2700);
+        setTimeout(() => soundEngine.playDramaticRumble(), 3200);
+        setTimeout(() => soundEngine.playWhoosh(), 4200);
+        setTimeout(() => soundEngine.playSqueak(), 4600);
+        setTimeout(() => soundEngine.playWhoosh(), 5000);
+        setTimeout(() => soundEngine.playFunnyImpact(), 5500);
+      },
+    },
+    {
+      project: 'pop-up-tent' as const,
+      name: 'Camping Disaster',
+      time: 'Pop-Up Tent (18.0s - 24.0s)',
+      desc: 'Fabric ripple, elastic push, tension creak, snap boing, launch whoosh, sleeping-bag landing, bounce boing, settle puff, dizzy boing.',
+      trigger: () => {
+        soundEngine.playBalloonStretch();
+        setTimeout(() => soundEngine.playElasticStretch(), 1000);
+        setTimeout(() => soundEngine.playWoodCreak(), 1500);
+        setTimeout(() => soundEngine.playSpringBoing(undefined, 1.5), 1950);
+        setTimeout(() => soundEngine.playWhoosh(), 2100);
+        setTimeout(() => soundEngine.playFunnyImpact(), 2600);
+        setTimeout(() => soundEngine.playSpringBoing(undefined, 0.9), 2850);
+        setTimeout(() => soundEngine.playAirPuff(), 3100);
+        setTimeout(() => soundEngine.playCartoonBoing(), 4000);
+      },
+    },
+    {
+      project: 'pop-up-tent' as const,
+      name: 'The Worst Camping Trip',
+      time: 'Pop-Up Tent (24.0s - 30.0s)',
+      desc: 'Get-up whoosh, button notice squeak, walk whoosh, jump boing, release-button click, air release, fabric fold, pole retract creak, collapse impact, proud fanfare, package drop whoosh, head bonk, beanie whoosh, freeze sting.',
+      trigger: () => {
+        soundEngine.playWhoosh();
+        setTimeout(() => soundEngine.playSqueak(), 600);
+        setTimeout(() => soundEngine.playWhoosh(), 900);
+        setTimeout(() => soundEngine.playSpringBoing(undefined, 0.7), 1400);
+        setTimeout(() => soundEngine.playButtonClick(), 1900);
+        setTimeout(() => soundEngine.playAirRelease(undefined, 0.9), 2050);
+        setTimeout(() => soundEngine.playBalloonStretch(), 2200);
+        setTimeout(() => soundEngine.playWoodCreak(), 2450);
+        setTimeout(() => soundEngine.playFunnyImpact(), 2750);
+        setTimeout(() => soundEngine.playVictoryFanfareShort(), 3500);
+        setTimeout(() => soundEngine.playWhoosh(), 4000);
+        setTimeout(() => soundEngine.playHeadBonk(), 4250);
+        setTimeout(() => soundEngine.playBeanieWhoosh(), 4350);
+        setTimeout(() => soundEngine.playFreezeSting(), 5500);
+      },
+    },
   ];
   const visibleEffects = soundEffects.filter((effect) => effect.project === config.activeProject);
 
@@ -2282,6 +2374,8 @@ export const AudioLab: React.FC<AudioLabProps> = ({ config, setConfig }) => {
             ? 'The Angry Stickman: The Magic Paintbrush is a 30-second magic comedy with a fully procedural 128 bpm playful score sliced into four 7.5-second sections — plus paint swishes, magical sparkles, transformation dings, monster footsteps, cartoon running and funny impacts. No external audio files.'
             : isGiantBalloonPrison
             ? 'The Angry Stickman: The Giant Balloon Prison is a 30-second balloon comedy with a fully procedural 132 bpm playful score sliced into four 7.5-second sections — plus hand-pump squirts, balloon squeaks, stretch and inflate layers, wooden creaks, elastic boings, a knot pop, an air blast, a rocket launch, the beanie whoosh and a freeze sting. No external audio files.'
+            : isPopUpTent
+            ? 'The Angry Stickman: The Giant Pop-Up Tent is a 30-second camping comedy with a fully procedural 138 bpm playful score sliced into four 7.5-second sections — plus a big tent pop, spring burst, fabric stretch and rustle layers, whooshes, elastic boings, wooden creaks, the release-button click, a rapid air-release collapse, the package head bonk, the beanie whoosh and a freeze sting. No external audio files.'
             : isCoinFlip
             ? 'The Angry Stickman vs. The Impossible Coin Flip is a 30-second one-room comedy with a fully procedural score: a smug showman strut, a mechanical engineering march, a rage tremolo that cuts dead on the final flick, a pinball ricochet, a tiny victory fanfare and a record scratch — plus the rim tings, the forehead bonk, the rubber-band launch, the glass splashes and the gold coin ring that ends the film. No external audio files.'
             : isDartShot

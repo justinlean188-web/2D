@@ -25,6 +25,7 @@ import { DESERT_ISLAND_PROMPT, DESERT_ISLAND_SCENES } from './constants/desertIs
 import { SHRINKING_REMOTE_PROMPT, SHRINKING_REMOTE_SCENES } from './constants/shrinkingRemoteConstants';
 import { MAGIC_PAINTBRUSH_PROMPT, MAGIC_PAINTBRUSH_SCENES } from './constants/magicPaintbrushConstants';
 import { GIANT_BALLOON_PRISON_PROMPT, GIANT_BALLOON_PRISON_SCENES } from './constants/giantBalloonPrisonConstants';
+import { POP_UP_TENT_PROMPT, POP_UP_TENT_SCENES } from './constants/popUpTentConstants';
 export type CanvasTheme = 'black-on-white' | 'white-on-black';
 
 export type ProjectId =
@@ -53,6 +54,7 @@ export type ProjectId =
   | 'shrinking-remote'
   | 'magic-paintbrush'
   | 'giant-balloon-prison'
+  | 'pop-up-tent'
   | 'dart-shot'
   | 'ping-pong-revenge'
   | 'trick-shot-champion'
@@ -3693,6 +3695,17 @@ export const PROJECTS: Record<ProjectId, ProjectDef> = {
     hasCaptions: true,
     masterPrompt: GIANT_BALLOON_PRISON_PROMPT,
     scenes: GIANT_BALLOON_PRISON_SCENES,
+  },
+  'pop-up-tent': {
+    id: 'pop-up-tent',
+    title: 'Angry Stickman: The Giant Pop-Up Tent',
+    subtitle: 'The 30-Second Tent Comedy',
+    tagline: 'Vertical 9:16 Stickman Short · Modern Pop Color · Sound Effects Only',
+    duration: 30,
+    hasAudioDialogue: false,
+    hasCaptions: true,
+    masterPrompt: POP_UP_TENT_PROMPT,
+    scenes: POP_UP_TENT_SCENES,
   },
   'yo-yo-revenge': {
     id: 'yo-yo-revenge',

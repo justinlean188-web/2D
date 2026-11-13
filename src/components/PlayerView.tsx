@@ -44,6 +44,7 @@ import { DesertIslandRenderer } from '../animation/desertIslandRenderer';
 import { ShrinkingRemoteRenderer } from '../animation/shrinkingRemoteRenderer';
 import { MagicPaintbrushRenderer } from '../animation/magicPaintbrushRenderer';
 import { GiantBalloonPrisonRenderer } from '../animation/giantBalloonPrisonRenderer';
+import { PopUpTentRenderer } from '../animation/popUpTentRenderer';
 import { YoBanditRenderer } from '../animation/yoBanditRenderer';
 import { MachineRenderer } from '../animation/machineRenderer';
 import { SequelPaperBallRenderer } from '../animation/sequelPaperBallRenderer';
@@ -79,6 +80,7 @@ import {
   SHRINKING_REMOTE_CUES,
   MAGIC_PAINTBRUSH_CUES,
   GIANT_BALLOON_PRISON_CUES,
+  POP_UP_TENT_CUES,
   PAPER_BALL_PART3_CUES,
   PAPER_BALL_PART4_CUES,
   PAPER_BALL_SEQUEL_CUES,
@@ -167,6 +169,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
   const giantBalloonPrisonRendererRef = useRef<GiantBalloonPrisonRenderer>(
     new GiantBalloonPrisonRenderer()
   );
+  const popUpTentRendererRef = useRef<PopUpTentRenderer>(new PopUpTentRenderer());
   const mindTrapsRendererRef = useRef<MindTrapsRenderer>(new MindTrapsRenderer());
   const [speed, setSpeed] = useState<number>(1.0);
   const [isLooping, setIsLooping] = useState<boolean>(true);
@@ -225,6 +228,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
   const isShrinkingRemoteProject = config.activeProject === 'shrinking-remote';
   const isMagicPaintbrushProject = config.activeProject === 'magic-paintbrush';
   const isGiantBalloonPrisonProject = config.activeProject === 'giant-balloon-prison';
+  const isPopUpTentProject = config.activeProject === 'pop-up-tent';
 
   // Current active scene
   const activeScene =
@@ -404,6 +408,11 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
 
     if (config.activeProject === 'giant-balloon-prison') {
       for (const cue of GIANT_BALLOON_PRISON_CUES) setCueState(cue.id, cue.time);
+      return;
+    }
+
+    if (config.activeProject === 'pop-up-tent') {
+      for (const cue of POP_UP_TENT_CUES) setCueState(cue.id, cue.time);
       return;
     }
 
@@ -1017,6 +1026,25 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
         return;
       }
 
+      if (config.activeProject === 'pop-up-tent') {
+        if (!config.enableSFX) return;
+        for (const cue of POP_UP_TENT_CUES) {
+          if (cues.has(cue.id)) continue;
+          if (cue.id.startsWith('pt-score-')) {
+            if (t >= cue.time && t < cue.time + 7.6) {
+              cue.play();
+              cues.add(cue.id);
+            }
+            continue;
+          }
+          if (t >= cue.time && t - cue.time < 0.75) {
+            cue.play();
+            cues.add(cue.id);
+          }
+        }
+        return;
+      }
+
       if (config.activeProject === 'paper-ball') {
         if (!config.enableSFX) return;
         if (t >= 2.0 && !cues.has('toss')) {
@@ -1228,6 +1256,8 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
             magicPaintbrushRendererRef.current.render(ctx, renderTime, config);
           } else if (config.activeProject === 'giant-balloon-prison') {
             giantBalloonPrisonRendererRef.current.render(ctx, renderTime, config);
+          } else if (config.activeProject === 'pop-up-tent') {
+            popUpTentRendererRef.current.render(ctx, renderTime, config);
           } else if (config.activeProject === 'paper-ball') {
             paperBallRendererRef.current.render(ctx, renderTime, config);
           } else {
@@ -1432,7 +1462,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
             />
 
             {/* Preview caption overlay for burned-in caption shorts */}
-            {(isDiamondHeistProject || isPancakeFlipProject || isVendingMachineProject || isBiggestBalloonProject || isFindTheBallProject || isAttempt247Project || isNeedleThreadProject || isDominoTrickshotProject || isBalloonPopProject || isCandyClawProject || isPlateSpinProject || isThreeWallPingPongProject || isCupInCupProject || isYoYoRevengeProject || isYoBanditProject || isDesertIslandProject || isShrinkingRemoteProject || isMagicPaintbrushProject || isGiantBalloonPrisonProject) && activeScene?.captionText && (
+            {(isDiamondHeistProject || isPancakeFlipProject || isVendingMachineProject || isBiggestBalloonProject || isFindTheBallProject || isAttempt247Project || isNeedleThreadProject || isDominoTrickshotProject || isBalloonPopProject || isCandyClawProject || isPlateSpinProject || isThreeWallPingPongProject || isCupInCupProject || isYoYoRevengeProject || isYoBanditProject || isDesertIslandProject || isShrinkingRemoteProject || isMagicPaintbrushProject || isGiantBalloonPrisonProject || isPopUpTentProject) && activeScene?.captionText && (
               <div className="absolute top-4 left-0 right-0 z-20 pointer-events-none flex justify-center">
                 <div className="bg-black/70 text-white text-sm font-bold px-3 py-1 rounded-md max-w-[90%] text-center">
                   {activeScene.captionText}

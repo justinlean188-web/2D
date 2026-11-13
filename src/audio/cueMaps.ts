@@ -1840,3 +1840,77 @@ export const GIANT_BALLOON_PRISON_CUES: AudioCue[] = [
   { id: 'gb-beanie', time: 28.4, play: (d) => soundEngine.playBeanieWhoosh(d) },
   { id: 'gb-freeze', time: 29.5, play: (d) => soundEngine.playFreezeSting(d) },
 ];
+
+/**
+ * 30-second sound map for "The Giant Pop-Up Tent".
+ * Four 7.5s playful score slices plus the tent pop, fabric stretch and rustle
+ * layers, whooshes, elastic boings, wooden creaks, the release-button click,
+ * the rapid collapse, the package bonk, the beanie whoosh and a freeze sting.
+ */
+export const POP_UP_TENT_CUES: AudioCue[] = [
+  // Score slices
+  { id: 'pt-score-1', time: 0.0, play: (d) => soundEngine.playPopUpTentScoreSection(d, 0, 7.5) },
+  { id: 'pt-score-2', time: 7.5, play: (d) => soundEngine.playPopUpTentScoreSection(d, 7.5, 15.0) },
+  { id: 'pt-score-3', time: 15.0, play: (d) => soundEngine.playPopUpTentScoreSection(d, 15.0, 22.5) },
+  { id: 'pt-score-4', time: 22.5, play: (d) => soundEngine.playPopUpTentScoreSection(d, 22.5, 30.0) },
+
+  // Shot 1 - The Tiny Tent (0-6s)
+  { id: 'pt-notice', time: 0.7, play: (d) => soundEngine.playSqueak(d) },
+  { id: 'pt-walk-1', time: 1.2, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'pt-pickup', time: 2.2, play: (d) => soundEngine.playSqueak(d) },
+  { id: 'pt-rustle-1', time: 2.8, play: (d) => soundEngine.playBalloonSqueak(1.4, d) },
+  { id: 'pt-proud', time: 3.5, play: (d) => soundEngine.playMagicSparkle(d) },
+  { id: 'pt-throw', time: 4.4, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'pt-package-land', time: 4.9, play: (d) => soundEngine.playDeskPlop(d) },
+  { id: 'pt-wiggle', time: 5.5, play: (d) => soundEngine.playBalloonSqueak(1.2, d) },
+
+  // Shot 2 - Too Big! (6-12s)
+  { id: 'pt-pop', time: 6.0, play: (d) => soundEngine.playBalloonPop(d) },
+  { id: 'pt-burst', time: 6.05, play: (d) => soundEngine.playSpringBoing(d, 1.6) },
+  { id: 'pt-jump-1', time: 6.15, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'pt-stretch-1', time: 6.4, play: (d) => soundEngine.playBalloonStretch(d) },
+  { id: 'pt-sofa-slide', time: 7.3, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'pt-elastic-1', time: 8.2, play: (d) => soundEngine.playElasticStretch(d) },
+  { id: 'pt-creak-1', time: 9.0, play: (d) => soundEngine.playWoodCreak(d) },
+  { id: 'pt-settle-1', time: 9.6, play: (d) => soundEngine.playSpringBoing(d, 0.7) },
+  { id: 'pt-shock', time: 10.2, play: (d) => soundEngine.playSqueak(d) },
+
+  // Shot 3 - The House Disappears (12-18s)
+  { id: 'pt-stretch-2', time: 12.2, play: (d) => soundEngine.playBalloonStretch(d) },
+  { id: 'pt-creak-2', time: 12.7, play: (d) => soundEngine.playWoodCreak(d) },
+  { id: 'pt-wall-push', time: 13.2, play: (d) => soundEngine.playDramaticRumble(d) },
+  { id: 'pt-inflate', time: 14.0, play: (d) => soundEngine.playBalloonInflate(d, 1.8) },
+  { id: 'pt-roof-creak', time: 14.7, play: (d) => soundEngine.playWoodCreak(d) },
+  { id: 'pt-rumble', time: 15.2, play: (d) => soundEngine.playDramaticRumble(d) },
+  { id: 'pt-pole-slide', time: 16.2, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'pt-pole-grab', time: 16.6, play: (d) => soundEngine.playSqueak(d) },
+  { id: 'pt-drag', time: 17.0, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'pt-stumble', time: 17.5, play: (d) => soundEngine.playFunnyImpact(d) },
+
+  // Shot 4 - Camping Disaster (18-24s)
+  { id: 'pt-fabric-ripple', time: 18.4, play: (d) => soundEngine.playBalloonStretch(d) },
+  { id: 'pt-push', time: 19.0, play: (d) => soundEngine.playElasticStretch(d) },
+  { id: 'pt-tension', time: 19.5, play: (d) => soundEngine.playWoodCreak(d) },
+  { id: 'pt-snap', time: 19.95, play: (d) => soundEngine.playSpringBoing(d, 1.5) },
+  { id: 'pt-launch', time: 20.1, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'pt-bag-land', time: 20.6, play: (d) => soundEngine.playFunnyImpact(d) },
+  { id: 'pt-bag-bounce', time: 20.85, play: (d) => soundEngine.playSpringBoing(d, 0.9) },
+  { id: 'pt-bag-settle', time: 21.1, play: (d) => soundEngine.playAirPuff(d) },
+  { id: 'pt-dizzy', time: 22.0, play: (d) => soundEngine.playCartoonBoing(d) },
+
+  // Shot 5 - The Worst Camping Trip (24-30s)
+  { id: 'pt-getup', time: 24.1, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'pt-notice-button', time: 24.6, play: (d) => soundEngine.playSqueak(d) },
+  { id: 'pt-walk-2', time: 24.9, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'pt-jump-2', time: 25.4, play: (d) => soundEngine.playSpringBoing(d, 0.7) },
+  { id: 'pt-click', time: 25.9, play: (d) => soundEngine.playButtonClick(d) },
+  { id: 'pt-collapse', time: 26.05, play: (d) => soundEngine.playAirRelease(d, 0.9) },
+  { id: 'pt-fold', time: 26.2, play: (d) => soundEngine.playBalloonStretch(d) },
+  { id: 'pt-poles-retract', time: 26.45, play: (d) => soundEngine.playWoodCreak(d) },
+  { id: 'pt-collapse-land', time: 26.75, play: (d) => soundEngine.playFunnyImpact(d) },
+  { id: 'pt-proud-fanfare', time: 27.5, play: (d) => soundEngine.playVictoryFanfareShort(d) },
+  { id: 'pt-package-drop', time: 28.0, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'pt-head-bonk', time: 28.25, play: (d) => soundEngine.playHeadBonk(d) },
+  { id: 'pt-beanie-whoosh', time: 28.35, play: (d) => soundEngine.playBeanieWhoosh(d) },
+  { id: 'pt-freeze', time: 29.5, play: (d) => soundEngine.playFreezeSting(d) },
+];

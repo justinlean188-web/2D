@@ -590,4 +590,40 @@ export const INFINITE_GIFT_BOX_CUES: AudioCue[] = [
   { id: 'igb-sad-sting', time: 28.9, play: (d) => soundEngine.playSadTrombone(d) },
 ];
 
+/**
+ * Complete 30-second sound map for "The Living Traffic Light".
+ */
+export const LIVING_TRAFFIC_LIGHT_CUES: AudioCue[] = [
+  { id: 'ltl-score-1', time: 0.0, play: (d) => soundEngine.playTrafficLightScoreSection(d, 0, 7.5) },
+  { id: 'ltl-score-2', time: 7.5, play: (d) => soundEngine.playTrafficLightScoreSection(d, 7.5, 15.0) },
+  { id: 'ltl-score-3', time: 15.0, play: (d) => soundEngine.playTrafficLightScoreSection(d, 15.0, 22.5) },
+  { id: 'ltl-score-4', time: 22.5, play: (d) => soundEngine.playTrafficLightScoreSection(d, 22.5, 30.0) },
+  { id: 'ltl-step-1', time: 0.35, play: (d) => soundEngine.playFootstep(true, d) },
+  { id: 'ltl-step-2', time: 0.95, play: (d) => soundEngine.playFootstep(true, d) },
+  { id: 'ltl-blink-1', time: 1.9, play: (d) => soundEngine.playTrafficBlink(d) },
+  { id: 'ltl-eyes-pop', time: 2.35, play: (d) => soundEngine.playBoingSpring(d) },
+  { id: 'ltl-green-ding', time: 6.05, play: (d) => soundEngine.playConfidenceDing(d) },
+  { id: 'ltl-stop-snap-1', time: 7.0, play: (d) => soundEngine.playStopSignSnap(d, 1.0) },
+  { id: 'ltl-stop-snap-2', time: 7.95, play: (d) => soundEngine.playStopSignSnap(d, 1.15) },
+  { id: 'ltl-stop-snap-3', time: 9.05, play: (d) => soundEngine.playStopSignSnap(d, 0.92) },
+  { id: 'ltl-stop-snap-4', time: 10.35, play: (d) => soundEngine.playStopSignSnap(d, 0.85) },
+  { id: 'ltl-tiptoe-1', time: 12.6, play: (d) => soundEngine.playSqueak(d) },
+  { id: 'ltl-wheel-roll-1', time: 13.0, play: (d) => soundEngine.playWheelRoll(d) },
+  { id: 'ltl-wheel-roll-2', time: 14.8, play: (d) => soundEngine.playWheelRoll(d) },
+  { id: 'ltl-stop-snap-5', time: 17.1, play: (d) => soundEngine.playStopSignSnap(d, 1.05) },
+  { id: 'ltl-sprint', time: 18.3, play: (d) => soundEngine.playWhoosh(d) },
+  { id: 'ltl-mini-1', time: 19.25, play: (d) => soundEngine.playStopSignSnap(d, 1.35) },
+  { id: 'ltl-mini-2', time: 19.6, play: (d) => soundEngine.playStopSignSnap(d, 1.45) },
+  { id: 'ltl-mini-3', time: 19.9, play: (d) => soundEngine.playStopSignSnap(d, 1.55) },
+  { id: 'ltl-jump', time: 20.25, play: (d) => soundEngine.playBoingSpring(d) },
+  { id: 'ltl-land-block', time: 21.65, play: (d) => soundEngine.playHeadBonk(d) },
+  { id: 'ltl-plug-grab', time: 24.65, play: (d) => soundEngine.playMechanicalClick(d) },
+  { id: 'ltl-blackout', time: 25.0, play: (d) => soundEngine.playPowerBlackout(d) },
+  { id: 'ltl-celebrate', time: 25.6, play: (d) => soundEngine.playMicSparkle(d) },
+  { id: 'ltl-batt-charge', time: 26.85, play: (d) => soundEngine.playBatteryCharge(d) },
+  { id: 'ltl-red-flash', time: 27.6, play: (d) => soundEngine.playRedAlarmFlash(d) },
+  { id: 'ltl-final-sting', time: 28.8, play: (d) => soundEngine.playSadTrombone(d) },
+];
+
+
 

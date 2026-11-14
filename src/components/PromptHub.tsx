@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Copy, Check, Film, Mic, Volume2 } from 'lucide-react';
 import { ProjectId, PROJECTS, isPaperBallProject } from '../types';
+import { YouTubeMetaCard } from './YouTubeMetaCard';
 
 interface PromptHubProps {
   activeProject: ProjectId;
@@ -42,6 +43,9 @@ export const PromptHub: React.FC<PromptHubProps> = ({ activeProject }) => {
           Copy either the single master prompt for unified continuity or the scene-by-scene prompts for shot-by-shot generation.
         </p>
       </div>
+
+      {/* YouTube Title & Shorts Copy Section */}
+      <YouTubeMetaCard project={currentProject} />
 
       {/* Master Style Prompt Card */}
       <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-4">

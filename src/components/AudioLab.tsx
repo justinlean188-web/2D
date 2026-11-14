@@ -21,6 +21,7 @@ export const AudioLab: React.FC<AudioLabProps> = ({ config, setConfig }) => {
   const isCoinFlip = config.activeProject === 'coin-flip';
   const isSelfBuildingRobot = config.activeProject === 'self-building-robot';
   const isInfiniteGiftBox = config.activeProject === 'infinite-gift-box';
+  const isLivingTrafficLight = config.activeProject === 'living-traffic-light';
   const soundEffects = [
     // Paper Ball Ricochet Effects
     {
@@ -868,6 +869,51 @@ export const AudioLab: React.FC<AudioLabProps> = ({ config, setConfig }) => {
       desc: 'Bouncy 134 BPM living-room synth comedy groove.',
       trigger: () => soundEngine.playGiftBoxScoreSection(undefined, 0, 7.5),
     },
+    {
+      project: 'living-traffic-light' as const,
+      name: 'Traffic Light Glitch Blink',
+      time: 'Living Traffic Light (1.65s / 2.2s / 2.55s)',
+      desc: 'Electronic signal blink & cartoon eye-pop chirp as the traffic light comes alive.',
+      trigger: () => soundEngine.playTrafficBlink(),
+    },
+    {
+      project: 'living-traffic-light' as const,
+      name: 'Mechanical STOP Sign Snap',
+      time: 'Living Traffic Light (7.05s / 8.5s / 9.85s / 21.55s)',
+      desc: 'Sharp metallic arm extension + horn block as the STOP sign slams into Stickman’s path.',
+      trigger: () => soundEngine.playStopSignSnap(),
+    },
+    {
+      project: 'living-traffic-light' as const,
+      name: 'Rolling Pole Wheels',
+      time: 'Living Traffic Light (13.6s / 15.2s / 16.5s)',
+      desc: 'Squeaky rubber wheel roll as the living traffic light stalks sideways down the crosswalk.',
+      trigger: () => soundEngine.playWheelRoll(),
+    },
+    {
+      project: 'living-traffic-light' as const,
+      name: 'Unplug & Blackout Drop',
+      time: 'Living Traffic Light (24.85s)',
+      desc: 'Downward electric power-off sweep when Stickman yanks the plug from the roadside power box.',
+      trigger: () => soundEngine.playPowerBlackout(),
+    },
+    {
+      project: 'living-traffic-light' as const,
+      name: 'Backup Battery & Red Alarm',
+      time: 'Living Traffic Light (26.65s - 28.5s)',
+      desc: 'Rising hidden battery hum followed by flashing red alarm pulses in Stickman’s frozen face.',
+      trigger: () => {
+        soundEngine.playBatteryCharge();
+        setTimeout(() => soundEngine.playRedAlarmFlash(), 900);
+      },
+    },
+    {
+      project: 'living-traffic-light' as const,
+      name: 'Street Comedy Score (Part 1)',
+      time: 'Living Traffic Light (0.0s - 7.5s)',
+      desc: 'Upbeat 130 BPM street-crossing synth comedy groove with blackout & freeze silences.',
+      trigger: () => soundEngine.playTrafficLightScoreSection(undefined, 0, 7.5),
+    },
   ];
   const visibleEffects = soundEffects.filter((effect) => effect.project === config.activeProject);
 
@@ -887,7 +933,9 @@ export const AudioLab: React.FC<AudioLabProps> = ({ config, setConfig }) => {
           {isPaperBall ? 'Sound Design Studio' : 'Sound & Voice Design Studio'}
         </h2>
         <p className="text-sm text-slate-400 max-w-2xl mt-1">
-          {isInfiniteGiftBox
+          {isLivingTrafficLight
+            ? 'The Living Traffic Light is a 30-second dialogue-free street comedy with a procedural 130 BPM synth score, electronic blink chirps, mechanical STOP-sign arm snaps, squeaky rolling wheels, a power-box blackout drop, a rising backup battery hum, and flashing crimson alarm blasts — all synthesized live via Web Audio.'
+            : isInfiniteGiftBox
             ? 'The Infinite Gift Box is a 30-second dialogue-free living-room comedy with a procedural 134 BPM synth score, elastic golden ribbon pulls, escalating nested-box reveal pops, cardboard unfold/retract sweeps, doorway tug squeaks, a 100-box fountain eruption, a beanie-knocking head bonk, and a final trombone sting — all synthesized live via Web Audio.'
             : isSelfBuildingRobot
             ? 'The Self-Building Robot is a 30-second dialogue-free workshop comedy with a procedural 136 BPM synth score, futuristic blue laser scan sweeps, mechanical servo upgrade latches, low-battery warning beeps, an electric power-bank surge, tug-of-war squeaks, and a comedic trombone sting — all synthesized live via Web Audio.'

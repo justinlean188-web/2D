@@ -197,6 +197,7 @@ export const reelDownloadPlugin = (): Plugin => ({
           }
 
           const stream = createReadStream(targetPath, { start, end });
+          res.on('close', () => stream.destroy());
           stream.on('error', () => {
             if (!res.headersSent) res.statusCode = 500;
             res.end();
@@ -212,6 +213,7 @@ export const reelDownloadPlugin = (): Plugin => ({
           }
 
           const stream = createReadStream(targetPath);
+          res.on('close', () => stream.destroy());
           stream.on('error', () => {
             if (!res.headersSent) res.statusCode = 500;
             res.end();
@@ -420,15 +422,21 @@ export const reelDownloadPlugin = (): Plugin => ({
     });
 
     server.middlewares.use('/__reel-download', async (req, res) => {
-      const requestUrl = new URL(req.url ?? '/', 'http://localhost');
-      const target = requestUrl.searchParams.get('url');
-
       const send = (status: number, payload: Record<string, unknown>) => {
         res.statusCode = status;
         res.setHeader('Content-Type', 'application/json');
         res.setHeader('Access-Control-Allow-Origin', '*');
         res.end(JSON.stringify(payload));
       };
+
+      let target: string | null = null;
+      try {
+        const requestUrl = new URL(req.url ?? '/', 'http://localhost');
+        target = requestUrl.searchParams.get('url');
+      } catch {
+        send(400, { error: 'Invalid request URL.' });
+        return;
+      }
 
       if (!target) {
         send(400, { error: 'Missing the url parameter.' });

@@ -18,6 +18,7 @@ export interface SceneDef {
 export type CanvasTheme = 'black-on-white' | 'white-on-black';
 
 export type ProjectId =
+  | 'living-traffic-light'
   | 'infinite-gift-box'
   | 'self-building-robot'
   | 'runaway-cake'
@@ -42,8 +43,21 @@ export interface ProjectDef {
   duration: number;
   hasAudioDialogue: boolean;
   hasCaptions: boolean;
+  youtubeTitle?: string;
+  youtubeThumbnail?: string;
+  youtubeHashtags?: string;
   masterPrompt: string;
   scenes: SceneDef[];
+}
+
+export function getProjectYouTubeMeta(project: ProjectDef) {
+  return {
+    title: project.youtubeTitle ?? `${project.title} #Shorts`,
+    thumbnail: project.youtubeThumbnail ?? project.scenes[project.scenes.length - 1]?.captionText ?? 'WAIT FOR THE END!',
+    hashtags:
+      project.youtubeHashtags ??
+      '#AngryStickman #FunnyAnimation #StickmanAnimation #2DAnimation #YouTubeShorts',
+  };
 }
 
 export const isPaperBallProject = (id: ProjectId) =>
@@ -1862,7 +1876,126 @@ export const INFINITE_GIFT_BOX_SCENES: SceneDef[] = [
   },
 ];
 
+export const LIVING_TRAFFIC_LIGHT_PROMPT = `THE LIVING TRAFFIC LIGHT 🚦😂 — 30-SECOND VERTICAL POP COMEDY
+AI VIDEO PROMPT
+
+VISUAL STYLE
+Modern Pop 2D flat vector animation, vertical 9:16 (1080x1920), 24 fps, thick smooth black outlines, vibrant solid colors, minimal shading, clean geometric shapes, exaggerated cartoon expressions, smooth readable motion. No dialogue, no logos or watermarks.
+
+STRICT MAIN CHARACTER DESIGN — ANGRY STICKMAN (LOCKED RIG)
+- Large circular white head (radius 70, 5px #17121f outline), two vertical black oval eyes (20x22 open), thick expressive black eyebrows, simple black mouth. No nose, ears, or hair.
+- Red knitted-style beanie (#e63946) with folded lower edge (#b3222e), 5 stitches, and pom (#ff6b6b).
+- Plain yellow short-sleeved T-shirt (#ffd166), thin black stick arms (118+118px two-bone IK) connected directly to sleeves, connected small white mitten hands (no fingers or detached hands).
+- Blue trousers (#2f5fa8), thin black legs, solid black shoes (#141414). Keep identical in every scene.
+
+TRAFFIC LIGHT DESIGN
+- Tall black housing (#1e1e26) with thick black outline, red/yellow/green lenses, cartoon eyes inside the lenses/housing, small mechanical arms (holding an octagonal red STOP sign), rolling wheels on its base, power cable plugged into a roadside power box, and a hidden backup battery compartment.
+
+SCENE FLOW
+0-6s (Scene 1): Stickman approaches a pedestrian crossing. The traffic light blinks strangely, grows cartoon eyes, and stares at him. Caption: "THAT LIGHT JUST BLINKED AT ME!"
+6-12s (Scene 2): Green light! Stickman walks. Suddenly it turns red. A mechanical arm raises a STOP sign, blocking every direction he tries. Caption: "WHY ARE YOU STOPPING ME?!"
+12-18s (Scene 3): Yellow light! Stickman tiptoes forward. The traffic light rolls sideways on its wheels, following him and blocking his path. Caption: "IT'S FOLLOWING ME!"
+18-24s (Scene 4): Stickman runs toward a park. Multiple smaller traffic lights rise from the pavement, forming a wall of red STOP signals. He jumps over one but gets blocked by another. Caption: "THE WHOLE CITY IS AGAINST ME!"
+24-30s (Scene 5): Stickman unplugs the main traffic light from the roadside power box. Everything goes dark. He celebrates, but the hidden backup battery activates. The red light flashes bright red in his face. He freezes angrily. Caption: "I'M NEVER CROSSING AGAIN!"
+
+YOUTUBE METADATA
+- YouTube Title: A TRAFFIC LIGHT CAME ALIVE! 🚦😂
+- Thumbnail: YOU CAN'T MOVE!
+- Hashtags: #AngryStickman #FunnyAnimation #StickmanAnimation #2DAnimation #YouTubeShorts`;
+
+export const LIVING_TRAFFIC_LIGHT_SCENES: SceneDef[] = [
+  {
+    id: 1,
+    name: "Scene 1",
+    title: "The Blinking Stare",
+    timeRange: [0.0, 6.0],
+    videoPrompt:
+      "Angry Stickman approaches a pedestrian crosswalk. The tall black traffic light blinks strangely, grows cartoon eyes, and stares right down at him as Stickman points up in disbelief.",
+    animationDesc:
+      "Walks up to crosswalk (0.0-1.5s), traffic light blinks & sprouts cartoon eyes (1.6-2.9s), Stickman points in shock & glares suspiciously (3.0-6.0s).",
+    soundDesc: "Footsteps, electronic glitch blink, cartoon eye-pop chime, suspicious bass pulse.",
+    captionText: "THAT LIGHT JUST BLINKED AT ME!",
+    punchline: "Pedestrian signals aren't supposed to make eye contact.",
+    characterAction: "Walks to the curb, freezes in shock, points at the traffic light with wide eyes, then squints angrily.",
+    propAction: "Traffic light lenses blink erratically, grow cartoon eyes, and lock its gaze onto Stickman.",
+  },
+  {
+    id: 2,
+    name: "Scene 2",
+    title: "Denied at Every Turn",
+    timeRange: [6.0, 12.0],
+    videoPrompt:
+      "Green light turns on and Stickman steps onto the crosswalk! Suddenly it snaps to red and a small mechanical arm thrusts out a red STOP sign, blocking him left, right, and every direction he tries.",
+    animationDesc:
+      "Green light -> cheerful step (6.0-6.9s), sudden red snap + mechanical STOP arm blocks front (6.9-8.1s), Stickman dodges left & right while arm mirrors & blocks every move (8.1-12.0s).",
+    soundDesc: "Green go-chime, sharp red buzzer, metallic STOP-sign snaps left/center/right.",
+    captionText: "WHY ARE YOU STOPPING ME?!",
+    punchline: "It didn't just turn red — it took it personally.",
+    characterAction: "Steps forward happily, recoils in shock, then darts right and left in growing rage.",
+    propAction: "Traffic light snaps from green to red; mechanical arm extends octagonal STOP sign tracking Stickman's every dodge.",
+  },
+  {
+    id: 3,
+    name: "Scene 3",
+    title: "Rolling Stalker",
+    timeRange: [12.0, 18.0],
+    videoPrompt:
+      "Yellow light! Stickman carefully tiptoes forward trying to sneak past. The traffic light drops onto hidden wheels and rolls sideways, relentlessly following him and blocking his path.",
+    animationDesc:
+      "Yellow light -> sneaky tiptoes forward (12.0-13.6s), traffic light wheels pop out & roll sideways blocking path (13.6-15.4s), Stickman backpedals & fakes left/right while light mirrors him (15.4-18.0s).",
+    soundDesc: "Tip-toe plucks, rubber wheel squeaks and rolling rumble, mechanical glare.",
+    captionText: "IT'S FOLLOWING ME!",
+    punchline: "Yield means yield. Even on the sidewalk.",
+    characterAction: "Crouches into sneaky tiptoes, gasps as the pole rolls after him, panics with flailing mitten hands.",
+    propAction: "Traffic light housing rolls smoothly on base wheels, trailing its taut power cable while aiming the STOP sign.",
+  },
+  {
+    id: 4,
+    name: "Scene 4",
+    title: "Wall of Red Lights",
+    timeRange: [18.0, 24.0],
+    videoPrompt:
+      "Stickman sprints toward a green city park! Multiple smaller traffic lights rise out of the pavement, forming a wall of red STOP signals. He leaps high over one only to get blocked nose-to-sign by another.",
+    animationDesc:
+      "Sprints toward park gate (18.0-19.2s), four mini traffic lights pop out of pavement forming a red wall (19.0-20.4s), Stickman vaults over a mini light (20.4-21.5s), taller mini light rises directly in front & stops him cold (21.5-24.0s).",
+    soundDesc: "Fast sprint steps, four hydraulic pop-ups, jump whoosh, final STOP-sign block snap.",
+    captionText: "THE WHOLE CITY IS AGAINST ME!",
+    punchline: "He cleared the first hurdle. He did not clear the backup unit.",
+    characterAction: "Sprints furiously toward the park, hurdles mid-air over one mini light, lands blocked nose-to-sign.",
+    propAction: "Four smaller traffic lights rise from pavement hatches flashing red and raising STOP arms in unison.",
+  },
+  {
+    id: 5,
+    name: "Scene 5",
+    title: "Backup Battery Revenge",
+    timeRange: [24.0, 30.0],
+    videoPrompt:
+      "Stickman spots the main traffic light's power cable and yanks the plug out of the roadside power box! Everything goes pitch dark. He celebrates wildly — until the hidden backup battery activates and blasts a flashing red light straight into his face, freezing him in pure rage.",
+    animationDesc:
+      "Grabs plug & yanks from power box (24.0-24.9s), blackout darkness (24.9-26.6s), Stickman celebrates with fists raised (25.3-26.6s), hidden backup battery hatch opens & charges (26.6-27.7s), flashing red spotlight hits his face & he freezes angrily (27.7-30.0s).",
+    soundDesc: "Plug yank, power-down blackout sweep, celebration fanfare cut short, battery charge whine, flashing red alarm & angry freeze sting.",
+    captionText: "I'M NEVER CROSSING AGAIN!",
+    punchline: "You can pull the plug, but you can't beat a hidden battery.",
+    characterAction: "Tugs power cable free, dances in the dark, freezes rigid in crimson spotlight with clenched fists and angry glare.",
+    propAction: "Power box sparks & goes dark; traffic light opens rear battery compartment glowing green and blasts flashing red beam.",
+  },
+];
+
 export const PROJECTS: Record<ProjectId, ProjectDef> = {
+  'living-traffic-light': {
+    id: 'living-traffic-light',
+    title: 'The Living Traffic Light 🚦😂',
+    subtitle: '30-Second Street-Crossing Slapstick Comedy',
+    tagline: 'Modern Pop 2D Vector Cartoon · 24 FPS · Locked Angry Stickman Rig',
+    duration: 30,
+    hasAudioDialogue: false,
+    hasCaptions: true,
+    youtubeTitle: 'A TRAFFIC LIGHT CAME ALIVE! 🚦😂',
+    youtubeThumbnail: "YOU CAN'T MOVE!",
+    youtubeHashtags: '#AngryStickman #FunnyAnimation #StickmanAnimation #2DAnimation #YouTubeShorts',
+    masterPrompt: LIVING_TRAFFIC_LIGHT_PROMPT,
+    scenes: LIVING_TRAFFIC_LIGHT_SCENES,
+  },
   'infinite-gift-box': {
     id: 'infinite-gift-box',
     title: 'The Infinite Gift Box 🎁',
@@ -1871,6 +2004,9 @@ export const PROJECTS: Record<ProjectId, ProjectDef> = {
     duration: 30,
     hasAudioDialogue: false,
     hasCaptions: true,
+    youtubeTitle: 'THIS GIFT BOX ATE MY HOUSE! 🎁😂',
+    youtubeThumbnail: 'I HATE SURPRISES!',
+    youtubeHashtags: '#AngryStickman #FunnyAnimation #StickmanAnimation #2DAnimation #YouTubeShorts',
     masterPrompt: INFINITE_GIFT_BOX_PROMPT,
     scenes: INFINITE_GIFT_BOX_SCENES,
   },
@@ -1882,6 +2018,9 @@ export const PROJECTS: Record<ProjectId, ProjectDef> = {
     duration: 30,
     hasAudioDialogue: false,
     hasCaptions: true,
+    youtubeTitle: 'MY TINY ROBOT BUILT ITSELF?! 🤖😂',
+    youtubeThumbnail: 'I BUILT MY OWN BOSS!',
+    youtubeHashtags: '#AngryStickman #FunnyAnimation #RobotAnimation #2DAnimation #YouTubeShorts',
     masterPrompt: SELF_BUILDING_ROBOT_PROMPT,
     scenes: SELF_BUILDING_ROBOT_SCENES,
   },
@@ -1893,6 +2032,9 @@ export const PROJECTS: Record<ProjectId, ProjectDef> = {
     duration: 30,
     hasAudioDialogue: false,
     hasCaptions: true,
+    youtubeTitle: 'MY BIRTHDAY CAKE RAN AWAY! 🎂😂',
+    youtubeThumbnail: 'JUST ONE BITE!',
+    youtubeHashtags: '#AngryStickman #FunnyAnimation #StickmanAnimation #2DAnimation #YouTubeShorts',
     masterPrompt: RUNAWAY_CAKE_PROMPT,
     scenes: RUNAWAY_CAKE_SCENES,
   },
@@ -1904,6 +2046,9 @@ export const PROJECTS: Record<ProjectId, ProjectDef> = {
     duration: 30,
     hasAudioDialogue: false,
     hasCaptions: true,
+    youtubeTitle: 'BREAK OUT OF THE RED CAGE! 🔥',
+    youtubeThumbnail: 'BREAK THE TRAP!',
+    youtubeHashtags: '#StickmanAnimation #Mindset #MinimalistAnimation #2DAnimation #YouTubeShorts',
     masterPrompt: MIND_TRAPS_PROMPT,
     scenes: MIND_TRAPS_SCENES,
   },
@@ -1915,6 +2060,9 @@ export const PROJECTS: Record<ProjectId, ProjectDef> = {
     duration: 30,
     hasAudioDialogue: false,
     hasCaptions: true,
+    youtubeTitle: 'THE IMPOSSIBLE COIN FLIP TRICK SHOT! 🪙😂',
+    youtubeThumbnail: 'ONE LAST FLICK!',
+    youtubeHashtags: '#AngryStickman #TrickShot #FunnyAnimation #2DAnimation #YouTubeShorts',
     masterPrompt: COIN_FLIP_PROMPT,
     scenes: COIN_FLIP_SCENES,
   },
@@ -1926,6 +2074,9 @@ export const PROJECTS: Record<ProjectId, ProjectDef> = {
     duration: 30,
     hasAudioDialogue: false,
     hasCaptions: true,
+    youtubeTitle: 'THE IMPOSSIBLE DART TRICK SHOT! 🎯😂',
+    youtubeThumbnail: 'I QUIT!',
+    youtubeHashtags: '#AngryStickman #TrickShot #FunnyAnimation #2DAnimation #YouTubeShorts',
     masterPrompt: DART_SHOT_PROMPT,
     scenes: DART_SHOT_SCENES,
   },
@@ -1937,6 +2088,9 @@ export const PROJECTS: Record<ProjectId, ProjectDef> = {
     duration: 30,
     hasAudioDialogue: false,
     hasCaptions: true,
+    youtubeTitle: 'PING-PONG BALL RUINED HIS LIFE! 🏓😂',
+    youtubeThumbnail: 'NO WAY!!',
+    youtubeHashtags: '#AngryStickman #PingPong #FunnyAnimation #2DAnimation #YouTubeShorts',
     masterPrompt: PING_PONG_PROMPT,
     scenes: PING_PONG_SCENES,
   },
@@ -1948,6 +2102,9 @@ export const PROJECTS: Record<ProjectId, ProjectDef> = {
     duration: 60,
     hasAudioDialogue: false,
     hasCaptions: true,
+    youtubeTitle: 'HE BECAME A TRICK-SHOT CHAMPION! 🏀🏆',
+    youtubeThumbnail: 'IMPOSSIBLE SHOT!',
+    youtubeHashtags: '#AngryStickman #Basketball #TrickShot #2DAnimation #YouTubeShorts',
     masterPrompt: TRICK_SHOT_PROMPT,
     scenes: TRICK_SHOT_SCENES,
   },
@@ -1959,6 +2116,9 @@ export const PROJECTS: Record<ProjectId, ProjectDef> = {
     duration: 58,
     hasAudioDialogue: false,
     hasCaptions: true,
+    youtubeTitle: 'THE ROBOT STOLE THE POP CONCERT! 🎤🤖',
+    youtubeThumbnail: 'BEEP IS A STAR!',
+    youtubeHashtags: '#2DAnimation #FunnyCartoon #RobotDance #YouTubeShorts',
     masterPrompt: POP_STAR_PROMPT,
     scenes: POP_STAR_SCENES,
   },
@@ -1970,6 +2130,9 @@ export const PROJECTS: Record<ProjectId, ProjectDef> = {
     duration: 30,
     hasAudioDialogue: false,
     hasCaptions: false,
+    youtubeTitle: 'ANGRY STICKMAN VS BASKETBALL MACHINE! 🏀😂',
+    youtubeThumbnail: 'HANGING UPSIDE DOWN!',
+    youtubeHashtags: '#AngryStickman #PaperBall #FunnyAnimation #2DAnimation #YouTubeShorts',
     masterPrompt: PAPER_BALL_PART4_PROMPT,
     scenes: PAPER_BALL_PART4_SCENES,
   },
@@ -1981,6 +2144,9 @@ export const PROJECTS: Record<ProjectId, ProjectDef> = {
     duration: 30,
     hasAudioDialogue: false,
     hasCaptions: false,
+    youtubeTitle: 'THE LONGEST WALK FOR ONE BASKET! 🏀😂',
+    youtubeThumbnail: 'ONE MORE BONK!',
+    youtubeHashtags: '#AngryStickman #StickmanAnimation #FunnyAnimation #YouTubeShorts',
     masterPrompt: PAPER_BALL_PART3_PROMPT,
     scenes: PAPER_BALL_PART3_SCENES,
   },
@@ -1992,6 +2158,9 @@ export const PROJECTS: Record<ProjectId, ProjectDef> = {
     duration: 30,
     hasAudioDialogue: false,
     hasCaptions: false,
+    youtubeTitle: 'HE BUILT A PAPER BALL LAUNCHER! 📄😂',
+    youtubeThumbnail: '5 MISSES?!',
+    youtubeHashtags: '#AngryStickman #PaperBall #StickmanAnimation #YouTubeShorts',
     masterPrompt: PAPER_BALL_SEQUEL_PROMPT,
     scenes: PAPER_BALL_SEQUEL_SCENES,
   },
@@ -2003,6 +2172,9 @@ export const PROJECTS: Record<ProjectId, ProjectDef> = {
     duration: 30,
     hasAudioDialogue: false,
     hasCaptions: false,
+    youtubeTitle: 'ONE PAPER BALL. ZERO LUCK! 📄🗑️',
+    youtubeThumbnail: 'WAIT FOR IT!',
+    youtubeHashtags: '#AngryStickman #StickmanAnimation #FunnyAnimation #YouTubeShorts',
     masterPrompt: PAPER_BALL_30_PROMPT,
     scenes: PAPER_BALL_30_SCENES,
   },
@@ -2014,6 +2186,9 @@ export const PROJECTS: Record<ProjectId, ProjectDef> = {
     duration: 10,
     hasAudioDialogue: false,
     hasCaptions: false,
+    youtubeTitle: 'THE UNLUCKIEST PAPER THROW EVER! 📄😂',
+    youtubeThumbnail: 'DIRECT HIT!',
+    youtubeHashtags: '#StickmanAnimation #PaperBall #2DAnimation #YouTubeShorts',
     masterPrompt: PAPER_BALL_PROMPT,
     scenes: PAPER_BALL_SCENES,
   },
@@ -2025,6 +2200,9 @@ export const PROJECTS: Record<ProjectId, ProjectDef> = {
     duration: 10,
     hasAudioDialogue: true,
     hasCaptions: true,
+    youtubeTitle: 'WHAT IF YOUR SHADOW QUIT?! 🌑📋',
+    youtubeThumbnail: 'YOUR SHADOW HAS RIGHTS!',
+    youtubeHashtags: '#StickmanAnimation #FunnyComedy #2DAnimation #YouTubeShorts',
     masterPrompt: SHADOW_QUIT_PROMPT,
     scenes: SHADOW_QUIT_SCENES,
   },
@@ -2049,7 +2227,7 @@ export interface StudioConfig {
 }
 
 export const DEFAULT_CONFIG: StudioConfig = {
-  activeProject: 'infinite-gift-box', // The Infinite Gift Box 30s Short
+  activeProject: 'living-traffic-light', // The Living Traffic Light 30s Short
   canvasTheme: 'black-on-white', // Style 1A: Black on White (toggleable to Style 1B: White on Black)
   vividAccent: '#ef4444', // Vivid Red as seen in reference image for emotions, risks & cages
   accentColor: '#000000', // Minimalist Monochrome

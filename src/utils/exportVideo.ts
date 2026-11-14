@@ -13,7 +13,9 @@ import { SequelPaperBallRenderer } from '../animation/sequelPaperBallRenderer';
 import { RunawayCakeRenderer } from '../animation/runawayCakeRenderer';
 import { SelfBuildingRobotRenderer } from '../animation/selfBuildingRobotRenderer';
 import { InfiniteGiftBoxRenderer } from '../animation/infiniteGiftBoxRenderer';
+import { LivingTrafficLightRenderer } from '../animation/livingTrafficLightRenderer';
 import {
+  LIVING_TRAFFIC_LIGHT_CUES,
   INFINITE_GIFT_BOX_CUES,
   SELF_BUILDING_ROBOT_CUES,
   RUNAWAY_CAKE_CUES,
@@ -142,7 +144,9 @@ export async function exportVideo(options: ExportOptions): Promise<ExportResult>
   }
 
   const renderer: ExportTimelineRenderer = options.renderer ??
-    (config.activeProject === 'infinite-gift-box'
+    (config.activeProject === 'living-traffic-light'
+      ? new LivingTrafficLightRenderer()
+      : config.activeProject === 'infinite-gift-box'
       ? new InfiniteGiftBoxRenderer()
       : config.activeProject === 'self-building-robot'
       ? new SelfBuildingRobotRenderer()
@@ -179,7 +183,9 @@ export async function exportVideo(options: ExportOptions): Promise<ExportResult>
 
   const filePrefix =
     options.filePrefix ??
-    (config.activeProject === 'infinite-gift-box'
+    (config.activeProject === 'living-traffic-light'
+      ? 'living-traffic-light'
+      : config.activeProject === 'infinite-gift-box'
       ? 'infinite-gift-box'
       : config.activeProject === 'self-building-robot'
       ? 'self-building-robot'
@@ -577,6 +583,15 @@ export async function exportVideo(options: ExportOptions): Promise<ExportResult>
         } else if (config.activeProject === 'paper-ball-part4') {
           if (config.enableSFX) {
             for (const cue of PAPER_BALL_PART4_CUES) {
+              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
+                cue.play(dest);
+                triggeredCues.add(cue.id);
+              }
+            }
+          }
+        } else if (config.activeProject === 'living-traffic-light') {
+          if (config.enableSFX) {
+            for (const cue of LIVING_TRAFFIC_LIGHT_CUES) {
               if (animT >= cue.time && !triggeredCues.has(cue.id)) {
                 cue.play(dest);
                 triggeredCues.add(cue.id);

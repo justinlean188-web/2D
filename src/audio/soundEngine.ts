@@ -3095,6 +3095,269 @@ class SoundEngine {
 
 
   /**
+   * Weird electronic double-blink chirp when the traffic light wakes up.
+   */
+  public playTrafficBlink(dest?: AudioNode) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const notes = [880, 1180];
+      notes.forEach((freq, idx) => {
+        const at = now + idx * 0.14;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, at);
+        osc.frequency.exponentialRampToValueAtTime(freq * 1.18, at + 0.08);
+        gain.gain.setValueAtTime(0.001, at);
+        gain.gain.linearRampToValueAtTime(0.26 * this.volume, at + 0.012);
+        gain.gain.exponentialRampToValueAtTime(0.0001, at + 0.11);
+        osc.connect(gain);
+        this.routeOutput(gain, dest);
+        osc.start(at);
+        osc.stop(at + 0.13);
+      });
+    } catch {}
+  }
+
+  /**
+   * Snappy mechanical arm + STOP sign slam with metallic clack.
+   */
+  public playStopSignSnap(dest?: AudioNode, pitch = 1.0) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(520 * pitch, now);
+      osc.frequency.exponentialRampToValueAtTime(140 * pitch, now + 0.14);
+      gain.gain.setValueAtTime(0.36 * this.volume, now);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.18);
+      osc.connect(gain);
+      this.routeOutput(gain, dest);
+      osc.start(now);
+      osc.stop(now + 0.2);
+
+      // Metallic sign ring
+      const ring = ctx.createOscillator();
+      const rGain = ctx.createGain();
+      ring.type = 'sine';
+      ring.frequency.setValueAtTime(1320 * pitch, now + 0.02);
+      rGain.gain.setValueAtTime(0.16 * this.volume, now + 0.02);
+      rGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.26);
+      ring.connect(rGain);
+      this.routeOutput(rGain, dest);
+      ring.start(now + 0.02);
+      ring.stop(now + 0.28);
+    } catch {}
+  }
+
+  /**
+   * Rolling rubber-wheel squeak/whir as the traffic light stalks sideways.
+   */
+  public playWheelRoll(dest?: AudioNode) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(150, now);
+      osc.frequency.linearRampToValueAtTime(240, now + 0.25);
+      osc.frequency.linearRampToValueAtTime(170, now + 0.52);
+      gain.gain.setValueAtTime(0.001, now);
+      gain.gain.linearRampToValueAtTime(0.2 * this.volume, now + 0.05);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.56);
+      osc.connect(gain);
+      this.routeOutput(gain, dest);
+      osc.start(now);
+      osc.stop(now + 0.58);
+    } catch {}
+  }
+
+  /**
+   * Heavy plug yank + blackout power-down drop.
+   */
+  public playPowerBlackout(dest?: AudioNode) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      // Pop from socket
+      const pop = ctx.createOscillator();
+      const pGain = ctx.createGain();
+      pop.type = 'sine';
+      pop.frequency.setValueAtTime(420, now);
+      pop.frequency.exponentialRampToValueAtTime(120, now + 0.09);
+      pGain.gain.setValueAtTime(0.38 * this.volume, now);
+      pGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.12);
+      pop.connect(pGain);
+      this.routeOutput(pGain, dest);
+      pop.start(now);
+      pop.stop(now + 0.14);
+
+      // Descending blackout power-down turbine
+      const down = ctx.createOscillator();
+      const dGain = ctx.createGain();
+      down.type = 'sawtooth';
+      down.frequency.setValueAtTime(360, now + 0.05);
+      down.frequency.exponentialRampToValueAtTime(52, now + 0.72);
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(900, now + 0.05);
+      filter.frequency.exponentialRampToValueAtTime(140, now + 0.72);
+      dGain.gain.setValueAtTime(0.24 * this.volume, now + 0.05);
+      dGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.75);
+      down.connect(filter);
+      filter.connect(dGain);
+      this.routeOutput(dGain, dest);
+      down.start(now + 0.05);
+      down.stop(now + 0.78);
+    } catch {}
+  }
+
+  /**
+   * Hidden backup battery hatch pop + rising electric charge hum.
+   */
+  public playBatteryCharge(dest?: AudioNode) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(140, now);
+      osc.frequency.exponentialRampToValueAtTime(760, now + 0.58);
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'bandpass';
+      filter.frequency.setValueAtTime(620, now);
+      filter.Q.setValueAtTime(2.0, now);
+      gain.gain.setValueAtTime(0.001, now);
+      gain.gain.linearRampToValueAtTime(0.25 * this.volume, now + 0.04);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.62);
+      osc.connect(filter);
+      filter.connect(gain);
+      this.routeOutput(gain, dest);
+      osc.start(now);
+      osc.stop(now + 0.65);
+    } catch {}
+  }
+
+  /**
+   * Bright red alarm flash sting right in Stickman's face at 27.6s.
+   */
+  public playRedAlarmFlash(dest?: AudioNode) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      [0, 0.28, 0.56].forEach((offset) => {
+        const at = now + offset;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(740, at);
+        osc.frequency.setValueAtTime(520, at + 0.11);
+        const filter = ctx.createBiquadFilter();
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(1600, at);
+        gain.gain.setValueAtTime(0.001, at);
+        gain.gain.linearRampToValueAtTime(0.22 * this.volume, at + 0.015);
+        gain.gain.exponentialRampToValueAtTime(0.0001, at + 0.22);
+        osc.connect(filter);
+        filter.connect(gain);
+        this.routeOutput(gain, dest);
+        osc.start(at);
+        osc.stop(at + 0.24);
+      });
+    } catch {}
+  }
+
+  /**
+   * 30s urban cartoon comedy score for "The Living Traffic Light",
+   * sliced into 4 x 7.5s sections with a blackout silence window at 24.9-26.8s.
+   */
+  public playTrafficLightScoreSection(dest?: AudioNode, fromSec = 0, toSec = 30) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const beat = 60 / 132; // quirky 132 BPM street-comedy walk/chase tempo
+      const base = ctx.currentTime + 0.05 - fromSec;
+      const LEVEL = 0.54;
+
+      const tone = (
+        freq: number,
+        at: number,
+        dur: number,
+        type: OscillatorType,
+        gain: number
+      ) => {
+        if (at < ctx.currentTime - 0.05 || at > ctx.currentTime + (toSec - fromSec) + 0.1) return;
+        const osc = ctx.createOscillator();
+        const g = ctx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, at);
+        g.gain.setValueAtTime(0.0001, at);
+        g.gain.linearRampToValueAtTime(gain * LEVEL * this.volume, at + 0.01);
+        g.gain.exponentialRampToValueAtTime(0.0001, at + dur);
+        osc.connect(g);
+        this.routeOutput(g, dest);
+        osc.start(at);
+        osc.stop(at + dur + 0.02);
+      };
+
+      const firstBeat = Math.max(0, Math.floor(fromSec / beat));
+      const lastBeat = Math.ceil(toSec / beat);
+      const melody = [523.25, 622.25, 698.46, 783.99, 698.46, 622.25, 587.33, 493.88];
+      const tiptoe = [783.99, 830.61, 880.0, 932.33, 880.0, 783.99];
+      const bass = [130.81, 130.81, 155.56, 196.0];
+
+      for (let b = firstBeat; b < lastBeat; b++) {
+        const t = b * beat;
+        const at = base + t;
+        // Blackout silence window (24.85 - 26.85s) + final freeze after 28.6s
+        if ((t >= 24.85 && t < 26.85) || t >= 28.6) continue;
+
+        const bar = Math.floor(b / 4) % bass.length;
+        tone(bass[bar], at, beat * 0.58, 'triangle', 0.36);
+
+        if (t >= 12.0 && t < 18.0) {
+          // Sneaky tiptoe pizzicato in Scene 3
+          const note = tiptoe[b % tiptoe.length];
+          tone(note, at + beat * 0.5, beat * 0.22, 'sine', 0.38);
+        } else {
+          const note = melody[b % melody.length];
+          tone(note, at + beat * 0.5, beat * 0.38, 'triangle', 0.34);
+        }
+
+        // Urgent chase pulse during Scene 4 mini-light wall (18.0 - 24.0s)
+        if (t >= 18.0 && t < 24.0) {
+          tone(melody[(b + 2) % melody.length] * 1.5, at, beat * 0.2, 'square', 0.1);
+        }
+      }
+    } catch {}
+  }
+
+  /**
    * Speaks arbitrary text with the cartoon formant voice.
    *
    * Each word becomes a short syllable sequence: the vowel group picks the

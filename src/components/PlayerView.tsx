@@ -28,7 +28,9 @@ import { MindTrapsRenderer } from '../animation/mindTrapsRenderer';
 import { RunawayCakeRenderer } from '../animation/runawayCakeRenderer';
 import { SelfBuildingRobotRenderer } from '../animation/selfBuildingRobotRenderer';
 import { InfiniteGiftBoxRenderer } from '../animation/infiniteGiftBoxRenderer';
+import { LivingTrafficLightRenderer } from '../animation/livingTrafficLightRenderer';
 import {
+  LIVING_TRAFFIC_LIGHT_CUES,
   INFINITE_GIFT_BOX_CUES,
   SELF_BUILDING_ROBOT_CUES,
   RUNAWAY_CAKE_CUES,
@@ -45,6 +47,7 @@ import {
 } from '../audio/cueMaps';
 import { soundEngine, speakVoiceOver, stopVoiceOver } from '../audio/soundEngine';
 import { StudioConfig, PROJECTS, SceneDef, isPaperBallProject } from '../types';
+import { YouTubeMetaCard } from './YouTubeMetaCard';
 
 interface PlayerViewProps {
   config: StudioConfig;
@@ -85,6 +88,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
   const runawayCakeRendererRef = useRef<RunawayCakeRenderer>(new RunawayCakeRenderer());
   const selfBuildingRobotRendererRef = useRef<SelfBuildingRobotRenderer>(new SelfBuildingRobotRenderer());
   const infiniteGiftBoxRendererRef = useRef<InfiniteGiftBoxRenderer>(new InfiniteGiftBoxRenderer());
+  const livingTrafficLightRendererRef = useRef<LivingTrafficLightRenderer>(new LivingTrafficLightRenderer());
   const [speed, setSpeed] = useState<number>(1.0);
   const [isLooping, setIsLooping] = useState<boolean>(true);
   const lastTimeRef = useRef<number>(performance.now());
@@ -109,6 +113,8 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
   const isSelfBuildingRobotProject = config.activeProject === 'self-building-robot';
   // The infinite gift box short burns its five pop captions into the picture.
   const isInfiniteGiftBoxProject = config.activeProject === 'infinite-gift-box';
+  // The living traffic light short burns its five pop captions into the picture.
+  const isLivingTrafficLightProject = config.activeProject === 'living-traffic-light';
 
   // Current active scene
   const activeScene =
@@ -125,6 +131,11 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
       if (time <= toTime) cues.add(id);
       else cues.delete(id);
     };
+
+    if (config.activeProject === 'living-traffic-light') {
+      for (const cue of LIVING_TRAFFIC_LIGHT_CUES) setCueState(cue.id, cue.time);
+      return;
+    }
 
     if (config.activeProject === 'infinite-gift-box') {
       for (const cue of INFINITE_GIFT_BOX_CUES) setCueState(cue.id, cue.time);
@@ -288,6 +299,25 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
             continue;
           }
           // Short accents only fire just after their mark, never in a burst.
+          if (t >= cue.time && t - cue.time < 0.75) {
+            cue.play();
+            cues.add(cue.id);
+          }
+        }
+        return;
+      }
+
+      if (config.activeProject === 'living-traffic-light') {
+        if (!config.enableSFX) return;
+        for (const cue of LIVING_TRAFFIC_LIGHT_CUES) {
+          if (cues.has(cue.id)) continue;
+          if (cue.id.startsWith('ltl-score-')) {
+            if (t >= cue.time && t < cue.time + 7.6) {
+              cue.play();
+              cues.add(cue.id);
+            }
+            continue;
+          }
           if (t >= cue.time && t - cue.time < 0.75) {
             cue.play();
             cues.add(cue.id);
@@ -587,7 +617,9 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
             renderTime = Math.floor(t * 24) / 24;
           }
 
-          if (config.activeProject === 'infinite-gift-box') {
+          if (config.activeProject === 'living-traffic-light') {
+            livingTrafficLightRendererRef.current.render(ctx, renderTime, config);
+          } else if (config.activeProject === 'infinite-gift-box') {
             infiniteGiftBoxRendererRef.current.render(ctx, renderTime, config);
           } else if (config.activeProject === 'self-building-robot') {
             selfBuildingRobotRendererRef.current.render(ctx, renderTime, config);
@@ -668,7 +700,9 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
     const canvas = canvasRef.current;
     if (!canvas) return;
     const prefix =
-      config.activeProject === 'infinite-gift-box'
+      config.activeProject === 'living-traffic-light'
+        ? 'living-traffic-light'
+        : config.activeProject === 'infinite-gift-box'
         ? 'infinite-gift-box'
         : config.activeProject === 'self-building-robot'
         ? 'self-building-robot'
@@ -1007,7 +1041,9 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
               <div className="text-left">
                 <div className="text-xs font-semibold">Cartoon SFX</div>
                 <div className="text-[11px] text-slate-400">
-                  {config.activeProject === 'infinite-gift-box'
+                  {config.activeProject === 'living-traffic-light'
+                    ? 'Street score, blinks, STOP snaps, blackout, red alarm'
+                    : config.activeProject === 'infinite-gift-box'
                     ? 'Comedy score, ribbon pulls, box pops, fountain'
                     : config.activeProject === 'self-building-robot'
                     ? 'Workshop score, laser scans, servos, power surge'
@@ -1046,19 +1082,21 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
                 if (
                   currentProject.hasCaptions &&
                   !isPopProject &&
+                  !isTrickShotProject &&
                   !isPingPongProject &&
                   !isDartProject &&
                   !isCoinFlipProject &&
                   !isRunawayCakeProject &&
                   !isSelfBuildingRobotProject &&
-                  !isInfiniteGiftBoxProject
+                  !isInfiniteGiftBoxProject &&
+                  !isLivingTrafficLightProject
                 ) {
                   setConfig({ ...config, showCaptions: !config.showCaptions });
                 }
               }}
-              disabled={!currentProject.hasCaptions || isPopProject || isTrickShotProject || isPingPongProject || isDartProject || isCoinFlipProject || isRunawayCakeProject || isSelfBuildingRobotProject || isInfiniteGiftBoxProject}
+              disabled={!currentProject.hasCaptions || isPopProject || isTrickShotProject || isPingPongProject || isDartProject || isCoinFlipProject || isRunawayCakeProject || isSelfBuildingRobotProject || isInfiniteGiftBoxProject || isLivingTrafficLightProject}
               className={`p-3 rounded-xl border flex items-center justify-between transition-colors ${
-                !currentProject.hasCaptions || isPopProject || isTrickShotProject || isPingPongProject || isDartProject || isCoinFlipProject || isRunawayCakeProject || isSelfBuildingRobotProject || isInfiniteGiftBoxProject
+                !currentProject.hasCaptions || isPopProject || isTrickShotProject || isPingPongProject || isDartProject || isCoinFlipProject || isRunawayCakeProject || isSelfBuildingRobotProject || isInfiniteGiftBoxProject || isLivingTrafficLightProject
                   ? 'bg-slate-950/50 border-slate-900 text-slate-600 cursor-not-allowed opacity-60'
                   : config.showCaptions
                   ? 'bg-slate-900 border-slate-700 text-white cursor-pointer'
@@ -1068,7 +1106,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
               <div className="text-left">
                 <div className="text-xs font-semibold">In-Video Captions</div>
                 <div className="text-[11px] text-slate-400">
-                  {(isPingPongProject || isDartProject || isCoinFlipProject || isRunawayCakeProject || isSelfBuildingRobotProject || isInfiniteGiftBoxProject)
+                  {(isPingPongProject || isDartProject || isCoinFlipProject || isRunawayCakeProject || isSelfBuildingRobotProject || isInfiniteGiftBoxProject || isLivingTrafficLightProject)
                     ? 'Burned-in scene captions'
                     : isPopProject || isTrickShotProject
                     ? 'Burned-in narration captions'
@@ -1079,7 +1117,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
               </div>
               <span
                 className={`text-xs font-mono ${
-                  isPopProject || isTrickShotProject || isPingPongProject || isDartProject || isCoinFlipProject || isRunawayCakeProject || isSelfBuildingRobotProject || isInfiniteGiftBoxProject
+                  isPopProject || isTrickShotProject || isPingPongProject || isDartProject || isCoinFlipProject || isRunawayCakeProject || isSelfBuildingRobotProject || isInfiniteGiftBoxProject || isLivingTrafficLightProject
                     ? 'text-emerald-400'
                     : !currentProject.hasCaptions
                     ? 'text-slate-600'
@@ -1088,7 +1126,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
                     : 'text-slate-600'
                 }`}
               >
-                {isPopProject || isTrickShotProject || isPingPongProject || isDartProject || isCoinFlipProject || isRunawayCakeProject || isSelfBuildingRobotProject || isInfiniteGiftBoxProject
+                {isPopProject || isTrickShotProject || isPingPongProject || isDartProject || isCoinFlipProject || isRunawayCakeProject || isSelfBuildingRobotProject || isInfiniteGiftBoxProject || isLivingTrafficLightProject
                   ? 'ON'
                   : !currentProject.hasCaptions
                   ? 'NONE'
@@ -1098,6 +1136,9 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
               </span>
             </button>
           </div>
+
+          {/* YouTube Title & Shorts Copy Section */}
+          <YouTubeMetaCard project={currentProject} compact />
         </div>
       </div>
     </div>

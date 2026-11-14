@@ -90,12 +90,10 @@ export const SceneTimeline: React.FC<SceneTimelineProps> = ({
 
                 <div className="p-3 bg-zinc-950 rounded-lg border border-zinc-800/60 space-y-1.5">
                   <div className="text-zinc-400 font-semibold uppercase tracking-wider text-[10px]">
-                    {isPaperBallProject(activeProject) || scene.propAction
-                      ? 'Prop & Physics Action'
-                      : 'Shadow Silhouette'}
+                    {isPaperBallProject(activeProject) ? 'Prop & Physics Action' : 'Shadow Silhouette'}
                   </div>
                   <div className="text-zinc-200 leading-relaxed">
-                    {scene.propAction ?? scene.shadowAction}
+                    {isPaperBallProject(activeProject) ? scene.propAction : scene.shadowAction}
                   </div>
                 </div>
               </div>

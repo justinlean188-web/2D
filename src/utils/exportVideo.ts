@@ -8,33 +8,15 @@ import { TrickShotRenderer } from '../animation/trickShotRenderer';
 import { PingPongRenderer } from '../animation/pingPongRenderer';
 import { DartShotRenderer } from '../animation/dartShotRenderer';
 import { CoinFlipRenderer } from '../animation/coinFlipRenderer';
-import { ArcadeClawRenderer } from '../animation/arcadeClawRenderer';
-import { DiamondHeistRenderer } from '../animation/diamondHeistRenderer';
-import { PancakeFlipRenderer } from '../animation/pancakeFlipRenderer';
-import { VendingMachineRenderer } from '../animation/vendingMachineRenderer';
-import { BiggestBalloonRenderer } from '../animation/biggestBalloonRenderer';
-import { FindTheBallRenderer } from '../animation/findTheBallRenderer';
-import { Attempt247Renderer } from '../animation/attempt247Renderer';
-import { NeedleThreadRenderer } from '../animation/needleThreadRenderer';
-import { MagnetTrickRenderer } from '../animation/magnetTrickRenderer';
-import { RingShotRenderer } from '../animation/ringShotRenderer';
-import { PencilLandingRenderer } from '../animation/pencilLandingRenderer';
-import { DominoTrickshotRenderer } from '../animation/dominoTrickshotRenderer';
-import { BalloonPopJackpotRenderer } from '../animation/balloonPopJackpotRenderer';
-import { CandyClawRenderer } from '../animation/candyClawRenderer';
-import { PlateSpinRenderer } from '../animation/plateSpinRenderer';
-import { ThreeWallPingPongRenderer } from '../animation/threeWallPingPongRenderer';
-import { CupInCupRenderer } from '../animation/cupInCupRenderer';
-import { YoYoRevengeRenderer } from '../animation/yoYoRevengeRenderer';
-import { YoBanditRenderer } from '../animation/yoBanditRenderer';
-import { DesertIslandRenderer } from '../animation/desertIslandRenderer';
-import { ShrinkingRemoteRenderer } from '../animation/shrinkingRemoteRenderer';
-import { MagicPaintbrushRenderer } from '../animation/magicPaintbrushRenderer';
-import { GiantBalloonPrisonRenderer } from '../animation/giantBalloonPrisonRenderer';
-import { PopUpTentRenderer } from '../animation/popUpTentRenderer';
 import { MindTrapsRenderer } from '../animation/mindTrapsRenderer';
 import { SequelPaperBallRenderer } from '../animation/sequelPaperBallRenderer';
+import { RunawayCakeRenderer } from '../animation/runawayCakeRenderer';
+import { SelfBuildingRobotRenderer } from '../animation/selfBuildingRobotRenderer';
+import { InfiniteGiftBoxRenderer } from '../animation/infiniteGiftBoxRenderer';
 import {
+  INFINITE_GIFT_BOX_CUES,
+  SELF_BUILDING_ROBOT_CUES,
+  RUNAWAY_CAKE_CUES,
   MIND_TRAPS_CUES,
   PAPER_BALL_30_CUES,
   POP_STAR_CUES,
@@ -42,30 +24,6 @@ import {
   PING_PONG_CUES,
   DART_SHOT_CUES,
   COIN_FLIP_CUES,
-  ARCADE_CLAW_CUES,
-  DIAMOND_HEIST_CUES,
-  PANCAKE_FLIP_CUES,
-  VENDING_MACHINE_CUES,
-  BIGGEST_BALLOON_CUES,
-  FIND_THE_BALL_CUES,
-  ATTEMPT_247_CUES,
-  NEEDLE_THREAD_CUES,
-  MAGNET_TRICK_CUES,
-  RING_SHOT_CUES,
-  PENCIL_LANDING_CUES,
-  DOMINO_TRICKSHOT_CUES,
-  BALLOON_POP_JACKPOT_CUES,
-  CANDY_CLAW_CUES,
-  PLATE_SPIN_CUES,
-  THREE_WALL_PING_PONG_CUES,
-  CUP_IN_CUP_CUES,
-  YO_YO_REVENGE_CUES,
-  YO_BANDIT_CUES,
-  DESERT_ISLAND_CUES,
-  SHRINKING_REMOTE_CUES,
-  MAGIC_PAINTBRUSH_CUES,
-  GIANT_BALLOON_PRISON_CUES,
-  POP_UP_TENT_CUES,
   PAPER_BALL_PART3_CUES,
   PAPER_BALL_PART4_CUES,
   PAPER_BALL_SEQUEL_CUES,
@@ -106,8 +64,6 @@ export interface ExportOptions {
   narration?: { time: number; text: string }[];
   /** File name prefix for the download. */
   filePrefix?: string;
-  /** Fallback project filePrefix when none is supplied. */
-  projectFilePrefix?: string;
 }
 
 export interface ExportResult {
@@ -186,56 +142,14 @@ export async function exportVideo(options: ExportOptions): Promise<ExportResult>
   }
 
   const renderer: ExportTimelineRenderer = options.renderer ??
-    (config.activeProject === 'mind-traps'
+    (config.activeProject === 'infinite-gift-box'
+      ? new InfiniteGiftBoxRenderer()
+      : config.activeProject === 'self-building-robot'
+      ? new SelfBuildingRobotRenderer()
+      : config.activeProject === 'runaway-cake'
+      ? new RunawayCakeRenderer()
+      : config.activeProject === 'mind-traps'
       ? new MindTrapsRenderer()
-      : config.activeProject === 'arcade-claw'
-      ? new ArcadeClawRenderer()
-      : config.activeProject === 'diamond-heist'
-      ? new DiamondHeistRenderer()
-      : config.activeProject === 'pancake-flip'
-      ? new PancakeFlipRenderer()
-      : config.activeProject === 'vending-machine'
-      ? new VendingMachineRenderer()
-      : config.activeProject === 'biggest-balloon'
-      ? new BiggestBalloonRenderer()
-      : config.activeProject === 'find-the-ball'
-      ? new FindTheBallRenderer()
-      : config.activeProject === 'attempt-247'
-      ? new Attempt247Renderer()
-      : config.activeProject === 'needle-thread'
-      ? new NeedleThreadRenderer()
-      : config.activeProject === 'magnet-trick'
-      ? new MagnetTrickRenderer()
-      : config.activeProject === 'ring-shot'
-      ? new RingShotRenderer()
-      : config.activeProject === 'pencil-landing'
-      ? new PencilLandingRenderer()
-      : config.activeProject === 'domino-trickshot'
-      ? new DominoTrickshotRenderer()
-      : config.activeProject === 'balloon-pop-jackpot'
-      ? new BalloonPopJackpotRenderer()
-      : config.activeProject === 'candy-claw'
-      ? new CandyClawRenderer()
-      : config.activeProject === 'plate-spin'
-      ? new PlateSpinRenderer()
-      : config.activeProject === 'three-wall-ping-pong'
-      ? new ThreeWallPingPongRenderer()
-      : config.activeProject === 'cup-in-cup'
-      ? new CupInCupRenderer()
-      : config.activeProject === 'yo-yo-revenge'
-      ? new YoYoRevengeRenderer()
-      : config.activeProject === 'rubber-band'
-      ? new YoBanditRenderer()
-      : config.activeProject === 'desert-island'
-      ? new DesertIslandRenderer()
-      : config.activeProject === 'shrinking-remote'
-      ? new ShrinkingRemoteRenderer()
-      : config.activeProject === 'magic-paintbrush'
-      ? new MagicPaintbrushRenderer()
-      : config.activeProject === 'giant-balloon-prison'
-      ? new GiantBalloonPrisonRenderer()
-      : config.activeProject === 'pop-up-tent'
-      ? new PopUpTentRenderer()
       : config.activeProject === 'coin-flip'
       ? new CoinFlipRenderer()
       : config.activeProject === 'dart-shot'
@@ -265,58 +179,16 @@ export async function exportVideo(options: ExportOptions): Promise<ExportResult>
 
   const filePrefix =
     options.filePrefix ??
-    (config.activeProject === 'mind-traps'
+    (config.activeProject === 'infinite-gift-box'
+      ? 'infinite-gift-box'
+      : config.activeProject === 'self-building-robot'
+      ? 'self-building-robot'
+      : config.activeProject === 'runaway-cake'
+      ? 'runaway-cake'
+      : config.activeProject === 'mind-traps'
       ? 'mind-traps'
       : config.activeProject === 'shadow-quit'
       ? 'shadow-quit'
-      : config.activeProject === 'arcade-claw'
-      ? 'arcade-claw'
-      : config.activeProject === 'diamond-heist'
-      ? 'diamond-heist'
-      : config.activeProject === 'pancake-flip'
-      ? 'pancake-flip'
-      : config.activeProject === 'vending-machine'
-      ? 'vending-machine'
-      : config.activeProject === 'biggest-balloon'
-      ? 'biggest-balloon'
-      : config.activeProject === 'find-the-ball'
-      ? 'find-the-ball'
-      : config.activeProject === 'attempt-247'
-      ? 'attempt-247'
-      : config.activeProject === 'needle-thread'
-      ? 'needle-thread'
-      : config.activeProject === 'magnet-trick'
-      ? 'magnet-trick'
-      : config.activeProject === 'ring-shot'
-      ? 'ring-shot'
-      : config.activeProject === 'pencil-landing'
-      ? 'pencil-landing'
-      : config.activeProject === 'domino-trickshot'
-      ? 'domino-trickshot'
-      : config.activeProject === 'balloon-pop-jackpot'
-      ? 'balloon-pop-jackpot'
-      : config.activeProject === 'candy-claw'
-      ? 'candy-claw'
-      : config.activeProject === 'plate-spin'
-      ? 'plate-spin'
-      : config.activeProject === 'three-wall-ping-pong'
-      ? 'three-wall-ping-pong'
-      : config.activeProject === 'cup-in-cup'
-      ? 'cup-in-cup'
-      : config.activeProject === 'yo-yo-revenge'
-      ? 'yo-yo-revenge'
-      : config.activeProject === 'rubber-band'
-      ? 'rubber-band'
-      : config.activeProject === 'desert-island'
-      ? 'desert-island'
-      : config.activeProject === 'shrinking-remote'
-      ? 'shrinking-remote'
-      : config.activeProject === 'magic-paintbrush'
-      ? 'magic-paintbrush'
-      : config.activeProject === 'giant-balloon-prison'
-      ? 'giant-balloon-prison'
-      : config.activeProject === 'pop-up-tent'
-      ? 'pop-up-tent'
       : config.activeProject === 'coin-flip'
       ? 'coin-flip'
       : config.activeProject === 'dart-shot'
@@ -711,6 +583,33 @@ export async function exportVideo(options: ExportOptions): Promise<ExportResult>
               }
             }
           }
+        } else if (config.activeProject === 'infinite-gift-box') {
+          if (config.enableSFX) {
+            for (const cue of INFINITE_GIFT_BOX_CUES) {
+              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
+                cue.play(dest);
+                triggeredCues.add(cue.id);
+              }
+            }
+          }
+        } else if (config.activeProject === 'self-building-robot') {
+          if (config.enableSFX) {
+            for (const cue of SELF_BUILDING_ROBOT_CUES) {
+              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
+                cue.play(dest);
+                triggeredCues.add(cue.id);
+              }
+            }
+          }
+        } else if (config.activeProject === 'runaway-cake') {
+          if (config.enableSFX) {
+            for (const cue of RUNAWAY_CAKE_CUES) {
+              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
+                cue.play(dest);
+                triggeredCues.add(cue.id);
+              }
+            }
+          }
         } else if (config.activeProject === 'pop-star') {
           if (config.enableSFX) {
             for (const cue of POP_STAR_CUES) {
@@ -759,268 +658,6 @@ export async function exportVideo(options: ExportOptions): Promise<ExportResult>
         } else if (config.activeProject === 'coin-flip') {
           if (config.enableSFX) {
             for (const cue of COIN_FLIP_CUES) {
-              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
-                cue.play(dest);
-                triggeredCues.add(cue.id);
-              }
-            }
-          }
-        } else if (config.activeProject === 'diamond-heist') {
-          if (config.enableSFX) {
-            // The four dh-score-* cues each schedule one 7.5s slice of the
-            // sneaky score; every other cue is a one-shot on its beat.
-            for (const cue of DIAMOND_HEIST_CUES) {
-              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
-                cue.play(dest);
-                triggeredCues.add(cue.id);
-              }
-            }
-          }
-        } else if (config.activeProject === 'pancake-flip') {
-          if (config.enableSFX) {
-            // The four pf-score-* cues each schedule one 7.5s slice of the
-            // bouncy score; every other cue is a one-shot on its beat.
-            for (const cue of PANCAKE_FLIP_CUES) {
-              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
-                cue.play(dest);
-                triggeredCues.add(cue.id);
-              }
-            }
-          }
-        } else if (config.activeProject === 'vending-machine') {
-          if (config.enableSFX) {
-            // The four vm-score-* cues each schedule one 7.5s slice of the
-            // bouncy score; every other cue is a one-shot on its beat.
-            for (const cue of VENDING_MACHINE_CUES) {
-              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
-                cue.play(dest);
-                triggeredCues.add(cue.id);
-              }
-            }
-          }
-        } else if (config.activeProject === 'biggest-balloon') {
-          if (config.enableSFX) {
-            // The four bb-score-* cues each schedule one 7.5s slice of the
-            // bouncy score; every other cue is a one-shot on its beat.
-            for (const cue of BIGGEST_BALLOON_CUES) {
-              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
-                cue.play(dest);
-                triggeredCues.add(cue.id);
-              }
-            }
-          }
-        } else if (config.activeProject === 'find-the-ball') {
-          if (config.enableSFX) {
-            // The four fb-score-* cues each schedule one 7.5s slice of the
-            // magic-show score; every other cue is a one-shot on its beat.
-            for (const cue of FIND_THE_BALL_CUES) {
-              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
-                cue.play(dest);
-                triggeredCues.add(cue.id);
-              }
-            }
-          }
-        } else if (config.activeProject === 'attempt-247') {
-          if (config.enableSFX) {
-            // The four a247-score-* cues each schedule one 7.5s slice of the
-            // sports score; every other cue is a one-shot on its beat.
-            for (const cue of ATTEMPT_247_CUES) {
-              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
-                cue.play(dest);
-                triggeredCues.add(cue.id);
-              }
-            }
-          }
-        } else if (config.activeProject === 'needle-thread') {
-          if (config.enableSFX) {
-            // The four nt-score-* cues each schedule one 7.5s slice of the
-            // sewing-championship score; every other cue is a one-shot.
-            for (const cue of NEEDLE_THREAD_CUES) {
-              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
-                cue.play(dest);
-                triggeredCues.add(cue.id);
-              }
-            }
-          }
-        } else if (config.activeProject === 'magnet-trick') {
-          if (config.enableSFX) {
-            for (const cue of MAGNET_TRICK_CUES) {
-              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
-                cue.play(dest);
-                triggeredCues.add(cue.id);
-              }
-            }
-          }
-        } else if (config.activeProject === 'ring-shot') {
-          if (config.enableSFX) {
-            // The four rs-score-* cues each schedule one 7.5s slice of the
-            // sports score; every other cue is a one-shot on its beat.
-            for (const cue of RING_SHOT_CUES) {
-              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
-                cue.play(dest);
-                triggeredCues.add(cue.id);
-              }
-            }
-          }
-        } else if (config.activeProject === 'pencil-landing') {
-          if (config.enableSFX) {
-            // The four pl-score-* cues each schedule one 7.5s slice of the
-            // Modern Pop score; every other cue is a one-shot on its beat.
-            for (const cue of PENCIL_LANDING_CUES) {
-              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
-                cue.play(dest);
-                triggeredCues.add(cue.id);
-              }
-            }
-          }
-        } else if (config.activeProject === 'arcade-claw') {
-          if (config.enableSFX) {
-            // The four ac-score-* cues each schedule one 7.5s slice of the
-            // chiptune; every other cue is a one-shot on its beat.
-            for (const cue of ARCADE_CLAW_CUES) {
-              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
-                cue.play(dest);
-                triggeredCues.add(cue.id);
-              }
-            }
-          }
-        } else if (config.activeProject === 'domino-trickshot') {
-          if (config.enableSFX) {
-            // The four dt-score-* cues each schedule one 7.5s slice of the
-            // bouncy score; every other cue is a one-shot on its beat.
-            for (const cue of DOMINO_TRICKSHOT_CUES) {
-              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
-                cue.play(dest);
-                triggeredCues.add(cue.id);
-              }
-            }
-          }
-        } else if (config.activeProject === 'balloon-pop-jackpot') {
-          if (config.enableSFX) {
-            // The four bp-score-* cues each schedule one 7.5s slice of the
-            // carnival score; every other cue is a one-shot on its beat.
-            for (const cue of BALLOON_POP_JACKPOT_CUES) {
-              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
-                cue.play(dest);
-                triggeredCues.add(cue.id);
-              }
-            }
-          }
-        } else if (config.activeProject === 'candy-claw') {
-          if (config.enableSFX) {
-            // The four cc-score-* cues each schedule one 7.5s slice of the
-            // carnival score; every other cue is a one-shot on its beat.
-            for (const cue of CANDY_CLAW_CUES) {
-              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
-                cue.play(dest);
-                triggeredCues.add(cue.id);
-              }
-            }
-          }
-        } else if (config.activeProject === 'plate-spin') {
-          if (config.enableSFX) {
-            // The four ps-score-* cues each schedule one 7.5s slice of the
-            // circus score; every other cue is a one-shot on its beat.
-            for (const cue of PLATE_SPIN_CUES) {
-              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
-                cue.play(dest);
-                triggeredCues.add(cue.id);
-              }
-            }
-          }
-        } else if (config.activeProject === 'three-wall-ping-pong') {
-          if (config.enableSFX) {
-            // The four twpp-score-* cues each schedule one 7.5s slice of the
-            // playful score; every other cue is a one-shot on its beat.
-            for (const cue of THREE_WALL_PING_PONG_CUES) {
-              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
-                cue.play(dest);
-                triggeredCues.add(cue.id);
-              }
-            }
-          }
-        } else if (config.activeProject === 'cup-in-cup') {
-          if (config.enableSFX) {
-            // The four cic-score-* cues each schedule one 7.5s slice of the
-            // playful score; every other cue is a one-shot on its beat.
-            for (const cue of CUP_IN_CUP_CUES) {
-              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
-                cue.play(dest);
-                triggeredCues.add(cue.id);
-              }
-            }
-          }
-        } else if (config.activeProject === 'yo-yo-revenge') {
-          if (config.enableSFX) {
-            // The four yyr-score-* cues each schedule one 7.5s slice of the
-            // playful score; every other cue is a one-shot on its beat.
-            for (const cue of YO_YO_REVENGE_CUES) {
-              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
-                cue.play(dest);
-                triggeredCues.add(cue.id);
-              }
-            }
-          }
-        } else if (config.activeProject === 'rubber-band') {
-          if (config.enableSFX) {
-            // The four yb-score-* cues each schedule one 7.5s slice of the
-            // playful score; every other cue is a one-shot on its beat.
-            for (const cue of YO_BANDIT_CUES) {
-              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
-                cue.play(dest);
-                triggeredCues.add(cue.id);
-              }
-            }
-          }
-        } else if (config.activeProject === 'desert-island') {
-          if (config.enableSFX) {
-            // The four di-score-* cues each schedule one 7.5s slice of the
-            // tropical score; every other cue is a one-shot on its beat.
-            for (const cue of DESERT_ISLAND_CUES) {
-              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
-                cue.play(dest);
-                triggeredCues.add(cue.id);
-              }
-            }
-          }
-        } else if (config.activeProject === 'shrinking-remote') {
-          if (config.enableSFX) {
-            // The four sr-score-* cues each schedule one 7.5s slice of the
-            // playful score; every other cue is a one-shot on its beat.
-            for (const cue of SHRINKING_REMOTE_CUES) {
-              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
-                cue.play(dest);
-                triggeredCues.add(cue.id);
-              }
-            }
-          }
-        } else if (config.activeProject === 'magic-paintbrush') {
-          if (config.enableSFX) {
-            // The four mp-score-* cues each schedule one 7.5s slice of the
-            // playful score; every other cue is a one-shot on its beat.
-            for (const cue of MAGIC_PAINTBRUSH_CUES) {
-              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
-                cue.play(dest);
-                triggeredCues.add(cue.id);
-              }
-            }
-          }
-        } else if (config.activeProject === 'giant-balloon-prison') {
-          if (config.enableSFX) {
-            // Four gb-score-* cues schedule the 7.5s score slices; every other
-            // cue is a one-shot on its beat.
-            for (const cue of GIANT_BALLOON_PRISON_CUES) {
-              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
-                cue.play(dest);
-                triggeredCues.add(cue.id);
-              }
-            }
-          }
-        } else if (config.activeProject === 'pop-up-tent') {
-          if (config.enableSFX) {
-            // Four pt-score-* cues schedule the 7.5s score slices; every other
-            // cue is a one-shot on its beat.
-            for (const cue of POP_UP_TENT_CUES) {
               if (animT >= cue.time && !triggeredCues.has(cue.id)) {
                 cue.play(dest);
                 triggeredCues.add(cue.id);

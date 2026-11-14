@@ -14,18 +14,6 @@ const VOWEL_FORMANTS: Record<string, [number, number]> = {
   y: [440, 1600],
 };
 
-export interface SfxLayer {
-  k: 't' | 'n';
-  f: number;
-  f2?: number;
-  d: number;
-  g: number;
-  w?: OscillatorType;
-  ft?: BiquadFilterType;
-  q?: number;
-  t?: number;
-}
-
 class SoundEngine {
   private ctx: AudioContext | null = null;
   private isMuted: boolean = false;
@@ -2316,7 +2304,7 @@ class SoundEngine {
   }
 
   /**
-   * "THE ANGRY STICKMAN VS. THE IMPOSSIBLE COIN FLIP" ΓÇö a 30-second comedy
+   * "THE ANGRY STICKMAN VS. THE IMPOSSIBLE COIN FLIP" — a 30-second comedy
    * score in four 7.5 s slices: a smug coin-showman strut, a mechanical
    * engineer march, a rage tremolo that cuts dead for the final flick, a
    * pinball tick-tock through the ricochet, a held breath for the splash and
@@ -2461,6 +2449,652 @@ class SoundEngine {
   }
 
   /**
+   * Cartoon spring "boing" for cake jumps and leaps.
+   */
+  public playBoingSpring(dest?: AudioNode) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(140, now);
+      osc.frequency.exponentialRampToValueAtTime(760, now + 0.28);
+      gain.gain.setValueAtTime(0.001, now);
+      gain.gain.linearRampToValueAtTime(0.42 * this.volume, now + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.45);
+      osc.connect(gain);
+      this.routeOutput(gain, dest);
+      osc.start(now);
+      osc.stop(now + 0.5);
+    } catch {}
+  }
+
+  /**
+   * Squishy frosting squirt / slick slide sound.
+   */
+  public playFrostingSquirt(dest?: AudioNode) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const filter = ctx.createBiquadFilter();
+      const gain = ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(480, now);
+      osc.frequency.exponentialRampToValueAtTime(160, now + 0.35);
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(900, now);
+      filter.frequency.linearRampToValueAtTime(250, now + 0.35);
+      gain.gain.setValueAtTime(0.001, now);
+      gain.gain.linearRampToValueAtTime(0.38 * this.volume, now + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.38);
+      osc.connect(filter);
+      filter.connect(gain);
+      this.routeOutput(gain, dest);
+      osc.start(now);
+      osc.stop(now + 0.4);
+    } catch {}
+  }
+
+  /**
+   * Snappy confetti cannon explosion with sparkle chimes.
+   */
+  public playConfettiPop(dest?: AudioNode) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      // Snappy noise burst
+      const noiseBuffer = ctx.createBuffer(1, Math.floor(ctx.sampleRate * 0.2), ctx.sampleRate);
+      const data = noiseBuffer.getChannelData(0);
+      for (let i = 0; i < data.length; i++) {
+        data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (ctx.sampleRate * 0.03));
+      }
+      const noise = ctx.createBufferSource();
+      noise.buffer = noiseBuffer;
+      const nGain = ctx.createGain();
+      nGain.gain.setValueAtTime(0.6 * this.volume, now);
+      nGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.25);
+      noise.connect(nGain);
+      this.routeOutput(nGain, dest);
+      noise.start(now);
+
+      // Party sparkles
+      const notes = [880, 1174, 1318, 1760];
+      notes.forEach((freq, i) => {
+        const osc = ctx.createOscillator();
+        const g = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, now + i * 0.04);
+        g.gain.setValueAtTime(0.18 * this.volume, now + i * 0.04);
+        g.gain.exponentialRampToValueAtTime(0.0001, now + i * 0.04 + 0.3);
+        osc.connect(g);
+        this.routeOutput(g, dest);
+        osc.start(now + i * 0.04);
+        osc.stop(now + i * 0.04 + 0.35);
+      });
+    } catch {}
+  }
+
+  /**
+   * Comedic cartoon CHOMP / bite sound.
+   */
+  public playCupcakeChomp(dest?: AudioNode) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(320, now);
+      osc.frequency.exponentialRampToValueAtTime(90, now + 0.12);
+      gain.gain.setValueAtTime(0.48 * this.volume, now);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.16);
+      osc.connect(gain);
+      this.routeOutput(gain, dest);
+      osc.start(now);
+      osc.stop(now + 0.18);
+    } catch {}
+  }
+
+  /**
+   * Dizzy wobbling cartoon stars.
+   */
+  public playDizzyWhirl(dest?: AudioNode) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      for (let i = 0; i < 2; i++) {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(540 + i * 80, now);
+        for (let k = 0; k < 6; k++) {
+          osc.frequency.linearRampToValueAtTime(500 + ((k % 2) * 120), now + k * 0.12);
+        }
+        gain.gain.setValueAtTime(0.18 * this.volume, now);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.85);
+        osc.connect(gain);
+        this.routeOutput(gain, dest);
+        osc.start(now);
+        osc.stop(now + 0.9);
+      }
+    } catch {}
+  }
+
+  /**
+   * Complete 30s bouncy cartoon comedy score for "The Runaway Birthday Cake".
+   * Sliced into four 7.5s chunks with comedic silences for:
+   * - 4.8 - 5.8s: cake legs unfold & Stickman confusion
+   * - 13.5 - 15.5s: frosting slide whirl
+   * - 22.5 - 23.8s: cake lands on head frozen shock
+   * - 28.2 - 30.0s: cupcake chomp and boiling rage freeze
+   */
+  public playRunawayCakeScoreSection(dest?: AudioNode, fromSec = 0, toSec = 30) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const beat = 60 / 138; // lively comedy tempo: 138 BPM
+      const base = ctx.currentTime + 0.05 - fromSec;
+      const LEVEL = 0.58;
+
+      const tone = (
+        freq: number,
+        at: number,
+        dur: number,
+        type: OscillatorType,
+        gain: number
+      ) => {
+        if (at < ctx.currentTime - 0.05 || at > ctx.currentTime + (toSec - fromSec) + 0.1) return;
+        const osc = ctx.createOscillator();
+        const g = ctx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, at);
+        g.gain.setValueAtTime(0.0001, at);
+        g.gain.linearRampToValueAtTime(gain * LEVEL * this.volume, at + 0.01);
+        g.gain.exponentialRampToValueAtTime(0.0001, at + dur);
+        osc.connect(g);
+        this.routeOutput(g, dest);
+        osc.start(at);
+        osc.stop(at + dur + 0.02);
+      };
+
+      // Part 1: 0 - 7.5s (Cheerful Birthday Intro)
+      if (fromSec < 7.5 && toSec > 0) {
+        // Melodic marimba theme
+        const melody = [
+          { t: 0.2, f: 523.25 }, // C5
+          { t: 0.6, f: 587.33 }, // D5
+          { t: 1.0, f: 659.25 }, // E5
+          { t: 1.4, f: 783.99 }, // G5
+          { t: 2.0, f: 880.00 }, // A5
+          { t: 2.6, f: 783.99 }, // G5
+          { t: 3.2, f: 659.25 }, // E5
+          { t: 3.8, f: 523.25 }, // C5
+        ];
+        for (const m of melody) {
+          const at = base + m.t;
+          tone(m.f, at, beat * 0.9, 'triangle', 0.45);
+          tone(m.f * 0.5, at, beat * 0.6, 'sine', 0.35);
+        }
+        // Bassline
+        for (let b = 0; b < 10; b++) {
+          const at = base + b * beat * 2;
+          tone(130.81, at, beat * 0.8, 'triangle', 0.4);
+          tone(196.00, at + beat, beat * 0.7, 'triangle', 0.3);
+        }
+      }
+
+      // Part 2: 7.5 - 15.0s (Fast Cartoon Chase)
+      if (fromSec < 15.0 && toSec > 7.5) {
+        const chaseNotes = [659.25, 698.46, 783.99, 880.00, 783.99, 698.46];
+        for (let step = 0; step < 16; step++) {
+          const at = base + 7.5 + step * (beat * 0.5);
+          const f = chaseNotes[step % chaseNotes.length];
+          tone(f, at, beat * 0.45, 'triangle', 0.42);
+          if (step % 2 === 0) {
+            tone(164.81, at, beat * 0.6, 'sine', 0.38);
+          }
+        }
+      }
+
+      // Part 3: 15.0 - 22.5s (Tiptoe Ambush & Suspense)
+      if (fromSec < 22.5 && toSec > 15.0) {
+        // Tiptoe plinks (18.5 - 21.8s)
+        const tiptoeNotes = [880, 932, 987, 1046, 1174, 1318];
+        for (let step = 0; step < 8; step++) {
+          const at = base + 18.5 + step * 0.35;
+          const f = tiptoeNotes[step % tiptoeNotes.length];
+          tone(f, at, 0.15, 'sine', 0.38);
+        }
+      }
+
+      // Part 4: 22.5 - 30.0s (Cupcake Party & Final Freeze)
+      if (fromSec < 30.0 && toSec > 22.5) {
+        // Cupcake celebratory bouncy rhythm (25.2 - 28.0s)
+        const partyNotes = [523.25, 659.25, 783.99, 1046.50];
+        for (let step = 0; step < 8; step++) {
+          const at = base + 25.2 + step * 0.35;
+          const f = partyNotes[step % partyNotes.length];
+          tone(f, at, 0.22, 'triangle', 0.45);
+          tone(f * 0.5, at, 0.25, 'sine', 0.35);
+        }
+        // 28.2+ is silence / rage freeze followed by sad trombone in cues!
+      }
+    } catch {}
+  }
+
+  /**
+   * High-tech blue laser scan sweep for The Self-Building Robot.
+   */
+  public playLaserScan(dest?: AudioNode) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const mod = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(1150, now);
+      osc.frequency.exponentialRampToValueAtTime(2100, now + 0.18);
+      osc.frequency.exponentialRampToValueAtTime(1320, now + 0.38);
+
+      mod.type = 'triangle';
+      mod.frequency.setValueAtTime(24, now);
+      const modGain = ctx.createGain();
+      modGain.gain.setValueAtTime(90, now);
+      mod.connect(modGain);
+      modGain.connect(osc.frequency);
+
+      gain.gain.setValueAtTime(0.001, now);
+      gain.gain.linearRampToValueAtTime(0.26 * this.volume, now + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.42);
+
+      osc.connect(gain);
+      this.routeOutput(gain, dest);
+      osc.start(now);
+      mod.start(now);
+      osc.stop(now + 0.45);
+      mod.stop(now + 0.45);
+    } catch {}
+  }
+
+  /**
+   * Mechanical servo whir + latch click when attaching upgrades or unfolding giant legs.
+   */
+  public playServoWhir(dest?: AudioNode, pitch = 1.0) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const filter = ctx.createBiquadFilter();
+      const gain = ctx.createGain();
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(160 * pitch, now);
+      osc.frequency.exponentialRampToValueAtTime(420 * pitch, now + 0.28);
+
+      filter.type = 'bandpass';
+      filter.frequency.setValueAtTime(650 * pitch, now);
+      filter.Q.setValueAtTime(2.5, now);
+
+      gain.gain.setValueAtTime(0.001, now);
+      gain.gain.linearRampToValueAtTime(0.24 * this.volume, now + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.32);
+
+      osc.connect(filter);
+      filter.connect(gain);
+      this.routeOutput(gain, dest);
+      osc.start(now);
+      osc.stop(now + 0.35);
+
+      // Latch click at completion
+      const click = ctx.createOscillator();
+      const cGain = ctx.createGain();
+      click.type = 'square';
+      click.frequency.setValueAtTime(920, now + 0.26);
+      click.frequency.exponentialRampToValueAtTime(320, now + 0.31);
+      cGain.gain.setValueAtTime(0.2 * this.volume, now + 0.26);
+      cGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.32);
+      click.connect(cGain);
+      this.routeOutput(cGain, dest);
+      click.start(now + 0.26);
+      click.stop(now + 0.34);
+    } catch {}
+  }
+
+  /**
+   * Descending triple warning beep when robot hits low battery at 24.0s.
+   */
+  public playPowerDownBeep(dest?: AudioNode) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const notes = [660, 440, 260];
+      notes.forEach((freq, idx) => {
+        const at = now + idx * 0.16;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(freq, at);
+        osc.frequency.exponentialRampToValueAtTime(freq * 0.78, at + 0.12);
+        gain.gain.setValueAtTime(0.18 * this.volume, at);
+        gain.gain.exponentialRampToValueAtTime(0.0001, at + 0.14);
+        osc.connect(gain);
+        this.routeOutput(gain, dest);
+        osc.start(at);
+        osc.stop(at + 0.16);
+      });
+    } catch {}
+  }
+
+  /**
+   * Bright ascending electric recharge chord when power bank is plugged in.
+   */
+  public playPowerUpSurge(dest?: AudioNode) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const notes = [330, 440, 659.25, 880, 1318.5];
+      notes.forEach((freq, idx) => {
+        const at = now + idx * 0.07;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(freq, at);
+        gain.gain.setValueAtTime(0.001, at);
+        gain.gain.linearRampToValueAtTime(0.24 * this.volume, at + 0.015);
+        gain.gain.exponentialRampToValueAtTime(0.0001, at + 0.32);
+        osc.connect(gain);
+        this.routeOutput(gain, dest);
+        osc.start(at);
+        osc.stop(at + 0.35);
+      });
+    } catch {}
+  }
+
+  /**
+   * 30s workshop comedy synth score for "The Self-Building Robot",
+   * sliced into 4 x 7.5s sections so Web Audio node count stays small.
+   */
+  public playRobotScoreSection(dest?: AudioNode, fromSec = 0, toSec = 30) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const beat = 60 / 136; // playful 136 BPM
+      const base = ctx.currentTime + 0.05 - fromSec;
+      const LEVEL = 0.55;
+
+      const tone = (
+        freq: number,
+        at: number,
+        dur: number,
+        type: OscillatorType,
+        gain: number
+      ) => {
+        if (at < ctx.currentTime - 0.05 || at > ctx.currentTime + (toSec - fromSec) + 0.1) return;
+        const osc = ctx.createOscillator();
+        const g = ctx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, at);
+        g.gain.setValueAtTime(0.0001, at);
+        g.gain.linearRampToValueAtTime(gain * LEVEL * this.volume, at + 0.01);
+        g.gain.exponentialRampToValueAtTime(0.0001, at + dur);
+        osc.connect(g);
+        this.routeOutput(g, dest);
+        osc.start(at);
+        osc.stop(at + dur + 0.02);
+      };
+
+      const firstBeat = Math.max(0, Math.floor(fromSec / beat));
+      const lastBeat = Math.ceil(toSec / beat);
+      const melody = [523.25, 659.25, 783.99, 659.25, 587.33, 698.46, 880.0, 783.99];
+      const bass = [130.81, 130.81, 174.61, 196.0];
+
+      for (let b = firstBeat; b < lastBeat; b++) {
+        const t = b * beat;
+        const at = base + t;
+        // Brief comedic silence window during low-battery freeze (24.0 - 25.4s)
+        if (t >= 23.95 && t < 25.35) continue;
+
+        const bar = Math.floor(b / 4) % bass.length;
+        // Plucky synth bass on beat
+        tone(bass[bar], at, beat * 0.65, 'triangle', 0.36);
+
+        // Quirky workshop arpeggio
+        const note = melody[b % melody.length] * (t >= 16.0 && t < 24.0 ? 0.75 : 1.0);
+        tone(note, at + beat * 0.5, beat * 0.42, 'sine', 0.34);
+
+        // Extra driving pulse during Scene 2 chase & Scene 3-4 monster upgrades
+        if ((t >= 8.8 && t < 12.0) || (t >= 16.2 && t < 23.8) || t >= 26.4) {
+          tone(note * 1.5, at, beat * 0.25, 'square', 0.11);
+        }
+      }
+    } catch {}
+  }
+
+  /**
+   * Playful elastic ribbon pull squeak/stretch for The Infinite Gift Box.
+   */
+  public playRibbonPull(dest?: AudioNode) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(340, now);
+      osc.frequency.exponentialRampToValueAtTime(620, now + 0.16);
+      osc.frequency.exponentialRampToValueAtTime(480, now + 0.28);
+
+      gain.gain.setValueAtTime(0.001, now);
+      gain.gain.linearRampToValueAtTime(0.24 * this.volume, now + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.3);
+
+      osc.connect(gain);
+      this.routeOutput(gain, dest);
+      osc.start(now);
+      osc.stop(now + 0.32);
+    } catch {}
+  }
+
+  /**
+   * Crisp cardboard lid pop open + chime reveal for nested gift boxes.
+   */
+  public playBoxPopOpen(dest?: AudioNode, pitch = 1.0) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const pop = ctx.createOscillator();
+      const pGain = ctx.createGain();
+      pop.type = 'sine';
+      pop.frequency.setValueAtTime(190 * pitch, now);
+      pop.frequency.exponentialRampToValueAtTime(620 * pitch, now + 0.08);
+      pGain.gain.setValueAtTime(0.32 * this.volume, now);
+      pGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.11);
+      pop.connect(pGain);
+      this.routeOutput(pGain, dest);
+      pop.start(now);
+      pop.stop(now + 0.13);
+
+      // Reveal sparkle
+      const ding = ctx.createOscillator();
+      const dGain = ctx.createGain();
+      ding.type = 'triangle';
+      ding.frequency.setValueAtTime(880 * pitch, now + 0.06);
+      dGain.gain.setValueAtTime(0.001, now + 0.06);
+      dGain.gain.linearRampToValueAtTime(0.22 * this.volume, now + 0.08);
+      dGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.32);
+      ding.connect(dGain);
+      this.routeOutput(dGain, dest);
+      ding.start(now + 0.06);
+      ding.stop(now + 0.35);
+    } catch {}
+  }
+
+  /**
+   * Rising accordion/cardboard expansion whoosh when the giant red box unfolds.
+   */
+  public playMagicExpand(dest?: AudioNode, reverse = false) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const dur = 0.72;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sawtooth';
+      if (reverse) {
+        osc.frequency.setValueAtTime(520, now);
+        osc.frequency.exponentialRampToValueAtTime(125, now + dur);
+      } else {
+        osc.frequency.setValueAtTime(125, now);
+        osc.frequency.exponentialRampToValueAtTime(520, now + dur);
+      }
+
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(1100, now);
+
+      gain.gain.setValueAtTime(0.001, now);
+      gain.gain.linearRampToValueAtTime(0.22 * this.volume, now + 0.05);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + dur);
+
+      osc.connect(filter);
+      filter.connect(gain);
+      this.routeOutput(gain, dest);
+      osc.start(now);
+      osc.stop(now + dur + 0.02);
+    } catch {}
+  }
+
+  /**
+   * Popping cascade of tiny gift boxes erupting upward in Scene 5.
+   */
+  public playGiftFountain(dest?: AudioNode) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const freqs = [523, 659, 784, 987, 1174, 880, 1318, 1046];
+      freqs.forEach((f, idx) => {
+        const at = now + idx * 0.065;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(f * 0.7, at);
+        osc.frequency.exponentialRampToValueAtTime(f * 1.15, at + 0.07);
+        gain.gain.setValueAtTime(0.22 * this.volume, at);
+        gain.gain.exponentialRampToValueAtTime(0.0001, at + 0.14);
+        osc.connect(gain);
+        this.routeOutput(gain, dest);
+        osc.start(at);
+        osc.stop(at + 0.16);
+      });
+    } catch {}
+  }
+
+  /**
+   * 30s playful living-room comedy score for "The Infinite Gift Box",
+   * sliced into 4 x 7.5s sections so Web Audio node count stays small.
+   */
+  public playGiftBoxScoreSection(dest?: AudioNode, fromSec = 0, toSec = 30) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const beat = 60 / 134; // bouncy 134 BPM comedy groove
+      const base = ctx.currentTime + 0.05 - fromSec;
+      const LEVEL = 0.54;
+
+      const tone = (
+        freq: number,
+        at: number,
+        dur: number,
+        type: OscillatorType,
+        gain: number
+      ) => {
+        if (at < ctx.currentTime - 0.05 || at > ctx.currentTime + (toSec - fromSec) + 0.1) return;
+        const osc = ctx.createOscillator();
+        const g = ctx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, at);
+        g.gain.setValueAtTime(0.0001, at);
+        g.gain.linearRampToValueAtTime(gain * LEVEL * this.volume, at + 0.01);
+        g.gain.exponentialRampToValueAtTime(0.0001, at + dur);
+        osc.connect(g);
+        this.routeOutput(g, dest);
+        osc.start(at);
+        osc.stop(at + dur + 0.02);
+      };
+
+      const firstBeat = Math.max(0, Math.floor(fromSec / beat));
+      const lastBeat = Math.ceil(toSec / beat);
+      const melody = [523.25, 659.25, 783.99, 880.0, 783.99, 659.25, 587.33, 659.25];
+      const bass = [130.81, 164.81, 174.61, 196.0];
+
+      for (let b = firstBeat; b < lastBeat; b++) {
+        const t = b * beat;
+        const at = base + t;
+        // Brief comedic silence right before final beanie bonk & stare (28.35 - 30.0s)
+        if (t >= 28.35) continue;
+
+        const bar = Math.floor(b / 4) % bass.length;
+        tone(bass[bar], at, beat * 0.6, 'triangle', 0.36);
+
+        const note = melody[b % melody.length] * (t >= 18.0 && t < 24.0 ? 0.85 : 1.0);
+        tone(note, at + beat * 0.5, beat * 0.4, 'sine', 0.34);
+
+        if ((t >= 13.3 && t < 17.8) || (t >= 20.0 && t < 23.8) || (t >= 26.6 && t < 27.6)) {
+          tone(note * 1.5, at, beat * 0.25, 'triangle', 0.14);
+        }
+      }
+    } catch {}
+  }
+
+
+  /**
    * Speaks arbitrary text with the cartoon formant voice.
    *
    * Each word becomes a short syllable sequence: the vowel group picks the
@@ -2597,2126 +3231,6 @@ class SoundEngine {
       });
     } catch {}
   }
-
-  // Cartoon liquid drop / coffee drip plop
-  public playCoffeeDrip(dest?: AudioNode) {
-    if (this.isMuted && !dest) return;
-    const ctx = this.getContext();
-    if (!ctx) return;
-
-    try {
-      const now = ctx.currentTime;
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(1400, now);
-      osc.frequency.exponentialRampToValueAtTime(2200, now + 0.04);
-      osc.frequency.exponentialRampToValueAtTime(800, now + 0.12);
-
-      gain.gain.setValueAtTime(0.0001, now);
-      gain.gain.linearRampToValueAtTime(0.38 * this.volume, now + 0.01);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
-
-      osc.connect(gain);
-      this.routeOutput(gain, dest);
-
-      osc.start(now);
-      osc.stop(now + 0.15);
-    } catch {}
-  }
-
-  // Wood pin impact / bowling strike crash
-  public playPinImpact(dest?: AudioNode, intensity = 1.0) {
-    if (this.isMuted && !dest) return;
-    const ctx = this.getContext();
-    if (!ctx) return;
-
-    try {
-      const now = ctx.currentTime;
-      // High wooden clack
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = 'triangle';
-      osc.frequency.setValueAtTime(1100, now);
-      osc.frequency.exponentialRampToValueAtTime(320, now + 0.08);
-
-      gain.gain.setValueAtTime(0.0001, now);
-      gain.gain.linearRampToValueAtTime(0.45 * intensity * this.volume, now + 0.003);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
-
-      osc.connect(gain);
-      this.routeOutput(gain, dest);
-      osc.start(now);
-      osc.stop(now + 0.13);
-
-      // Hollow wooden resonance noise
-      const dur = 0.18;
-      const size = Math.max(1, Math.floor(ctx.sampleRate * dur));
-      const buf = ctx.createBuffer(1, size, ctx.sampleRate);
-      const data = buf.getChannelData(0);
-      for (let i = 0; i < size; i++) {
-        data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (ctx.sampleRate * 0.025));
-      }
-      const noise = ctx.createBufferSource();
-      noise.buffer = buf;
-      const filter = ctx.createBiquadFilter();
-      filter.type = 'bandpass';
-      filter.frequency.setValueAtTime(1800, now);
-      filter.Q.setValueAtTime(3.2, now);
-      const noiseGain = ctx.createGain();
-      noiseGain.gain.setValueAtTime(0.35 * intensity * this.volume, now);
-      noiseGain.gain.exponentialRampToValueAtTime(0.001, now + dur);
-      noise.connect(filter);
-      filter.connect(noiseGain);
-      this.routeOutput(noiseGain, dest);
-      noise.start(now);
-      noise.stop(now + dur);
-    } catch {}
-  }
-
-  // Huge satisfying bowling pin explosion crash
-  public playBowlingStrikeCrash(dest?: AudioNode) {
-    if (this.isMuted && !dest) return;
-    const ctx = this.getContext();
-    if (!ctx) return;
-
-    try {
-      this.playPinImpact(dest, 1.4);
-      setTimeout(() => this.playPinImpact(dest, 1.2), 35);
-      setTimeout(() => this.playPinImpact(dest, 1.0), 70);
-      setTimeout(() => this.playPinImpact(dest, 0.8), 110);
-      setTimeout(() => this.playFloorThump(dest), 40);
-    } catch {}
-  }
-
-  // Marble tiny high-pitched rolling sound
-  public playMarbleRoll(dest?: AudioNode) {
-    if (this.isMuted && !dest) return;
-    const ctx = this.getContext();
-    if (!ctx) return;
-
-    try {
-      const now = ctx.currentTime;
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(2400, now);
-      osc.frequency.linearRampToValueAtTime(2800, now + 0.15);
-      osc.frequency.linearRampToValueAtTime(2200, now + 0.3);
-
-      gain.gain.setValueAtTime(0.0001, now);
-      gain.gain.linearRampToValueAtTime(0.18 * this.volume, now + 0.02);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.32);
-
-      osc.connect(gain);
-      this.routeOutput(gain, dest);
-      osc.start(now);
-      osc.stop(now + 0.33);
-    } catch {}
-  }
-
-  // Muffled angry cartoon scream from underneath a pile
-  public playMuffledScream(dest?: AudioNode) {
-    if (this.isMuted && !dest) return;
-    const ctx = this.getContext();
-    if (!ctx) return;
-
-    try {
-      const now = ctx.currentTime;
-      const osc = ctx.createOscillator();
-      const formant = ctx.createBiquadFilter();
-      const lowpass = ctx.createBiquadFilter();
-      const gain = ctx.createGain();
-
-      osc.type = 'sawtooth';
-      osc.frequency.setValueAtTime(220, now);
-      osc.frequency.linearRampToValueAtTime(380, now + 0.4);
-
-      formant.type = 'bandpass';
-      formant.frequency.setValueAtTime(650, now); // low muffled formant
-      formant.Q.setValueAtTime(3.0, now);
-
-      lowpass.type = 'lowpass';
-      lowpass.frequency.setValueAtTime(750, now); // heavily muffled by the pile of pins!
-
-      gain.gain.setValueAtTime(0.0001, now);
-      gain.gain.linearRampToValueAtTime(0.28 * this.volume, now + 0.05);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.42);
-
-      osc.connect(formant);
-      formant.connect(lowpass);
-      lowpass.connect(gain);
-      this.routeOutput(gain, dest);
-
-      osc.start(now);
-      osc.stop(now + 0.45);
-    } catch {}
-  }
-
-  // Comedic cartoon angry vocal scream / whistle
-  public playAngryScream(dest?: AudioNode) {
-    if (this.isMuted && !dest) return;
-    const ctx = this.getContext();
-    if (!ctx) return;
-
-    try {
-      const now = ctx.currentTime;
-      const osc = ctx.createOscillator();
-      const formant = ctx.createBiquadFilter();
-      const gain = ctx.createGain();
-
-      osc.type = 'sawtooth';
-      osc.frequency.setValueAtTime(260, now);
-      osc.frequency.linearRampToValueAtTime(540, now + 0.35);
-
-      formant.type = 'bandpass';
-      formant.frequency.setValueAtTime(1200, now);
-      formant.frequency.linearRampToValueAtTime(1800, now + 0.35);
-      formant.Q.setValueAtTime(4.0, now);
-
-      gain.gain.setValueAtTime(0.0001, now);
-      gain.gain.linearRampToValueAtTime(0.35 * this.volume, now + 0.04);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
-
-      osc.connect(formant);
-      formant.connect(gain);
-      this.routeOutput(gain, dest);
-
-      osc.start(now);
-      osc.stop(now + 0.42);
-    } catch {}
-  }
-
-  // ==========================================================
-  // GOLF SHORT ΓÇö "THE IMPOSSIBLE HOLE-IN-ONE"
-  // ==========================================================
-
-  /** A big driver swing: a fast airy swoosh with a low body behind it. */
-  public playGolfSwing(dest?: AudioNode) {
-    if (this.isMuted && !dest) return;
-    const ctx = this.getContext();
-    if (!ctx) return;
-
-    try {
-      const now = ctx.currentTime;
-      const duration = 0.32;
-      const size = Math.floor(ctx.sampleRate * duration);
-      const buffer = ctx.createBuffer(1, size, ctx.sampleRate);
-      const data = buffer.getChannelData(0);
-      for (let i = 0; i < size; i++) {
-        const u = i / size;
-        data[i] = (Math.random() * 2 - 1) * Math.sin(u * Math.PI) * (1 - u * 0.35);
-      }
-      const src = ctx.createBufferSource();
-      src.buffer = buffer;
-      const filter = ctx.createBiquadFilter();
-      filter.type = 'bandpass';
-      filter.frequency.setValueAtTime(700, now);
-      filter.frequency.exponentialRampToValueAtTime(3200, now + 0.18);
-      filter.frequency.exponentialRampToValueAtTime(400, now + duration);
-      filter.Q.setValueAtTime(1.2, now);
-      const g = ctx.createGain();
-      g.gain.setValueAtTime(0.0001, now);
-      g.gain.linearRampToValueAtTime(0.36 * this.volume, now + 0.05);
-      g.gain.exponentialRampToValueAtTime(0.001, now + duration);
-      src.connect(filter);
-      filter.connect(g);
-      this.routeOutput(g, dest);
-      src.start(now);
-      src.stop(now + duration);
-
-      const thump = ctx.createOscillator();
-      const tg = ctx.createGain();
-      thump.type = 'sine';
-      thump.frequency.setValueAtTime(95, now);
-      thump.frequency.exponentialRampToValueAtTime(52, now + 0.2);
-      tg.gain.setValueAtTime(0.16 * this.volume, now);
-      tg.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
-      thump.connect(tg);
-      this.routeOutput(tg, dest);
-      thump.start(now);
-      thump.stop(now + 0.24);
-    } catch {}
-  }
-
-  /** The tiny hollow sound of a club cutting nothing but air. */
-  public playWhiff(dest?: AudioNode) {
-    if (this.isMuted && !dest) return;
-    const ctx = this.getContext();
-    if (!ctx) return;
-
-    try {
-      const now = ctx.currentTime;
-      const duration = 0.16;
-      const size = Math.floor(ctx.sampleRate * duration);
-      const buffer = ctx.createBuffer(1, size, ctx.sampleRate);
-      const data = buffer.getChannelData(0);
-      for (let i = 0; i < size; i++) {
-        data[i] = (Math.random() * 2 - 1) * Math.sin((i / size) * Math.PI);
-      }
-      const src = ctx.createBufferSource();
-      src.buffer = buffer;
-      const filter = ctx.createBiquadFilter();
-      filter.type = 'highpass';
-      filter.frequency.setValueAtTime(1800, now);
-      const g = ctx.createGain();
-      g.gain.setValueAtTime(0.22 * this.volume, now);
-      g.gain.exponentialRampToValueAtTime(0.001, now + duration);
-      src.connect(filter);
-      filter.connect(g);
-      this.routeOutput(g, dest);
-      src.start(now);
-      src.stop(now + duration);
-    } catch {}
-  }
-
-  /** A dizzy rise-and-fall whistle for the three full spins. */
-  public playSpinWhistle(dest?: AudioNode) {
-    if (this.isMuted && !dest) return;
-    const ctx = this.getContext();
-    if (!ctx) return;
-
-    try {
-      const now = ctx.currentTime;
-      const duration = 1.25;
-      const osc = ctx.createOscillator();
-      const vibrato = ctx.createOscillator();
-      const vibratoGain = ctx.createGain();
-      const gain = ctx.createGain();
-
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(460, now);
-      osc.frequency.exponentialRampToValueAtTime(1180, now + 0.55);
-      osc.frequency.exponentialRampToValueAtTime(380, now + duration);
-
-      vibrato.type = 'sine';
-      vibrato.frequency.setValueAtTime(7.5, now);
-      vibratoGain.gain.setValueAtTime(34, now);
-      vibrato.connect(vibratoGain);
-      vibratoGain.connect(osc.frequency);
-
-      gain.gain.setValueAtTime(0.0001, now);
-      gain.gain.linearRampToValueAtTime(0.16 * this.volume, now + 0.08);
-      gain.gain.setValueAtTime(0.16 * this.volume, now + duration - 0.3);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
-
-      osc.connect(gain);
-      this.routeOutput(gain, dest);
-      osc.start(now);
-      vibrato.start(now);
-      osc.stop(now + duration);
-      vibrato.stop(now + duration);
-    } catch {}
-  }
-
-  /** Metallic club-on-bunker clang. */
-  public playClubClang(dest?: AudioNode) {
-    if (this.isMuted && !dest) return;
-    const ctx = this.getContext();
-    if (!ctx) return;
-
-    try {
-      const now = ctx.currentTime;
-      [880, 1320, 1760, 2340].forEach((freq, idx) => {
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = 'triangle';
-        osc.frequency.setValueAtTime(freq, now);
-        osc.frequency.exponentialRampToValueAtTime(freq * 0.7, now + 0.28);
-        const dur = 0.34 - idx * 0.06;
-        gain.gain.setValueAtTime((0.22 / (idx + 1)) * this.volume, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + dur);
-        osc.connect(gain);
-        this.routeOutput(gain, dest);
-        osc.start(now);
-        osc.stop(now + dur);
-      });
-
-      const thud = ctx.createOscillator();
-      const thudGain = ctx.createGain();
-      thud.type = 'sine';
-      thud.frequency.setValueAtTime(120, now);
-      thud.frequency.exponentialRampToValueAtTime(44, now + 0.18);
-      thudGain.gain.setValueAtTime(0.3 * this.volume, now);
-      thudGain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
-      thud.connect(thudGain);
-      this.routeOutput(thudGain, dest);
-      thud.start(now);
-      thud.stop(now + 0.22);
-    } catch {}
-  }
-
-  /** Leaf-blower engine climbing from idle to a screaming rev. */
-  public playLeafBlowerRev(dest?: AudioNode, seconds = 2.2) {
-    if (this.isMuted && !dest) return;
-    const ctx = this.getContext();
-    if (!ctx) return;
-
-    try {
-      const now = ctx.currentTime;
-      const osc = ctx.createOscillator();
-      const wobble = ctx.createOscillator();
-      const wobbleGain = ctx.createGain();
-      const filter = ctx.createBiquadFilter();
-      const gain = ctx.createGain();
-
-      osc.type = 'sawtooth';
-      osc.frequency.setValueAtTime(48, now);
-      osc.frequency.exponentialRampToValueAtTime(155, now + seconds * 0.72);
-      osc.frequency.exponentialRampToValueAtTime(210, now + seconds);
-
-      wobble.type = 'sine';
-      wobble.frequency.setValueAtTime(11, now);
-      wobbleGain.gain.setValueAtTime(9, now);
-      wobble.connect(wobbleGain);
-      wobbleGain.connect(osc.frequency);
-
-      filter.type = 'lowpass';
-      filter.frequency.setValueAtTime(240, now);
-      filter.frequency.exponentialRampToValueAtTime(1400, now + seconds);
-      filter.Q.setValueAtTime(3.4, now);
-
-      gain.gain.setValueAtTime(0.0001, now);
-      gain.gain.linearRampToValueAtTime(0.1 * this.volume, now + 0.2);
-      gain.gain.linearRampToValueAtTime(0.2 * this.volume, now + seconds * 0.8);
-      gain.gain.setValueAtTime(0.2 * this.volume, now + seconds - 0.15);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + seconds);
-
-      osc.connect(filter);
-      filter.connect(gain);
-      this.routeOutput(gain, dest);
-      osc.start(now);
-      wobble.start(now);
-      osc.stop(now + seconds);
-      wobble.stop(now + seconds);
-
-      // Airy intake hiss under the engine.
-      const size = Math.floor(ctx.sampleRate * seconds);
-      const buffer = ctx.createBuffer(1, size, ctx.sampleRate);
-      const data = buffer.getChannelData(0);
-      for (let i = 0; i < size; i++) {
-        const u = i / size;
-        data[i] = (Math.random() * 2 - 1) * (0.25 + u * 0.75);
-      }
-      const src = ctx.createBufferSource();
-      src.buffer = buffer;
-      const hissFilter = ctx.createBiquadFilter();
-      hissFilter.type = 'bandpass';
-      hissFilter.frequency.setValueAtTime(600, now);
-      hissFilter.frequency.exponentialRampToValueAtTime(2200, now + seconds);
-      hissFilter.Q.setValueAtTime(0.8, now);
-      const hissGain = ctx.createGain();
-      hissGain.gain.setValueAtTime(0.0001, now);
-      hissGain.gain.linearRampToValueAtTime(0.035 * this.volume, now + 0.35);
-      hissGain.gain.linearRampToValueAtTime(0.055 * this.volume, now + seconds * 0.8);
-      hissGain.gain.exponentialRampToValueAtTime(0.001, now + seconds);
-      src.connect(hissFilter);
-      hissFilter.connect(hissGain);
-      this.routeOutput(hissGain, dest);
-      src.start(now);
-      src.stop(now + seconds);
-    } catch {}
-  }
-
-  /** Giant jack-in-the-box spring release. */
-  public playSpringBoing(dest?: AudioNode, strength = 1) {
-    if (this.isMuted && !dest) return;
-    const ctx = this.getContext();
-    if (!ctx) return;
-
-    try {
-      const now = ctx.currentTime;
-      const osc = ctx.createOscillator();
-      const filter = ctx.createBiquadFilter();
-      const gain = ctx.createGain();
-
-      osc.type = 'sawtooth';
-      osc.frequency.setValueAtTime(90, now);
-      osc.frequency.exponentialRampToValueAtTime(720, now + 0.16);
-      osc.frequency.exponentialRampToValueAtTime(190, now + 0.45);
-      osc.frequency.exponentialRampToValueAtTime(60, now + 0.95);
-
-      filter.type = 'lowpass';
-      filter.frequency.setValueAtTime(2200, now);
-      filter.frequency.exponentialRampToValueAtTime(500, now + 1.0);
-      filter.Q.setValueAtTime(3.0, now);
-
-      gain.gain.setValueAtTime(0.0001, now);
-      gain.gain.linearRampToValueAtTime(0.28 * strength * this.volume, now + 0.03);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 1.0);
-
-      osc.connect(filter);
-      filter.connect(gain);
-      this.routeOutput(gain, dest);
-      osc.start(now);
-      osc.stop(now + 1.02);
-
-      const wobble = ctx.createOscillator();
-      const wobbleGain = ctx.createGain();
-      wobble.type = 'sine';
-      wobble.frequency.setValueAtTime(8, now);
-      wobble.frequency.linearRampToValueAtTime(18, now + 0.8);
-      wobbleGain.gain.setValueAtTime(0.14 * strength * this.volume, now);
-      wobbleGain.gain.exponentialRampToValueAtTime(0.001, now + 0.9);
-      wobble.connect(wobbleGain);
-      this.routeOutput(wobbleGain, dest);
-      wobble.start(now);
-      wobble.stop(now + 0.92);
-    } catch {}
-  }
-
-  /** A comedy-sized pool splash: low boom, wide water burst and foam. */
-  public playHugeSplash(dest?: AudioNode) {
-    if (this.isMuted && !dest) return;
-    const ctx = this.getContext();
-    if (!ctx) return;
-
-    try {
-      const now = ctx.currentTime;
-      const duration = 1.1;
-      const size = Math.floor(ctx.sampleRate * duration);
-      const buffer = ctx.createBuffer(1, size, ctx.sampleRate);
-      const data = buffer.getChannelData(0);
-      for (let i = 0; i < size; i++) {
-        const u = i / size;
-        data[i] = (Math.random() * 2 - 1) * Math.exp(-u * 3.4);
-      }
-      const src = ctx.createBufferSource();
-      src.buffer = buffer;
-      const filter = ctx.createBiquadFilter();
-      filter.type = 'lowpass';
-      filter.frequency.setValueAtTime(4200, now);
-      filter.frequency.exponentialRampToValueAtTime(500, now + duration);
-      const g = ctx.createGain();
-      g.gain.setValueAtTime(0.6 * this.volume, now);
-      g.gain.exponentialRampToValueAtTime(0.001, now + duration);
-      src.connect(filter);
-      filter.connect(g);
-      this.routeOutput(g, dest);
-      src.start(now);
-      src.stop(now + duration);
-
-      const boom = ctx.createOscillator();
-      const boomGain = ctx.createGain();
-      boom.type = 'sine';
-      boom.frequency.setValueAtTime(115, now);
-      boom.frequency.exponentialRampToValueAtTime(32, now + 0.55);
-      boomGain.gain.setValueAtTime(0.55 * this.volume, now);
-      boomGain.gain.exponentialRampToValueAtTime(0.001, now + 0.6);
-      boom.connect(boomGain);
-      this.routeOutput(boomGain, dest);
-      boom.start(now);
-      boom.stop(now + 0.62);
-
-      // Water blobs falling back into the pool.
-      [0.16, 0.28, 0.43, 0.6].forEach((offset, idx) => {
-        const start = now + offset;
-        const bloop = ctx.createOscillator();
-        const bloopGain = ctx.createGain();
-        bloop.type = 'sine';
-        bloop.frequency.setValueAtTime(620 - idx * 70, start);
-        bloop.frequency.exponentialRampToValueAtTime(150, start + 0.16);
-        bloopGain.gain.setValueAtTime(0.14 * this.volume, start);
-        bloopGain.gain.exponentialRampToValueAtTime(0.001, start + 0.18);
-        bloop.connect(bloopGain);
-        this.routeOutput(bloopGain, dest);
-        bloop.start(start);
-        bloop.stop(start + 0.2);
-      });
-
-      // Foam hiss on top.
-      const foamSize = Math.floor(ctx.sampleRate * 0.8);
-      const foamBuffer = ctx.createBuffer(1, foamSize, ctx.sampleRate);
-      const foamData = foamBuffer.getChannelData(0);
-      for (let i = 0; i < foamSize; i++) {
-        const u = i / foamSize;
-        foamData[i] = (Math.random() * 2 - 1) * Math.exp(-u * 1.8);
-      }
-      const foam = ctx.createBufferSource();
-      foam.buffer = foamBuffer;
-      const foamFilter = ctx.createBiquadFilter();
-      foamFilter.type = 'highpass';
-      foamFilter.frequency.setValueAtTime(2400, now);
-      const foamGain = ctx.createGain();
-      foamGain.gain.setValueAtTime(0.12 * this.volume, now);
-      foamGain.gain.exponentialRampToValueAtTime(0.001, now + 0.8);
-      foam.connect(foamFilter);
-      foamFilter.connect(foamGain);
-      this.routeOutput(foamGain, dest);
-      foam.start(now);
-      foam.stop(now + 0.82);
-    } catch {}
-  }
-
-  /** Tiny three-note victory trumpet. */
-  public playVictoryTrumpet(dest?: AudioNode) {
-    if (this.isMuted && !dest) return;
-    const ctx = this.getContext();
-    if (!ctx) return;
-
-    try {
-      const now = ctx.currentTime;
-      const notes = [
-        { f: 523.25, start: 0.0, dur: 0.22 },
-        { f: 659.25, start: 0.2, dur: 0.22 },
-        { f: 783.99, start: 0.4, dur: 0.24 },
-        { f: 1046.5, start: 0.6, dur: 0.62 },
-      ];
-      notes.forEach((note) => {
-        const start = now + note.start;
-        const osc = ctx.createOscillator();
-        const filter = ctx.createBiquadFilter();
-        const gain = ctx.createGain();
-        osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(note.f, start);
-        osc.frequency.setValueAtTime(note.f * 1.01, start + note.dur * 0.55);
-        filter.type = 'lowpass';
-        filter.frequency.setValueAtTime(2600, start);
-        filter.frequency.exponentialRampToValueAtTime(1300, start + note.dur);
-        gain.gain.setValueAtTime(0.0001, start);
-        gain.gain.linearRampToValueAtTime(0.16 * this.volume, start + 0.02);
-        gain.gain.setValueAtTime(0.13 * this.volume, start + note.dur * 0.7);
-        gain.gain.exponentialRampToValueAtTime(0.001, start + note.dur);
-        osc.connect(filter);
-        filter.connect(gain);
-        this.routeOutput(gain, dest);
-        osc.start(start);
-        osc.stop(start + note.dur + 0.02);
-      });
-    } catch {}
-  }
-
-  /** Wire basket rattle when the stickman lands in the cart. */
-  public playBasketClang(dest?: AudioNode) {
-    if (this.isMuted && !dest) return;
-    const ctx = this.getContext();
-    if (!ctx) return;
-
-    try {
-      const now = ctx.currentTime;
-      [1040, 1380, 1760, 2300, 1520].forEach((freq, idx) => {
-        const start = now + idx * 0.035;
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = 'triangle';
-        osc.frequency.setValueAtTime(freq, start);
-        osc.frequency.exponentialRampToValueAtTime(freq * 0.82, start + 0.16);
-        gain.gain.setValueAtTime(0.12 * this.volume, start);
-        gain.gain.exponentialRampToValueAtTime(0.001, start + 0.18);
-        osc.connect(gain);
-        this.routeOutput(gain, dest);
-        osc.start(start);
-        osc.stop(start + 0.2);
-      });
-
-      const thud = ctx.createOscillator();
-      const thudGain = ctx.createGain();
-      thud.type = 'sine';
-      thud.frequency.setValueAtTime(150, now);
-      thud.frequency.exponentialRampToValueAtTime(50, now + 0.22);
-      thudGain.gain.setValueAtTime(0.24 * this.volume, now);
-      thudGain.gain.exponentialRampToValueAtTime(0.001, now + 0.24);
-      thud.connect(thudGain);
-      this.routeOutput(thudGain, dest);
-      thud.start(now);
-      thud.stop(now + 0.26);
-    } catch {}
-  }
-
-  /**
-   * "THE ANGRY STICKMAN: THE IMPOSSIBLE HOLE-IN-ONE" ΓÇö a 30-second comedy
-   * score in four slices: a dramatic golf-showdown build, comic pizzicato
-   * for the whiff, a mechanical construction march, a rocket-tracking groove,
-   * a suspense tick for the spring, and a victory fanfare that the final bonk
-   * cuts dead.
-   */
-  public playGolfScoreSection(dest?: AudioNode, fromSec = 0, toSec = 30) {
-    if (this.isMuted && !dest) return;
-    const ctx = this.getContext();
-    if (!ctx) return;
-
-    try {
-      const beat = 60 / 120;
-      const base = ctx.currentTime + 0.06 - fromSec;
-
-      const noiseSize = Math.max(1, Math.floor(ctx.sampleRate * 0.3));
-      const noiseBuffer = ctx.createBuffer(1, noiseSize, ctx.sampleRate);
-      const noiseData = noiseBuffer.getChannelData(0);
-      for (let i = 0; i < noiseSize; i++) {
-        noiseData[i] = (Math.random() * 2 - 1) * Math.exp(-i / (ctx.sampleRate * 0.05));
-      }
-
-      const LEVEL = 0.6;
-
-      const tone = (
-        freq: number,
-        at: number,
-        dur: number,
-        type: OscillatorType,
-        gain: number,
-        slideTo?: number
-      ) => {
-        const osc = ctx.createOscillator();
-        const g = ctx.createGain();
-        osc.type = type;
-        osc.frequency.setValueAtTime(freq, at);
-        if (slideTo) osc.frequency.exponentialRampToValueAtTime(slideTo, at + dur);
-        g.gain.setValueAtTime(0.0001, at);
-        g.gain.linearRampToValueAtTime(gain * LEVEL * this.volume, at + 0.012);
-        g.gain.exponentialRampToValueAtTime(0.0001, at + dur);
-        osc.connect(g);
-        this.routeOutput(g, dest);
-        osc.start(at);
-        osc.stop(at + dur + 0.02);
-      };
-
-      const hit = (at: number, dur: number, freq: number, gain: number, q: number) => {
-        const src = ctx.createBufferSource();
-        src.buffer = noiseBuffer;
-        const filter = ctx.createBiquadFilter();
-        filter.type = 'bandpass';
-        filter.frequency.setValueAtTime(freq, at);
-        filter.Q.setValueAtTime(q, at);
-        const g = ctx.createGain();
-        g.gain.setValueAtTime(gain * LEVEL * this.volume, at);
-        g.gain.exponentialRampToValueAtTime(0.0001, at + dur);
-        src.connect(filter);
-        filter.connect(g);
-        this.routeOutput(g, dest);
-        src.start(at);
-        src.stop(at + dur + 0.02);
-      };
-
-      const chord = (at: number, notes: number[], dur: number, gain: number) => {
-        for (const n of notes) tone(n, at, dur, 'square', gain);
-      };
-
-      // One-off victory fanfare for the pool landing.
-      if (fromSec <= 28.4 && toSec > 28.4) {
-        chord(base + 28.4, [261.63, 329.63, 392.0, 523.25], beat * 0.6, 0.075);
-        chord(base + 28.75, [329.63, 415.3, 493.88, 659.25], beat * 0.6, 0.075);
-        tone(1318.5, base + 28.75, beat * 0.7, 'sine', 0.08);
-      }
-
-      const roots = [110.0, 98.0, 87.31, 98.0];
-      const build = [220.0, 261.63, 329.63, 392.0, 440.0, 523.25, 659.25, 783.99];
-      const groove = [440.0, 523.25, 587.33, 659.25, 783.99, 880.0, 987.77, 1046.5];
-      const tick = [1567.98, 1318.51, 1760.0, 1396.91];
-
-      const firstBeat = Math.max(0, Math.floor(fromSec / beat));
-      const lastBeat = Math.ceil(toSec / beat);
-
-      for (let b = firstBeat; b < lastBeat; b++) {
-        const time = b * beat;
-        const at = base + b * beat;
-        if (time < fromSec - 0.001 || time >= toSec) continue;
-        if (at < ctx.currentTime - 0.05) continue;
-
-        // Hard drops for the whiff, the spring boing, the splash and the bonk.
-        if (time >= 5.62 && time < 6.1) continue;
-        if (time >= 23.28 && time < 23.85) continue;
-        if (time >= 29.02 && time < 30.0) continue;
-
-        const inBar = b % 4;
-        const barIndex = Math.floor(b / 4);
-
-        if (time < 5.0) {
-          // ------- THE CHALLENGE: a slow dramatic course build.
-          tone(roots[barIndex % 4] * 0.5, at, beat * 0.9, 'triangle', 0.13);
-          if (inBar === 0 || inBar === 2) {
-            tone(build[barIndex % build.length], at, beat * 0.4, 'sine', 0.045);
-          }
-          if (inBar === 3) {
-            tone(build[(barIndex + 4) % build.length], at + beat * 0.5, beat * 0.22, 'sine', 0.05);
-          }
-          // Snare roll that accelerates into the first swing.
-          hit(at, 0.035, 2200, 0.018 + (time > 3.2 ? 0.02 : 0), 1.6);
-          if (time > 3.4) {
-            for (let s = 1; s < 4; s++) {
-              hit(at + (s * beat) / 4, 0.028, 2500, 0.02, 1.5);
-            }
-          }
-          if (time > 4.5) {
-            tone(783.99, at, beat * 0.35, 'sine', 0.06);
-          }
-        } else if (time < 9.0) {
-          // ------- THE WHIFF: comic pizzicato and a descending trombone line.
-          if (inBar === 0 || inBar === 2) {
-            tone(roots[barIndex % 4], at, beat * 0.55, 'triangle', 0.14);
-          }
-          const comic = [440, 415.3, 392, 349.23, 329.63, 293.66, 261.63, 220];
-          tone(comic[b % comic.length], at + beat * 0.5, beat * 0.28, 'sine', 0.05);
-          if (time > 6.1 && inBar === 3) {
-            tone(196, at, beat * 0.8, 'sawtooth', 0.045, 146.83);
-          }
-          hit(at, 0.03, 7800, 0.02, 1.4);
-        } else if (time < 15.0) {
-          // ------- THE CANNON: an accelerating mechanical march.
-          const u = (time - 9.0) / 6.0;
-          hit(at, 0.03, 2500, 0.055 + u * 0.02, 2.1);
-          hit(at + beat * 0.5, 0.025, 1700, 0.04 + u * 0.02, 2.3);
-          tone(roots[barIndex % 4] * 0.5, at, beat * 0.34, 'square', 0.07 + u * 0.03);
-          tone(build[(barIndex + 2) % build.length] * (1 + u * 0.35), at + beat * 0.5, beat * 0.16, 'triangle', 0.045);
-          if (inBar === 0) {
-            tone(55, at, beat * 0.35, 'sine', 0.16);
-          }
-          if (u > 0.7) {
-            tone(110 * (1 + u * 0.25), at, beat * 0.2, 'sawtooth', 0.04);
-          }
-        } else if (time < 22.0) {
-          // ------- THE SHOT: a driving tracking groove.
-          tone(roots[barIndex % 4] * 0.5, at, beat * 0.3, 'triangle', 0.12);
-          tone(groove[b % groove.length], at, beat * 0.24, 'sine', 0.055);
-          tone(groove[(b + 3) % groove.length] * 0.5, at + beat * 0.5, beat * 0.16, 'triangle', 0.04);
-          hit(at, 0.028, 8800, 0.022, 1.5);
-          if (inBar === 0 || inBar === 2) tone(80, at, beat * 0.22, 'sine', 0.14);
-          if (time > 20.2) {
-            tone(1318.5, at, beat * 0.55, 'sine', 0.03);
-            tone(1760.0, at, beat * 0.5, 'sine', 0.018);
-          }
-        } else if (time < 26.0) {
-          // ------- THE SPRING: a suspense tick and a rising pedal.
-          const u = (time - 22.0) / 4.0;
-          tone(55, at, beat * 0.65, 'sine', 0.14 + u * 0.05);
-          tone(tick[b % tick.length], at + beat * 0.5, beat * 0.05, 'triangle', 0.035);
-          hit(at, 0.025, 3000, 0.02 + u * 0.015, 2.0);
-          if (time > 23.9) {
-            tone(220 * Math.pow(2, u * 1.2), at, beat * 0.2, 'sawtooth', 0.025 + u * 0.02);
-          }
-        } else if (time < 29.02) {
-          // ------- THE PAYOFF: splash, then a short triumphant march.
-          if (time < 26.4) {
-            tone(55, at, beat * 0.5, 'sine', 0.16);
-          } else {
-            tone(roots[barIndex % 4] * 0.5, at, beat * 0.35, 'triangle', 0.11);
-            tone(groove[b % groove.length], at + beat * 0.5, beat * 0.2, 'sine', 0.045);
-            hit(at, 0.03, 8600, 0.022, 1.5);
-          }
-        }
-      }
-    } catch {}
-  }
-
-  // ===== EXTRA PROCEDURAL SFX (all projects) =====
-
-  public playAirPuff(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 'n', f: 900, d: 0.4, g: 0.2, f2: 260, ft: 'lowpass' },
-    ]);
-  }
-
-  public playAirRelease(dest?: AudioNode, duration?: number) {
-    this.sfx(dest, [
-      { k: 'n', f: 1400, d: 0.5, g: 0.16, f2: 420, ft: 'highpass' },
-      { k: 't', f: 620, d: 0.4, g: 0.07, f2: 200, w: 'triangle' },
-    ], duration ? duration / 0.5 : 1);
-  }
-
-  public playAlarmSiren(dest?: AudioNode, duration?: number) {
-    this.sfx(dest, [
-      { k: 't', f: 700, d: 0.45, g: 0.1, f2: 1150, w: 'square' },
-      { k: 't', f: 1150, d: 0.45, g: 0.1, f2: 700, w: 'square', t: 0.45 },
-      { k: 't', f: 700, d: 0.45, g: 0.1, f2: 1150, w: 'square', t: 0.9 },
-    ], duration ? duration / 1.35 : 1);
-  }
-
-  public playAngelicChoir(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 't', f: 523.25, d: 1.6, g: 0.07, w: 'sine' },
-      { k: 't', f: 659.25, d: 1.6, g: 0.06, w: 'sine', t: 0.05 },
-      { k: 't', f: 783.99, d: 1.6, g: 0.055, w: 'sine', t: 0.1 },
-      { k: 't', f: 1046.5, d: 1.6, g: 0.04, w: 'sine', t: 0.15 },
-    ]);
-  }
-
-  public playAngrySting(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 't', f: 220, d: 0.5, g: 0.16, f2: 110, w: 'sawtooth' },
-      { k: 't', f: 164.81, d: 0.65, g: 0.14, f2: 82, w: 'sawtooth', t: 0.08 },
-    ]);
-  }
-
-  public playArcadeAlarm(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 't', f: 880, d: 0.15, g: 0.09, w: 'square' },
-      { k: 't', f: 659.25, d: 0.15, g: 0.09, w: 'square', t: 0.15 },
-      { k: 't', f: 880, d: 0.15, g: 0.09, w: 'square', t: 0.3 },
-      { k: 't', f: 659.25, d: 0.15, g: 0.09, w: 'square', t: 0.45 },
-    ]);
-  }
-
-  public playArcadeChime(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 't', f: 987.77, d: 0.12, g: 0.1, w: 'triangle' },
-      { k: 't', f: 1318.5, d: 0.12, g: 0.09, w: 'triangle', t: 0.1 },
-      { k: 't', f: 1567.98, d: 0.22, g: 0.09, w: 'triangle', t: 0.2 },
-    ]);
-  }
-
-  public playArcadeWinJingle(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 't', f: 783.99, d: 0.14, g: 0.1, w: 'square' },
-      { k: 't', f: 987.77, d: 0.14, g: 0.1, w: 'square', t: 0.14 },
-      { k: 't', f: 1174.66, d: 0.14, g: 0.1, w: 'square', t: 0.28 },
-      { k: 't', f: 1567.98, d: 0.4, g: 0.11, w: 'square', t: 0.42 },
-    ]);
-  }
-
-  public playAwkwardCough(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 'n', f: 420, d: 0.2, g: 0.2, f2: 300, ft: 'bandpass', q: 3 },
-      { k: 't', f: 190, d: 0.18, g: 0.12, f2: 90, w: 'sawtooth', t: 0.02 },
-    ]);
-  }
-
-  public playBagRip(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 'n', f: 2600, d: 0.3, g: 0.2, f2: 700, ft: 'highpass' },
-    ]);
-  }
-
-  public playBalloonSqueak(pitch = 1, dest?: AudioNode) {
-    const p = Math.max(0.4, Math.min(2.4, pitch));
-    this.sfx(dest, [
-      { k: 't', f: 900 * p, d: 0.1, g: 0.09, f2: 1500 * p, w: 'sine' },
-      { k: 't', f: 1400 * p, d: 0.12, g: 0.08, f2: 700 * p, w: 'sine', t: 0.1 },
-    ]);
-  }
-
-  public playBalloonStretch(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 't', f: 200, d: 0.6, g: 0.08, f2: 900, w: 'sawtooth' },
-      { k: 'n', f: 1200, d: 0.5, g: 0.05, f2: 2200, ft: 'bandpass', q: 2 },
-    ]);
-  }
-
-  public playBigImpact(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 't', f: 70, d: 0.8, g: 0.5, f2: 30, w: 'sine' },
-      { k: 'n', f: 900, d: 0.3, g: 0.22, f2: 200, ft: 'lowpass' },
-    ]);
-  }
-
-  public playBinThunk(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 't', f: 180, d: 0.25, g: 0.3, f2: 60, w: 'sine' },
-      { k: 'n', f: 1400, d: 0.1, g: 0.12, f2: 900, ft: 'bandpass', q: 2 },
-    ]);
-  }
-
-  public playBroomScrape(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 'n', f: 1500, d: 0.35, g: 0.13, f2: 600, ft: 'bandpass', q: 3 },
-    ]);
-  }
-
-  public playButtonClick(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 't', f: 1200, d: 0.05, g: 0.2, w: 'square' },
-      { k: 'n', f: 3000, d: 0.03, g: 0.1, ft: 'highpass' },
-    ]);
-  }
-
-  public playCameraClick(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 'n', f: 3200, d: 0.05, g: 0.28, f2: 1800, ft: 'highpass' },
-      { k: 't', f: 2000, d: 0.04, g: 0.12, w: 'square' },
-    ]);
-  }
-
-  public playCartoonBoing(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 't', f: 200, d: 0.35, g: 0.18, f2: 620, w: 'sine' },
-      { k: 't', f: 620, d: 0.25, g: 0.12, f2: 220, w: 'sine', t: 0.32 },
-    ]);
-  }
-
-  public playCartoonCrash(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 't', f: 500, d: 0.8, g: 0.24, f2: 60, w: 'sawtooth' },
-      { k: 'n', f: 1600, d: 0.3, g: 0.16, f2: 800, ft: 'highpass' },
-    ]);
-  }
-
-  public playCaseOpen(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 't', f: 300, d: 0.3, g: 0.1, f2: 600, w: 'triangle' },
-      { k: 'n', f: 1800, d: 0.18, g: 0.07, f2: 1200, ft: 'bandpass', q: 2, t: 0.05 },
-    ]);
-  }
-
-  public playClawMotor(dest?: AudioNode, duration?: number) {
-    this.sfx(dest, [
-      { k: 't', f: 90, d: 0.8, g: 0.1, f2: 110, w: 'sawtooth' },
-      { k: 't', f: 140, d: 0.8, g: 0.05, f2: 120, w: 'square', t: 0.02 },
-    ], duration ? duration / 0.8 : 1);
-  }
-
-  public playCoinClink(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 't', f: 1800, d: 0.08, g: 0.16, w: 'triangle' },
-      { k: 't', f: 2400, d: 0.12, g: 0.12, w: 'triangle', t: 0.05 },
-    ]);
-  }
-
-  public playConfettiPop(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 'n', f: 2200, d: 0.25, g: 0.24, f2: 900, ft: 'highpass' },
-      { k: 't', f: 900, d: 0.22, g: 0.12, f2: 300, w: 'triangle' },
-    ]);
-  }
-
-  public playCounterBump(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 't', f: 120, d: 0.2, g: 0.3, f2: 50, w: 'sine' },
-      { k: 'n', f: 600, d: 0.08, g: 0.1, f2: 300, ft: 'lowpass' },
-    ]);
-  }
-
-  public playCupClunk(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 't', f: 400, d: 0.15, g: 0.22, f2: 150, w: 'triangle' },
-      { k: 'n', f: 1600, d: 0.08, g: 0.1, f2: 1000, ft: 'bandpass', q: 2 },
-    ]);
-  }
-
-  public playCupSlide(dest?: AudioNode, duration?: number) {
-    this.sfx(dest, [
-      { k: 'n', f: 900, d: 0.3, g: 0.1, f2: 700, ft: 'bandpass', q: 2.5 },
-    ], duration ? duration / 0.3 : 1);
-  }
-
-  public playCupWobbleCreak(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 't', f: 180, d: 0.14, g: 0.1, f2: 220, w: 'square' },
-      { k: 't', f: 200, d: 0.14, g: 0.09, f2: 240, w: 'square', t: 0.15 },
-      { k: 't', f: 220, d: 0.14, g: 0.085, f2: 250, w: 'square', t: 0.3 },
-      { k: 't', f: 240, d: 0.14, g: 0.08, f2: 270, w: 'square', t: 0.45 },
-    ]);
-  }
-
-  public playDiamondChime(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 't', f: 2093, d: 0.5, g: 0.07, w: 'sine' },
-      { k: 't', f: 2637, d: 0.55, g: 0.06, w: 'sine', t: 0.06 },
-      { k: 't', f: 3136, d: 0.6, g: 0.05, w: 'sine', t: 0.12 },
-    ]);
-  }
-
-  public playDramaticBoom(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 't', f: 80, d: 1.5, g: 0.42, f2: 30, w: 'sine' },
-      { k: 'n', f: 400, d: 0.5, g: 0.1, f2: 120, ft: 'lowpass' },
-    ]);
-  }
-
-  public playFanTink(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 't', f: 2400, d: 0.12, g: 0.14, f2: 1800, w: 'triangle' },
-      { k: 'n', f: 4000, d: 0.05, g: 0.08, ft: 'highpass' },
-    ]);
-  }
-
-  public playFreezeSting(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 't', f: 1200, d: 0.8, g: 0.14, f2: 200, w: 'sawtooth' },
-      { k: 'n', f: 2400, d: 0.5, g: 0.1, f2: 400, ft: 'highpass' },
-    ]);
-  }
-
-  public playGlassClunk(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 't', f: 900, d: 0.12, g: 0.18, f2: 500, w: 'sine' },
-      { k: 't', f: 1800, d: 0.18, g: 0.09, f2: 1500, w: 'sine', t: 0.04 },
-    ]);
-  }
-
-  public playHardFlick(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 't', f: 400, d: 0.3, g: 0.24, f2: 150, w: 'sawtooth' },
-      { k: 'n', f: 1800, d: 0.12, g: 0.12, f2: 900, ft: 'bandpass', q: 2 },
-    ]);
-  }
-
-  public playHollowBonk(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 't', f: 120, d: 0.5, g: 0.34, f2: 60, w: 'sine' },
-      { k: 't', f: 240, d: 0.4, g: 0.14, f2: 120, w: 'sine', t: 0.02 },
-    ]);
-  }
-
-  public playIdeaDing(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 't', f: 1567.98, d: 0.45, g: 0.16, w: 'sine' },
-      { k: 't', f: 2093, d: 0.5, g: 0.1, w: 'sine', t: 0.02 },
-    ]);
-  }
-
-  public playKnotSnap(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 'n', f: 2000, d: 0.2, g: 0.18, f2: 400, ft: 'bandpass', q: 3 },
-      { k: 't', f: 300, d: 0.18, g: 0.1, f2: 120, w: 'triangle', t: 0.02 },
-    ]);
-  }
-
-  public playLaserZap(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 't', f: 1800, d: 0.4, g: 0.14, f2: 200, w: 'sawtooth' },
-      { k: 't', f: 900, d: 0.35, g: 0.08, f2: 120, w: 'square', t: 0.02 },
-    ]);
-  }
-
-  public playMagicSparkle(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 't', f: 2093, d: 0.14, g: 0.07, w: 'sine' },
-      { k: 't', f: 2637, d: 0.14, g: 0.065, w: 'sine', t: 0.07 },
-      { k: 't', f: 3136, d: 0.14, g: 0.06, w: 'sine', t: 0.14 },
-      { k: 't', f: 2349, d: 0.14, g: 0.055, w: 'sine', t: 0.21 },
-      { k: 't', f: 2794, d: 0.2, g: 0.05, w: 'sine', t: 0.28 },
-    ]);
-  }
-
-  public playNeedlePoke(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 't', f: 2000, d: 0.06, g: 0.1, f2: 1200, w: 'sine' },
-      { k: 'n', f: 5000, d: 0.03, g: 0.06, ft: 'highpass' },
-    ]);
-  }
-
-  public playPancakeSlide(dest?: AudioNode, duration?: number) {
-    this.sfx(dest, [
-      { k: 'n', f: 700, d: 0.3, g: 0.1, f2: 420, ft: 'bandpass', q: 2 },
-    ], duration ? duration / 0.3 : 1);
-  }
-
-  public playPancakeSplat(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 'n', f: 600, d: 0.25, g: 0.3, f2: 260, ft: 'lowpass' },
-      { k: 't', f: 200, d: 0.2, g: 0.16, f2: 60, w: 'sine', t: 0.01 },
-    ]);
-  }
-
-  public playPaperCrumple(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 'n', f: 2500, d: 0.4, g: 0.16, f2: 900, ft: 'bandpass', q: 1.5 },
-    ]);
-  }
-
-  public playPlateClink(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 't', f: 2600, d: 0.2, g: 0.12, f2: 2200, w: 'sine' },
-      { k: 't', f: 3400, d: 0.25, g: 0.08, f2: 3000, w: 'sine', t: 0.04 },
-    ]);
-  }
-
-  /** Soft circular whirr of a plate spinning on a stick tip. */
-  public playPlateWhir(dest?: AudioNode, duration = 1.0) {
-    if (this.isMuted && !dest) return;
-    const ctx = this.getContext();
-    if (!ctx) return;
-    try {
-      const now = ctx.currentTime;
-      const dur = Math.max(0.2, duration);
-      const osc = ctx.createOscillator();
-      const ring = ctx.createOscillator();
-      const trem = ctx.createOscillator();
-      const tremGain = ctx.createGain();
-      const gain = ctx.createGain();
-      const ringGain = ctx.createGain();
-
-      osc.type = 'triangle';
-      osc.frequency.setValueAtTime(680, now);
-      osc.frequency.linearRampToValueAtTime(860, now + dur * 0.4);
-      osc.frequency.linearRampToValueAtTime(740, now + dur);
-
-      trem.type = 'sine';
-      trem.frequency.setValueAtTime(16, now);
-      tremGain.gain.setValueAtTime(45, now);
-      trem.connect(tremGain);
-      tremGain.connect(osc.frequency);
-
-      ring.type = 'sine';
-      ring.frequency.setValueAtTime(1720, now);
-      ringGain.gain.setValueAtTime(0.018 * this.volume, now);
-      ringGain.gain.exponentialRampToValueAtTime(0.001, now + dur);
-
-      gain.gain.setValueAtTime(0.0001, now);
-      gain.gain.linearRampToValueAtTime(0.055 * this.volume, now + 0.07);
-      gain.gain.setValueAtTime(0.05 * this.volume, now + dur * 0.68);
-      gain.gain.exponentialRampToValueAtTime(0.0001, now + dur);
-
-      osc.connect(gain);
-      ring.connect(ringGain);
-      this.routeOutput(gain, dest);
-      this.routeOutput(ringGain, dest);
-      osc.start(now);
-      trem.start(now);
-      ring.start(now);
-      osc.stop(now + dur);
-      trem.stop(now + dur);
-      ring.stop(now + dur);
-    } catch {}
-  }
-
-  /** Wobbly plate losing its balance: a nervous rising and falling creak. */
-  public playPlateWobble(dest?: AudioNode) {
-    if (this.isMuted && !dest) return;
-    const ctx = this.getContext();
-    if (!ctx) return;
-    try {
-      const now = ctx.currentTime;
-      const dur = 1.2;
-      const osc = ctx.createOscillator();
-      const vibrato = ctx.createOscillator();
-      const vibratoGain = ctx.createGain();
-      const gain = ctx.createGain();
-
-      osc.type = 'triangle';
-      osc.frequency.setValueAtTime(300, now);
-      osc.frequency.linearRampToValueAtTime(560, now + dur * 0.55);
-      osc.frequency.linearRampToValueAtTime(330, now + dur);
-
-      vibrato.type = 'sine';
-      vibrato.frequency.setValueAtTime(11, now);
-      vibratoGain.gain.setValueAtTime(38, now);
-      vibrato.connect(vibratoGain);
-      vibratoGain.connect(osc.frequency);
-
-      gain.gain.setValueAtTime(0.0001, now);
-      gain.gain.linearRampToValueAtTime(0.07 * this.volume, now + 0.06);
-      gain.gain.setValueAtTime(0.065 * this.volume, now + dur - 0.25);
-      gain.gain.exponentialRampToValueAtTime(0.0002, now + dur);
-
-      osc.connect(gain);
-      this.routeOutput(gain, dest);
-      osc.start(now);
-      vibrato.start(now);
-      osc.stop(now + dur);
-      vibrato.stop(now + dur);
-    } catch {}
-  }
-
-  public playPlushAvalanche(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 'n', f: 800, d: 1.2, g: 0.2, f2: 300, ft: 'lowpass' },
-      { k: 'n', f: 2000, d: 1, g: 0.08, f2: 900, ft: 'bandpass', q: 1.5, t: 0.1 },
-    ]);
-  }
-
-  public playPreciseTap(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 't', f: 1200, d: 0.08, g: 0.16, f2: 900, w: 'sine' },
-    ]);
-  }
-
-  public playRelievedSigh(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 'n', f: 800, d: 0.8, g: 0.14, f2: 300, ft: 'highpass' },
-    ]);
-  }
-
-  public playRisingMusicSwelling(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 't', f: 261.63, d: 0.5, g: 0.08, w: 'sine' },
-      { k: 't', f: 293.66, d: 0.5, g: 0.08, w: 'sine', t: 0.5 },
-      { k: 't', f: 329.63, d: 0.5, g: 0.09, w: 'sine', t: 1 },
-      { k: 't', f: 349.23, d: 0.5, g: 0.09, w: 'sine', t: 1.5 },
-      { k: 't', f: 392, d: 0.6, g: 0.1, w: 'sine', t: 2 },
-      { k: 't', f: 440, d: 0.6, g: 0.1, w: 'sine', t: 2.6 },
-      { k: 't', f: 493.88, d: 0.7, g: 0.11, w: 'sine', t: 3.2 },
-      { k: 't', f: 523.25, d: 0.9, g: 0.12, w: 'sine', t: 3.8 },
-    ]);
-  }
-
-  public playRisingWhistle(dest?: AudioNode, duration?: number) {
-    this.sfx(dest, [
-      { k: 't', f: 400, d: 1, g: 0.1, f2: 1800, w: 'sine' },
-      { k: 'n', f: 2000, d: 1, g: 0.05, f2: 800, ft: 'highpass' },
-    ], duration ? duration / 1 : 1);
-  }
-
-  public playScoop(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 'n', f: 1200, d: 0.2, g: 0.12, f2: 600, ft: 'bandpass', q: 2 },
-    ]);
-  }
-
-  public playSlideWhistle(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 't', f: 1200, d: 0.5, g: 0.14, f2: 300, w: 'sine' },
-      { k: 'n', f: 1500, d: 0.4, g: 0.05, f2: 600, ft: 'highpass' },
-    ]);
-  }
-
-  public playSoftFlick(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 't', f: 600, d: 0.2, g: 0.12, f2: 300, w: 'triangle' },
-      { k: 'n', f: 2200, d: 0.08, g: 0.05, ft: 'highpass' },
-    ]);
-  }
-
-  public playSpiralWhirr(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 't', f: 300, d: 1, g: 0.08, f2: 900, w: 'sawtooth' },
-      { k: 't', f: 450, d: 1, g: 0.05, f2: 1200, w: 'triangle', t: 0.05 },
-    ]);
-  }
-
-  public playSpoonDraw(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 'n', f: 1800, d: 0.25, g: 0.12, f2: 900, ft: 'bandpass', q: 2.5 },
-    ]);
-  }
-
-  public playStrainedTug(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 't', f: 150, d: 0.5, g: 0.12, f2: 170, w: 'sawtooth' },
-      { k: 't', f: 150, d: 0.5, g: 0.06, f2: 140, w: 'square', t: 0.02 },
-    ]);
-  }
-
-  public playTinyChipTink(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 't', f: 1800, d: 0.1, g: 0.14, f2: 1400, w: 'triangle' },
-      { k: 't', f: 2400, d: 0.08, g: 0.08, f2: 2000, w: 'sine', t: 0.04 },
-    ]);
-  }
-
-  public playTinyPlop(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 't', f: 200, d: 0.15, g: 0.14, f2: 80, w: 'sine' },
-    ]);
-  }
-
-  public playTrayPing(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 't', f: 1400, d: 0.3, g: 0.16, f2: 1000, w: 'triangle' },
-      { k: 't', f: 2100, d: 0.25, g: 0.07, f2: 1600, w: 'sine', t: 0.03 },
-    ]);
-  }
-
-  public playVendingRattle(dest?: AudioNode, duration?: number) {
-    this.sfx(dest, [
-      { k: 'n', f: 600, d: 0.4, g: 0.14, f2: 900, ft: 'bandpass', q: 1.6 },
-      { k: 't', f: 260, d: 0.12, g: 0.1, f2: 200, w: 'square', t: 0.05 },
-    ], duration ? duration / 0.4 : 1);
-  }
-
-  public playVendingThud(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 't', f: 90, d: 0.3, g: 0.32, f2: 40, w: 'sine' },
-      { k: 'n', f: 700, d: 0.15, g: 0.14, f2: 260, ft: 'lowpass' },
-    ]);
-  }
-
-  public playVictoryFanfareShort(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 't', f: 523.25, d: 0.15, g: 0.12, w: 'square' },
-      { k: 't', f: 659.25, d: 0.15, g: 0.12, w: 'square', t: 0.15 },
-      { k: 't', f: 783.99, d: 0.15, g: 0.12, w: 'square', t: 0.3 },
-      { k: 't', f: 1046.5, d: 0.4, g: 0.13, w: 'square', t: 0.45 },
-    ]);
-  }
-
-  public playWallBoing(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 't', f: 300, d: 0.4, g: 0.18, f2: 700, w: 'sine' },
-      { k: 't', f: 700, d: 0.25, g: 0.1, f2: 320, w: 'sine', t: 0.38 },
-    ]);
-  }
-
-  public playWetSplat(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 'n', f: 1200, d: 0.3, g: 0.2, f2: 300, ft: 'lowpass' },
-      { k: 't', f: 160, d: 0.2, g: 0.1, f2: 70, w: 'sine', t: 0.02 },
-    ]);
-  }
-
-  public playWindGust(dest?: AudioNode, duration?: number) {
-    this.sfx(dest, [
-      { k: 'n', f: 600, d: 1.2, g: 0.18, f2: 900, ft: 'lowpass' },
-      { k: 'n', f: 400, d: 1, g: 0.1, f2: 800, ft: 'bandpass', q: 1.2, t: 0.1 },
-    ], duration ? duration / 1.2 : 1);
-  }
-
-  public playWindowKnock(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 't', f: 400, d: 0.08, g: 0.22, f2: 300, w: 'triangle' },
-      { k: 't', f: 400, d: 0.08, g: 0.2, f2: 300, w: 'triangle', t: 0.14 },
-    ]);
-  }
-
-  public playWoodClack(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 'n', f: 1500, d: 0.06, g: 0.18, f2: 1100, ft: 'bandpass', q: 3 },
-      { k: 't', f: 600, d: 0.06, g: 0.12, f2: 400, w: 'triangle' },
-    ]);
-  }
-
-  public playCountBeep(dest?: AudioNode, duration?: number) {
-    const total = duration && duration > 0 ? duration : 0.12;
-    const layers: SfxLayer[] = [];
-    for (let at = 0; at < total; at += 0.5) {
-      layers.push({ k: 't', f: 880, d: 0.12, g: 0.18, w: 'square', t: at });
-    }
-    this.sfx(dest, layers);
-  }
-
-  // ---- shared helpers for the extra SFX above ----
-  private sfx(dest: AudioNode | undefined, layers: SfxLayer[], scale = 1) {
-    if (this.isMuted && !dest) return;
-    const ctx = this.getContext();
-    if (!ctx) return;
-    try {
-      const now = ctx.currentTime;
-      for (const l of layers) {
-        const at = now + (l.t ?? 0) * scale;
-        const dur = Math.max(0.03, l.d * scale);
-        const head = Math.max(0.0002, l.g * this.volume);
-        const gain = ctx.createGain();
-        gain.gain.setValueAtTime(0.0001, at);
-        gain.gain.exponentialRampToValueAtTime(head, at + Math.min(0.02, dur * 0.4));
-        gain.gain.exponentialRampToValueAtTime(0.0001, at + dur);
-        this.routeOutput(gain, dest);
-
-        if (l.k === 't') {
-          const osc = ctx.createOscillator();
-          osc.type = l.w ?? 'sine';
-          osc.frequency.setValueAtTime(l.f, at);
-          if (l.f2) osc.frequency.exponentialRampToValueAtTime(Math.max(1, l.f2), at + dur);
-          osc.connect(gain);
-          osc.start(at);
-          osc.stop(at + dur + 0.03);
-        } else {
-          const len = Math.max(1, Math.floor(ctx.sampleRate * Math.max(0.02, dur)));
-          const buf = ctx.createBuffer(1, len, ctx.sampleRate);
-          const data = buf.getChannelData(0);
-          for (let i = 0; i < len; i++) data[i] = (Math.random() * 2 - 1) * (1 - i / len);
-          const src = ctx.createBufferSource();
-          src.buffer = buf;
-          const filt = ctx.createBiquadFilter();
-          filt.type = l.ft ?? 'lowpass';
-          filt.frequency.setValueAtTime(Math.max(60, l.f), at);
-          if (l.f2) filt.frequency.exponentialRampToValueAtTime(Math.max(60, l.f2), at + dur);
-          if (l.q) filt.Q.setValueAtTime(l.q, at);
-          src.connect(filt);
-          filt.connect(gain);
-          src.start(at);
-        }
-      }
-    } catch {}
-  }
-
-  // ---- looping one-shots ----
-  public playBallRoll(dest?: AudioNode, duration: number = 1.0) {
-    const layers: SfxLayer[] = [];
-    for (let at = 0; at < duration; at += 0.12) {
-      layers.push({ k: 'n', f: 520, f2: 300, d: 0.1, g: 0.05, ft: 'bandpass', q: 2, t: at });
-      layers.push({ k: 't', f: 210, f2: 150, d: 0.1, g: 0.025, w: 'triangle', t: at });
-    }
-    this.sfx(dest, layers);
-  }
-
-  public playDominoClatter(dest?: AudioNode, duration: number = 3.0) {
-    const layers: SfxLayer[] = [];
-    for (let at = 0; at < duration; at += 0.1) {
-      layers.push({ k: 'n', f: 1900, f2: 900, d: 0.045, g: 0.05, ft: 'bandpass', q: 2, t: at + Math.random() * 0.04 });
-      layers.push({ k: 't', f: 1000 + Math.random() * 400, f2: 600, d: 0.05, g: 0.03, w: 'triangle', t: at + Math.random() * 0.04 });
-    }
-    this.sfx(dest, layers);
-  }
-
-  public playTickingCountdown(dest?: AudioNode, duration: number = 3.0) {
-    const layers: SfxLayer[] = [];
-    for (let at = 0; at < duration; at += 0.5) {
-      layers.push({ k: 't', f: 1200, d: 0.05, g: 0.1, w: 'square', t: at });
-      layers.push({ k: 'n', f: 4000, d: 0.02, g: 0.04, ft: 'highpass', t: at });
-    }
-    this.sfx(dest, layers);
-  }
-
-  public playDrumRoll(dest?: AudioNode, duration: number = 1.0) {
-    const layers: SfxLayer[] = [];
-    for (let at = 0; at < duration; at += 0.045) {
-      const swell = 0.04 + 0.06 * (at / Math.max(0.2, duration));
-      layers.push({ k: 'n', f: 1800, f2: 900, d: 0.05, g: swell, ft: 'bandpass', q: 1.5, t: at });
-    }
-    this.sfx(dest, layers);
-  }
-
-  // ---- shared helper for the 30s comedy scores ----
-  private scoreSlice(
-    dest: AudioNode | undefined,
-    start: number,
-    end: number,
-    opts: { bpm: number; wave: OscillatorType; chords: number[][]; level?: number }
-  ) {
-    if (this.isMuted && !dest) return;
-    const ctx = this.getContext();
-    if (!ctx) return;
-    try {
-      const beat = 60 / opts.bpm;
-      const bar = beat * 4;
-      const base = ctx.currentTime + 0.06 - start;
-      const total = Math.max(0, end - start);
-      const level = (opts.level ?? 0.5) * this.volume;
-      if (total <= 0) return;
-
-      const master = ctx.createGain();
-      master.gain.setValueAtTime(level, ctx.currentTime);
-      this.routeOutput(master, dest);
-
-      const hatLen = Math.max(1, Math.floor(ctx.sampleRate * 0.045));
-      const hatBuf = ctx.createBuffer(1, hatLen, ctx.sampleRate);
-      const hatData = hatBuf.getChannelData(0);
-      for (let i = 0; i < hatLen; i++) hatData[i] = (Math.random() * 2 - 1) * (1 - i / hatLen);
-
-      for (let at = 0; at < total; at += bar) {
-        const chord = opts.chords[Math.floor((start + at) / bar) % opts.chords.length];
-        chord.forEach((freq, idx) => {
-          const osc = ctx.createOscillator();
-          const g = ctx.createGain();
-          osc.type = opts.wave;
-          osc.frequency.setValueAtTime(freq, base + at + idx * 0.012);
-          g.gain.setValueAtTime(0.0001, base + at);
-          g.gain.exponentialRampToValueAtTime(0.16, base + at + 0.05);
-          g.gain.exponentialRampToValueAtTime(0.0001, base + at + bar * 0.92);
-          osc.connect(g);
-          g.connect(master);
-          osc.start(base + at);
-          osc.stop(base + at + bar);
-        });
-
-        for (let b = 0; b < 4; b += 2) {
-          const src = ctx.createBufferSource();
-          src.buffer = hatBuf;
-          const hp = ctx.createBiquadFilter();
-          hp.type = 'highpass';
-          hp.frequency.value = 6000;
-          const g = ctx.createGain();
-          g.gain.setValueAtTime(0.05, base + at + b * beat);
-          g.gain.exponentialRampToValueAtTime(0.0001, base + at + b * beat + 0.045);
-          src.connect(hp);
-          hp.connect(g);
-          g.connect(master);
-          src.start(base + at + b * beat);
-        }
-      }
-    } catch {}
-  }
-
-  // ---- 30s score slices, one per comedy short ----
-  public playArcadeClawScoreSection(dest?: AudioNode, start = 0, end = 7.5) {
-    this.scoreSlice(dest, start, end, {
-      bpm: 150,
-      wave: 'square',
-      level: 0.42,
-      chords: [
-        [261.63, 329.63, 392.0],
-        [293.66, 349.23, 440.0],
-        [246.94, 311.13, 369.99],
-        [261.63, 329.63, 392.0],
-      ],
-    });
-  }
-
-  public playDiamondHeistScoreSection(dest?: AudioNode, start = 0, end = 7.5) {
-    this.scoreSlice(dest, start, end, {
-      bpm: 132,
-      wave: 'triangle',
-      level: 0.4,
-      chords: [
-        [110.0, 164.81, 220.0],
-        [123.47, 185.0, 246.94],
-        [98.0, 146.83, 196.0],
-        [110.0, 164.81, 220.0],
-      ],
-    });
-  }
-
-  public playHeistPizzicatoSection(dest?: AudioNode, start = 0, end = 7.5) {
-    this.scoreSlice(dest, start, end, {
-      bpm: 124,
-      wave: 'triangle',
-      level: 0.38,
-      chords: [
-        [146.83, 220.0, 293.66],
-        [130.81, 196.0, 261.63],
-        [164.81, 246.94, 329.63],
-        [146.83, 220.0, 293.66],
-      ],
-    });
-  }
-
-  public playPancakeScoreSection(dest?: AudioNode, start = 0, end = 7.5) {
-    this.scoreSlice(dest, start, end, {
-      bpm: 148,
-      wave: 'triangle',
-      level: 0.44,
-      chords: [
-        [261.63, 349.23, 440.0],
-        [293.66, 369.99, 466.16],
-        [329.63, 415.3, 523.25],
-        [261.63, 349.23, 440.0],
-      ],
-    });
-  }
-
-  public playVendingScoreSection(dest?: AudioNode, start = 0, end = 7.5) {
-    this.scoreSlice(dest, start, end, {
-      bpm: 144,
-      wave: 'square',
-      level: 0.4,
-      chords: [
-        [246.94, 311.13, 369.99],
-        [220.0, 277.18, 329.63],
-        [196.0, 246.94, 293.66],
-        [246.94, 311.13, 369.99],
-      ],
-    });
-  }
-
-  public playBalloonScoreSection(dest?: AudioNode, start = 0, end = 7.5) {
-    this.scoreSlice(dest, start, end, {
-      bpm: 146,
-      wave: 'triangle',
-      level: 0.42,
-      chords: [
-        [329.63, 415.3, 523.25],
-        [293.66, 369.99, 466.16],
-        [349.23, 440.0, 554.37],
-        [329.63, 415.3, 523.25],
-      ],
-    });
-  }
-
-  public playFindTheBallScoreSection(dest?: AudioNode, start = 0, end = 7.5) {
-    this.scoreSlice(dest, start, end, {
-      bpm: 138,
-      wave: 'triangle',
-      level: 0.42,
-      chords: [
-        [220.0, 277.18, 329.63],
-        [246.94, 311.13, 369.99],
-        [196.0, 246.94, 293.66],
-        [220.0, 277.18, 329.63],
-      ],
-    });
-  }
-
-  public playAttempt247ScoreSection(dest?: AudioNode, start = 0, end = 7.5) {
-    this.scoreSlice(dest, start, end, {
-      bpm: 140,
-      wave: 'square',
-      level: 0.38,
-      chords: [
-        [174.61, 220.0, 261.63],
-        [196.0, 246.94, 293.66],
-        [164.81, 207.65, 246.94],
-        [174.61, 220.0, 261.63],
-      ],
-    });
-  }
-
-  public playNeedleThreadScoreSection(dest?: AudioNode, start = 0, end = 7.5) {
-    this.scoreSlice(dest, start, end, {
-      bpm: 150,
-      wave: 'triangle',
-      level: 0.4,
-      chords: [
-        [293.66, 369.99, 440.0],
-        [261.63, 329.63, 392.0],
-        [311.13, 392.0, 466.16],
-        [293.66, 369.99, 440.0],
-      ],
-    });
-  }
-
-  public playMagnetScoreSection(dest?: AudioNode, start = 0, end = 7.5) {
-    this.scoreSlice(dest, start, end, {
-      bpm: 136,
-      wave: 'square',
-      level: 0.38,
-      chords: [
-        [233.08, 293.66, 349.23],
-        [207.65, 261.63, 311.13],
-        [246.94, 311.13, 369.99],
-        [233.08, 293.66, 349.23],
-      ],
-    });
-  }
-
-  public playRingShotScoreSection(dest?: AudioNode, start = 0, end = 7.5) {
-    this.scoreSlice(dest, start, end, {
-      bpm: 142,
-      wave: 'triangle',
-      level: 0.42,
-      chords: [
-        [246.94, 311.13, 392.0],
-        [277.18, 349.23, 440.0],
-        [220.0, 277.18, 349.23],
-        [246.94, 311.13, 392.0],
-      ],
-    });
-  }
-
-  public playPencilLandingScoreSection(dest?: AudioNode, start = 0, end = 7.5) {
-    this.scoreSlice(dest, start, end, {
-      bpm: 152,
-      wave: 'triangle',
-      level: 0.4,
-      chords: [
-        [261.63, 329.63, 415.3],
-        [293.66, 349.23, 440.0],
-        [246.94, 311.13, 392.0],
-        [261.63, 329.63, 415.3],
-      ],
-    });
-  }
-
-  public playDominoTrickshotScoreSection(dest?: AudioNode, start = 0, end = 7.5) {
-    this.scoreSlice(dest, start, end, {
-      bpm: 152,
-      wave: 'square',
-      level: 0.4,
-      chords: [
-        [261.63, 329.63, 392.0],
-        [293.66, 349.23, 440.0],
-        [246.94, 311.13, 369.99],
-        [261.63, 329.63, 392.0],
-      ],
-    });
-  }
-
-  // ---- carnival arcade score for "The Balloon Pop Jackpot" ----
-  public playBalloonPopScoreSection(dest?: AudioNode, start = 0, end = 7.5) {
-    this.scoreSlice(dest, start, end, {
-      bpm: 160,
-      wave: 'square',
-      level: 0.4,
-      chords: [
-        [329.63, 415.3, 493.88],
-        [349.23, 440.0, 523.25],
-        [293.66, 369.99, 466.16],
-        [329.63, 415.3, 493.88],
-      ],
-    });
-
-  }
-
-  public playCandyClawScoreSection(dest?: AudioNode, start = 0, end = 7.5) {
-    this.scoreSlice(dest, start, end, {
-      bpm: 155,
-      wave: 'square',
-      level: 0.42,
-      chords: [
-        [293.66, 369.99, 440.0],    // D4 + F#4 + A4 (D major)
-        [329.63, 415.3, 493.88],   // E4 + G#4 + B4 (E major)
-        [277.18, 349.23, 415.3],   // C#4 + F4 + G#4 (C# minor / F major)
-        [293.66, 369.99, 440.0],   // D4 + F#4 + A4 (D major)
-      ],
-    });
-  }
-
-  public playPlateSpinScoreSection(dest?: AudioNode, start = 0, end = 7.5) {
-    this.scoreSlice(dest, start, end, {
-      bpm: 160,
-      wave: 'square',
-      level: 0.4,
-      chords: [
-        [523.25, 659.25, 783.99],  // C5 + E5 + G5 (C major)
-        [349.23, 440.0, 523.25],   // F4 + A4 + C5 (F major)
-        [392.0, 493.88, 587.33],   // G4 + B4 + D5 (G major)
-        [523.25, 659.25, 783.99],  // C5 + E5 + G5 (C major)
-      ],
-    });
-  }
-
-  public playThreeWallPingPongScoreSection(dest?: AudioNode, start = 0, end = 7.5) {
-    this.scoreSlice(dest, start, end, {
-      bpm: 140,
-      wave: 'triangle',
-      level: 0.42,
-      chords: [
-        [440.0, 554.37, 659.25],  // A4 + C#5 + E5 (A major)
-        [523.25, 659.25, 783.99], // C5 + E5 + G5 (C major)
-        [493.88, 622.25, 739.99], // B4 + D#5 + F#5 (B major)
-        [440.0, 554.37, 659.25],  // A4 + C#5 + E5 (A major)
-      ],
-    });
-  }
-
-  public playCupInCupScoreSection(dest?: AudioNode, start = 0, end = 7.5) {
-    this.scoreSlice(dest, start, end, {
-      bpm: 135,
-      wave: 'triangle',
-      level: 0.4,
-      chords: [
-        [392.0, 493.88, 587.33],  // G4 + B4 + D5 (G major)
-        [523.25, 659.25, 783.99], // C5 + E5 + G5 (C major)
-        [440.0, 554.37, 659.25],  // A4 + C#5 + E5 (A major)
-        [392.0, 493.88, 587.33],  // G4 + B4 + D5 (G major)
-      ],
-    });
-  }
-
-  public playYoyoScoreSection(dest?: AudioNode, start = 0, end = 7.5) {
-    this.scoreSlice(dest, start, end, {
-      bpm: 142,
-      wave: 'triangle',
-      level: 0.42,
-      chords: [
-        [293.66, 369.99, 440.0],  // D4 + F#4 + A4 (D major)
-        [349.23, 440.0, 523.25],  // F4 + A4 + C5 (F major)
-        [392.0, 493.88, 587.33],  // G4 + B4 + D5 (G major)
-        [293.66, 369.99, 440.0],  // D4 + F#4 + A4 (D major)
-      ],
-    });
-  }
-
-  public playRubberBandScoreSection(dest?: AudioNode, start = 0, end = 7.5) {
-    this.scoreSlice(dest, start, end, {
-      bpm: 138,
-      wave: 'triangle',
-      level: 0.4,
-      chords: [
-        [261.63, 329.63, 392.0],  // C4 + E4 + G4 (C major)
-        [349.23, 440.0, 523.25],  // F4 + A4 + C5 (F major)
-        [392.0, 493.88, 587.33],  // G4 + B4 + D5 (G major)
-        [261.63, 329.63, 392.0],  // C4 + E4 + G4 (C major)
-      ],
-    });
-  }
-
-  public playDesertIslandScoreSection(dest?: AudioNode, start = 0, end = 7.5) {
-    this.scoreSlice(dest, start, end, {
-      bpm: 110,
-      wave: "sine",
-      level: 0.35,
-      chords: [
-        [261.63, 329.63, 392.0],
-        [293.66, 369.99, 440.0],
-        [329.63, 415.30, 493.88],
-        [261.63, 329.63, 392.0],
-      ],
-    });
-  }
-
-  public playGiantBalloonScoreSection(dest?: AudioNode, start = 0, end = 7.5) {
-    this.scoreSlice(dest, start, end, {
-      bpm: 132,
-      wave: "triangle",
-      level: 0.4,
-      chords: [
-        [261.63, 329.63, 392.0],  // C4 + E4 + G4 (C major)
-        [293.66, 349.23, 440.0],  // D4 + F4 + A4 (D minor)
-        [349.23, 440.0, 523.25],  // F4 + A4 + C5 (F major)
-        [329.63, 415.3, 493.88],  // E4 + G#4 + B4 (E major)
-      ],
-    });
-  }
-
-  public playPopUpTentScoreSection(dest?: AudioNode, start = 0, end = 7.5) {
-    this.scoreSlice(dest, start, end, {
-      bpm: 138,
-      wave: "triangle",
-      level: 0.4,
-      chords: [
-        [261.63, 329.63, 392.0],  // C4 + E4 + G4 (C major)
-        [329.63, 415.3, 493.88],  // E4 + G#4 + B4 (E major)
-        [349.23, 440.0, 523.25],  // F4 + A4 + C5 (F major)
-        [392.0, 493.88, 587.33],  // G4 + B4 + D5 (G major)
-      ],
-    });
-  }
-
-  // ---- Three-Wall Ping-Pong SFX ----
-  public playPaddleHit(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 't', f: 800, d: 0.08, g: 0.25, f2: 400, w: 'triangle' },
-      { k: 'n', f: 1200, d: 0.06, g: 0.15, f2: 600, ft: 'bandpass', q: 3 },
-    ]);
-  }
-
-  public playCupPing(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 't', f: 2200, d: 0.3, g: 0.18, f2: 1800, w: 'sine' },
-      { k: 't', f: 3300, d: 0.25, g: 0.1, f2: 2600, w: 'sine', t: 0.03 },
-      { k: 't', f: 4400, d: 0.2, g: 0.06, f2: 3500, w: 'sine', t: 0.06 },
-    ]);
-  }
-
-  // ---- carnival + balloon SFX for "The Balloon Pop Jackpot" ----
-  public playDartWhoosh(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 'n', f: 2600, f2: 700, d: 0.3, g: 0.14, ft: 'bandpass', q: 2 },
-      { k: 't', f: 900, f2: 2200, d: 0.28, g: 0.07, w: 'triangle' },
-    ]);
-  }
-
-  public playBalloonPop(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 'n', f: 2600, f2: 500, d: 0.22, g: 0.28, ft: 'highpass' },
-      { k: 't', f: 900, f2: 220, d: 0.18, g: 0.16, w: 'triangle' },
-      { k: 't', f: 1800, f2: 900, d: 0.08, g: 0.09, w: 'square', t: 0.01 },
-    ]);
-  }
-
-  public playGoldenPop(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 'n', f: 3000, f2: 400, d: 0.4, g: 0.3, ft: 'highpass' },
-      { k: 't', f: 1200, f2: 300, d: 0.3, g: 0.18, w: 'triangle' },
-      { k: 't', f: 1567.98, d: 0.9, g: 0.12, w: 'sine', t: 0.02 },
-      { k: 't', f: 2093, d: 0.9, g: 0.09, w: 'sine', t: 0.08 },
-      { k: 't', f: 2637, d: 0.9, g: 0.07, w: 'sine', t: 0.14 },
-    ]);
-  }
-
-  public playPrizeSparkle(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 't', f: 2093, d: 0.2, g: 0.07, w: 'sine', t: 0 },
-      { k: 't', f: 2637, d: 0.2, g: 0.065, w: 'sine', t: 0.08 },
-      { k: 't', f: 3136, d: 0.2, g: 0.06, w: 'sine', t: 0.16 },
-      { k: 't', f: 2349, d: 0.25, g: 0.05, w: 'sine', t: 0.24 },
-    ]);
-  }
-
-  public playBalloonInflate(dest?: AudioNode, duration: number = 3.0) {
-    const layers: SfxLayer[] = [];
-    for (let at = 0; at < duration; at += 0.18) {
-      const p = at / Math.max(0.2, duration);
-      layers.push({ k: 't', f: 160 + p * 520, f2: 180 + p * 560, d: 0.2, g: 0.05, w: 'triangle', t: at });
-      layers.push({ k: 'n', f: 900 + p * 1200, d: 0.12, g: 0.03, ft: 'bandpass', q: 2, t: at });
-    }
-    this.sfx(dest, layers);
-  }
-
-  // ---- Giant Balloon Prison SFX ----
-  public playHandPump(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 'n', f: 1800, f2: 900, d: 0.09, g: 0.13, ft: 'bandpass', q: 2.5 },
-      { k: 't', f: 620, f2: 980, d: 0.1, g: 0.07, w: 'triangle' },
-      { k: 't', f: 320, f2: 180, d: 0.07, g: 0.06, w: 'sine', t: 0.03 },
-    ]);
-  }
-
-  public playWoodCreak(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 't', f: 180, f2: 90, d: 0.55, g: 0.1, w: 'sawtooth' },
-      { k: 'n', f: 700, f2: 380, d: 0.45, g: 0.06, ft: 'bandpass', q: 6 },
-    ]);
-  }
-
-  public playElasticStretch(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 't', f: 240, f2: 760, d: 0.42, g: 0.11, w: 'triangle' },
-      { k: 'n', f: 1400, f2: 2600, d: 0.38, g: 0.05, ft: 'bandpass', q: 3 },
-    ]);
-  }
-
-  public playBeanieWhoosh(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 'n', f: 2400, f2: 900, d: 0.45, g: 0.14, ft: 'bandpass', q: 1.6 },
-      { k: 't', f: 1500, f2: 2600, d: 0.4, g: 0.05, w: 'sine' },
-    ]);
-  }
-
-  public playRocketLaunch(dest?: AudioNode) {
-    const layers: SfxLayer[] = [
-      { k: 't', f: 90, f2: 260, d: 1.1, g: 0.16, w: 'sawtooth' },
-      { k: 'n', f: 900, f2: 3200, d: 1.0, g: 0.14, ft: 'bandpass', q: 1.4 },
-    ];
-    for (let at = 0; at < 1.0; at += 0.14) {
-      layers.push({ k: 'n', f: 2200 + at * 900, d: 0.12, g: 0.05, ft: 'highpass', t: at });
-    }
-    this.sfx(dest, layers);
-  }
-
-  public playHouseThud(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 't', f: 90, f2: 44, d: 0.5, g: 0.34, w: 'sine' },
-      { k: 'n', f: 620, f2: 180, d: 0.3, g: 0.16, ft: 'lowpass' },
-    ]);
-  }
-
-  public playBoothLights(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 't', f: 784, d: 0.12, g: 0.09, w: 'square', t: 0 },
-      { k: 't', f: 988, d: 0.12, g: 0.09, w: 'square', t: 0.1 },
-      { k: 't', f: 1175, d: 0.12, g: 0.09, w: 'square', t: 0.2 },
-      { k: 't', f: 1568, d: 0.35, g: 0.1, w: 'square', t: 0.3 },
-    ]);
-  }
-
-  public playDartThunkWood(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 'n', f: 1600, f2: 900, d: 0.08, g: 0.2, ft: 'bandpass', q: 3 },
-      { k: 't', f: 420, f2: 180, d: 0.1, g: 0.16, w: 'triangle' },
-    ]);
-  }
-
-  public playDominoClick(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 't', f: 1000, f2: 600, d: 0.06, g: 0.1, w: 'triangle' },
-      { k: 'n', f: 2600, f2: 1200, d: 0.04, g: 0.05, ft: 'bandpass', q: 3 },
-    ]);
-  }
-  // ---- Desert Island SFX ----
-  public playTropicalBirds(dest?: AudioNode) {
-    if (this.isMuted && !dest) return;
-    const ctx = this.getContext();
-    if (!ctx) return;
-    try {
-      const now = ctx.currentTime;
-      const chirps = [
-        { freq: 2200, start: 0.0, dur: 0.15 },
-        { freq: 1800, start: 0.2, dur: 0.15 },
-        { freq: 2500, start: 0.5, dur: 0.12 },
-        { freq: 2000, start: 0.7, dur: 0.15 },
-      ];
-      chirps.forEach((c) => {
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(c.freq, now + c.start);
-        gain.gain.setValueAtTime(0.0, now + c.start);
-        gain.gain.linearRampToValueAtTime(0.15 * this.volume, now + c.start + 0.02);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + c.start + c.dur);
-        osc.connect(gain);
-        this.routeOutput(gain, dest);
-        osc.start(now + c.start);
-        osc.stop(now + c.start + c.dur);
-      });
-    } catch {}
-  }
-
-  public playPlaneEngine(dest?: AudioNode) {
-    if (this.isMuted && !dest) return;
-    const ctx = this.getContext();
-    if (!ctx) return;
-    try {
-      const now = ctx.currentTime;
-      const osc = ctx.createOscillator();
-      const filter = ctx.createBiquadFilter();
-      const gain = ctx.createGain();
-      osc.type = 'sawtooth';
-      osc.frequency.setValueAtTime(80, now);
-      osc.frequency.exponentialRampToValueAtTime(120, now + 2);
-      filter.type = 'lowpass';
-      filter.frequency.setValueAtTime(300, now);
-      filter.Q.setValueAtTime(2, now);
-      gain.gain.setValueAtTime(0.0, now);
-      gain.gain.linearRampToValueAtTime(0.1 * this.volume, now + 0.5);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 4);
-      osc.connect(filter);
-      filter.connect(gain);
-      this.routeOutput(gain, dest);
-      osc.start(now);
-      osc.stop(now + 4);
-    } catch {}
-  }
-
-  // ---- The Shrinking Remote score + SFX ----
-  public playShrinkingRemoteScoreSection(dest?: AudioNode, start = 0, end = 7.5) {
-    this.scoreSlice(dest, start, end, {
-      bpm: 120,
-      wave: 'triangle',
-      level: 0.32,
-      chords: [
-        [261.63, 329.63, 392.0],
-        [349.23, 440.0, 523.25],
-        [392.0, 493.88, 587.33],
-        [261.63, 329.63, 392.0],
-      ],
-    });
-  }
-
-  public playRemoteClick(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 't', f: 1600, f2: 700, d: 0.05, g: 0.16, w: 'square' },
-      { k: 'n', f: 3200, f2: 1400, d: 0.035, g: 0.08, ft: 'bandpass', q: 4 },
-    ]);
-  }
-
-  public playShrinkBeam(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 't', f: 420, f2: 1500, d: 0.22, g: 0.14, w: 'sine' },
-      { k: 't', f: 900, f2: 2400, d: 0.2, g: 0.08, w: 'triangle', t: 0.04 },
-      { k: 'n', f: 1800, f2: 5200, d: 0.18, g: 0.05, ft: 'bandpass', q: 2 },
-    ]);
-  }
-
-  public playShrinkDown(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 't', f: 1200, f2: 180, d: 0.55, g: 0.15, w: 'sine' },
-      { k: 't', f: 1800, f2: 300, d: 0.45, g: 0.08, w: 'triangle', t: 0.05 },
-    ]);
-  }
-
-  public playSneakerSlide(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 'n', f: 900, f2: 300, d: 0.9, g: 0.16, ft: 'bandpass', q: 1.2 },
-      { k: 't', f: 140, f2: 90, d: 0.9, g: 0.06, w: 'sawtooth' },
-    ]);
-  }
-
-  public playPillowPoof(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 'n', f: 700, f2: 220, d: 0.24, g: 0.1, ft: 'lowpass' },
-      { k: 't', f: 180, f2: 90, d: 0.22, g: 0.12, w: 'sine' },
-    ]);
-  }
-
-  // ---- The Magic Paintbrush score + SFX ----
-  public playMagicPaintbrushScoreSection(dest?: AudioNode, start = 0, end = 7.5) {
-    this.scoreSlice(dest, start, end, {
-      bpm: 128,
-      wave: 'triangle',
-      level: 0.34,
-      chords: [
-        [261.63, 329.63, 392.0],
-        [349.23, 440.0, 523.25],
-        [392.0, 493.88, 587.33],
-        [329.63, 415.30, 493.88],
-      ],
-    });
-  }
-
-  public playPaintSwish(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 't', f: 900, f2: 200, d: 0.18, g: 0.14, w: 'sawtooth' },
-      { k: 'n', f: 4000, f2: 1200, d: 0.16, g: 0.07, ft: 'bandpass', q: 2 },
-    ]);
-  }
-
-  public playTransformDing(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 't', f: 800, f2: 1600, d: 0.2, g: 0.16, w: 'sine' },
-      { k: 't', f: 1200, f2: 2400, d: 0.18, g: 0.1, w: 'triangle', t: 0.06 },
-    ]);
-  }
-
-  public playMonsterFootstep(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 't', f: 90, f2: 40, d: 0.18, g: 0.2, w: 'sine' },
-      { k: 'n', f: 200, f2: 100, d: 0.16, g: 0.12, ft: 'bandpass', q: 1.5 },
-    ]);
-  }
-
-  public playCartoonRun(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 't', f: 220, f2: 120, d: 0.1, g: 0.14, w: 'triangle' },
-      { k: 't', f: 300, f2: 160, d: 0.1, g: 0.1, w: 'triangle', t: 0.1 },
-    ]);
-  }
-
-  public playFunnyImpact(dest?: AudioNode) {
-    this.sfx(dest, [
-      { k: 't', f: 150, f2: 80, d: 0.25, g: 0.22, w: 'sine' },
-      { k: 'n', f: 500, f2: 250, d: 0.2, g: 0.12, ft: 'lowpass' },
-    ]);
-  }
 }
 
 export const soundEngine = new SoundEngine();
@@ -4738,21 +3252,28 @@ export function speakVoiceOver(
     utterance.volume = options?.volume ?? 1.0;
 
     const voices = window.speechSynthesis.getVoices();
-    const englishVoice = voices.find(
-      (v) =>
-        v.lang.startsWith('en') &&
-        (v.name.includes('Natural') ||
-          v.name.includes('Google') ||
-          v.name.includes('Samantha') ||
-          v.name.includes('Victoria'))
-    );
-    if (englishVoice) utterance.voice = englishVoice;
+    const englishVoice =
+      voices.find(
+        (v) =>
+          v.lang.startsWith('en') &&
+          (v.name.includes('Natural') ||
+            v.name.includes('Google') ||
+            v.name.includes('Samantha') ||
+            v.name.includes('Daniel'))
+      ) || voices.find((v) => v.lang.startsWith('en'));
+
+    if (englishVoice) {
+      utterance.voice = englishVoice;
+    }
 
     window.speechSynthesis.speak(utterance);
   } catch {}
 }
 
 export function stopVoiceOver() {
-  if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
-  window.speechSynthesis.cancel();
+  if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+    try {
+      window.speechSynthesis.cancel();
+    } catch {}
+  }
 }

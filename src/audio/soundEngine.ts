@@ -3358,6 +3358,3273 @@ class SoundEngine {
   }
 
   /**
+   * Chunky red CLONE / RESET button mechanical press click + spring return.
+   */
+  public playCloneButtonPress(dest?: AudioNode, pitch = 1) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(640 * pitch, now);
+      osc.frequency.exponentialRampToValueAtTime(190 * pitch, now + 0.08);
+      gain.gain.setValueAtTime(0.42 * this.volume, now);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.11);
+      osc.connect(gain);
+      this.routeOutput(gain, dest);
+      osc.start(now);
+      osc.stop(now + 0.12);
+    } catch {}
+  }
+
+  /**
+   * Bright sci-fi cartoon flash + bubbly spawn pop as a clone appears.
+   */
+  public playClonePop(dest?: AudioNode, pitch = 1) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const flash = ctx.createOscillator();
+      const fGain = ctx.createGain();
+      flash.type = 'sine';
+      flash.frequency.setValueAtTime(520 * pitch, now);
+      flash.frequency.exponentialRampToValueAtTime(1380 * pitch, now + 0.14);
+      fGain.gain.setValueAtTime(0.24 * this.volume, now);
+      fGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.17);
+      flash.connect(fGain);
+      this.routeOutput(fGain, dest);
+      flash.start(now);
+      flash.stop(now + 0.18);
+
+      const pop = ctx.createOscillator();
+      const pGain = ctx.createGain();
+      pop.type = 'sine';
+      pop.frequency.setValueAtTime(220 * pitch, now + 0.05);
+      pop.frequency.exponentialRampToValueAtTime(760 * pitch, now + 0.13);
+      pGain.gain.setValueAtTime(0.36 * this.volume, now + 0.05);
+      pGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.18);
+      pop.connect(pGain);
+      this.routeOutput(pGain, dest);
+      pop.start(now + 0.05);
+      pop.stop(now + 0.2);
+    } catch {}
+  }
+
+  /**
+   * Massive white-flash vacuum sweep when pressing RESET vanishes all clones.
+   */
+  public playResetFlashVanish(dest?: AudioNode) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const sweep = ctx.createOscillator();
+      const sGain = ctx.createGain();
+      sweep.type = 'sawtooth';
+      sweep.frequency.setValueAtTime(1180, now);
+      sweep.frequency.exponentialRampToValueAtTime(95, now + 0.55);
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(2400, now);
+      filter.frequency.exponentialRampToValueAtTime(220, now + 0.55);
+      sGain.gain.setValueAtTime(0.34 * this.volume, now);
+      sGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.58);
+      sweep.connect(filter);
+      filter.connect(sGain);
+      this.routeOutput(sGain, dest);
+      sweep.start(now);
+      sweep.stop(now + 0.6);
+
+      [523.25, 659.25, 783.99, 1046.5].forEach((freq, idx) => {
+        const at = now + 0.22 + idx * 0.06;
+        const c = ctx.createOscillator();
+        const g = ctx.createGain();
+        c.type = 'triangle';
+        c.frequency.setValueAtTime(freq, at);
+        g.gain.setValueAtTime(0.22 * this.volume, at);
+        g.gain.exponentialRampToValueAtTime(0.0001, at + 0.28);
+        c.connect(g);
+        this.routeOutput(g, dest);
+        c.start(at);
+        c.stop(at + 0.3);
+      });
+    } catch {}
+  }
+
+  /**
+   * Comedic shock sting when tiny clone waves from Stickman's shoulder.
+   */
+  public playCloneShockSting(dest?: AudioNode) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      [622.25, 587.33, 554.37, 466.16].forEach((freq, i) => {
+        const at = now + i * 0.14;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(freq, at);
+        if (i === 3) {
+          osc.frequency.linearRampToValueAtTime(349.23, at + 0.52);
+        }
+        const filter = ctx.createBiquadFilter();
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(1400, at);
+        const dur = i === 3 ? 0.58 : 0.12;
+        gain.gain.setValueAtTime(0.001, at);
+        gain.gain.linearRampToValueAtTime(0.24 * this.volume, at + 0.015);
+        gain.gain.exponentialRampToValueAtTime(0.0001, at + dur);
+        osc.connect(filter);
+        filter.connect(gain);
+        this.routeOutput(gain, dest);
+        osc.start(at);
+        osc.stop(at + dur + 0.03);
+      });
+    } catch {}
+  }
+
+  /**
+   * 30s energetic lab/slapstick comedy score for "The Clone Button Disaster",
+   * sliced into 4 x 7.5s sections with a brief hush before the final tiny-clone reveal.
+   */
+  public playCloneDisasterScoreSection(dest?: AudioNode, fromSec = 0, toSec = 30) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const beat = 60 / 138; // peppy 138 BPM slapstick escalation
+      const base = ctx.currentTime + 0.05 - fromSec;
+      const LEVEL = 0.52;
+
+      const tone = (
+        freq: number,
+        at: number,
+        dur: number,
+        type: OscillatorType,
+        gain: number
+      ) => {
+        if (at < ctx.currentTime - 0.05 || at > ctx.currentTime + (toSec - fromSec) + 0.1) return;
+        const osc = ctx.createOscillator();
+        const g = ctx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, at);
+        g.gain.setValueAtTime(0.0001, at);
+        g.gain.linearRampToValueAtTime(gain * LEVEL * this.volume, at + 0.01);
+        g.gain.exponentialRampToValueAtTime(0.0001, at + dur);
+        osc.connect(g);
+        this.routeOutput(g, dest);
+        osc.start(at);
+        osc.stop(at + dur + 0.02);
+      };
+
+      const firstBeat = Math.max(0, Math.floor(fromSec / beat));
+      const lastBeat = Math.ceil(toSec / beat);
+      const melody = [587.33, 659.25, 739.99, 880.0, 783.99, 739.99, 659.25, 587.33];
+      const chaosLead = [880.0, 987.77, 1174.66, 987.77, 1046.5, 932.33, 880.0, 783.99];
+      const bass = [146.83, 146.83, 196.0, 220.0];
+
+      for (let b = firstBeat; b < lastBeat; b++) {
+        const t = b * beat;
+        const at = base + t;
+        if ((t >= 25.35 && t < 26.05) || t >= 28.4) continue;
+
+        const bar = Math.floor(b / 4) % bass.length;
+        tone(bass[bar], at, beat * 0.55, 'triangle', 0.36);
+
+        if (t >= 12.0 && t < 24.0) {
+          const note = chaosLead[b % chaosLead.length];
+          tone(note, at + beat * 0.5, beat * 0.28, 'square', 0.14);
+        } else {
+          const note = melody[b % melody.length];
+          tone(note, at + beat * 0.5, beat * 0.34, 'triangle', 0.32);
+        }
+      }
+    } catch {}
+  }
+
+  /**
+   * Strained elastic rubber-band stretch creak.
+   */
+  public playRubberStretch(dest?: AudioNode, intensity = 1) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const lfo = ctx.createOscillator();
+      const lfoGain = ctx.createGain();
+      const gain = ctx.createGain();
+
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(115 * intensity, now);
+      osc.frequency.linearRampToValueAtTime(245 * intensity, now + 0.55);
+
+      lfo.type = 'sine';
+      lfo.frequency.setValueAtTime(26, now);
+      lfoGain.gain.setValueAtTime(18, now);
+      lfo.connect(lfoGain);
+      lfoGain.connect(osc.frequency);
+
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'bandpass';
+      filter.frequency.setValueAtTime(520 * intensity, now);
+      filter.Q.setValueAtTime(3.5, now);
+
+      gain.gain.setValueAtTime(0.001, now);
+      gain.gain.linearRampToValueAtTime(0.28 * this.volume, now + 0.08);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.6);
+
+      osc.connect(filter);
+      filter.connect(gain);
+      this.routeOutput(gain, dest);
+
+      lfo.start(now);
+      osc.start(now);
+      lfo.stop(now + 0.62);
+      osc.stop(now + 0.62);
+    } catch {}
+  }
+
+  /**
+   * Heavy wooden post crack & snap loose from bolts.
+   */
+  public playWoodCrackSnap(dest?: AudioNode) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const bufSize = Math.floor(ctx.sampleRate * 0.16);
+      const buf = ctx.createBuffer(1, bufSize, ctx.sampleRate);
+      const data = buf.getChannelData(0);
+      for (let i = 0; i < bufSize; i++) {
+        data[i] = (Math.sin(i * 0.19) * 0.5 + (((i * 1103515245) % 97) / 97 - 0.5)) * Math.exp(-i / (bufSize * 0.25));
+      }
+      const noise = ctx.createBufferSource();
+      noise.buffer = buf;
+
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'bandpass';
+      filter.frequency.setValueAtTime(1350, now);
+      filter.Q.setValueAtTime(1.8, now);
+
+      const gain = ctx.createGain();
+      gain.gain.setValueAtTime(0.55 * this.volume, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.16);
+
+      noise.connect(filter);
+      filter.connect(gain);
+      this.routeOutput(gain, dest);
+      noise.start(now);
+
+      const thud = ctx.createOscillator();
+      const tGain = ctx.createGain();
+      thud.type = 'triangle';
+      thud.frequency.setValueAtTime(220, now);
+      thud.frequency.exponentialRampToValueAtTime(62, now + 0.18);
+      tGain.gain.setValueAtTime(0.45 * this.volume, now);
+      tGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.2);
+      thud.connect(tGain);
+      this.routeOutput(tGain, dest);
+      thud.start(now);
+      thud.stop(now + 0.21);
+    } catch {}
+  }
+
+  /**
+   * Giant elastic rubber band snap & oscillating twang recoil.
+   */
+  public playRubberTwangSnap(dest?: AudioNode, pitch = 1) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const lfo = ctx.createOscillator();
+      const lfoGain = ctx.createGain();
+      const gain = ctx.createGain();
+
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(110 * pitch, now);
+      osc.frequency.exponentialRampToValueAtTime(340 * pitch, now + 0.08);
+      osc.frequency.exponentialRampToValueAtTime(135 * pitch, now + 0.55);
+
+      lfo.type = 'sine';
+      lfo.frequency.setValueAtTime(24, now);
+      lfoGain.gain.setValueAtTime(48 * pitch, now);
+      lfoGain.gain.exponentialRampToValueAtTime(4, now + 0.55);
+      lfo.connect(lfoGain);
+      lfoGain.connect(osc.frequency);
+
+      gain.gain.setValueAtTime(0.45 * this.volume, now);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.58);
+
+      osc.connect(gain);
+      this.routeOutput(gain, dest);
+
+      lfo.start(now);
+      osc.start(now);
+      lfo.stop(now + 0.6);
+      osc.stop(now + 0.6);
+    } catch {}
+  }
+
+  /**
+   * Soft puffy sofa / pillow bounce boing.
+   */
+  public playCushionBounce(dest?: AudioNode, pitch = 1) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(140 * pitch, now);
+      osc.frequency.exponentialRampToValueAtTime(380 * pitch, now + 0.12);
+      osc.frequency.exponentialRampToValueAtTime(190 * pitch, now + 0.28);
+      gain.gain.setValueAtTime(0.4 * this.volume, now);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.3);
+      osc.connect(gain);
+      this.routeOutput(gain, dest);
+      osc.start(now);
+      osc.stop(now + 0.32);
+    } catch {}
+  }
+
+  /**
+   * Crisp elastic whip flick when the loose band knocks Stickman's beanie off.
+   */
+  public playBeanieFlick(dest?: AudioNode) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(360, now);
+      osc.frequency.exponentialRampToValueAtTime(1480, now + 0.06);
+      osc.frequency.exponentialRampToValueAtTime(280, now + 0.18);
+      gain.gain.setValueAtTime(0.42 * this.volume, now);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.2);
+      osc.connect(gain);
+      this.routeOutput(gain, dest);
+      osc.start(now);
+      osc.stop(now + 0.21);
+    } catch {}
+  }
+
+  /**
+   * 30s energetic slapstick comedy score for "The Giant Rubber Band Trap",
+   * sliced into 4 x 7.5s sections with dramatic silence windows for the snap & final stare.
+   */
+  public playRubberBandScoreSection(dest?: AudioNode, fromSec = 0, toSec = 30) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const beat = 60 / 134;
+      const base = ctx.currentTime + 0.05 - fromSec;
+      const LEVEL = 0.5;
+
+      const tone = (
+        freq: number,
+        at: number,
+        dur: number,
+        type: OscillatorType,
+        gain: number
+      ) => {
+        if (at < ctx.currentTime - 0.05 || at > ctx.currentTime + (toSec - fromSec) + 0.1) return;
+        const osc = ctx.createOscillator();
+        const g = ctx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, at);
+        g.gain.setValueAtTime(0.0001, at);
+        g.gain.linearRampToValueAtTime(gain * LEVEL * this.volume, at + 0.01);
+        g.gain.exponentialRampToValueAtTime(0.0001, at + dur);
+        osc.connect(g);
+        this.routeOutput(g, dest);
+        osc.start(at);
+        osc.stop(at + dur + 0.02);
+      };
+
+      const firstBeat = Math.max(0, Math.floor(fromSec / beat));
+      const lastBeat = Math.ceil(toSec / beat);
+      const melody = [523.25, 659.25, 783.99, 880.0, 783.99, 659.25, 587.33, 659.25];
+      const launchLead = [783.99, 987.77, 1046.5, 1174.66, 1046.5, 987.77, 880.0, 783.99];
+      const bass = [130.81, 130.81, 174.61, 196.0];
+
+      for (let b = firstBeat; b < lastBeat; b++) {
+        const t = b * beat;
+        const at = base + t;
+        // Brief comedic hush right at post crack (13.1-13.55s) & final beanie flick stare (28.15s+)
+        if ((t >= 13.1 && t < 13.55) || t >= 28.15) continue;
+
+        const bar = Math.floor(b / 4) % bass.length;
+        tone(bass[bar], at, beat * 0.55, 'triangle', 0.36);
+
+        if (t >= 13.6 && t < 24.0) {
+          tone(launchLead[b % launchLead.length], at + beat * 0.5, beat * 0.28, 'square', 0.13);
+        } else {
+          tone(melody[b % melody.length], at + beat * 0.5, beat * 0.34, 'triangle', 0.31);
+        }
+      }
+    } catch {}
+  }
+
+  /**
+   * Mysterious descending portal bloop as a small object falls into the purple floor hole.
+   */
+  public playHoleDropBloop(dest?: AudioNode, pitch = 1) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(760 * pitch, now);
+      osc.frequency.exponentialRampToValueAtTime(160 * pitch, now + 0.24);
+      gain.gain.setValueAtTime(0.36 * this.volume, now);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.26);
+      osc.connect(gain);
+      this.routeOutput(gain, dest);
+      osc.start(now);
+      osc.stop(now + 0.28);
+    } catch {}
+  }
+
+  /**
+   * Giant purple-portal eruption boom + expanding rising shimmer when an oversized prop shoots out.
+   */
+  public playHoleGiantErupt(dest?: AudioNode, scalePitch = 1) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const boom = ctx.createOscillator();
+      const bGain = ctx.createGain();
+      boom.type = 'triangle';
+      boom.frequency.setValueAtTime(95 * scalePitch, now);
+      boom.frequency.exponentialRampToValueAtTime(340 * scalePitch, now + 0.12);
+      boom.frequency.exponentialRampToValueAtTime(68, now + 0.45);
+      bGain.gain.setValueAtTime(0.5 * this.volume, now);
+      bGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.48);
+      boom.connect(bGain);
+      this.routeOutput(bGain, dest);
+      boom.start(now);
+      boom.stop(now + 0.5);
+
+      const shimmer = ctx.createOscillator();
+      const sGain = ctx.createGain();
+      shimmer.type = 'sine';
+      shimmer.frequency.setValueAtTime(380 * scalePitch, now);
+      shimmer.frequency.exponentialRampToValueAtTime(1120 * scalePitch, now + 0.25);
+      sGain.gain.setValueAtTime(0.24 * this.volume, now);
+      sGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.28);
+      shimmer.connect(sGain);
+      this.routeOutput(sGain, dest);
+      shimmer.start(now);
+      shimmer.stop(now + 0.3);
+    } catch {}
+  }
+
+  /**
+   * Comically huge deep rubber-ducky squeak-honk!
+   */
+  public playGiantDuckSqueak(dest?: AudioNode) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      [0, 0.24].forEach((offset, idx) => {
+        const at = now + offset;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sawtooth';
+        const f0 = idx === 0 ? 310 : 280;
+        osc.frequency.setValueAtTime(f0, at);
+        osc.frequency.linearRampToValueAtTime(f0 * 1.32, at + 0.08);
+        osc.frequency.linearRampToValueAtTime(f0 * 0.85, at + 0.18);
+        const filter = ctx.createBiquadFilter();
+        filter.type = 'bandpass';
+        filter.frequency.setValueAtTime(720, at);
+        filter.Q.setValueAtTime(2.6, at);
+        gain.gain.setValueAtTime(0.42 * this.volume, at);
+        gain.gain.exponentialRampToValueAtTime(0.0001, at + 0.2);
+        osc.connect(filter);
+        filter.connect(gain);
+        this.routeOutput(gain, dest);
+        osc.start(at);
+        osc.stop(at + 0.21);
+      });
+    } catch {}
+  }
+
+  /**
+   * Wooden living-room furniture crash & splintering impact.
+   */
+  public playFurnitureSmash(dest?: AudioNode) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const bufSize = Math.floor(ctx.sampleRate * 0.24);
+      const buf = ctx.createBuffer(1, bufSize, ctx.sampleRate);
+      const data = buf.getChannelData(0);
+      for (let i = 0; i < bufSize; i++) {
+        data[i] = (Math.sin(i * 0.16) * 0.4 + (((i * 1664525) % 101) / 101 - 0.5)) * Math.exp(-i / (bufSize * 0.28));
+      }
+      const noise = ctx.createBufferSource();
+      noise.buffer = buf;
+
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(1900, now);
+
+      const gain = ctx.createGain();
+      gain.gain.setValueAtTime(0.55 * this.volume, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.24);
+      noise.connect(filter);
+      filter.connect(gain);
+      this.routeOutput(gain, dest);
+      noise.start(now);
+
+      const thump = ctx.createOscillator();
+      const tGain = ctx.createGain();
+      thump.type = 'triangle';
+      thump.frequency.setValueAtTime(160, now);
+      thump.frequency.exponentialRampToValueAtTime(48, now + 0.22);
+      tGain.gain.setValueAtTime(0.45 * this.volume, now);
+      tGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.24);
+      thump.connect(tGain);
+      this.routeOutput(tGain, dest);
+      thump.start(now);
+      thump.stop(now + 0.25);
+    } catch {}
+  }
+
+  /**
+   * 30s playful sci-fi mystery slapstick score for "The Mystery Hole in the Floor",
+   * sliced into 4 x 7.5s sections with a suspense pause right before the giant head reveal.
+   */
+  public playMysteryHoleScoreSection(dest?: AudioNode, fromSec = 0, toSec = 30) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const beat = 60 / 132;
+      const base = ctx.currentTime + 0.05 - fromSec;
+      const LEVEL = 0.5;
+
+      const tone = (
+        freq: number,
+        at: number,
+        dur: number,
+        type: OscillatorType,
+        gain: number
+      ) => {
+        if (at < ctx.currentTime - 0.05 || at > ctx.currentTime + (toSec - fromSec) + 0.1) return;
+        const osc = ctx.createOscillator();
+        const g = ctx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, at);
+        g.gain.setValueAtTime(0.0001, at);
+        g.gain.linearRampToValueAtTime(gain * LEVEL * this.volume, at + 0.01);
+        g.gain.exponentialRampToValueAtTime(0.0001, at + dur);
+        osc.connect(g);
+        this.routeOutput(g, dest);
+        osc.start(at);
+        osc.stop(at + dur + 0.02);
+      };
+
+      const firstBeat = Math.max(0, Math.floor(fromSec / beat));
+      const lastBeat = Math.ceil(toSec / beat);
+      const melody = [493.88, 587.33, 659.25, 739.99, 659.25, 587.33, 554.37, 587.33];
+      const chaseLead = [739.99, 880.0, 987.77, 1174.66, 987.77, 880.0, 783.99, 659.25];
+      const bass = [123.47, 123.47, 164.81, 185.0];
+
+      for (let b = firstBeat; b < lastBeat; b++) {
+        const t = b * beat;
+        const at = base + t;
+        if ((t >= 27.15 && t < 27.85) || t >= 28.55) continue;
+
+        const bar = Math.floor(b / 4) % bass.length;
+        tone(bass[bar], at, beat * 0.55, 'triangle', 0.36);
+
+        if (t >= 13.8 && t < 24.0) {
+          tone(chaseLead[b % chaseLead.length], at + beat * 0.5, beat * 0.28, 'square', 0.13);
+        } else {
+          tone(melody[b % melody.length], at + beat * 0.5, beat * 0.34, 'triangle', 0.3);
+        }
+      }
+    } catch {}
+  }
+
+  /**
+   * Bouncy metallic coil-spring BOING! Pitch scales up with bounce height.
+   */
+  public playSpringBoing(dest?: AudioNode, pitch = 1) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const lfo = ctx.createOscillator();
+      const lfoGain = ctx.createGain();
+      const gain = ctx.createGain();
+
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(145 * pitch, now);
+      osc.frequency.exponentialRampToValueAtTime(420 * pitch, now + 0.14);
+      osc.frequency.exponentialRampToValueAtTime(240 * pitch, now + 0.42);
+
+      lfo.type = 'sine';
+      lfo.frequency.setValueAtTime(28, now);
+      lfoGain.gain.setValueAtTime(42 * pitch, now);
+      lfoGain.gain.exponentialRampToValueAtTime(4, now + 0.42);
+      lfo.connect(lfoGain);
+      lfoGain.connect(osc.frequency);
+
+      gain.gain.setValueAtTime(0.42 * this.volume, now);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.45);
+      osc.connect(gain);
+      this.routeOutput(gain, dest);
+
+      lfo.start(now);
+      osc.start(now);
+      lfo.stop(now + 0.47);
+      osc.stop(now + 0.47);
+    } catch {}
+  }
+
+  /**
+   * Giant trampoline + spring rocket-launch boing & upward whistle.
+   */
+  public playRocketLaunchBoing(dest?: AudioNode) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const boing = ctx.createOscillator();
+      const bGain = ctx.createGain();
+      boing.type = 'triangle';
+      boing.frequency.setValueAtTime(110, now);
+      boing.frequency.exponentialRampToValueAtTime(620, now + 0.25);
+      bGain.gain.setValueAtTime(0.5 * this.volume, now);
+      bGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.42);
+      boing.connect(bGain);
+      this.routeOutput(bGain, dest);
+      boing.start(now);
+      boing.stop(now + 0.44);
+
+      const whistle = ctx.createOscillator();
+      const wGain = ctx.createGain();
+      whistle.type = 'sine';
+      whistle.frequency.setValueAtTime(360, now + 0.08);
+      whistle.frequency.exponentialRampToValueAtTime(1320, now + 0.65);
+      wGain.gain.setValueAtTime(0.24 * this.volume, now + 0.08);
+      wGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.68);
+      whistle.connect(wGain);
+      this.routeOutput(wGain, dest);
+      whistle.start(now + 0.08);
+      whistle.stop(now + 0.7);
+    } catch {}
+  }
+
+  /**
+   * Loose metallic coil pop-out snap when the sneaker launches onto Stickman's head.
+   */
+  public playSpringPopOut(dest?: AudioNode) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(280, now);
+      osc.frequency.exponentialRampToValueAtTime(980, now + 0.09);
+      osc.frequency.exponentialRampToValueAtTime(420, now + 0.24);
+      gain.gain.setValueAtTime(0.4 * this.volume, now);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.26);
+      osc.connect(gain);
+      this.routeOutput(gain, dest);
+      osc.start(now);
+      osc.stop(now + 0.28);
+    } catch {}
+  }
+
+  /**
+   * 30s energetic bouncy pop comedy score for "The Super Bouncy Shoes",
+   * sliced into 4 x 7.5s sections with a brief hush before the loose-spring sneaker bonk.
+   */
+  public playSuperBouncyScoreSection(dest?: AudioNode, fromSec = 0, toSec = 30) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const beat = 60 / 138;
+      const base = ctx.currentTime + 0.05 - fromSec;
+      const LEVEL = 0.5;
+
+      const tone = (
+        freq: number,
+        at: number,
+        dur: number,
+        type: OscillatorType,
+        gain: number
+      ) => {
+        if (at < ctx.currentTime - 0.05 || at > ctx.currentTime + (toSec - fromSec) + 0.1) return;
+        const osc = ctx.createOscillator();
+        const g = ctx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, at);
+        g.gain.setValueAtTime(0.0001, at);
+        g.gain.linearRampToValueAtTime(gain * LEVEL * this.volume, at + 0.01);
+        g.gain.exponentialRampToValueAtTime(0.0001, at + dur);
+        osc.connect(g);
+        this.routeOutput(g, dest);
+        osc.start(at);
+        osc.stop(at + dur + 0.02);
+      };
+
+      const firstBeat = Math.max(0, Math.floor(fromSec / beat));
+      const lastBeat = Math.ceil(toSec / beat);
+      const melody = [523.25, 659.25, 783.99, 1046.5, 880.0, 783.99, 659.25, 587.33];
+      const airLead = [1046.5, 1174.66, 1318.51, 1174.66, 987.77, 880.0, 783.99, 659.25];
+      const bass = [130.81, 164.81, 196.0, 174.61];
+
+      for (let b = firstBeat; b < lastBeat; b++) {
+        const t = b * beat;
+        const at = base + t;
+        if (t >= 27.6) continue;
+
+        const bar = Math.floor(b / 4) % bass.length;
+        tone(bass[bar], at, beat * 0.5, 'triangle', 0.36);
+
+        if (t >= 12.0 && t < 24.0) {
+          tone(airLead[b % airLead.length], at + beat * 0.5, beat * 0.28, 'square', 0.12);
+        } else {
+          tone(melody[b % melody.length], at + beat * 0.5, beat * 0.34, 'triangle', 0.31);
+        }
+      }
+    } catch {}
+  }
+
+  /** Magical shadowy swoosh when the silhouette stretches or kicks. */
+  public playShadowWhoosh(dest?: AudioNode, pitch = 1.0) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const g = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(160 * pitch, now);
+      osc.frequency.exponentialRampToValueAtTime(520 * pitch, now + 0.14);
+      osc.frequency.exponentialRampToValueAtTime(120 * pitch, now + 0.34);
+
+      g.gain.setValueAtTime(0.0001, now);
+      g.gain.linearRampToValueAtTime(0.24 * this.volume, now + 0.05);
+      g.gain.exponentialRampToValueAtTime(0.0001, now + 0.36);
+
+      osc.connect(g);
+      this.routeOutput(g, dest);
+      osc.start(now);
+      osc.stop(now + 0.38);
+
+      const nSize = Math.floor(ctx.sampleRate * 0.25);
+      const buf = ctx.createBuffer(1, nSize, ctx.sampleRate);
+      const data = buf.getChannelData(0);
+      for (let i = 0; i < nSize; i++) {
+        data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (ctx.sampleRate * 0.09));
+      }
+      const src = ctx.createBufferSource();
+      src.buffer = buf;
+      const bp = ctx.createBiquadFilter();
+      bp.type = 'bandpass';
+      bp.frequency.setValueAtTime(700 * pitch, now);
+      bp.Q.setValueAtTime(1.5, now);
+      const ng = ctx.createGain();
+      ng.gain.setValueAtTime(0.16 * this.volume, now);
+      ng.gain.exponentialRampToValueAtTime(0.0001, now + 0.24);
+      src.connect(bp);
+      bp.connect(ng);
+      this.routeOutput(ng, dest);
+      src.start(now);
+    } catch {}
+  }
+
+  /** Mechanical spotlight swivel click or bulb power-off flicker buzz. */
+  public playSpotlightClick(dest?: AudioNode, powerOn = true) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const g = ctx.createGain();
+      osc.type = powerOn ? 'triangle' : 'sawtooth';
+      if (powerOn) {
+        osc.frequency.setValueAtTime(920, now);
+        osc.frequency.exponentialRampToValueAtTime(340, now + 0.07);
+        g.gain.setValueAtTime(0.22 * this.volume, now);
+        g.gain.exponentialRampToValueAtTime(0.0001, now + 0.09);
+        osc.connect(g);
+        this.routeOutput(g, dest);
+        osc.start(now);
+        osc.stop(now + 0.11);
+      } else {
+        // Two electric sputter flickers followed by power-down drop
+        osc.frequency.setValueAtTime(180, now);
+        osc.frequency.linearRampToValueAtTime(110, now + 0.22);
+        osc.frequency.exponentialRampToValueAtTime(48, now + 0.45);
+        g.gain.setValueAtTime(0.2 * this.volume, now);
+        g.gain.setValueAtTime(0.03 * this.volume, now + 0.09);
+        g.gain.setValueAtTime(0.22 * this.volume, now + 0.16);
+        g.gain.exponentialRampToValueAtTime(0.0001, now + 0.46);
+        osc.connect(g);
+        this.routeOutput(g, dest);
+        osc.start(now);
+        osc.stop(now + 0.48);
+      }
+    } catch {}
+  }
+
+  /** Hollow white cup drop & rattle when the ball lands cleanly inside. */
+  public playCupDropClink(dest?: AudioNode) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      [680, 1020, 880].forEach((freq, idx) => {
+        const at = now + idx * 0.075;
+        const osc = ctx.createOscillator();
+        const g = ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(freq, at);
+        osc.frequency.exponentialRampToValueAtTime(freq * 0.85, at + 0.11);
+        g.gain.setValueAtTime(0.24 * Math.pow(0.7, idx) * this.volume, at);
+        g.gain.exponentialRampToValueAtTime(0.0001, at + 0.14);
+        osc.connect(g);
+        this.routeOutput(g, dest);
+        osc.start(at);
+        osc.stop(at + 0.16);
+      });
+    } catch {}
+  }
+
+  /**
+   * 30s Spy-Comedy Trickshot score in 7.5s sections.
+   * Stops at 26.95s when the spotlight flickers off.
+   */
+  public playShadowTrickshotScoreSection(dest?: AudioNode, fromSec = 0, toSec = 30) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const beat = 60 / 134;
+      const base = ctx.currentTime + 0.05 - fromSec;
+      const LEVEL = 0.28;
+
+      const tone = (freq: number, at: number, dur: number, type: OscillatorType, gain: number) => {
+        if (at < ctx.currentTime - 0.05) return;
+        const osc = ctx.createOscillator();
+        const g = ctx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, at);
+        g.gain.setValueAtTime(0.0001, at);
+        g.gain.linearRampToValueAtTime(gain * LEVEL * this.volume, at + 0.01);
+        g.gain.exponentialRampToValueAtTime(0.0001, at + dur);
+        osc.connect(g);
+        this.routeOutput(g, dest);
+        osc.start(at);
+        osc.stop(at + dur + 0.02);
+      };
+
+      const firstBeat = Math.max(0, Math.floor(fromSec / beat));
+      const lastBeat = Math.ceil(toSec / beat);
+      // Spy-comedy minor-to-bright motif
+      const bass = [146.83, 146.83, 174.61, 196.0, 220.0, 196.0, 174.61, 164.81];
+      const lead = [587.33, 659.25, 698.46, 880.0, 783.99, 698.46, 659.25, 523.25];
+      const climax = [880.0, 1046.5, 1174.66, 1046.5, 987.77, 880.0, 783.99, 659.25];
+
+      for (let b = firstBeat; b < lastBeat; b++) {
+        const t = b * beat;
+        const at = base + t;
+        if (t >= 26.9) continue; // Cut dead when spotlight flickers off
+
+        tone(bass[b % bass.length], at, beat * 0.48, 'triangle', 0.36);
+
+        if (t >= 18.0 && t < 24.2) {
+          // Tense rising setup pulse in Scene 4
+          tone(climax[b % climax.length], at + beat * 0.5, beat * 0.26, 'square', 0.13);
+        } else {
+          tone(lead[b % lead.length], at + beat * 0.5, beat * 0.32, 'triangle', 0.28);
+        }
+      }
+    } catch {}
+  }
+
+  /** Crystalline invisible glass wall bounce ping + soft thump. */
+  public playInvisibleWallPing(dest?: AudioNode, pitch = 1.0) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      // Glass resonance shimmer
+      [880 * pitch, 1320 * pitch].forEach((freq, idx) => {
+        const osc = ctx.createOscillator();
+        const g = ctx.createGain();
+        osc.type = idx === 0 ? 'sine' : 'triangle';
+        osc.frequency.setValueAtTime(freq, now);
+        osc.frequency.exponentialRampToValueAtTime(freq * 1.04, now + 0.16);
+        g.gain.setValueAtTime(0.0001, now);
+        g.gain.linearRampToValueAtTime((idx === 0 ? 0.24 : 0.12) * this.volume, now + 0.006);
+        g.gain.exponentialRampToValueAtTime(0.0001, now + 0.22);
+        osc.connect(g);
+        this.routeOutput(g, dest);
+        osc.start(now);
+        osc.stop(now + 0.24);
+      });
+
+      // Rubber basketball impact thump
+      const thud = ctx.createOscillator();
+      const tg = ctx.createGain();
+      thud.type = 'sine';
+      thud.frequency.setValueAtTime(185, now);
+      thud.frequency.exponentialRampToValueAtTime(68, now + 0.09);
+      tg.gain.setValueAtTime(0.24 * this.volume, now);
+      tg.gain.exponentialRampToValueAtTime(0.0001, now + 0.11);
+      thud.connect(tg);
+      this.routeOutput(tg, dest);
+      thud.start(now);
+      thud.stop(now + 0.12);
+    } catch {}
+  }
+
+  /** Heavy glass face-slam thump + crystalline wobble when Stickman runs into the wall. */
+  public playGlassFaceSlam(dest?: AudioNode) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const body = ctx.createOscillator();
+      const bg = ctx.createGain();
+      body.type = 'triangle';
+      body.frequency.setValueAtTime(150, now);
+      body.frequency.exponentialRampToValueAtTime(42, now + 0.22);
+      bg.gain.setValueAtTime(0.45 * this.volume, now);
+      bg.gain.exponentialRampToValueAtTime(0.0001, now + 0.25);
+      body.connect(bg);
+      this.routeOutput(bg, dest);
+      body.start(now);
+      body.stop(now + 0.27);
+
+      const glass = ctx.createOscillator();
+      const gg = ctx.createGain();
+      glass.type = 'sine';
+      glass.frequency.setValueAtTime(620, now);
+      glass.frequency.linearRampToValueAtTime(580, now + 0.18);
+      gg.gain.setValueAtTime(0.2 * this.volume, now);
+      gg.gain.exponentialRampToValueAtTime(0.0001, now + 0.3);
+      glass.connect(gg);
+      this.routeOutput(gg, dest);
+      glass.start(now);
+      glass.stop(now + 0.32);
+    } catch {}
+  }
+
+  /** Rubber-on-glass descending squeak as Stickman slides down the invisible wall. */
+  public playGlassSqueakSlide(dest?: AudioNode) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      [0, 0.22, 0.44].forEach((offset, i) => {
+        const at = now + offset;
+        const osc = ctx.createOscillator();
+        const g = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(1150 - i * 140, at);
+        osc.frequency.linearRampToValueAtTime(920 - i * 130, at + 0.14);
+        g.gain.setValueAtTime(0.0001, at);
+        g.gain.linearRampToValueAtTime(0.11 * this.volume, at + 0.02);
+        g.gain.exponentialRampToValueAtTime(0.0001, at + 0.16);
+        osc.connect(g);
+        this.routeOutput(g, dest);
+        osc.start(at);
+        osc.stop(at + 0.18);
+      });
+    } catch {}
+  }
+
+  /**
+   * 30s Pop Trickshot Challenge score in 7.5s sections.
+   * Stops cleanly at 26.8s right before Stickman runs face-first into the invisible wall.
+   */
+  public playInvisibleWallScoreSection(dest?: AudioNode, fromSec = 0, toSec = 30) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const beat = 60 / 136;
+      const base = ctx.currentTime + 0.05 - fromSec;
+      const LEVEL = 0.28;
+
+      const tone = (freq: number, at: number, dur: number, type: OscillatorType, gain: number) => {
+        if (at < ctx.currentTime - 0.05) return;
+        const osc = ctx.createOscillator();
+        const g = ctx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, at);
+        g.gain.setValueAtTime(0.0001, at);
+        g.gain.linearRampToValueAtTime(gain * LEVEL * this.volume, at + 0.01);
+        g.gain.exponentialRampToValueAtTime(0.0001, at + dur);
+        osc.connect(g);
+        this.routeOutput(g, dest);
+        osc.start(at);
+        osc.stop(at + dur + 0.02);
+      };
+
+      const firstBeat = Math.max(0, Math.floor(fromSec / beat));
+      const lastBeat = Math.ceil(toSec / beat);
+      const bass = [130.81, 130.81, 164.81, 196.0, 174.61, 196.0, 220.0, 196.0];
+      const lead = [523.25, 659.25, 783.99, 659.25, 880.0, 783.99, 659.25, 587.33];
+      const hype = [783.99, 987.77, 1046.5, 1174.66, 1318.51, 1174.66, 1046.5, 987.77];
+
+      for (let b = firstBeat; b < lastBeat; b++) {
+        const t = b * beat;
+        const at = base + t;
+        if (t >= 26.75) continue;
+
+        tone(bass[b % bass.length], at, beat * 0.48, 'triangle', 0.36);
+
+        if (t >= 18.0 && t < 25.0) {
+          tone(hype[b % hype.length], at + beat * 0.5, beat * 0.28, 'square', 0.13);
+        } else {
+          tone(lead[b % lead.length], at + beat * 0.5, beat * 0.32, 'triangle', 0.3);
+        }
+      }
+    } catch {}
+  }
+
+  /** Crisp toggle click + whirring desk fan motor spin-up. */
+  public playFanSwitchClick(dest?: AudioNode, pitch = 1.0) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const click = ctx.createOscillator();
+      const cg = ctx.createGain();
+      click.type = 'square';
+      click.frequency.setValueAtTime(1100 * pitch, now);
+      click.frequency.exponentialRampToValueAtTime(340, now + 0.045);
+      cg.gain.setValueAtTime(0.22 * this.volume, now);
+      cg.gain.exponentialRampToValueAtTime(0.0001, now + 0.055);
+      click.connect(cg);
+      this.routeOutput(cg, dest);
+      click.start(now);
+      click.stop(now + 0.06);
+
+      const hum = ctx.createOscillator();
+      const hg = ctx.createGain();
+      hum.type = 'triangle';
+      hum.frequency.setValueAtTime(95 * pitch, now + 0.03);
+      hum.frequency.exponentialRampToValueAtTime(185 * pitch, now + 0.28);
+      hg.gain.setValueAtTime(0.0001, now + 0.03);
+      hg.gain.linearRampToValueAtTime(0.16 * this.volume, now + 0.12);
+      hg.gain.exponentialRampToValueAtTime(0.0001, now + 0.34);
+      hum.connect(hg);
+      this.routeOutput(hg, dest);
+      hum.start(now + 0.03);
+      hum.stop(now + 0.36);
+    } catch {}
+  }
+
+  /** Snappy fan airflow swoosh as the ping-pong ball zips past a fan stream. */
+  public playFanAirWhoosh(dest?: AudioNode, pitch = 1.0) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const g = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(240 * pitch, now);
+      osc.frequency.exponentialRampToValueAtTime(560 * pitch, now + 0.12);
+      osc.frequency.exponentialRampToValueAtTime(180 * pitch, now + 0.22);
+      g.gain.setValueAtTime(0.0001, now);
+      g.gain.linearRampToValueAtTime(0.17 * this.volume, now + 0.04);
+      g.gain.exponentialRampToValueAtTime(0.0001, now + 0.24);
+      osc.connect(g);
+      this.routeOutput(g, dest);
+      osc.start(now);
+      osc.stop(now + 0.26);
+    } catch {}
+  }
+
+  /** Roaring 10-fan synchronized wind gust blast launching Stickman backward. */
+  public playGiantFanGust(dest?: AudioNode) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const dur = 1.15;
+      const size = Math.floor(ctx.sampleRate * dur);
+      const buf = ctx.createBuffer(1, size, ctx.sampleRate);
+      const data = buf.getChannelData(0);
+      for (let i = 0; i < size; i++) {
+        data[i] = (Math.random() * 2 - 1) * (1 - i / (size * 1.1));
+      }
+
+      const src = ctx.createBufferSource();
+      src.buffer = buf;
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'bandpass';
+      filter.frequency.setValueAtTime(220, now);
+      filter.frequency.exponentialRampToValueAtTime(980, now + 0.35);
+      filter.frequency.exponentialRampToValueAtTime(340, now + dur);
+      filter.Q.setValueAtTime(1.1, now);
+
+      const g = ctx.createGain();
+      g.gain.setValueAtTime(0.0001, now);
+      g.gain.linearRampToValueAtTime(0.55 * this.volume, now + 0.12);
+      g.gain.exponentialRampToValueAtTime(0.0001, now + dur);
+
+      src.connect(filter);
+      filter.connect(g);
+      this.routeOutput(g, dest);
+      src.start(now);
+      src.stop(now + dur + 0.04);
+
+      // Whistle overtone as his beanie takes off
+      const w = ctx.createOscillator();
+      const wg = ctx.createGain();
+      w.type = 'sine';
+      w.frequency.setValueAtTime(520, now + 0.12);
+      w.frequency.exponentialRampToValueAtTime(1240, now + 0.48);
+      w.frequency.exponentialRampToValueAtTime(420, now + 0.95);
+      wg.gain.setValueAtTime(0.0001, now + 0.12);
+      wg.gain.linearRampToValueAtTime(0.14 * this.volume, now + 0.22);
+      wg.gain.exponentialRampToValueAtTime(0.0001, now + 0.98);
+      w.connect(wg);
+      this.routeOutput(wg, dest);
+      w.start(now + 0.12);
+      w.stop(now + 1.0);
+    } catch {}
+  }
+
+  /**
+   * 30s Pop Comedy score for The 10-Fan Impossible Trickshot in 7.5s sections.
+   * Stops at 26.15s right as all 10 fans pivot toward Stickman.
+   */
+  public playTenFanScoreSection(dest?: AudioNode, fromSec = 0, toSec = 30) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const beat = 60 / 138;
+      const base = ctx.currentTime + 0.05 - fromSec;
+      const LEVEL = 0.27;
+
+      const tone = (freq: number, at: number, dur: number, type: OscillatorType, gain: number) => {
+        if (at < ctx.currentTime - 0.05) return;
+        const osc = ctx.createOscillator();
+        const g = ctx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, at);
+        g.gain.setValueAtTime(0.0001, at);
+        g.gain.linearRampToValueAtTime(gain * LEVEL * this.volume, at + 0.01);
+        g.gain.exponentialRampToValueAtTime(0.0001, at + dur);
+        osc.connect(g);
+        this.routeOutput(g, dest);
+        osc.start(at);
+        osc.stop(at + dur + 0.02);
+      };
+
+      const firstBeat = Math.max(0, Math.floor(fromSec / beat));
+      const lastBeat = Math.ceil(toSec / beat);
+      const bass = [146.83, 146.83, 196.0, 220.0, 174.61, 196.0, 220.0, 164.81];
+      const lead = [587.33, 739.99, 880.0, 739.99, 987.77, 880.0, 739.99, 659.25];
+      const spiral = [880.0, 987.77, 1174.66, 1318.51, 1479.98, 1318.51, 1174.66, 987.77];
+
+      for (let b = firstBeat; b < lastBeat; b++) {
+        const t = b * beat;
+        const at = base + t;
+        if (t >= 26.15) continue;
+
+        tone(bass[b % bass.length], at, beat * 0.46, 'triangle', 0.36);
+
+        if (t >= 14.0 && t < 24.4) {
+          tone(spiral[b % spiral.length], at + beat * 0.5, beat * 0.26, 'square', 0.12);
+        } else {
+          tone(lead[b % lead.length], at + beat * 0.5, beat * 0.32, 'triangle', 0.3);
+        }
+      }
+    } catch {}
+  }
+
+  /**
+   * Crisp wooden/plastic domino tip click with rising pitch cascade.
+   */
+  public playDominoClack(dest?: AudioNode, pitch = 1) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(1180 * pitch, now);
+      osc.frequency.exponentialRampToValueAtTime(420 * pitch, now + 0.045);
+      gain.gain.setValueAtTime(0.001, now);
+      gain.gain.linearRampToValueAtTime(0.28 * this.volume, now + 0.005);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.06);
+      osc.connect(gain);
+      this.routeOutput(gain, dest);
+      osc.start(now);
+      osc.stop(now + 0.07);
+    } catch {}
+  }
+
+  /**
+   * Satisfying red target button hit + hydraulic ceiling basketball hoop drop.
+   */
+  public playChainButtonSlam(dest?: AudioNode) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const bell = ctx.createOscillator();
+      const bGain = ctx.createGain();
+      bell.type = 'sine';
+      bell.frequency.setValueAtTime(880, now);
+      bell.frequency.setValueAtTime(1174.66, now + 0.07);
+      bGain.gain.setValueAtTime(0.32 * this.volume, now);
+      bGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.36);
+      bell.connect(bGain);
+      this.routeOutput(bGain, dest);
+      bell.start(now);
+      bell.stop(now + 0.38);
+
+      const drop = ctx.createOscillator();
+      const dGain = ctx.createGain();
+      drop.type = 'sawtooth';
+      drop.frequency.setValueAtTime(220, now + 0.08);
+      drop.frequency.exponentialRampToValueAtTime(75, now + 0.56);
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(750, now + 0.08);
+      dGain.gain.setValueAtTime(0.22 * this.volume, now + 0.08);
+      dGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.6);
+      drop.connect(filter);
+      filter.connect(dGain);
+      this.routeOutput(dGain, dest);
+      drop.start(now + 0.08);
+      drop.stop(now + 0.62);
+    } catch {}
+  }
+
+  /**
+   * Roaring 100-ball avalanche clatter as the remaining balls spill and bury Stickman.
+   */
+  public playBallAvalancheRumble(dest?: AudioNode) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const dur = 1.35;
+      const bufSize = Math.floor(ctx.sampleRate * dur);
+      const buf = ctx.createBuffer(1, bufSize, ctx.sampleRate);
+      const data = buf.getChannelData(0);
+      for (let i = 0; i < bufSize; i++) {
+        const rattle = Math.sin(i * 0.065) * 0.4 + (((i * 1103515245) % 103) / 103 - 0.5) * 0.8;
+        data[i] = rattle * Math.sin((i / bufSize) * Math.PI);
+      }
+
+      const src = ctx.createBufferSource();
+      src.buffer = buf;
+
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'bandpass';
+      filter.frequency.setValueAtTime(480, now);
+      filter.frequency.exponentialRampToValueAtTime(980, now + 0.65);
+      filter.frequency.exponentialRampToValueAtTime(260, now + dur);
+      filter.Q.setValueAtTime(1.1, now);
+
+      const g = ctx.createGain();
+      g.gain.setValueAtTime(0.001, now);
+      g.gain.linearRampToValueAtTime(0.5 * this.volume, now + 0.14);
+      g.gain.exponentialRampToValueAtTime(0.0001, now + dur);
+
+      src.connect(filter);
+      filter.connect(g);
+      this.routeOutput(g, dest);
+      src.start(now);
+      src.stop(now + dur + 0.04);
+
+      // Bouncing plastic ball pop cascade
+      for (let k = 0; k < 10; k++) {
+        const at = now + 0.08 + k * 0.095;
+        const osc = ctx.createOscillator();
+        const og = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(320 + ((k * 137) % 420), at);
+        osc.frequency.exponentialRampToValueAtTime(180, at + 0.07);
+        og.gain.setValueAtTime(0.18 * this.volume, at);
+        og.gain.exponentialRampToValueAtTime(0.0001, at + 0.08);
+        osc.connect(og);
+        this.routeOutput(og, dest);
+        osc.start(at);
+        osc.stop(at + 0.09);
+      }
+    } catch {}
+  }
+
+  /**
+   * 30s Rube-Goldberg Pop Comedy score for "The 100-Ball Chain Reaction",
+   * sliced into 4 x 7.5s sections with a hush for the 100-ball bury reveal.
+   */
+  public playHundredBallScoreSection(dest?: AudioNode, fromSec = 0, toSec = 30) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const beat = 60 / 140;
+      const base = ctx.currentTime + 0.05 - fromSec;
+      const LEVEL = 0.27;
+
+      const tone = (freq: number, at: number, dur: number, type: OscillatorType, gain: number) => {
+        if (at < ctx.currentTime - 0.05) return;
+        const osc = ctx.createOscillator();
+        const g = ctx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, at);
+        g.gain.setValueAtTime(0.0001, at);
+        g.gain.linearRampToValueAtTime(gain * LEVEL * this.volume, at + 0.01);
+        g.gain.exponentialRampToValueAtTime(0.0001, at + dur);
+        osc.connect(g);
+        this.routeOutput(g, dest);
+        osc.start(at);
+        osc.stop(at + dur + 0.02);
+      };
+
+      const firstBeat = Math.max(0, Math.floor(fromSec / beat));
+      const lastBeat = Math.ceil(toSec / beat);
+      const bass = [130.81, 164.81, 196.0, 220.0, 174.61, 196.0, 146.83, 196.0];
+      const lead = [523.25, 659.25, 783.99, 1046.5, 880.0, 783.99, 659.25, 587.33];
+      const chaosLead = [783.99, 987.77, 1174.66, 1318.51, 1174.66, 987.77, 880.0, 783.99];
+
+      for (let b = firstBeat; b < lastBeat; b++) {
+        const t = b * beat;
+        const at = base + t;
+        if (t >= 26.9) continue;
+
+        tone(bass[b % bass.length], at, beat * 0.48, 'triangle', 0.36);
+
+        if (t >= 12.0 && t < 24.3) {
+          tone(chaosLead[b % chaosLead.length], at + beat * 0.5, beat * 0.25, 'square', 0.12);
+        } else {
+          tone(lead[b % lead.length], at + beat * 0.5, beat * 0.32, 'triangle', 0.31);
+        }
+      }
+    } catch {}
+  }
+
+  /**
+   * Springy plastic ruler flick twang! Used for small flicks, giant ruler pullout,
+   * and the final ruler catapulting Stickman into the basketball hoop.
+   */
+  public playRulerFlick(dest?: AudioNode, pitch = 1) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const lfo = ctx.createOscillator();
+      const lfoGain = ctx.createGain();
+      const gain = ctx.createGain();
+
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(160 * pitch, now);
+      osc.frequency.exponentialRampToValueAtTime(340 * pitch, now + 0.08);
+      osc.frequency.exponentialRampToValueAtTime(125 * pitch, now + 0.36);
+
+      lfo.type = 'sine';
+      lfo.frequency.setValueAtTime(34, now);
+      lfoGain.gain.setValueAtTime(42 * pitch, now);
+      lfoGain.gain.exponentialRampToValueAtTime(2, now + 0.36);
+      lfo.connect(lfoGain);
+      lfoGain.connect(osc.frequency);
+
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(1500, now);
+
+      gain.gain.setValueAtTime(0.001, now);
+      gain.gain.linearRampToValueAtTime(0.32 * this.volume, now + 0.015);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.38);
+
+      osc.connect(filter);
+      filter.connect(gain);
+      this.routeOutput(gain, dest);
+
+      lfo.start(now);
+      osc.start(now);
+      lfo.stop(now + 0.4);
+      osc.stop(now + 0.4);
+    } catch {}
+  }
+
+  /**
+   * 30s upbeat Trickshot Adventure score for "The World's Longest Ruler Shot",
+   * sliced into 4 x 7.5s sections with a comedic silence right as Stickman lands in the hoop.
+   */
+  public playLongestRulerScoreSection(dest?: AudioNode, fromSec = 0, toSec = 30) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const beat = 60 / 138;
+      const base = ctx.currentTime + 0.05 - fromSec;
+      const LEVEL = 0.27;
+
+      const tone = (freq: number, at: number, dur: number, type: OscillatorType, gain: number) => {
+        if (at < ctx.currentTime - 0.05) return;
+        const osc = ctx.createOscillator();
+        const g = ctx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, at);
+        g.gain.setValueAtTime(0.0001, at);
+        g.gain.linearRampToValueAtTime(gain * LEVEL * this.volume, at + 0.01);
+        g.gain.exponentialRampToValueAtTime(0.0001, at + dur);
+        osc.connect(g);
+        this.routeOutput(g, dest);
+        osc.start(at);
+        osc.stop(at + dur + 0.02);
+      };
+
+      const firstBeat = Math.max(0, Math.floor(fromSec / beat));
+      const lastBeat = Math.ceil(toSec / beat);
+      const bass = [146.83, 174.61, 196.0, 220.0, 146.83, 164.81, 196.0, 246.94];
+      const lead = [587.33, 739.99, 880.0, 987.77, 880.0, 739.99, 659.25, 587.33];
+      const sprint = [880.0, 1046.5, 1174.66, 1318.51, 1174.66, 1046.5, 987.77, 880.0];
+
+      for (let b = firstBeat; b < lastBeat; b++) {
+        const t = b * beat;
+        const at = base + t;
+        if (t >= 26.85) continue;
+
+        tone(bass[b % bass.length], at, beat * 0.46, 'triangle', 0.36);
+
+        if (t >= 12.0 && t < 24.4) {
+          tone(sprint[b % sprint.length], at + beat * 0.5, beat * 0.26, 'square', 0.12);
+        } else {
+          tone(lead[b % lead.length], at + beat * 0.5, beat * 0.32, 'triangle', 0.31);
+        }
+      }
+    } catch {}
+  }
+
+  /**
+   * Metallic giant slinky stretch/recoil resonance (chirpy harmonic spring boing + coil shimmer).
+   */
+  public playSlinkyTwang(dest?: AudioNode, pitch = 1.0) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      // Primary metallic coil sweep
+      const osc = ctx.createOscillator();
+      const mod = ctx.createOscillator();
+      const modGain = ctx.createGain();
+      const g = ctx.createGain();
+
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(190 * pitch, now);
+      osc.frequency.exponentialRampToValueAtTime(520 * pitch, now + 0.14);
+      osc.frequency.exponentialRampToValueAtTime(280 * pitch, now + 0.42);
+
+      mod.type = 'sine';
+      mod.frequency.setValueAtTime(32 * pitch, now);
+      modGain.gain.setValueAtTime(75 * pitch, now);
+      modGain.gain.exponentialRampToValueAtTime(8, now + 0.44);
+
+      g.gain.setValueAtTime(0.001, now);
+      g.gain.linearRampToValueAtTime(0.32 * this.volume, now + 0.015);
+      g.gain.exponentialRampToValueAtTime(0.0008, now + 0.48);
+
+      mod.connect(modGain);
+      modGain.connect(osc.frequency);
+      osc.connect(g);
+      this.routeOutput(g, dest);
+
+      osc.start(now);
+      mod.start(now);
+      osc.stop(now + 0.5);
+      mod.stop(now + 0.5);
+
+      // Crisp metallic laser-like slinky overtone chirp
+      const hi = ctx.createOscillator();
+      const hg = ctx.createGain();
+      hi.type = 'sine';
+      hi.frequency.setValueAtTime(1650 * pitch, now);
+      hi.frequency.exponentialRampToValueAtTime(420 * pitch, now + 0.24);
+      hg.gain.setValueAtTime(0.11 * this.volume, now);
+      hg.gain.exponentialRampToValueAtTime(0.0005, now + 0.26);
+      hi.connect(hg);
+      this.routeOutput(hg, dest);
+      hi.start(now);
+      hi.stop(now + 0.28);
+    } catch {}
+  }
+
+  /**
+   * 30s energetic Modern Pop comedy score for "THE GIANT SLINKY TRICKSHOT",
+   * sliced into 4 x 7.5s sections and dropping silent at 26.0s for the spring-cage revenge!
+   */
+  public playGiantSlinkyScoreSection(dest?: AudioNode, fromSec = 0, toSec = 30) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const beat = 60 / 138;
+      const base = ctx.currentTime + 0.05 - fromSec;
+      const LEVEL = 0.27;
+
+      const tone = (freq: number, at: number, dur: number, type: OscillatorType, gain: number) => {
+        if (at < ctx.currentTime - 0.05) return;
+        const osc = ctx.createOscillator();
+        const g = ctx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, at);
+        g.gain.setValueAtTime(0.0001, at);
+        g.gain.linearRampToValueAtTime(gain * LEVEL * this.volume, at + 0.01);
+        g.gain.exponentialRampToValueAtTime(0.0001, at + dur);
+        osc.connect(g);
+        this.routeOutput(g, dest);
+        osc.start(at);
+        osc.stop(at + dur + 0.02);
+      };
+
+      const firstBeat = Math.max(0, Math.floor(fromSec / beat));
+      const lastBeat = Math.ceil(toSec / beat);
+      const bass = [130.81, 164.81, 196.0, 146.83, 130.81, 174.61, 196.0, 220.0];
+      const motif = [523.25, 659.25, 783.99, 659.25, 880.0, 783.99, 659.25, 587.33];
+      const launch = [783.99, 987.77, 1046.5, 1174.66, 1318.51, 1174.66, 1046.5, 987.77];
+
+      for (let b = firstBeat; b < lastBeat; b++) {
+        const t = b * beat;
+        const at = base + t;
+        // Cut dead right when the giant slinky snaps loose to cage Stickman
+        if (t >= 26.0) continue;
+
+        tone(bass[b % bass.length], at, beat * 0.45, 'triangle', 0.36);
+        if (t >= 17.8 && t < 24.2) {
+          tone(launch[b % launch.length], at + beat * 0.5, beat * 0.25, 'square', 0.13);
+        } else {
+          tone(motif[b % motif.length], at + beat * 0.5, beat * 0.32, 'triangle', 0.31);
+        }
+      }
+    } catch {}
+  }
+
+  /**
+   * Heavy wooden door swing & slam impact for "THE IMPOSSIBLE KEYHOLE SHOT".
+   */
+  public playDoorSlam(dest?: AudioNode) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const g = ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(145, now);
+      osc.frequency.exponentialRampToValueAtTime(38, now + 0.26);
+      g.gain.setValueAtTime(0.45 * this.volume, now);
+      g.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+      osc.connect(g);
+      this.routeOutput(g, dest);
+      osc.start(now);
+      osc.stop(now + 0.3);
+
+      // Door wood slap noise burst
+      const len = Math.floor(ctx.sampleRate * 0.16);
+      const buf = ctx.createBuffer(1, len, ctx.sampleRate);
+      const data = buf.getChannelData(0);
+      for (let i = 0; i < len; i++) {
+        data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (ctx.sampleRate * 0.03));
+      }
+      const src = ctx.createBufferSource();
+      src.buffer = buf;
+      const filt = ctx.createBiquadFilter();
+      filt.type = 'lowpass';
+      filt.frequency.setValueAtTime(950, now);
+      const ng = ctx.createGain();
+      ng.gain.setValueAtTime(0.42 * this.volume, now);
+      ng.gain.exponentialRampToValueAtTime(0.001, now + 0.16);
+      src.connect(filt);
+      filt.connect(ng);
+      this.routeOutput(ng, dest);
+      src.start(now);
+    } catch {}
+  }
+
+  /**
+   * 30s mischievous trickshot score for "THE IMPOSSIBLE KEYHOLE SHOT",
+   * sliced into 4 x 7.5s sections and dropping silent at 26.05s for the door slam twist.
+   */
+  public playKeyholeScoreSection(dest?: AudioNode, fromSec = 0, toSec = 30) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const beat = 60 / 134;
+      const base = ctx.currentTime + 0.05 - fromSec;
+      const LEVEL = 0.27;
+
+      const tone = (freq: number, at: number, dur: number, type: OscillatorType, gain: number) => {
+        if (at < ctx.currentTime - 0.05) return;
+        const osc = ctx.createOscillator();
+        const g = ctx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, at);
+        g.gain.setValueAtTime(0.0001, at);
+        g.gain.linearRampToValueAtTime(gain * LEVEL * this.volume, at + 0.01);
+        g.gain.exponentialRampToValueAtTime(0.0001, at + dur);
+        osc.connect(g);
+        this.routeOutput(g, dest);
+        osc.start(at);
+        osc.stop(at + dur + 0.02);
+      };
+
+      const firstBeat = Math.max(0, Math.floor(fromSec / beat));
+      const lastBeat = Math.ceil(toSec / beat);
+      const bass = [110.0, 130.81, 146.83, 164.81, 110.0, 123.47, 146.83, 196.0];
+      const motif = [440.0, 523.25, 659.25, 587.33, 523.25, 659.25, 783.99, 659.25];
+      const climb = [659.25, 783.99, 880.0, 987.77, 1046.5, 987.77, 880.0, 783.99];
+
+      for (let b = firstBeat; b < lastBeat; b++) {
+        const t = b * beat;
+        const at = base + t;
+        if (t >= 26.05) continue;
+
+        tone(bass[b % bass.length], at, beat * 0.45, 'triangle', 0.36);
+        if (t >= 18.0 && t < 24.3) {
+          tone(climb[b % climb.length], at + beat * 0.5, beat * 0.25, 'square', 0.13);
+        } else {
+          tone(motif[b % motif.length], at + beat * 0.5, beat * 0.32, 'triangle', 0.3);
+        }
+      }
+    } catch {}
+  }
+
+  /**
+   * Sci-fi red laser barrier deflect zap.
+   */
+  public playLaserZap(dest?: AudioNode) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const g = ctx.createGain();
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(1180, now);
+      osc.frequency.exponentialRampToValueAtTime(210, now + 0.22);
+      g.gain.setValueAtTime(0.24 * this.volume, now);
+      g.gain.exponentialRampToValueAtTime(0.001, now + 0.24);
+      osc.connect(g);
+      this.routeOutput(g, dest);
+      osc.start(now);
+      osc.stop(now + 0.25);
+    } catch {}
+  }
+
+  /**
+   * Vault security laser-cage activation alarm hum & snap.
+   */
+  public playLaserCageAlarm(dest?: AudioNode) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const notes = [660, 880, 660, 988];
+      notes.forEach((f, idx) => {
+        const at = now + idx * 0.09;
+        const osc = ctx.createOscillator();
+        const g = ctx.createGain();
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(f, at);
+        g.gain.setValueAtTime(0.16 * this.volume, at);
+        g.gain.exponentialRampToValueAtTime(0.001, at + 0.085);
+        osc.connect(g);
+        this.routeOutput(g, dest);
+        osc.start(at);
+        osc.stop(at + 0.09);
+      });
+    } catch {}
+  }
+
+  /**
+   * 30s spy-heist synth score for "THE IMPOSSIBLE LASER MAZE",
+   * sliced into 4 x 7.5s sections and cutting silent at 26.15s for the laser-cage trap!
+   */
+  public playLaserMazeScoreSection(dest?: AudioNode, fromSec = 0, toSec = 30) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const beat = 60 / 136;
+      const base = ctx.currentTime + 0.05 - fromSec;
+      const LEVEL = 0.27;
+
+      const tone = (freq: number, at: number, dur: number, type: OscillatorType, gain: number) => {
+        if (at < ctx.currentTime - 0.05) return;
+        const osc = ctx.createOscillator();
+        const g = ctx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, at);
+        g.gain.setValueAtTime(0.0001, at);
+        g.gain.linearRampToValueAtTime(gain * LEVEL * this.volume, at + 0.01);
+        g.gain.exponentialRampToValueAtTime(0.0001, at + dur);
+        osc.connect(g);
+        this.routeOutput(g, dest);
+        osc.start(at);
+        osc.stop(at + dur + 0.02);
+      };
+
+      const firstBeat = Math.max(0, Math.floor(fromSec / beat));
+      const lastBeat = Math.ceil(toSec / beat);
+      const bass = [98.0, 98.0, 116.54, 130.81, 98.0, 110.0, 123.47, 146.83];
+      const spy = [392.0, 466.16, 523.25, 587.33, 622.25, 587.33, 523.25, 466.16];
+      const tense = [783.99, 932.33, 1046.5, 932.33, 880.0, 783.99, 932.33, 1174.66];
+
+      for (let b = firstBeat; b < lastBeat; b++) {
+        const t = b * beat;
+        const at = base + t;
+        if (t >= 26.15) continue;
+
+        tone(bass[b % bass.length], at, beat * 0.44, 'sawtooth', 0.24);
+        if (t >= 18.0 && t < 24.3) {
+          tone(tense[b % tense.length], at + beat * 0.5, beat * 0.24, 'square', 0.12);
+        } else {
+          tone(spy[b % spy.length], at + beat * 0.5, beat * 0.3, 'triangle', 0.3);
+        }
+      }
+    } catch {}
+  }
+
+  /**
+   * Pinball spring plunger recoil & ball launch twang.
+   */
+  public playPinballPlunger(dest?: AudioNode) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const g = ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(160, now);
+      osc.frequency.exponentialRampToValueAtTime(640, now + 0.14);
+      osc.frequency.exponentialRampToValueAtTime(280, now + 0.28);
+      g.gain.setValueAtTime(0.28 * this.volume, now);
+      g.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+      osc.connect(g);
+      this.routeOutput(g, dest);
+      osc.start(now);
+      osc.stop(now + 0.31);
+    } catch {}
+  }
+
+  /**
+   * Classic arcade pinball solenoid bumper chime + thump.
+   */
+  public playPinballBumper(dest?: AudioNode, pitch = 1.0) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const bell = ctx.createOscillator();
+      const g = ctx.createGain();
+
+      osc.type = 'square';
+      osc.frequency.setValueAtTime(340 * pitch, now);
+      osc.frequency.exponentialRampToValueAtTime(140 * pitch, now + 0.08);
+
+      bell.type = 'sine';
+      bell.frequency.setValueAtTime(1046.5 * pitch, now);
+      bell.frequency.setValueAtTime(1318.5 * pitch, now + 0.035);
+
+      g.gain.setValueAtTime(0.24 * this.volume, now);
+      g.gain.exponentialRampToValueAtTime(0.001, now + 0.19);
+
+      osc.connect(g);
+      bell.connect(g);
+      this.routeOutput(g, dest);
+
+      osc.start(now);
+      bell.start(now);
+      osc.stop(now + 0.2);
+      bell.stop(now + 0.2);
+    } catch {}
+  }
+
+  /**
+   * Punchy mechanical yellow flipper solenoid snap.
+   */
+  public playPinballFlipper(dest?: AudioNode) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const g = ctx.createGain();
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(240, now);
+      osc.frequency.exponentialRampToValueAtTime(860, now + 0.07);
+      g.gain.setValueAtTime(0.26 * this.volume, now);
+      g.gain.exponentialRampToValueAtTime(0.001, now + 0.13);
+      osc.connect(g);
+      this.routeOutput(g, dest);
+      osc.start(now);
+      osc.stop(now + 0.14);
+    } catch {}
+  }
+
+  /**
+   * Bright arcade WIN jackpot arpeggio.
+   */
+  public playPinballJackpot(dest?: AudioNode) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const notes = [523.25, 659.25, 783.99, 1046.5, 1318.5, 1567.98];
+      notes.forEach((f, idx) => {
+        const at = now + idx * 0.075;
+        const osc = ctx.createOscillator();
+        const g = ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(f, at);
+        g.gain.setValueAtTime(0.22 * this.volume, at);
+        g.gain.exponentialRampToValueAtTime(0.001, at + 0.28);
+        osc.connect(g);
+        this.routeOutput(g, dest);
+        osc.start(at);
+        osc.stop(at + 0.3);
+      });
+    } catch {}
+  }
+
+  /**
+   * 30s energetic 142 BPM arcade pinball score for "THE IMPOSSIBLE PINBALL TRICKSHOT",
+   * sliced into 4 x 7.5s sections and cutting silent at 25.75s right before Stickman gets launched!
+   */
+  public playPinballScoreSection(dest?: AudioNode, fromSec = 0, toSec = 30) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const beat = 60 / 142;
+      const base = ctx.currentTime + 0.05 - fromSec;
+      const LEVEL = 0.26;
+
+      const tone = (freq: number, at: number, dur: number, type: OscillatorType, gain: number) => {
+        if (at < ctx.currentTime - 0.05) return;
+        const osc = ctx.createOscillator();
+        const g = ctx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, at);
+        g.gain.setValueAtTime(0.0001, at);
+        g.gain.linearRampToValueAtTime(gain * LEVEL * this.volume, at + 0.01);
+        g.gain.exponentialRampToValueAtTime(0.0001, at + dur);
+        osc.connect(g);
+        this.routeOutput(g, dest);
+        osc.start(at);
+        osc.stop(at + dur + 0.02);
+      };
+
+      const firstBeat = Math.max(0, Math.floor(fromSec / beat));
+      const lastBeat = Math.ceil(toSec / beat);
+      const bass = [130.81, 130.81, 164.81, 196.0, 146.83, 146.83, 174.61, 196.0];
+      const arcade = [523.25, 659.25, 783.99, 659.25, 587.33, 698.46, 880.0, 783.99];
+      const turbo = [783.99, 987.77, 1046.5, 1174.66, 1318.51, 1174.66, 1046.5, 987.77];
+
+      for (let b = firstBeat; b < lastBeat; b++) {
+        const t = b * beat;
+        const at = base + t;
+        if (t >= 25.75) continue;
+
+        tone(bass[b % bass.length], at, beat * 0.42, 'square', 0.16);
+        if (t >= 12.4 && t < 24.15) {
+          tone(turbo[b % turbo.length], at + beat * 0.5, beat * 0.25, 'triangle', 0.28);
+        } else {
+          tone(arcade[b % arcade.length], at + beat * 0.5, beat * 0.3, 'triangle', 0.26);
+        }
+      }
+    } catch {}
+  }
+
+  /**
+   * Cartoon steam hiss / ice-melt sizzle (filtered white noise + soft shimmer).
+   */
+  public playHeatSizzle(dest?: AudioNode) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const dur = 0.42;
+      const buf = ctx.createBuffer(1, Math.ceil(ctx.sampleRate * dur), ctx.sampleRate);
+      const data = buf.getChannelData(0);
+      for (let i = 0; i < data.length; i++) {
+        // Deterministic pseudo-noise waveform for sizzle texture
+        const s = Math.sin(i * 12.9898) * 43758.5453;
+        data[i] = ((s - Math.floor(s)) * 2 - 1) * 0.7;
+      }
+
+      const src = ctx.createBufferSource();
+      src.buffer = buf;
+
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'bandpass';
+      filter.frequency.setValueAtTime(2800, now);
+      filter.frequency.exponentialRampToValueAtTime(1400, now + dur);
+      filter.Q.value = 1.8;
+
+      const g = ctx.createGain();
+      g.gain.setValueAtTime(0.01, now);
+      g.gain.linearRampToValueAtTime(0.24 * this.volume, now + 0.04);
+      g.gain.exponentialRampToValueAtTime(0.001, now + dur);
+
+      src.connect(filter);
+      filter.connect(g);
+      this.routeOutput(g, dest);
+
+      src.start(now);
+      src.stop(now + dur + 0.02);
+    } catch {}
+  }
+
+  /**
+   * Red-hot golden cup pressure pop & upward rocket launch.
+   */
+  public playHotCupLaunch(dest?: AudioNode) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const g = ctx.createGain();
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(180, now);
+      osc.frequency.exponentialRampToValueAtTime(1120, now + 0.24);
+      g.gain.setValueAtTime(0.28 * this.volume, now);
+      g.gain.exponentialRampToValueAtTime(0.001, now + 0.26);
+      osc.connect(g);
+      this.routeOutput(g, dest);
+      osc.start(now);
+      osc.stop(now + 0.28);
+    } catch {}
+  }
+
+  /**
+   * 30s energetic 138 BPM pop-science score for "THE 1,000-DEGREE HOT SHOT",
+   * sliced into 4 x 7.5s sections and cutting silent at 25.85s when the cup overheats!
+   */
+  public playHotShotScoreSection(dest?: AudioNode, fromSec = 0, toSec = 30) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const beat = 60 / 138;
+      const base = ctx.currentTime + 0.05 - fromSec;
+      const LEVEL = 0.26;
+
+      const tone = (freq: number, at: number, dur: number, type: OscillatorType, gain: number) => {
+        if (at < ctx.currentTime - 0.05) return;
+        const osc = ctx.createOscillator();
+        const g = ctx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, at);
+        g.gain.setValueAtTime(0.0001, at);
+        g.gain.linearRampToValueAtTime(gain * LEVEL * this.volume, at + 0.01);
+        g.gain.exponentialRampToValueAtTime(0.0001, at + dur);
+        osc.connect(g);
+        this.routeOutput(g, dest);
+        osc.start(at);
+        osc.stop(at + dur + 0.02);
+      };
+
+      const firstBeat = Math.max(0, Math.floor(fromSec / beat));
+      const lastBeat = Math.ceil(toSec / beat);
+      const bass = [110.0, 110.0, 130.81, 146.83, 164.81, 146.83, 130.81, 123.47];
+      const lead = [440.0, 523.25, 659.25, 587.33, 523.25, 659.25, 783.99, 659.25];
+      const heat = [880.0, 987.77, 1046.5, 987.77, 880.0, 1046.5, 1174.66, 1318.51];
+
+      for (let b = firstBeat; b < lastBeat; b++) {
+        const t = b * beat;
+        const at = base + t;
+        if (t >= 25.85) continue;
+
+        tone(bass[b % bass.length], at, beat * 0.44, 'sawtooth', 0.18);
+        if (t >= 12.0 && t < 24.15) {
+          tone(heat[b % heat.length], at + beat * 0.5, beat * 0.24, 'triangle', 0.27);
+        } else {
+          tone(lead[b % lead.length], at + beat * 0.5, beat * 0.3, 'triangle', 0.26);
+        }
+      }
+    } catch {}
+  }
+
+  /**
+   * Cartoon electromagnetic hum + attraction shimmer for The Magnetic Maze Trickshot.
+   */
+  public playMagnetHum(dest?: AudioNode, pitch = 1.0) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const lfo = ctx.createOscillator();
+      const lfoGain = ctx.createGain();
+      const gain = ctx.createGain();
+
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(160 * pitch, now);
+      osc.frequency.exponentialRampToValueAtTime(340 * pitch, now + 0.28);
+
+      lfo.type = 'sine';
+      lfo.frequency.setValueAtTime(28, now);
+      lfoGain.gain.setValueAtTime(18 * pitch, now);
+      lfo.connect(lfoGain);
+      lfoGain.connect(osc.frequency);
+
+      gain.gain.setValueAtTime(0.001, now);
+      gain.gain.linearRampToValueAtTime(0.24 * this.volume, now + 0.04);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.34);
+
+      osc.connect(gain);
+      this.routeOutput(gain, dest);
+      osc.start(now);
+      lfo.start(now);
+      osc.stop(now + 0.36);
+      lfo.stop(now + 0.36);
+    } catch {}
+  }
+
+  /**
+   * Metallic snap / clank when the silver ball sticks to a magnet or metal chair hits Stickman.
+   */
+  public playMetalClank(dest?: AudioNode, pitch = 1.0) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const partials = [520 * pitch, 980 * pitch, 1560 * pitch];
+      partials.forEach((freq, i) => {
+        const osc = ctx.createOscillator();
+        const g = ctx.createGain();
+        osc.type = i === 0 ? 'triangle' : 'sine';
+        osc.frequency.setValueAtTime(freq, now);
+        osc.frequency.exponentialRampToValueAtTime(freq * 0.92, now + 0.16);
+        g.gain.setValueAtTime((0.22 / (i + 1)) * this.volume, now);
+        g.gain.exponentialRampToValueAtTime(0.0001, now + (0.22 - i * 0.04));
+        osc.connect(g);
+        this.routeOutput(g, dest);
+        osc.start(now);
+        osc.stop(now + 0.24);
+      });
+    } catch {}
+  }
+
+  /**
+   * All-magnets overload surge when every magnet activates at once in Scene 5.
+   */
+  public playMagnetOverload(dest?: AudioNode) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const osc2 = ctx.createOscillator();
+      const g = ctx.createGain();
+
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(120, now);
+      osc.frequency.exponentialRampToValueAtTime(840, now + 0.48);
+
+      osc2.type = 'square';
+      osc2.frequency.setValueAtTime(180, now);
+      osc2.frequency.exponentialRampToValueAtTime(1120, now + 0.48);
+
+      g.gain.setValueAtTime(0.001, now);
+      g.gain.linearRampToValueAtTime(0.26 * this.volume, now + 0.06);
+      g.gain.exponentialRampToValueAtTime(0.0001, now + 0.54);
+
+      osc.connect(g);
+      osc2.connect(g);
+      this.routeOutput(g, dest);
+      osc.start(now);
+      osc2.start(now);
+      osc.stop(now + 0.56);
+      osc2.stop(now + 0.56);
+    } catch {}
+  }
+
+  /**
+   * 30s playful 136 BPM sci-fi comedy score for "THE MAGNETIC MAZE TRICKSHOT",
+   * sliced into 4 x 7.5s sections and cutting silent at 25.75s for the all-magnets twist!
+   */
+  public playMagneticMazeScoreSection(dest?: AudioNode, fromSec = 0, toSec = 30) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const beat = 60 / 136;
+      const base = ctx.currentTime + 0.05 - fromSec;
+      const LEVEL = 0.26;
+
+      const tone = (freq: number, at: number, dur: number, type: OscillatorType, gain: number) => {
+        if (at < ctx.currentTime - 0.05) return;
+        const osc = ctx.createOscillator();
+        const g = ctx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, at);
+        g.gain.setValueAtTime(0.0001, at);
+        g.gain.linearRampToValueAtTime(gain * LEVEL * this.volume, at + 0.01);
+        g.gain.exponentialRampToValueAtTime(0.0001, at + dur);
+        osc.connect(g);
+        this.routeOutput(g, dest);
+        osc.start(at);
+        osc.stop(at + dur + 0.02);
+      };
+
+      const firstBeat = Math.max(0, Math.floor(fromSec / beat));
+      const lastBeat = Math.ceil(toSec / beat);
+      const bass = [130.81, 130.81, 146.83, 164.81, 196.0, 164.81, 146.83, 123.47];
+      const lead = [523.25, 659.25, 783.99, 659.25, 587.33, 698.46, 880.0, 783.99];
+      const climb = [659.25, 783.99, 880.0, 987.77, 1046.5, 987.77, 880.0, 1174.66];
+
+      for (let b = firstBeat; b < lastBeat; b++) {
+        const t = b * beat;
+        const at = base + t;
+        if (t >= 25.75) continue;
+
+        tone(bass[b % bass.length], at, beat * 0.42, 'triangle', 0.22);
+        if (t >= 12.2 && t < 24.15) {
+          tone(climb[b % climb.length], at + beat * 0.5, beat * 0.24, 'sine', 0.26);
+        } else {
+          tone(lead[b % lead.length], at + beat * 0.5, beat * 0.28, 'triangle', 0.24);
+        }
+      }
+    } catch {}
+  }
+
+  /**
+   * Crisp wooden/steel step bounce tick for The Impossible Spiral Staircase Shot.
+   */
+  public playSpiralRollTick(dest?: AudioNode, pitch = 1.0) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const g = ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(340 * pitch, now);
+      osc.frequency.exponentialRampToValueAtTime(160 * pitch, now + 0.07);
+      g.gain.setValueAtTime(0.22 * this.volume, now);
+      g.gain.exponentialRampToValueAtTime(0.0001, now + 0.08);
+      osc.connect(g);
+      this.routeOutput(g, dest);
+      osc.start(now);
+      osc.stop(now + 0.09);
+    } catch {}
+  }
+
+  /**
+   * Mechanical carousel motor spin-up whir when the spiral staircase starts rotating in Scene 5.
+   */
+  public playCarouselMotorSpin(dest?: AudioNode) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const lfo = ctx.createOscillator();
+      const lfoGain = ctx.createGain();
+      const g = ctx.createGain();
+
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(110, now);
+      osc.frequency.exponentialRampToValueAtTime(620, now + 0.75);
+
+      lfo.type = 'sine';
+      lfo.frequency.setValueAtTime(18, now);
+      lfoGain.gain.setValueAtTime(22, now);
+      lfo.connect(lfoGain);
+      lfoGain.connect(osc.frequency);
+
+      g.gain.setValueAtTime(0.001, now);
+      g.gain.linearRampToValueAtTime(0.24 * this.volume, now + 0.08);
+      g.gain.exponentialRampToValueAtTime(0.0001, now + 0.85);
+
+      osc.connect(g);
+      this.routeOutput(g, dest);
+      osc.start(now);
+      lfo.start(now);
+      osc.stop(now + 0.88);
+      lfo.stop(now + 0.88);
+    } catch {}
+  }
+
+  /**
+   * 30s energetic 138 BPM pop-arcade score for "THE IMPOSSIBLE SPIRAL STAIRCASE SHOT",
+   * sliced into 4 x 7.5s sections and cutting silent at 25.80s for the carousel twist!
+   */
+  public playSpiralStaircaseScoreSection(dest?: AudioNode, fromSec = 0, toSec = 30) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const beat = 60 / 138;
+      const base = ctx.currentTime + 0.05 - fromSec;
+      const LEVEL = 0.26;
+
+      const tone = (freq: number, at: number, dur: number, type: OscillatorType, gain: number) => {
+        if (at < ctx.currentTime - 0.05) return;
+        const osc = ctx.createOscillator();
+        const g = ctx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, at);
+        g.gain.setValueAtTime(0.0001, at);
+        g.gain.linearRampToValueAtTime(gain * LEVEL * this.volume, at + 0.01);
+        g.gain.exponentialRampToValueAtTime(0.0001, at + dur);
+        osc.connect(g);
+        this.routeOutput(g, dest);
+        osc.start(at);
+        osc.stop(at + dur + 0.02);
+      };
+
+      const firstBeat = Math.max(0, Math.floor(fromSec / beat));
+      const lastBeat = Math.ceil(toSec / beat);
+      const bass = [146.83, 146.83, 164.81, 174.61, 196.0, 174.61, 164.81, 130.81];
+      const lead = [587.33, 659.25, 783.99, 880.0, 783.99, 659.25, 587.33, 523.25];
+      const spiral = [587.33, 659.25, 783.99, 880.0, 1046.5, 1174.66, 1046.5, 880.0];
+
+      for (let b = firstBeat; b < lastBeat; b++) {
+        const t = b * beat;
+        const at = base + t;
+        if (t >= 25.8) continue;
+
+        tone(bass[b % bass.length], at, beat * 0.42, 'triangle', 0.22);
+        if (t >= 12.0 && t < 24.15) {
+          tone(spiral[b % spiral.length], at + beat * 0.5, beat * 0.25, 'triangle', 0.27);
+        } else {
+          tone(lead[b % lead.length], at + beat * 0.5, beat * 0.28, 'sine', 0.25);
+        }
+      }
+    } catch {}
+  }
+
+  /**
+   * Metallic double-blade scissor snip for The Giant Scissor Trickshot.
+   */
+  public playScissorSnip(dest?: AudioNode, pitch = 1.0) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      // Sharp steel blade scrape + crisp metallic snap
+      const blade = ctx.createOscillator();
+      const bladeG = ctx.createGain();
+      blade.type = 'sawtooth';
+      blade.frequency.setValueAtTime(1450 * pitch, now);
+      blade.frequency.exponentialRampToValueAtTime(2800 * pitch, now + 0.05);
+      blade.frequency.exponentialRampToValueAtTime(620 * pitch, now + 0.11);
+      bladeG.gain.setValueAtTime(0.001, now);
+      bladeG.gain.linearRampToValueAtTime(0.24 * this.volume, now + 0.015);
+      bladeG.gain.exponentialRampToValueAtTime(0.0001, now + 0.12);
+      blade.connect(bladeG);
+      this.routeOutput(bladeG, dest);
+      blade.start(now);
+      blade.stop(now + 0.13);
+
+      const click = ctx.createOscillator();
+      const clickG = ctx.createGain();
+      click.type = 'triangle';
+      click.frequency.setValueAtTime(3400 * pitch, now + 0.045);
+      click.frequency.exponentialRampToValueAtTime(980 * pitch, now + 0.09);
+      clickG.gain.setValueAtTime(0.28 * this.volume, now + 0.045);
+      clickG.gain.exponentialRampToValueAtTime(0.0001, now + 0.10);
+      click.connect(clickG);
+      this.routeOutput(clickG, dest);
+      click.start(now + 0.045);
+      click.stop(now + 0.11);
+    } catch {}
+  }
+
+  /**
+   * Taut string recoil twang & snap for The Giant Scissor Trickshot twist.
+   */
+  public playStringSnap(dest?: AudioNode) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const g = ctx.createGain();
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(540, now);
+      osc.frequency.exponentialRampToValueAtTime(1260, now + 0.05);
+      osc.frequency.exponentialRampToValueAtTime(190, now + 0.24);
+      g.gain.setValueAtTime(0.26 * this.volume, now);
+      g.gain.exponentialRampToValueAtTime(0.0001, now + 0.26);
+      osc.connect(g);
+      this.routeOutput(g, dest);
+      osc.start(now);
+      osc.stop(now + 0.27);
+    } catch {}
+  }
+
+  /**
+   * 30s energetic 136 BPM trickshot comedy score for "THE GIANT SCISSOR TRICKSHOT",
+   * sliced into 4 x 7.5s sections and cutting silent at 25.80s for the beanie-snip twist!
+   */
+  public playGiantScissorScoreSection(dest?: AudioNode, fromSec = 0, toSec = 30) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const beat = 60 / 136;
+      const base = ctx.currentTime + 0.05 - fromSec;
+      const LEVEL = 0.25;
+
+      const tone = (freq: number, at: number, dur: number, type: OscillatorType, gain: number) => {
+        if (at < ctx.currentTime - 0.05) return;
+        const osc = ctx.createOscillator();
+        const g = ctx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, at);
+        g.gain.setValueAtTime(0.0001, at);
+        g.gain.linearRampToValueAtTime(gain * LEVEL * this.volume, at + 0.01);
+        g.gain.exponentialRampToValueAtTime(0.0001, at + dur);
+        osc.connect(g);
+        this.routeOutput(g, dest);
+        osc.start(at);
+        osc.stop(at + dur + 0.02);
+      };
+
+      const firstBeat = Math.max(0, Math.floor(fromSec / beat));
+      const lastBeat = Math.ceil(toSec / beat);
+      const bass = [130.81, 130.81, 164.81, 196.0, 174.61, 164.81, 146.83, 196.0];
+      const lead = [523.25, 659.25, 783.99, 880.0, 783.99, 659.25, 587.33, 659.25];
+      const chain = [659.25, 783.99, 880.0, 1046.5, 987.77, 880.0, 783.99, 659.25];
+
+      for (let b = firstBeat; b < lastBeat; b++) {
+        const t = b * beat;
+        const at = base + t;
+        if (t >= 25.8) continue;
+
+        tone(bass[b % bass.length], at, beat * 0.42, 'triangle', 0.22);
+        if (t >= 12.2 && t < 24.15) {
+          tone(chain[b % chain.length], at + beat * 0.5, beat * 0.24, 'triangle', 0.27);
+        } else {
+          tone(lead[b % lead.length], at + beat * 0.5, beat * 0.28, 'sine', 0.24);
+        }
+      }
+    } catch {}
+  }
+
+  /**
+   * Shimmering sci-fi gravity field hum when the ball enters Blue/Purple/Green zones.
+   */
+  public playGravityHum(dest?: AudioNode, pitch = 1.0) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const lfo = ctx.createOscillator();
+      const lfoG = ctx.createGain();
+      const g = ctx.createGain();
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(220 * pitch, now);
+      osc.frequency.exponentialRampToValueAtTime(340 * pitch, now + 0.26);
+
+      lfo.type = 'sine';
+      lfo.frequency.setValueAtTime(16, now);
+      lfoG.gain.setValueAtTime(18 * pitch, now);
+      lfo.connect(lfoG);
+      lfoG.connect(osc.frequency);
+
+      g.gain.setValueAtTime(0.001, now);
+      g.gain.linearRampToValueAtTime(0.24 * this.volume, now + 0.04);
+      g.gain.exponentialRampToValueAtTime(0.0001, now + 0.30);
+
+      osc.connect(g);
+      this.routeOutput(g, dest);
+      osc.start(now);
+      lfo.start(now);
+      osc.stop(now + 0.32);
+      lfo.stop(now + 0.32);
+    } catch {}
+  }
+
+  /**
+   * All-3-gravity-zones simultaneous overload surge for Scene 5 twist.
+   */
+  public playTripleGravityOverload(dest?: AudioNode) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const freqs = [150, 225, 300];
+      freqs.forEach((f, idx) => {
+        const osc = ctx.createOscillator();
+        const g = ctx.createGain();
+        osc.type = idx === 1 ? 'sawtooth' : 'triangle';
+        osc.frequency.setValueAtTime(f, now);
+        osc.frequency.exponentialRampToValueAtTime(f * 2.4, now + 0.65);
+        g.gain.setValueAtTime(0.001, now);
+        g.gain.linearRampToValueAtTime(0.14 * this.volume, now + 0.06);
+        g.gain.exponentialRampToValueAtTime(0.0001, now + 0.72);
+        osc.connect(g);
+        this.routeOutput(g, dest);
+        osc.start(now);
+        osc.stop(now + 0.75);
+      });
+    } catch {}
+  }
+
+  /**
+   * 30s upbeat 136 BPM sci-fi comedy score for "THE TRIPLE GRAVITY TRICKSHOT",
+   * sliced into 4 x 7.5s sections and cutting silent at 25.80s for the ceiling-stick twist!
+   */
+  public playTripleGravityScoreSection(dest?: AudioNode, fromSec = 0, toSec = 30) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const beat = 60 / 136;
+      const base = ctx.currentTime + 0.05 - fromSec;
+      const LEVEL = 0.25;
+
+      const tone = (freq: number, at: number, dur: number, type: OscillatorType, gain: number) => {
+        if (at < ctx.currentTime - 0.05) return;
+        const osc = ctx.createOscillator();
+        const g = ctx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, at);
+        g.gain.setValueAtTime(0.0001, at);
+        g.gain.linearRampToValueAtTime(gain * LEVEL * this.volume, at + 0.01);
+        g.gain.exponentialRampToValueAtTime(0.0001, at + dur);
+        osc.connect(g);
+        this.routeOutput(g, dest);
+        osc.start(at);
+        osc.stop(at + dur + 0.02);
+      };
+
+      const firstBeat = Math.max(0, Math.floor(fromSec / beat));
+      const lastBeat = Math.ceil(toSec / beat);
+      const bass = [146.83, 146.83, 174.61, 196.0, 220.0, 196.0, 174.61, 164.81];
+      const lead = [587.33, 698.46, 880.0, 783.99, 698.46, 659.25, 587.33, 523.25];
+      const climb = [587.33, 783.99, 880.0, 1046.5, 1174.66, 1046.5, 880.0, 783.99];
+
+      for (let b = firstBeat; b < lastBeat; b++) {
+        const t = b * beat;
+        const at = base + t;
+        if (t >= 25.8) continue;
+
+        tone(bass[b % bass.length], at, beat * 0.42, 'triangle', 0.22);
+        if (t >= 12.2 && t < 24.15) {
+          tone(climb[b % climb.length], at + beat * 0.5, beat * 0.24, 'sine', 0.27);
+        } else {
+          tone(lead[b % lead.length], at + beat * 0.5, beat * 0.28, 'triangle', 0.24);
+        }
+      }
+    } catch {}
+  }
+
+  /**
+   * Hollow pneumatic suction pop when the ping-pong ball enters a transparent tube.
+   */
+  public playTubeEnterPop(dest?: AudioNode) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const g = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(240, now);
+      osc.frequency.exponentialRampToValueAtTime(680, now + 0.09);
+      g.gain.setValueAtTime(0.001, now);
+      g.gain.linearRampToValueAtTime(0.32 * this.volume, now + 0.015);
+      g.gain.exponentialRampToValueAtTime(0.0001, now + 0.12);
+      osc.connect(g);
+      this.routeOutput(g, dest);
+      osc.start(now);
+      osc.stop(now + 0.14);
+    } catch {}
+  }
+
+  /**
+   * Smooth pneumatic tube travel whoosh as the ball zips through bends & loops.
+   */
+  public playAirTubeWhoosh(dest?: AudioNode, pitch = 1.0) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const osc1 = ctx.createOscillator();
+      const osc2 = ctx.createOscillator();
+      const filter = ctx.createBiquadFilter();
+      const g = ctx.createGain();
+
+      osc1.type = 'triangle';
+      osc2.type = 'sine';
+      osc1.frequency.setValueAtTime(210 * pitch, now);
+      osc1.frequency.exponentialRampToValueAtTime(520 * pitch, now + 0.22);
+      osc1.frequency.exponentialRampToValueAtTime(260 * pitch, now + 0.44);
+
+      osc2.frequency.setValueAtTime(420 * pitch, now);
+      osc2.frequency.exponentialRampToValueAtTime(840 * pitch, now + 0.24);
+
+      filter.type = 'bandpass';
+      filter.frequency.setValueAtTime(750 * pitch, now);
+      filter.Q.setValueAtTime(3.2, now);
+
+      g.gain.setValueAtTime(0.001, now);
+      g.gain.linearRampToValueAtTime(0.22 * this.volume, now + 0.06);
+      g.gain.exponentialRampToValueAtTime(0.0001, now + 0.46);
+
+      osc1.connect(filter);
+      osc2.connect(filter);
+      filter.connect(g);
+      this.routeOutput(g, dest);
+      osc1.start(now);
+      osc2.start(now);
+      osc1.stop(now + 0.48);
+      osc2.stop(now + 0.48);
+    } catch {}
+  }
+
+  /**
+   * Forward Air Pump pneumatic turbo blast when slamming the pump switch ON.
+   */
+  public playAirPumpBlast(dest?: AudioNode) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const thump = ctx.createOscillator();
+      const thumpG = ctx.createGain();
+      thump.type = 'sine';
+      thump.frequency.setValueAtTime(160, now);
+      thump.frequency.exponentialRampToValueAtTime(55, now + 0.14);
+      thumpG.gain.setValueAtTime(0.32 * this.volume, now);
+      thumpG.gain.exponentialRampToValueAtTime(0.0001, now + 0.16);
+      thump.connect(thumpG);
+      this.routeOutput(thumpG, dest);
+      thump.start(now);
+      thump.stop(now + 0.18);
+
+      const jet = ctx.createOscillator();
+      const filter = ctx.createBiquadFilter();
+      const jetG = ctx.createGain();
+      jet.type = 'sawtooth';
+      jet.frequency.setValueAtTime(135, now + 0.03);
+      jet.frequency.exponentialRampToValueAtTime(490, now + 0.55);
+
+      filter.type = 'bandpass';
+      filter.frequency.setValueAtTime(600, now + 0.03);
+      filter.frequency.exponentialRampToValueAtTime(1800, now + 0.55);
+      filter.Q.setValueAtTime(2.4, now);
+
+      jetG.gain.setValueAtTime(0.001, now + 0.03);
+      jetG.gain.linearRampToValueAtTime(0.2 * this.volume, now + 0.1);
+      jetG.gain.exponentialRampToValueAtTime(0.0001, now + 0.62);
+
+      jet.connect(filter);
+      filter.connect(jetG);
+      this.routeOutput(jetG, dest);
+      jet.start(now + 0.03);
+      jet.stop(now + 0.65);
+    } catch {}
+  }
+
+  /**
+   * Reverse vacuum suction surge when the Air Pump flips into REVERSE in Scene 5.
+   */
+  public playAirPumpReverse(dest?: AudioNode) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const lfo = ctx.createOscillator();
+      const lfoG = ctx.createGain();
+      const g = ctx.createGain();
+
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(540, now);
+      osc.frequency.exponentialRampToValueAtTime(125, now + 0.72);
+
+      lfo.type = 'sine';
+      lfo.frequency.setValueAtTime(14, now);
+      lfoG.gain.setValueAtTime(24, now);
+      lfo.connect(lfoG);
+      lfoG.connect(osc.frequency);
+
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(1300, now);
+      filter.frequency.exponentialRampToValueAtTime(340, now + 0.72);
+
+      g.gain.setValueAtTime(0.001, now);
+      g.gain.linearRampToValueAtTime(0.24 * this.volume, now + 0.05);
+      g.gain.exponentialRampToValueAtTime(0.0001, now + 0.75);
+
+      osc.connect(filter);
+      filter.connect(g);
+      this.routeOutput(g, dest);
+      osc.start(now);
+      lfo.start(now);
+      osc.stop(now + 0.78);
+      lfo.stop(now + 0.78);
+    } catch {}
+  }
+
+  /**
+   * 30s upbeat 136 BPM tube-lab comedy score for "THE INVISIBLE TUBE TRICKSHOT",
+   * sliced into 4 x 7.5s sections and cutting silent at 25.80s right before the Air Pump reverses!
+   */
+  public playInvisibleTubeScoreSection(dest?: AudioNode, fromSec = 0, toSec = 30) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const beat = 60 / 136;
+      const base = ctx.currentTime + 0.05 - fromSec;
+      const LEVEL = 0.25;
+
+      const tone = (freq: number, at: number, dur: number, type: OscillatorType, gain: number) => {
+        if (at < ctx.currentTime - 0.05) return;
+        const osc = ctx.createOscillator();
+        const g = ctx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, at);
+        g.gain.setValueAtTime(0.0001, at);
+        g.gain.linearRampToValueAtTime(gain * LEVEL * this.volume, at + 0.01);
+        g.gain.exponentialRampToValueAtTime(0.0001, at + dur);
+        osc.connect(g);
+        this.routeOutput(g, dest);
+        osc.start(at);
+        osc.stop(at + dur + 0.02);
+      };
+
+      const firstBeat = Math.max(0, Math.floor(fromSec / beat));
+      const lastBeat = Math.ceil(toSec / beat);
+      const bass = [164.81, 164.81, 196.0, 220.0, 246.94, 220.0, 196.0, 174.61];
+      const lead = [659.25, 783.99, 987.77, 880.0, 783.99, 659.25, 587.33, 659.25];
+      const turbo = [659.25, 880.0, 987.77, 1174.66, 1318.51, 1174.66, 987.77, 880.0];
+
+      for (let b = firstBeat; b < lastBeat; b++) {
+        const t = b * beat;
+        const at = base + t;
+        if (t >= 25.8) continue;
+
+        tone(bass[b % bass.length], at, beat * 0.4, 'triangle', 0.22);
+        if (t >= 18.6 && t < 24.15) {
+          tone(turbo[b % turbo.length], at + beat * 0.5, beat * 0.22, 'sine', 0.28);
+        } else {
+          tone(lead[b % lead.length], at + beat * 0.5, beat * 0.26, 'triangle', 0.24);
+        }
+      }
+    } catch {}
+  }
+
+  /**
+   * Bright metallic steel clink as the silver ball transfers across gear teeth or rings.
+   */
+  public playGearToothClink(dest?: AudioNode, pitch = 1.0) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const freqs = [980 * pitch, 1480 * pitch];
+      freqs.forEach((f, idx) => {
+        const osc = ctx.createOscillator();
+        const g = ctx.createGain();
+        osc.type = idx === 0 ? 'triangle' : 'sine';
+        osc.frequency.setValueAtTime(f, now);
+        osc.frequency.exponentialRampToValueAtTime(f * 0.88, now + 0.14);
+        g.gain.setValueAtTime(0.001, now);
+        g.gain.linearRampToValueAtTime((idx === 0 ? 0.22 : 0.16) * this.volume, now + 0.008);
+        g.gain.exponentialRampToValueAtTime(0.0001, now + 0.16);
+        osc.connect(g);
+        this.routeOutput(g, dest);
+        osc.start(now);
+        osc.stop(now + 0.18);
+      });
+    } catch {}
+  }
+
+  /**
+   * Rhythmic interlocking metallic gear whirring burst as gears engage and accelerate.
+   */
+  public playGearWhir(dest?: AudioNode, pitch = 1.0) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const lfo = ctx.createOscillator();
+      const lfoG = ctx.createGain();
+      const filter = ctx.createBiquadFilter();
+      const g = ctx.createGain();
+
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(140 * pitch, now);
+      osc.frequency.exponentialRampToValueAtTime(240 * pitch, now + 0.38);
+
+      lfo.type = 'square';
+      lfo.frequency.setValueAtTime(18 * pitch, now);
+      lfoG.gain.setValueAtTime(42, now);
+      lfo.connect(lfoG);
+      lfoG.connect(osc.frequency);
+
+      filter.type = 'bandpass';
+      filter.frequency.setValueAtTime(820 * pitch, now);
+      filter.Q.setValueAtTime(2.6, now);
+
+      g.gain.setValueAtTime(0.001, now);
+      g.gain.linearRampToValueAtTime(0.18 * this.volume, now + 0.04);
+      g.gain.exponentialRampToValueAtTime(0.0001, now + 0.42);
+
+      osc.connect(filter);
+      filter.connect(g);
+      this.routeOutput(g, dest);
+      osc.start(now);
+      lfo.start(now);
+      osc.stop(now + 0.45);
+      lfo.stop(now + 0.45);
+    } catch {}
+  }
+
+  /**
+   * Heavy mechanical clutch clank and descending reverse gear grind in Scene 5.
+   */
+  public playGearReverse(dest?: AudioNode) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const clank = ctx.createOscillator();
+      const clankG = ctx.createGain();
+      clank.type = 'square';
+      clank.frequency.setValueAtTime(320, now);
+      clank.frequency.exponentialRampToValueAtTime(85, now + 0.14);
+      clankG.gain.setValueAtTime(0.24 * this.volume, now);
+      clankG.gain.exponentialRampToValueAtTime(0.0001, now + 0.16);
+      clank.connect(clankG);
+      this.routeOutput(clankG, dest);
+      clank.start(now);
+      clank.stop(now + 0.18);
+
+      const grind = ctx.createOscillator();
+      const lfo = ctx.createOscillator();
+      const lfoG = ctx.createGain();
+      const grindG = ctx.createGain();
+      grind.type = 'sawtooth';
+      grind.frequency.setValueAtTime(410, now + 0.06);
+      grind.frequency.exponentialRampToValueAtTime(115, now + 0.68);
+      lfo.type = 'sine';
+      lfo.frequency.setValueAtTime(16, now + 0.06);
+      lfoG.gain.setValueAtTime(28, now + 0.06);
+      lfo.connect(lfoG);
+      lfoG.connect(grind.frequency);
+
+      grindG.gain.setValueAtTime(0.001, now + 0.06);
+      grindG.gain.linearRampToValueAtTime(0.2 * this.volume, now + 0.12);
+      grindG.gain.exponentialRampToValueAtTime(0.0001, now + 0.72);
+      grind.connect(grindG);
+      this.routeOutput(grindG, dest);
+      grind.start(now + 0.06);
+      lfo.start(now + 0.06);
+      grind.stop(now + 0.75);
+      lfo.stop(now + 0.75);
+    } catch {}
+  }
+
+  /**
+   * 30s upbeat 138 BPM clockwork-arcade comedy score for "THE GIANT GEAR TRICKSHOT",
+   * sliced into 4 x 7.5s sections and cutting silent at 25.80s right before the gears reverse!
+   */
+  public playGiantGearScoreSection(dest?: AudioNode, fromSec = 0, toSec = 30) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const beat = 60 / 138;
+      const base = ctx.currentTime + 0.05 - fromSec;
+      const LEVEL = 0.25;
+
+      const tone = (freq: number, at: number, dur: number, type: OscillatorType, gain: number) => {
+        if (at < ctx.currentTime - 0.05) return;
+        const osc = ctx.createOscillator();
+        const g = ctx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, at);
+        g.gain.setValueAtTime(0.0001, at);
+        g.gain.linearRampToValueAtTime(gain * LEVEL * this.volume, at + 0.01);
+        g.gain.exponentialRampToValueAtTime(0.0001, at + dur);
+        osc.connect(g);
+        this.routeOutput(g, dest);
+        osc.start(at);
+        osc.stop(at + dur + 0.02);
+      };
+
+      const firstBeat = Math.max(0, Math.floor(fromSec / beat));
+      const lastBeat = Math.ceil(toSec / beat);
+      const bass = [146.83, 146.83, 174.61, 196.0, 220.0, 196.0, 174.61, 164.81];
+      const lead = [587.33, 739.99, 880.0, 783.99, 659.25, 587.33, 523.25, 587.33];
+      const turbo = [587.33, 880.0, 1046.5, 1174.66, 1318.51, 1174.66, 1046.5, 880.0];
+
+      for (let b = firstBeat; b < lastBeat; b++) {
+        const t = b * beat;
+        const at = base + t;
+        if (t >= 25.8) continue;
+
+        tone(bass[b % bass.length], at, beat * 0.38, 'triangle', 0.22);
+        if (t >= 18.45 && t < 24.15) {
+          tone(turbo[b % turbo.length], at + beat * 0.5, beat * 0.22, 'sine', 0.28);
+        } else {
+          tone(lead[b % lead.length], at + beat * 0.5, beat * 0.25, 'triangle', 0.24);
+        }
+      }
+    } catch {}
+  }
+
+  /**
+   * Low wooden bowling lane roll rumble as the purple bowling ball accelerates.
+   */
+  public playBowlingRoll(dest?: AudioNode, pitch = 1.0) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const filter = ctx.createBiquadFilter();
+      const g = ctx.createGain();
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(78 * pitch, now);
+      osc.frequency.linearRampToValueAtTime(118 * pitch, now + 0.42);
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(340 * pitch, now);
+      g.gain.setValueAtTime(0.001, now);
+      g.gain.linearRampToValueAtTime(0.2 * this.volume, now + 0.05);
+      g.gain.exponentialRampToValueAtTime(0.0001, now + 0.46);
+      osc.connect(filter);
+      filter.connect(g);
+      this.routeOutput(g, dest);
+      osc.start(now);
+      osc.stop(now + 0.48);
+    } catch {}
+  }
+
+  /**
+   * Maple wood bowling pin knock (1 pin) or full cascading 10-pin strike crash.
+   */
+  public playPinHit(dest?: AudioNode, count: 1 | 10 = 1) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const hits =
+        count === 1
+          ? [{ dt: 0, f: 780 }, { dt: 0.04, f: 1120 }]
+          : [
+              { dt: 0, f: 680 },
+              { dt: 0.035, f: 980 },
+              { dt: 0.075, f: 1240 },
+              { dt: 0.115, f: 840 },
+              { dt: 0.16, f: 1380 },
+              { dt: 0.21, f: 1090 },
+            ];
+      hits.forEach(({ dt, f }) => {
+        const osc = ctx.createOscillator();
+        const g = ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(f, now + dt);
+        osc.frequency.exponentialRampToValueAtTime(f * 0.52, now + dt + 0.11);
+        g.gain.setValueAtTime(0.001, now + dt);
+        g.gain.linearRampToValueAtTime(0.28 * this.volume, now + dt + 0.006);
+        g.gain.exponentialRampToValueAtTime(0.0001, now + dt + 0.13);
+        osc.connect(g);
+        this.routeOutput(g, dest);
+        osc.start(now + dt);
+        osc.stop(now + dt + 0.15);
+      });
+    } catch {}
+  }
+
+  /**
+   * Bright crystalline mirror deflection ping when the bowling ball bounces off a mirror.
+   */
+  public playMirrorPing(dest?: AudioNode, pitch = 1.0) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const g = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(1320 * pitch, now);
+      osc.frequency.exponentialRampToValueAtTime(920 * pitch, now + 0.18);
+      g.gain.setValueAtTime(0.001, now);
+      g.gain.linearRampToValueAtTime(0.24 * this.volume, now + 0.008);
+      g.gain.exponentialRampToValueAtTime(0.0001, now + 0.2);
+      osc.connect(g);
+      this.routeOutput(g, dest);
+      osc.start(now);
+      osc.stop(now + 0.22);
+    } catch {}
+  }
+
+  /**
+   * 30s upbeat 136 BPM bowling-alley comedy synth score for "THE REVERSE BOWLING TRICKSHOT",
+   * sliced into 4 x 7.5s sections and cutting silent at 25.80s right before the ball reverses!
+   */
+  public playReverseBowlingScoreSection(dest?: AudioNode, fromSec = 0, toSec = 30) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const beat = 60 / 136;
+      const base = ctx.currentTime + 0.05 - fromSec;
+      const LEVEL = 0.25;
+
+      const tone = (freq: number, at: number, dur: number, type: OscillatorType, gain: number) => {
+        if (at < ctx.currentTime - 0.05) return;
+        const osc = ctx.createOscillator();
+        const g = ctx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, at);
+        g.gain.setValueAtTime(0.0001, at);
+        g.gain.linearRampToValueAtTime(gain * LEVEL * this.volume, at + 0.01);
+        g.gain.exponentialRampToValueAtTime(0.0001, at + dur);
+        osc.connect(g);
+        this.routeOutput(g, dest);
+        osc.start(at);
+        osc.stop(at + dur + 0.02);
+      };
+
+      const firstBeat = Math.max(0, Math.floor(fromSec / beat));
+      const lastBeat = Math.ceil(toSec / beat);
+      const bass = [130.81, 130.81, 164.81, 196.0, 220.0, 196.0, 164.81, 146.83];
+      const lead = [523.25, 659.25, 783.99, 659.25, 587.33, 523.25, 440.0, 523.25];
+      const strikeRun = [523.25, 783.99, 987.77, 1046.5, 1174.66, 1046.5, 987.77, 783.99];
+
+      for (let b = firstBeat; b < lastBeat; b++) {
+        const t = b * beat;
+        const at = base + t;
+        if (t >= 25.8) continue;
+
+        tone(bass[b % bass.length], at, beat * 0.4, 'triangle', 0.22);
+        if (t >= 18.6 && t < 23.8) {
+          tone(strikeRun[b % strikeRun.length], at + beat * 0.5, beat * 0.22, 'sine', 0.28);
+        } else {
+          tone(lead[b % lead.length], at + beat * 0.5, beat * 0.26, 'triangle', 0.24);
+        }
+      }
+    } catch {}
+  }
+
+  /**
+   * High-speed spinning yo-yo string & axle whir.
+   */
+  public playYoyoWhir(dest?: AudioNode, pitch = 1.0) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const filter = ctx.createBiquadFilter();
+      const g = ctx.createGain();
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(175 * pitch, now);
+      osc.frequency.exponentialRampToValueAtTime(390 * pitch, now + 0.28);
+      osc.frequency.exponentialRampToValueAtTime(210 * pitch, now + 0.56);
+
+      filter.type = 'bandpass';
+      filter.frequency.setValueAtTime(520 * pitch, now);
+      filter.Q.setValueAtTime(2.6, now);
+
+      g.gain.setValueAtTime(0.001, now);
+      g.gain.linearRampToValueAtTime(0.24 * this.volume, now + 0.03);
+      g.gain.exponentialRampToValueAtTime(0.0001, now + 0.58);
+
+      osc.connect(filter);
+      filter.connect(g);
+      this.routeOutput(g, dest);
+      osc.start(now);
+      osc.stop(now + 0.6);
+    } catch {}
+  }
+
+  /**
+   * Bright hoop-pass chime as the giant yo-yo threads each spinning ring.
+   */
+  public playHoopPassDing(dest?: AudioNode, pitch = 1.0) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const g = ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(740 * pitch, now);
+      osc.frequency.exponentialRampToValueAtTime(1180 * pitch, now + 0.14);
+      g.gain.setValueAtTime(0.001, now);
+      g.gain.linearRampToValueAtTime(0.26 * this.volume, now + 0.01);
+      g.gain.exponentialRampToValueAtTime(0.0001, now + 0.24);
+      osc.connect(g);
+      this.routeOutput(g, dest);
+      osc.start(now);
+      osc.stop(now + 0.26);
+    } catch {}
+  }
+
+  /**
+   * Rapid recoil zip + elastic hoist pull when the yo-yo wraps Stickman's waist.
+   */
+  public playYoyoRecoilSnap(dest?: AudioNode) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const g = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(220, now);
+      osc.frequency.exponentialRampToValueAtTime(980, now + 0.36);
+      osc.frequency.exponentialRampToValueAtTime(520, now + 0.62);
+      g.gain.setValueAtTime(0.001, now);
+      g.gain.linearRampToValueAtTime(0.32 * this.volume, now + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001, now + 0.66);
+      osc.connect(g);
+      this.routeOutput(g, dest);
+      osc.start(now);
+      osc.stop(now + 0.68);
+    } catch {}
+  }
+
+  /**
+   * 30s upbeat 138 BPM arcade comedy synth score for "THE GIANT YO-YO TRICKSHOT",
+   * sliced into 4 x 7.5s sections and cutting silent at 25.75s right before recoil!
+   */
+  public playGiantYoyoScoreSection(dest?: AudioNode, fromSec = 0, toSec = 30) {
+    if (this.isMuted && !dest) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const beat = 60 / 138;
+      const base = ctx.currentTime + 0.05 - fromSec;
+      const LEVEL = 0.25;
+
+      const tone = (freq: number, at: number, dur: number, type: OscillatorType, gain: number) => {
+        if (at < ctx.currentTime - 0.05) return;
+        const osc = ctx.createOscillator();
+        const g = ctx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, at);
+        g.gain.setValueAtTime(0.0001, at);
+        g.gain.linearRampToValueAtTime(gain * LEVEL * this.volume, at + 0.01);
+        g.gain.exponentialRampToValueAtTime(0.0001, at + dur);
+        osc.connect(g);
+        this.routeOutput(g, dest);
+        osc.start(at);
+        osc.stop(at + dur + 0.02);
+      };
+
+      const firstBeat = Math.max(0, Math.floor(fromSec / beat));
+      const lastBeat = Math.ceil(toSec / beat);
+      const bass = [146.83, 146.83, 196.0, 220.0, 246.94, 220.0, 196.0, 164.81];
+      const lead = [587.33, 739.99, 880.0, 739.99, 659.25, 587.33, 493.88, 587.33];
+      const swingRun = [587.33, 880.0, 1046.5, 1174.66, 1318.51, 1174.66, 1046.5, 880.0];
+
+      for (let b = firstBeat; b < lastBeat; b++) {
+        const t = b * beat;
+        const at = base + t;
+        if (t >= 25.75) continue;
+
+        tone(bass[b % bass.length], at, beat * 0.4, 'triangle', 0.22);
+        if (t >= 19.4 && t < 24.1) {
+          tone(swingRun[b % swingRun.length], at + beat * 0.5, beat * 0.22, 'sine', 0.28);
+        } else {
+          tone(lead[b % lead.length], at + beat * 0.5, beat * 0.26, 'triangle', 0.24);
+        }
+      }
+    } catch {}
+  }
+
+  /**
    * Speaks arbitrary text with the cartoon formant voice.
    *
    * Each word becomes a short syllable sequence: the vowel group picks the

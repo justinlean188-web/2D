@@ -14,7 +14,51 @@ import { RunawayCakeRenderer } from '../animation/runawayCakeRenderer';
 import { SelfBuildingRobotRenderer } from '../animation/selfBuildingRobotRenderer';
 import { InfiniteGiftBoxRenderer } from '../animation/infiniteGiftBoxRenderer';
 import { LivingTrafficLightRenderer } from '../animation/livingTrafficLightRenderer';
+import { CloneButtonDisasterRenderer } from '../animation/cloneButtonDisasterRenderer';
+import { RubberBandTrapRenderer } from '../animation/rubberBandTrapRenderer';
+import { MysteryFloorHoleRenderer } from '../animation/mysteryFloorHoleRenderer';
+import { SuperBouncyShoesRenderer } from '../animation/superBouncyShoesRenderer';
+import { ShadowTrickshotRenderer } from '../animation/shadowTrickshotRenderer';
+import { InvisibleWallRenderer } from '../animation/invisibleWallRenderer';
+import { TenFanTrickshotRenderer } from '../animation/tenFanTrickshotRenderer';
+import { HundredBallChainRenderer } from '../animation/hundredBallChainRenderer';
+import { LongestRulerRenderer } from '../animation/longestRulerRenderer';
+import { GiantSlinkyRenderer } from '../animation/giantSlinkyRenderer';
+import { ImpossibleKeyholeRenderer } from '../animation/impossibleKeyholeRenderer';
+import { ImpossibleLaserRenderer } from '../animation/impossibleLaserRenderer';
+import { ImpossiblePinballRenderer } from '../animation/impossiblePinballRenderer';
+import { ThousandDegreeHotShotRenderer } from '../animation/thousandDegreeHotShotRenderer';
+import { MagneticMazeRenderer } from '../animation/magneticMazeRenderer';
+import { SpiralStaircaseRenderer } from '../animation/spiralStaircaseRenderer';
+import { GiantScissorRenderer } from '../animation/giantScissorRenderer';
+import { TripleGravityRenderer } from '../animation/tripleGravityRenderer';
+import { InvisibleTubeRenderer } from '../animation/invisibleTubeRenderer';
+import { GiantGearRenderer } from '../animation/giantGearRenderer';
+import { ReverseBowlingRenderer } from '../animation/reverseBowlingRenderer';
+import { GiantYoyoRenderer } from '../animation/giantYoyoRenderer';
 import {
+  GIANT_YOYO_CUES,
+  REVERSE_BOWLING_CUES,
+  GIANT_GEAR_CUES,
+  INVISIBLE_TUBE_CUES,
+  TRIPLE_GRAVITY_CUES,
+  GIANT_SCISSOR_CUES,
+  SPIRAL_STAIRCASE_CUES,
+  MAGNETIC_MAZE_CUES,
+  HOT_SHOT_CUES,
+  IMPOSSIBLE_PINBALL_CUES,
+  IMPOSSIBLE_LASER_CUES,
+  IMPOSSIBLE_KEYHOLE_CUES,
+  GIANT_SLINKY_CUES,
+  LONGEST_RULER_CUES,
+  HUNDRED_BALL_CUES,
+  TEN_FAN_CUES,
+  INVISIBLE_WALL_CUES,
+  SHADOW_TRICKSHOT_CUES,
+  SUPER_BOUNCY_CUES,
+  MYSTERY_HOLE_CUES,
+  RUBBER_BAND_CUES,
+  CLONE_DISASTER_CUES,
   LIVING_TRAFFIC_LIGHT_CUES,
   INFINITE_GIFT_BOX_CUES,
   SELF_BUILDING_ROBOT_CUES,
@@ -144,7 +188,51 @@ export async function exportVideo(options: ExportOptions): Promise<ExportResult>
   }
 
   const renderer: ExportTimelineRenderer = options.renderer ??
-    (config.activeProject === 'living-traffic-light'
+    (config.activeProject === 'giant-yoyo-trickshot'
+      ? new GiantYoyoRenderer()
+      : config.activeProject === 'reverse-bowling-trickshot'
+      ? new ReverseBowlingRenderer()
+      : config.activeProject === 'giant-gear-trickshot'
+      ? new GiantGearRenderer()
+      : config.activeProject === 'invisible-tube-trickshot'
+      ? new InvisibleTubeRenderer()
+      : config.activeProject === 'triple-gravity-trickshot'
+      ? new TripleGravityRenderer()
+      : config.activeProject === 'giant-scissor-trickshot'
+      ? new GiantScissorRenderer()
+      : config.activeProject === 'spiral-staircase-shot'
+      ? new SpiralStaircaseRenderer()
+      : config.activeProject === 'magnetic-maze-trickshot'
+      ? new MagneticMazeRenderer()
+      : config.activeProject === 'thousand-degree-hot-shot'
+      ? new ThousandDegreeHotShotRenderer()
+      : config.activeProject === 'impossible-pinball-trickshot'
+      ? new ImpossiblePinballRenderer()
+      : config.activeProject === 'impossible-laser-maze'
+      ? new ImpossibleLaserRenderer()
+      : config.activeProject === 'impossible-keyhole-shot'
+      ? new ImpossibleKeyholeRenderer()
+      : config.activeProject === 'giant-slinky-trickshot'
+      ? new GiantSlinkyRenderer()
+      : config.activeProject === 'longest-ruler-shot'
+      ? new LongestRulerRenderer()
+      : config.activeProject === 'hundred-ball-chain'
+      ? new HundredBallChainRenderer()
+      : config.activeProject === 'ten-fan-trickshot'
+      ? new TenFanTrickshotRenderer()
+      : config.activeProject === 'invisible-wall-challenge'
+      ? new InvisibleWallRenderer()
+      : config.activeProject === 'shadow-trickshot'
+      ? new ShadowTrickshotRenderer()
+      : config.activeProject === 'super-bouncy-shoes'
+      ? new SuperBouncyShoesRenderer()
+      : config.activeProject === 'mystery-floor-hole'
+      ? new MysteryFloorHoleRenderer()
+      : config.activeProject === 'rubber-band-trap'
+      ? new RubberBandTrapRenderer()
+      : config.activeProject === 'clone-button-disaster'
+      ? new CloneButtonDisasterRenderer()
+      : config.activeProject === 'living-traffic-light'
       ? new LivingTrafficLightRenderer()
       : config.activeProject === 'infinite-gift-box'
       ? new InfiniteGiftBoxRenderer()
@@ -183,7 +271,51 @@ export async function exportVideo(options: ExportOptions): Promise<ExportResult>
 
   const filePrefix =
     options.filePrefix ??
-    (config.activeProject === 'living-traffic-light'
+    (config.activeProject === 'giant-yoyo-trickshot'
+      ? 'giant-yoyo-trickshot'
+      : config.activeProject === 'reverse-bowling-trickshot'
+      ? 'reverse-bowling-trickshot'
+      : config.activeProject === 'giant-gear-trickshot'
+      ? 'giant-gear-trickshot'
+      : config.activeProject === 'invisible-tube-trickshot'
+      ? 'invisible-tube-trickshot'
+      : config.activeProject === 'triple-gravity-trickshot'
+      ? 'triple-gravity-trickshot'
+      : config.activeProject === 'giant-scissor-trickshot'
+      ? 'giant-scissor-trickshot'
+      : config.activeProject === 'spiral-staircase-shot'
+      ? 'spiral-staircase-shot'
+      : config.activeProject === 'magnetic-maze-trickshot'
+      ? 'magnetic-maze-trickshot'
+      : config.activeProject === 'thousand-degree-hot-shot'
+      ? 'thousand-degree-hot-shot'
+      : config.activeProject === 'impossible-pinball-trickshot'
+      ? 'impossible-pinball-trickshot'
+      : config.activeProject === 'impossible-laser-maze'
+      ? 'impossible-laser-maze'
+      : config.activeProject === 'impossible-keyhole-shot'
+      ? 'impossible-keyhole-shot'
+      : config.activeProject === 'giant-slinky-trickshot'
+      ? 'giant-slinky-trickshot'
+      : config.activeProject === 'longest-ruler-shot'
+      ? 'longest-ruler-shot'
+      : config.activeProject === 'hundred-ball-chain'
+      ? 'hundred-ball-chain'
+      : config.activeProject === 'ten-fan-trickshot'
+      ? 'ten-fan-trickshot'
+      : config.activeProject === 'invisible-wall-challenge'
+      ? 'invisible-wall-challenge'
+      : config.activeProject === 'shadow-trickshot'
+      ? 'shadow-trickshot'
+      : config.activeProject === 'super-bouncy-shoes'
+      ? 'super-bouncy-shoes'
+      : config.activeProject === 'mystery-floor-hole'
+      ? 'mystery-floor-hole'
+      : config.activeProject === 'rubber-band-trap'
+      ? 'rubber-band-trap'
+      : config.activeProject === 'clone-button-disaster'
+      ? 'clone-button-disaster'
+      : config.activeProject === 'living-traffic-light'
       ? 'living-traffic-light'
       : config.activeProject === 'infinite-gift-box'
       ? 'infinite-gift-box'
@@ -583,6 +715,204 @@ export async function exportVideo(options: ExportOptions): Promise<ExportResult>
         } else if (config.activeProject === 'paper-ball-part4') {
           if (config.enableSFX) {
             for (const cue of PAPER_BALL_PART4_CUES) {
+              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
+                cue.play(dest);
+                triggeredCues.add(cue.id);
+              }
+            }
+          }
+        } else if (config.activeProject === 'giant-yoyo-trickshot') {
+          if (config.enableSFX) {
+            for (const cue of GIANT_YOYO_CUES) {
+              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
+                cue.play(dest);
+                triggeredCues.add(cue.id);
+              }
+            }
+          }
+        } else if (config.activeProject === 'reverse-bowling-trickshot') {
+          if (config.enableSFX) {
+            for (const cue of REVERSE_BOWLING_CUES) {
+              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
+                cue.play(dest);
+                triggeredCues.add(cue.id);
+              }
+            }
+          }
+        } else if (config.activeProject === 'giant-gear-trickshot') {
+          if (config.enableSFX) {
+            for (const cue of GIANT_GEAR_CUES) {
+              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
+                cue.play(dest);
+                triggeredCues.add(cue.id);
+              }
+            }
+          }
+        } else if (config.activeProject === 'invisible-tube-trickshot') {
+          if (config.enableSFX) {
+            for (const cue of INVISIBLE_TUBE_CUES) {
+              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
+                cue.play(dest);
+                triggeredCues.add(cue.id);
+              }
+            }
+          }
+        } else if (config.activeProject === 'triple-gravity-trickshot') {
+          if (config.enableSFX) {
+            for (const cue of TRIPLE_GRAVITY_CUES) {
+              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
+                cue.play(dest);
+                triggeredCues.add(cue.id);
+              }
+            }
+          }
+        } else if (config.activeProject === 'giant-scissor-trickshot') {
+          if (config.enableSFX) {
+            for (const cue of GIANT_SCISSOR_CUES) {
+              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
+                cue.play(dest);
+                triggeredCues.add(cue.id);
+              }
+            }
+          }
+        } else if (config.activeProject === 'spiral-staircase-shot') {
+          if (config.enableSFX) {
+            for (const cue of SPIRAL_STAIRCASE_CUES) {
+              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
+                cue.play(dest);
+                triggeredCues.add(cue.id);
+              }
+            }
+          }
+        } else if (config.activeProject === 'magnetic-maze-trickshot') {
+          if (config.enableSFX) {
+            for (const cue of MAGNETIC_MAZE_CUES) {
+              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
+                cue.play(dest);
+                triggeredCues.add(cue.id);
+              }
+            }
+          }
+        } else if (config.activeProject === 'thousand-degree-hot-shot') {
+          if (config.enableSFX) {
+            for (const cue of HOT_SHOT_CUES) {
+              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
+                cue.play(dest);
+                triggeredCues.add(cue.id);
+              }
+            }
+          }
+        } else if (config.activeProject === 'impossible-pinball-trickshot') {
+          if (config.enableSFX) {
+            for (const cue of IMPOSSIBLE_PINBALL_CUES) {
+              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
+                cue.play(dest);
+                triggeredCues.add(cue.id);
+              }
+            }
+          }
+        } else if (config.activeProject === 'impossible-laser-maze') {
+          if (config.enableSFX) {
+            for (const cue of IMPOSSIBLE_LASER_CUES) {
+              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
+                cue.play(dest);
+                triggeredCues.add(cue.id);
+              }
+            }
+          }
+        } else if (config.activeProject === 'impossible-keyhole-shot') {
+          if (config.enableSFX) {
+            for (const cue of IMPOSSIBLE_KEYHOLE_CUES) {
+              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
+                cue.play(dest);
+                triggeredCues.add(cue.id);
+              }
+            }
+          }
+        } else if (config.activeProject === 'giant-slinky-trickshot') {
+          if (config.enableSFX) {
+            for (const cue of GIANT_SLINKY_CUES) {
+              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
+                cue.play(dest);
+                triggeredCues.add(cue.id);
+              }
+            }
+          }
+        } else if (config.activeProject === 'longest-ruler-shot') {
+          if (config.enableSFX) {
+            for (const cue of LONGEST_RULER_CUES) {
+              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
+                cue.play(dest);
+                triggeredCues.add(cue.id);
+              }
+            }
+          }
+        } else if (config.activeProject === 'hundred-ball-chain') {
+          if (config.enableSFX) {
+            for (const cue of HUNDRED_BALL_CUES) {
+              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
+                cue.play(dest);
+                triggeredCues.add(cue.id);
+              }
+            }
+          }
+        } else if (config.activeProject === 'ten-fan-trickshot') {
+          if (config.enableSFX) {
+            for (const cue of TEN_FAN_CUES) {
+              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
+                cue.play(dest);
+                triggeredCues.add(cue.id);
+              }
+            }
+          }
+        } else if (config.activeProject === 'invisible-wall-challenge') {
+          if (config.enableSFX) {
+            for (const cue of INVISIBLE_WALL_CUES) {
+              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
+                cue.play(dest);
+                triggeredCues.add(cue.id);
+              }
+            }
+          }
+        } else if (config.activeProject === 'shadow-trickshot') {
+          if (config.enableSFX) {
+            for (const cue of SHADOW_TRICKSHOT_CUES) {
+              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
+                cue.play(dest);
+                triggeredCues.add(cue.id);
+              }
+            }
+          }
+        } else if (config.activeProject === 'super-bouncy-shoes') {
+          if (config.enableSFX) {
+            for (const cue of SUPER_BOUNCY_CUES) {
+              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
+                cue.play(dest);
+                triggeredCues.add(cue.id);
+              }
+            }
+          }
+        } else if (config.activeProject === 'mystery-floor-hole') {
+          if (config.enableSFX) {
+            for (const cue of MYSTERY_HOLE_CUES) {
+              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
+                cue.play(dest);
+                triggeredCues.add(cue.id);
+              }
+            }
+          }
+        } else if (config.activeProject === 'rubber-band-trap') {
+          if (config.enableSFX) {
+            for (const cue of RUBBER_BAND_CUES) {
+              if (animT >= cue.time && !triggeredCues.has(cue.id)) {
+                cue.play(dest);
+                triggeredCues.add(cue.id);
+              }
+            }
+          }
+        } else if (config.activeProject === 'clone-button-disaster') {
+          if (config.enableSFX) {
+            for (const cue of CLONE_DISASTER_CUES) {
               if (animT >= cue.time && !triggeredCues.has(cue.id)) {
                 cue.play(dest);
                 triggeredCues.add(cue.id);

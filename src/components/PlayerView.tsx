@@ -29,7 +29,51 @@ import { RunawayCakeRenderer } from '../animation/runawayCakeRenderer';
 import { SelfBuildingRobotRenderer } from '../animation/selfBuildingRobotRenderer';
 import { InfiniteGiftBoxRenderer } from '../animation/infiniteGiftBoxRenderer';
 import { LivingTrafficLightRenderer } from '../animation/livingTrafficLightRenderer';
+import { CloneButtonDisasterRenderer } from '../animation/cloneButtonDisasterRenderer';
+import { RubberBandTrapRenderer } from '../animation/rubberBandTrapRenderer';
+import { MysteryFloorHoleRenderer } from '../animation/mysteryFloorHoleRenderer';
+import { SuperBouncyShoesRenderer } from '../animation/superBouncyShoesRenderer';
+import { ShadowTrickshotRenderer } from '../animation/shadowTrickshotRenderer';
+import { InvisibleWallRenderer } from '../animation/invisibleWallRenderer';
+import { TenFanTrickshotRenderer } from '../animation/tenFanTrickshotRenderer';
+import { HundredBallChainRenderer } from '../animation/hundredBallChainRenderer';
+import { LongestRulerRenderer } from '../animation/longestRulerRenderer';
+import { GiantSlinkyRenderer } from '../animation/giantSlinkyRenderer';
+import { ImpossibleKeyholeRenderer } from '../animation/impossibleKeyholeRenderer';
+import { ImpossibleLaserRenderer } from '../animation/impossibleLaserRenderer';
+import { ImpossiblePinballRenderer } from '../animation/impossiblePinballRenderer';
+import { ThousandDegreeHotShotRenderer } from '../animation/thousandDegreeHotShotRenderer';
+import { MagneticMazeRenderer } from '../animation/magneticMazeRenderer';
+import { SpiralStaircaseRenderer } from '../animation/spiralStaircaseRenderer';
+import { GiantScissorRenderer } from '../animation/giantScissorRenderer';
+import { TripleGravityRenderer } from '../animation/tripleGravityRenderer';
+import { InvisibleTubeRenderer } from '../animation/invisibleTubeRenderer';
+import { GiantGearRenderer } from '../animation/giantGearRenderer';
+import { ReverseBowlingRenderer } from '../animation/reverseBowlingRenderer';
+import { GiantYoyoRenderer } from '../animation/giantYoyoRenderer';
 import {
+  GIANT_YOYO_CUES,
+  REVERSE_BOWLING_CUES,
+  GIANT_GEAR_CUES,
+  INVISIBLE_TUBE_CUES,
+  TRIPLE_GRAVITY_CUES,
+  GIANT_SCISSOR_CUES,
+  SPIRAL_STAIRCASE_CUES,
+  MAGNETIC_MAZE_CUES,
+  HOT_SHOT_CUES,
+  IMPOSSIBLE_PINBALL_CUES,
+  IMPOSSIBLE_LASER_CUES,
+  IMPOSSIBLE_KEYHOLE_CUES,
+  GIANT_SLINKY_CUES,
+  LONGEST_RULER_CUES,
+  HUNDRED_BALL_CUES,
+  TEN_FAN_CUES,
+  INVISIBLE_WALL_CUES,
+  SHADOW_TRICKSHOT_CUES,
+  SUPER_BOUNCY_CUES,
+  MYSTERY_HOLE_CUES,
+  RUBBER_BAND_CUES,
+  CLONE_DISASTER_CUES,
   LIVING_TRAFFIC_LIGHT_CUES,
   INFINITE_GIFT_BOX_CUES,
   SELF_BUILDING_ROBOT_CUES,
@@ -89,6 +133,28 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
   const selfBuildingRobotRendererRef = useRef<SelfBuildingRobotRenderer>(new SelfBuildingRobotRenderer());
   const infiniteGiftBoxRendererRef = useRef<InfiniteGiftBoxRenderer>(new InfiniteGiftBoxRenderer());
   const livingTrafficLightRendererRef = useRef<LivingTrafficLightRenderer>(new LivingTrafficLightRenderer());
+  const cloneButtonDisasterRendererRef = useRef<CloneButtonDisasterRenderer>(new CloneButtonDisasterRenderer());
+  const rubberBandTrapRendererRef = useRef<RubberBandTrapRenderer>(new RubberBandTrapRenderer());
+  const mysteryFloorHoleRendererRef = useRef<MysteryFloorHoleRenderer>(new MysteryFloorHoleRenderer());
+  const superBouncyShoesRendererRef = useRef<SuperBouncyShoesRenderer>(new SuperBouncyShoesRenderer());
+  const shadowTrickshotRendererRef = useRef<ShadowTrickshotRenderer>(new ShadowTrickshotRenderer());
+  const invisibleWallRendererRef = useRef<InvisibleWallRenderer>(new InvisibleWallRenderer());
+  const tenFanRendererRef = useRef<TenFanTrickshotRenderer>(new TenFanTrickshotRenderer());
+  const hundredBallRendererRef = useRef<HundredBallChainRenderer>(new HundredBallChainRenderer());
+  const longestRulerRendererRef = useRef<LongestRulerRenderer>(new LongestRulerRenderer());
+  const giantSlinkyRendererRef = useRef<GiantSlinkyRenderer>(new GiantSlinkyRenderer());
+  const impossibleKeyholeRendererRef = useRef<ImpossibleKeyholeRenderer>(new ImpossibleKeyholeRenderer());
+  const impossibleLaserRendererRef = useRef<ImpossibleLaserRenderer>(new ImpossibleLaserRenderer());
+  const impossiblePinballRendererRef = useRef<ImpossiblePinballRenderer>(new ImpossiblePinballRenderer());
+  const hotShotRendererRef = useRef<ThousandDegreeHotShotRenderer>(new ThousandDegreeHotShotRenderer());
+  const magneticMazeRendererRef = useRef<MagneticMazeRenderer>(new MagneticMazeRenderer());
+  const spiralStaircaseRendererRef = useRef<SpiralStaircaseRenderer>(new SpiralStaircaseRenderer());
+  const giantScissorRendererRef = useRef<GiantScissorRenderer>(new GiantScissorRenderer());
+  const tripleGravityRendererRef = useRef<TripleGravityRenderer>(new TripleGravityRenderer());
+  const invisibleTubeRendererRef = useRef<InvisibleTubeRenderer>(new InvisibleTubeRenderer());
+  const giantGearRendererRef = useRef<GiantGearRenderer>(new GiantGearRenderer());
+  const reverseBowlingRendererRef = useRef<ReverseBowlingRenderer>(new ReverseBowlingRenderer());
+  const giantYoyoRendererRef = useRef<GiantYoyoRenderer>(new GiantYoyoRenderer());
   const [speed, setSpeed] = useState<number>(1.0);
   const [isLooping, setIsLooping] = useState<boolean>(true);
   const lastTimeRef = useRef<number>(performance.now());
@@ -115,6 +181,50 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
   const isInfiniteGiftBoxProject = config.activeProject === 'infinite-gift-box';
   // The living traffic light short burns its five pop captions into the picture.
   const isLivingTrafficLightProject = config.activeProject === 'living-traffic-light';
+  // The clone button disaster short burns its five pop captions into the picture.
+  const isCloneDisasterProject = config.activeProject === 'clone-button-disaster';
+  // The giant rubber band trap short burns its five pop captions into the picture.
+  const isRubberBandTrapProject = config.activeProject === 'rubber-band-trap';
+  // The mystery hole in the floor short burns its five pop captions into the picture.
+  const isMysteryFloorHoleProject = config.activeProject === 'mystery-floor-hole';
+  // The super bouncy shoes short burns its five pop captions into the picture.
+  const isSuperBouncyShoesProject = config.activeProject === 'super-bouncy-shoes';
+  // The impossible shadow trickshot short burns its five pop captions into the picture.
+  const isShadowTrickshotProject = config.activeProject === 'shadow-trickshot';
+  // The invisible wall challenge short burns its five pop captions into the picture.
+  const isInvisibleWallProject = config.activeProject === 'invisible-wall-challenge';
+  // The 10-fan impossible trickshot short burns its five pop captions into the picture.
+  const isTenFanProject = config.activeProject === 'ten-fan-trickshot';
+  // The 100-ball chain reaction short burns its five pop captions into the picture.
+  const isHundredBallProject = config.activeProject === 'hundred-ball-chain';
+  // The world's longest ruler shot burns its five pop captions into the picture.
+  const isLongestRulerProject = config.activeProject === 'longest-ruler-shot';
+  // The giant slinky trickshot burns its five pop captions into the picture.
+  const isGiantSlinkyProject = config.activeProject === 'giant-slinky-trickshot';
+  // The impossible keyhole shot burns its five pop captions into the picture.
+  const isImpossibleKeyholeProject = config.activeProject === 'impossible-keyhole-shot';
+  // The impossible laser maze burns its five pop captions into the picture.
+  const isImpossibleLaserProject = config.activeProject === 'impossible-laser-maze';
+  // The impossible pinball trickshot burns its five pop captions into the picture.
+  const isImpossiblePinballProject = config.activeProject === 'impossible-pinball-trickshot';
+  // The 1,000-degree hot shot burns its five pop captions into the picture.
+  const isHotShotProject = config.activeProject === 'thousand-degree-hot-shot';
+  // The magnetic maze trickshot burns its five pop captions into the picture.
+  const isMagneticMazeProject = config.activeProject === 'magnetic-maze-trickshot';
+  // The spiral staircase trickshot burns its five pop captions into the picture.
+  const isSpiralStaircaseProject = config.activeProject === 'spiral-staircase-shot';
+  // The giant scissor trickshot burns its five pop captions into the picture.
+  const isGiantScissorProject = config.activeProject === 'giant-scissor-trickshot';
+  // The triple gravity trickshot burns its five pop captions into the picture.
+  const isTripleGravityProject = config.activeProject === 'triple-gravity-trickshot';
+  // The invisible tube trickshot burns its five pop captions into the picture.
+  const isInvisibleTubeProject = config.activeProject === 'invisible-tube-trickshot';
+  // The giant gear trickshot burns its five pop captions into the picture.
+  const isGiantGearProject = config.activeProject === 'giant-gear-trickshot';
+  // The reverse bowling trickshot burns its five pop captions into the picture.
+  const isReverseBowlingProject = config.activeProject === 'reverse-bowling-trickshot';
+  // The giant yo-yo trickshot burns its five pop captions into the picture.
+  const isGiantYoyoProject = config.activeProject === 'giant-yoyo-trickshot';
 
   // Current active scene
   const activeScene =
@@ -131,6 +241,116 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
       if (time <= toTime) cues.add(id);
       else cues.delete(id);
     };
+
+    if (config.activeProject === 'giant-yoyo-trickshot') {
+      for (const cue of GIANT_YOYO_CUES) setCueState(cue.id, cue.time);
+      return;
+    }
+
+    if (config.activeProject === 'reverse-bowling-trickshot') {
+      for (const cue of REVERSE_BOWLING_CUES) setCueState(cue.id, cue.time);
+      return;
+    }
+
+    if (config.activeProject === 'giant-gear-trickshot') {
+      for (const cue of GIANT_GEAR_CUES) setCueState(cue.id, cue.time);
+      return;
+    }
+
+    if (config.activeProject === 'invisible-tube-trickshot') {
+      for (const cue of INVISIBLE_TUBE_CUES) setCueState(cue.id, cue.time);
+      return;
+    }
+
+    if (config.activeProject === 'triple-gravity-trickshot') {
+      for (const cue of TRIPLE_GRAVITY_CUES) setCueState(cue.id, cue.time);
+      return;
+    }
+
+    if (config.activeProject === 'giant-scissor-trickshot') {
+      for (const cue of GIANT_SCISSOR_CUES) setCueState(cue.id, cue.time);
+      return;
+    }
+
+    if (config.activeProject === 'spiral-staircase-shot') {
+      for (const cue of SPIRAL_STAIRCASE_CUES) setCueState(cue.id, cue.time);
+      return;
+    }
+
+    if (config.activeProject === 'magnetic-maze-trickshot') {
+      for (const cue of MAGNETIC_MAZE_CUES) setCueState(cue.id, cue.time);
+      return;
+    }
+
+    if (config.activeProject === 'thousand-degree-hot-shot') {
+      for (const cue of HOT_SHOT_CUES) setCueState(cue.id, cue.time);
+      return;
+    }
+
+    if (config.activeProject === 'impossible-pinball-trickshot') {
+      for (const cue of IMPOSSIBLE_PINBALL_CUES) setCueState(cue.id, cue.time);
+      return;
+    }
+
+    if (config.activeProject === 'impossible-laser-maze') {
+      for (const cue of IMPOSSIBLE_LASER_CUES) setCueState(cue.id, cue.time);
+      return;
+    }
+
+    if (config.activeProject === 'impossible-keyhole-shot') {
+      for (const cue of IMPOSSIBLE_KEYHOLE_CUES) setCueState(cue.id, cue.time);
+      return;
+    }
+
+    if (config.activeProject === 'giant-slinky-trickshot') {
+      for (const cue of GIANT_SLINKY_CUES) setCueState(cue.id, cue.time);
+      return;
+    }
+
+    if (config.activeProject === 'longest-ruler-shot') {
+      for (const cue of LONGEST_RULER_CUES) setCueState(cue.id, cue.time);
+      return;
+    }
+
+    if (config.activeProject === 'hundred-ball-chain') {
+      for (const cue of HUNDRED_BALL_CUES) setCueState(cue.id, cue.time);
+      return;
+    }
+
+    if (config.activeProject === 'ten-fan-trickshot') {
+      for (const cue of TEN_FAN_CUES) setCueState(cue.id, cue.time);
+      return;
+    }
+
+    if (config.activeProject === 'invisible-wall-challenge') {
+      for (const cue of INVISIBLE_WALL_CUES) setCueState(cue.id, cue.time);
+      return;
+    }
+
+    if (config.activeProject === 'shadow-trickshot') {
+      for (const cue of SHADOW_TRICKSHOT_CUES) setCueState(cue.id, cue.time);
+      return;
+    }
+
+    if (config.activeProject === 'super-bouncy-shoes') {
+      for (const cue of SUPER_BOUNCY_CUES) setCueState(cue.id, cue.time);
+      return;
+    }
+
+    if (config.activeProject === 'mystery-floor-hole') {
+      for (const cue of MYSTERY_HOLE_CUES) setCueState(cue.id, cue.time);
+      return;
+    }
+
+    if (config.activeProject === 'rubber-band-trap') {
+      for (const cue of RUBBER_BAND_CUES) setCueState(cue.id, cue.time);
+      return;
+    }
+
+    if (config.activeProject === 'clone-button-disaster') {
+      for (const cue of CLONE_DISASTER_CUES) setCueState(cue.id, cue.time);
+      return;
+    }
 
     if (config.activeProject === 'living-traffic-light') {
       for (const cue of LIVING_TRAFFIC_LIGHT_CUES) setCueState(cue.id, cue.time);
@@ -299,6 +519,424 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
             continue;
           }
           // Short accents only fire just after their mark, never in a burst.
+          if (t >= cue.time && t - cue.time < 0.75) {
+            cue.play();
+            cues.add(cue.id);
+          }
+        }
+        return;
+      }
+
+      if (config.activeProject === 'giant-yoyo-trickshot') {
+        if (!config.enableSFX) return;
+        for (const cue of GIANT_YOYO_CUES) {
+          if (cues.has(cue.id)) continue;
+          if (cue.id.startsWith('gyt-score-')) {
+            if (t >= cue.time && t < cue.time + 7.6) {
+              cue.play();
+              cues.add(cue.id);
+            }
+            continue;
+          }
+          if (t >= cue.time && t - cue.time < 0.75) {
+            cue.play();
+            cues.add(cue.id);
+          }
+        }
+        return;
+      }
+
+      if (config.activeProject === 'reverse-bowling-trickshot') {
+        if (!config.enableSFX) return;
+        for (const cue of REVERSE_BOWLING_CUES) {
+          if (cues.has(cue.id)) continue;
+          if (cue.id.startsWith('rbt-score-')) {
+            if (t >= cue.time && t < cue.time + 7.6) {
+              cue.play();
+              cues.add(cue.id);
+            }
+            continue;
+          }
+          if (t >= cue.time && t - cue.time < 0.75) {
+            cue.play();
+            cues.add(cue.id);
+          }
+        }
+        return;
+      }
+
+      if (config.activeProject === 'giant-gear-trickshot') {
+        if (!config.enableSFX) return;
+        for (const cue of GIANT_GEAR_CUES) {
+          if (cues.has(cue.id)) continue;
+          if (cue.id.startsWith('ggt-score-')) {
+            if (t >= cue.time && t < cue.time + 7.6) {
+              cue.play();
+              cues.add(cue.id);
+            }
+            continue;
+          }
+          if (t >= cue.time && t - cue.time < 0.75) {
+            cue.play();
+            cues.add(cue.id);
+          }
+        }
+        return;
+      }
+
+      if (config.activeProject === 'invisible-tube-trickshot') {
+        if (!config.enableSFX) return;
+        for (const cue of INVISIBLE_TUBE_CUES) {
+          if (cues.has(cue.id)) continue;
+          if (cue.id.startsWith('itt-score-')) {
+            if (t >= cue.time && t < cue.time + 7.6) {
+              cue.play();
+              cues.add(cue.id);
+            }
+            continue;
+          }
+          if (t >= cue.time && t - cue.time < 0.75) {
+            cue.play();
+            cues.add(cue.id);
+          }
+        }
+        return;
+      }
+
+      if (config.activeProject === 'triple-gravity-trickshot') {
+        if (!config.enableSFX) return;
+        for (const cue of TRIPLE_GRAVITY_CUES) {
+          if (cues.has(cue.id)) continue;
+          if (cue.id.startsWith('tgt-score-')) {
+            if (t >= cue.time && t < cue.time + 7.6) {
+              cue.play();
+              cues.add(cue.id);
+            }
+            continue;
+          }
+          if (t >= cue.time && t - cue.time < 0.75) {
+            cue.play();
+            cues.add(cue.id);
+          }
+        }
+        return;
+      }
+
+      if (config.activeProject === 'giant-scissor-trickshot') {
+        if (!config.enableSFX) return;
+        for (const cue of GIANT_SCISSOR_CUES) {
+          if (cues.has(cue.id)) continue;
+          if (cue.id.startsWith('gsc-score-')) {
+            if (t >= cue.time && t < cue.time + 7.6) {
+              cue.play();
+              cues.add(cue.id);
+            }
+            continue;
+          }
+          if (t >= cue.time && t - cue.time < 0.75) {
+            cue.play();
+            cues.add(cue.id);
+          }
+        }
+        return;
+      }
+
+      if (config.activeProject === 'spiral-staircase-shot') {
+        if (!config.enableSFX) return;
+        for (const cue of SPIRAL_STAIRCASE_CUES) {
+          if (cues.has(cue.id)) continue;
+          if (cue.id.startsWith('sss-score-')) {
+            if (t >= cue.time && t < cue.time + 7.6) {
+              cue.play();
+              cues.add(cue.id);
+            }
+            continue;
+          }
+          if (t >= cue.time && t - cue.time < 0.75) {
+            cue.play();
+            cues.add(cue.id);
+          }
+        }
+        return;
+      }
+
+      if (config.activeProject === 'magnetic-maze-trickshot') {
+        if (!config.enableSFX) return;
+        for (const cue of MAGNETIC_MAZE_CUES) {
+          if (cues.has(cue.id)) continue;
+          if (cue.id.startsWith('mmt-score-')) {
+            if (t >= cue.time && t < cue.time + 7.6) {
+              cue.play();
+              cues.add(cue.id);
+            }
+            continue;
+          }
+          if (t >= cue.time && t - cue.time < 0.75) {
+            cue.play();
+            cues.add(cue.id);
+          }
+        }
+        return;
+      }
+
+      if (config.activeProject === 'thousand-degree-hot-shot') {
+        if (!config.enableSFX) return;
+        for (const cue of HOT_SHOT_CUES) {
+          if (cues.has(cue.id)) continue;
+          if (cue.id.startsWith('hts-score-')) {
+            if (t >= cue.time && t < cue.time + 7.6) {
+              cue.play();
+              cues.add(cue.id);
+            }
+            continue;
+          }
+          if (t >= cue.time && t - cue.time < 0.75) {
+            cue.play();
+            cues.add(cue.id);
+          }
+        }
+        return;
+      }
+
+      if (config.activeProject === 'impossible-pinball-trickshot') {
+        if (!config.enableSFX) return;
+        for (const cue of IMPOSSIBLE_PINBALL_CUES) {
+          if (cues.has(cue.id)) continue;
+          if (cue.id.startsWith('ipt-score-')) {
+            if (t >= cue.time && t < cue.time + 7.6) {
+              cue.play();
+              cues.add(cue.id);
+            }
+            continue;
+          }
+          if (t >= cue.time && t - cue.time < 0.75) {
+            cue.play();
+            cues.add(cue.id);
+          }
+        }
+        return;
+      }
+
+      if (config.activeProject === 'impossible-laser-maze') {
+        if (!config.enableSFX) return;
+        for (const cue of IMPOSSIBLE_LASER_CUES) {
+          if (cues.has(cue.id)) continue;
+          if (cue.id.startsWith('ilm-score-')) {
+            if (t >= cue.time && t < cue.time + 7.6) {
+              cue.play();
+              cues.add(cue.id);
+            }
+            continue;
+          }
+          if (t >= cue.time && t - cue.time < 0.75) {
+            cue.play();
+            cues.add(cue.id);
+          }
+        }
+        return;
+      }
+
+      if (config.activeProject === 'impossible-keyhole-shot') {
+        if (!config.enableSFX) return;
+        for (const cue of IMPOSSIBLE_KEYHOLE_CUES) {
+          if (cues.has(cue.id)) continue;
+          if (cue.id.startsWith('iks-score-')) {
+            if (t >= cue.time && t < cue.time + 7.6) {
+              cue.play();
+              cues.add(cue.id);
+            }
+            continue;
+          }
+          if (t >= cue.time && t - cue.time < 0.75) {
+            cue.play();
+            cues.add(cue.id);
+          }
+        }
+        return;
+      }
+
+      if (config.activeProject === 'giant-slinky-trickshot') {
+        if (!config.enableSFX) return;
+        for (const cue of GIANT_SLINKY_CUES) {
+          if (cues.has(cue.id)) continue;
+          if (cue.id.startsWith('gst-score-')) {
+            if (t >= cue.time && t < cue.time + 7.6) {
+              cue.play();
+              cues.add(cue.id);
+            }
+            continue;
+          }
+          if (t >= cue.time && t - cue.time < 0.75) {
+            cue.play();
+            cues.add(cue.id);
+          }
+        }
+        return;
+      }
+
+      if (config.activeProject === 'longest-ruler-shot') {
+        if (!config.enableSFX) return;
+        for (const cue of LONGEST_RULER_CUES) {
+          if (cues.has(cue.id)) continue;
+          if (cue.id.startsWith('lrs-score-')) {
+            if (t >= cue.time && t < cue.time + 7.6) {
+              cue.play();
+              cues.add(cue.id);
+            }
+            continue;
+          }
+          if (t >= cue.time && t - cue.time < 0.75) {
+            cue.play();
+            cues.add(cue.id);
+          }
+        }
+        return;
+      }
+
+      if (config.activeProject === 'hundred-ball-chain') {
+        if (!config.enableSFX) return;
+        for (const cue of HUNDRED_BALL_CUES) {
+          if (cues.has(cue.id)) continue;
+          if (cue.id.startsWith('hbc-score-')) {
+            if (t >= cue.time && t < cue.time + 7.6) {
+              cue.play();
+              cues.add(cue.id);
+            }
+            continue;
+          }
+          if (t >= cue.time && t - cue.time < 0.75) {
+            cue.play();
+            cues.add(cue.id);
+          }
+        }
+        return;
+      }
+
+      if (config.activeProject === 'ten-fan-trickshot') {
+        if (!config.enableSFX) return;
+        for (const cue of TEN_FAN_CUES) {
+          if (cues.has(cue.id)) continue;
+          if (cue.id.startsWith('tft-score-')) {
+            if (t >= cue.time && t < cue.time + 7.6) {
+              cue.play();
+              cues.add(cue.id);
+            }
+            continue;
+          }
+          if (t >= cue.time && t - cue.time < 0.75) {
+            cue.play();
+            cues.add(cue.id);
+          }
+        }
+        return;
+      }
+
+      if (config.activeProject === 'invisible-wall-challenge') {
+        if (!config.enableSFX) return;
+        for (const cue of INVISIBLE_WALL_CUES) {
+          if (cues.has(cue.id)) continue;
+          if (cue.id.startsWith('iwc-score-')) {
+            if (t >= cue.time && t < cue.time + 7.6) {
+              cue.play();
+              cues.add(cue.id);
+            }
+            continue;
+          }
+          if (t >= cue.time && t - cue.time < 0.75) {
+            cue.play();
+            cues.add(cue.id);
+          }
+        }
+        return;
+      }
+
+      if (config.activeProject === 'shadow-trickshot') {
+        if (!config.enableSFX) return;
+        for (const cue of SHADOW_TRICKSHOT_CUES) {
+          if (cues.has(cue.id)) continue;
+          if (cue.id.startsWith('sts-score-')) {
+            if (t >= cue.time && t < cue.time + 7.6) {
+              cue.play();
+              cues.add(cue.id);
+            }
+            continue;
+          }
+          if (t >= cue.time && t - cue.time < 0.75) {
+            cue.play();
+            cues.add(cue.id);
+          }
+        }
+        return;
+      }
+
+      if (config.activeProject === 'super-bouncy-shoes') {
+        if (!config.enableSFX) return;
+        for (const cue of SUPER_BOUNCY_CUES) {
+          if (cues.has(cue.id)) continue;
+          if (cue.id.startsWith('sbs-score-')) {
+            if (t >= cue.time && t < cue.time + 7.6) {
+              cue.play();
+              cues.add(cue.id);
+            }
+            continue;
+          }
+          if (t >= cue.time && t - cue.time < 0.75) {
+            cue.play();
+            cues.add(cue.id);
+          }
+        }
+        return;
+      }
+
+      if (config.activeProject === 'mystery-floor-hole') {
+        if (!config.enableSFX) return;
+        for (const cue of MYSTERY_HOLE_CUES) {
+          if (cues.has(cue.id)) continue;
+          if (cue.id.startsWith('mfh-score-')) {
+            if (t >= cue.time && t < cue.time + 7.6) {
+              cue.play();
+              cues.add(cue.id);
+            }
+            continue;
+          }
+          if (t >= cue.time && t - cue.time < 0.75) {
+            cue.play();
+            cues.add(cue.id);
+          }
+        }
+        return;
+      }
+
+      if (config.activeProject === 'rubber-band-trap') {
+        if (!config.enableSFX) return;
+        for (const cue of RUBBER_BAND_CUES) {
+          if (cues.has(cue.id)) continue;
+          if (cue.id.startsWith('rbt-score-')) {
+            if (t >= cue.time && t < cue.time + 7.6) {
+              cue.play();
+              cues.add(cue.id);
+            }
+            continue;
+          }
+          if (t >= cue.time && t - cue.time < 0.75) {
+            cue.play();
+            cues.add(cue.id);
+          }
+        }
+        return;
+      }
+
+      if (config.activeProject === 'clone-button-disaster') {
+        if (!config.enableSFX) return;
+        for (const cue of CLONE_DISASTER_CUES) {
+          if (cues.has(cue.id)) continue;
+          if (cue.id.startsWith('cbd-score-')) {
+            if (t >= cue.time && t < cue.time + 7.6) {
+              cue.play();
+              cues.add(cue.id);
+            }
+            continue;
+          }
           if (t >= cue.time && t - cue.time < 0.75) {
             cue.play();
             cues.add(cue.id);
@@ -617,7 +1255,51 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
             renderTime = Math.floor(t * 24) / 24;
           }
 
-          if (config.activeProject === 'living-traffic-light') {
+          if (config.activeProject === 'giant-yoyo-trickshot') {
+            giantYoyoRendererRef.current.render(ctx, renderTime, config);
+          } else if (config.activeProject === 'reverse-bowling-trickshot') {
+            reverseBowlingRendererRef.current.render(ctx, renderTime, config);
+          } else if (config.activeProject === 'giant-gear-trickshot') {
+            giantGearRendererRef.current.render(ctx, renderTime, config);
+          } else if (config.activeProject === 'invisible-tube-trickshot') {
+            invisibleTubeRendererRef.current.render(ctx, renderTime, config);
+          } else if (config.activeProject === 'triple-gravity-trickshot') {
+            tripleGravityRendererRef.current.render(ctx, renderTime, config);
+          } else if (config.activeProject === 'giant-scissor-trickshot') {
+            giantScissorRendererRef.current.render(ctx, renderTime, config);
+          } else if (config.activeProject === 'spiral-staircase-shot') {
+            spiralStaircaseRendererRef.current.render(ctx, renderTime, config);
+          } else if (config.activeProject === 'magnetic-maze-trickshot') {
+            magneticMazeRendererRef.current.render(ctx, renderTime, config);
+          } else if (config.activeProject === 'thousand-degree-hot-shot') {
+            hotShotRendererRef.current.render(ctx, renderTime, config);
+          } else if (config.activeProject === 'impossible-pinball-trickshot') {
+            impossiblePinballRendererRef.current.render(ctx, renderTime, config);
+          } else if (config.activeProject === 'impossible-laser-maze') {
+            impossibleLaserRendererRef.current.render(ctx, renderTime, config);
+          } else if (config.activeProject === 'impossible-keyhole-shot') {
+            impossibleKeyholeRendererRef.current.render(ctx, renderTime, config);
+          } else if (config.activeProject === 'giant-slinky-trickshot') {
+            giantSlinkyRendererRef.current.render(ctx, renderTime, config);
+          } else if (config.activeProject === 'longest-ruler-shot') {
+            longestRulerRendererRef.current.render(ctx, renderTime, config);
+          } else if (config.activeProject === 'hundred-ball-chain') {
+            hundredBallRendererRef.current.render(ctx, renderTime, config);
+          } else if (config.activeProject === 'ten-fan-trickshot') {
+            tenFanRendererRef.current.render(ctx, renderTime, config);
+          } else if (config.activeProject === 'invisible-wall-challenge') {
+            invisibleWallRendererRef.current.render(ctx, renderTime, config);
+          } else if (config.activeProject === 'shadow-trickshot') {
+            shadowTrickshotRendererRef.current.render(ctx, renderTime, config);
+          } else if (config.activeProject === 'super-bouncy-shoes') {
+            superBouncyShoesRendererRef.current.render(ctx, renderTime, config);
+          } else if (config.activeProject === 'mystery-floor-hole') {
+            mysteryFloorHoleRendererRef.current.render(ctx, renderTime, config);
+          } else if (config.activeProject === 'rubber-band-trap') {
+            rubberBandTrapRendererRef.current.render(ctx, renderTime, config);
+          } else if (config.activeProject === 'clone-button-disaster') {
+            cloneButtonDisasterRendererRef.current.render(ctx, renderTime, config);
+          } else if (config.activeProject === 'living-traffic-light') {
             livingTrafficLightRendererRef.current.render(ctx, renderTime, config);
           } else if (config.activeProject === 'infinite-gift-box') {
             infiniteGiftBoxRendererRef.current.render(ctx, renderTime, config);
@@ -700,7 +1382,51 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
     const canvas = canvasRef.current;
     if (!canvas) return;
     const prefix =
-      config.activeProject === 'living-traffic-light'
+      config.activeProject === 'giant-yoyo-trickshot'
+        ? 'giant-yoyo-trickshot'
+        : config.activeProject === 'reverse-bowling-trickshot'
+        ? 'reverse-bowling-trickshot'
+        : config.activeProject === 'giant-gear-trickshot'
+        ? 'giant-gear-trickshot'
+        : config.activeProject === 'invisible-tube-trickshot'
+        ? 'invisible-tube-trickshot'
+        : config.activeProject === 'triple-gravity-trickshot'
+        ? 'triple-gravity-trickshot'
+        : config.activeProject === 'giant-scissor-trickshot'
+        ? 'giant-scissor-trickshot'
+        : config.activeProject === 'spiral-staircase-shot'
+        ? 'spiral-staircase-shot'
+        : config.activeProject === 'magnetic-maze-trickshot'
+        ? 'magnetic-maze-trickshot'
+        : config.activeProject === 'thousand-degree-hot-shot'
+        ? 'thousand-degree-hot-shot'
+        : config.activeProject === 'impossible-pinball-trickshot'
+        ? 'impossible-pinball-trickshot'
+        : config.activeProject === 'impossible-laser-maze'
+        ? 'impossible-laser-maze'
+        : config.activeProject === 'impossible-keyhole-shot'
+        ? 'impossible-keyhole-shot'
+        : config.activeProject === 'giant-slinky-trickshot'
+        ? 'giant-slinky-trickshot'
+        : config.activeProject === 'longest-ruler-shot'
+        ? 'longest-ruler-shot'
+        : config.activeProject === 'hundred-ball-chain'
+        ? 'hundred-ball-chain'
+        : config.activeProject === 'ten-fan-trickshot'
+        ? 'ten-fan-trickshot'
+        : config.activeProject === 'invisible-wall-challenge'
+        ? 'invisible-wall-challenge'
+        : config.activeProject === 'shadow-trickshot'
+        ? 'shadow-trickshot'
+        : config.activeProject === 'super-bouncy-shoes'
+        ? 'super-bouncy-shoes'
+        : config.activeProject === 'mystery-floor-hole'
+        ? 'mystery-floor-hole'
+        : config.activeProject === 'rubber-band-trap'
+        ? 'rubber-band-trap'
+        : config.activeProject === 'clone-button-disaster'
+        ? 'clone-button-disaster'
+        : config.activeProject === 'living-traffic-light'
         ? 'living-traffic-light'
         : config.activeProject === 'infinite-gift-box'
         ? 'infinite-gift-box'
@@ -1041,7 +1767,51 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
               <div className="text-left">
                 <div className="text-xs font-semibold">Cartoon SFX</div>
                 <div className="text-[11px] text-slate-400">
-                  {config.activeProject === 'living-traffic-light'
+                  {config.activeProject === 'giant-yoyo-trickshot'
+                    ? '138 BPM arcade score, giant yo-yo whirs, forehead bonk, cup rim clink, triple hoop chimes, recoil waist hoist & floor beanie spin'
+                    : config.activeProject === 'reverse-bowling-trickshot'
+                    ? '136 BPM bowling score, wood lane rumble, mirror pings, spring ramp boing, 10-pin strike crash & pin head bonk'
+                    : config.activeProject === 'giant-gear-trickshot'
+                    ? '138 BPM clockwork score, interlocking gear whirs, metallic tooth clinks, spring launcher boing, golden cup clink & reverse clutch'
+                    : config.activeProject === 'invisible-tube-trickshot'
+                    ? '136 BPM score, hollow tube pops, pneumatic loop whooshes, Air Pump blast/reverse, cup clink & beanie bonk'
+                    : config.activeProject === 'triple-gravity-trickshot'
+                    ? '136 BPM sci-fi score, gravity zone hums, floating platform boing, golden hoop swish & triple overload surge'
+                    : config.activeProject === 'giant-scissor-trickshot'
+                    ? '136 BPM trickshot score, metallic scissor snips, domino clacks, seesaw & spring launcher boings, string snap & hat snip'
+                    : config.activeProject === 'spiral-staircase-shot'
+                    ? '138 BPM arcade score, spiral step ticks, rotating platform boings, hoop swish, carousel motor spin & basket drop'
+                    : config.activeProject === 'magnetic-maze-trickshot'
+                    ? '136 BPM sci-fi score, electromagnetic hums, metal clanks, forehead bonk, all-magnets overload & chair slam'
+                    : config.activeProject === 'thousand-degree-hot-shot'
+                    ? '138 BPM heat-lab score, steam melt sizzles, spinning ring chimes, springboard boing, red-hot cup launch & beanie pats'
+                    : config.activeProject === 'impossible-pinball-trickshot'
+                    ? 'Arcade pinball score, plunger twangs, bumper chimes, flipper snap, jackpot & spring launch'
+                    : config.activeProject === 'impossible-laser-maze'
+                    ? 'Spy-heist score, laser barrier zaps, mirror reflection pings, cup switch & red laser cage alarm'
+                    : config.activeProject === 'impossible-keyhole-shot'
+                    ? 'Pop score, keyhole rim clink, mirror pings, curved ramp swoosh, door slam & beanie swish'
+                    : config.activeProject === 'giant-slinky-trickshot'
+                    ? 'Pop score, metallic slinky twangs, wall bounces, cup swish, spring-cage boings & trombone sting'
+                    : config.activeProject === 'longest-ruler-shot'
+                    ? 'Pop score, ruler flicks, snap clicks, book bounce, trampoline boing, swish & catapult sting'
+                    : config.activeProject === 'hundred-ball-chain'
+                    ? 'Arcade score, domino clacks, seesaw boings, loop, hoop swish & 100-ball avalanche'
+                    : config.activeProject === 'ten-fan-trickshot'
+                    ? 'Pop score, 10-fan whooshes, head bonks, wall bounce, giant gust & cup drop'
+                    : config.activeProject === 'invisible-wall-challenge'
+                    ? 'Pop score, glass wall pings, rim clink, net swish, face slam & squeak'
+                    : config.activeProject === 'shadow-trickshot'
+                    ? 'Spy score, shadow swooshes, spotlight flicker, cup clink, bonk'
+                    : config.activeProject === 'super-bouncy-shoes'
+                    ? 'Pop comedy score, sneaker spring boings, trampoline rocket, pillow thud, bonk'
+                    : config.activeProject === 'mystery-floor-hole'
+                    ? 'Mystery score, portal bloops, giant eruptions, duck squeak, smash'
+                    : config.activeProject === 'rubber-band-trap'
+                    ? 'Comedy score, band stretch, wood snap, cushion boings, beanie flick'
+                    : config.activeProject === 'clone-button-disaster'
+                    ? 'Comedy score, button clicks, clone pops, reset flash, scream'
+                    : config.activeProject === 'living-traffic-light'
                     ? 'Street score, blinks, STOP snaps, blackout, red alarm'
                     : config.activeProject === 'infinite-gift-box'
                     ? 'Comedy score, ribbon pulls, box pops, fountain'
@@ -1089,14 +1859,36 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
                   !isRunawayCakeProject &&
                   !isSelfBuildingRobotProject &&
                   !isInfiniteGiftBoxProject &&
-                  !isLivingTrafficLightProject
+                  !isLivingTrafficLightProject &&
+                  !isCloneDisasterProject &&
+                  !isRubberBandTrapProject &&
+                  !isMysteryFloorHoleProject &&
+                  !isSuperBouncyShoesProject &&
+                  !isShadowTrickshotProject &&
+                  !isInvisibleWallProject &&
+                  !isTenFanProject &&
+                  !isHundredBallProject &&
+                  !isLongestRulerProject &&
+                  !isGiantSlinkyProject &&
+                  !isImpossibleKeyholeProject &&
+                  !isImpossibleLaserProject &&
+                  !isImpossiblePinballProject &&
+                  !isHotShotProject &&
+                  !isMagneticMazeProject &&
+                  !isSpiralStaircaseProject &&
+                  !isGiantScissorProject &&
+                  !isTripleGravityProject &&
+                  !isInvisibleTubeProject &&
+                  !isGiantGearProject &&
+                  !isReverseBowlingProject &&
+                  !isGiantYoyoProject
                 ) {
                   setConfig({ ...config, showCaptions: !config.showCaptions });
                 }
               }}
-              disabled={!currentProject.hasCaptions || isPopProject || isTrickShotProject || isPingPongProject || isDartProject || isCoinFlipProject || isRunawayCakeProject || isSelfBuildingRobotProject || isInfiniteGiftBoxProject || isLivingTrafficLightProject}
+              disabled={!currentProject.hasCaptions || isPopProject || isTrickShotProject || isPingPongProject || isDartProject || isCoinFlipProject || isRunawayCakeProject || isSelfBuildingRobotProject || isInfiniteGiftBoxProject || isLivingTrafficLightProject || isCloneDisasterProject || isRubberBandTrapProject || isMysteryFloorHoleProject || isSuperBouncyShoesProject || isShadowTrickshotProject || isInvisibleWallProject || isTenFanProject || isHundredBallProject || isLongestRulerProject || isGiantSlinkyProject || isImpossibleKeyholeProject || isImpossibleLaserProject || isImpossiblePinballProject || isHotShotProject || isMagneticMazeProject || isSpiralStaircaseProject || isGiantScissorProject || isTripleGravityProject || isInvisibleTubeProject || isGiantGearProject || isReverseBowlingProject || isGiantYoyoProject}
               className={`p-3 rounded-xl border flex items-center justify-between transition-colors ${
-                !currentProject.hasCaptions || isPopProject || isTrickShotProject || isPingPongProject || isDartProject || isCoinFlipProject || isRunawayCakeProject || isSelfBuildingRobotProject || isInfiniteGiftBoxProject || isLivingTrafficLightProject
+                !currentProject.hasCaptions || isPopProject || isTrickShotProject || isPingPongProject || isDartProject || isCoinFlipProject || isRunawayCakeProject || isSelfBuildingRobotProject || isInfiniteGiftBoxProject || isLivingTrafficLightProject || isCloneDisasterProject || isRubberBandTrapProject || isMysteryFloorHoleProject || isSuperBouncyShoesProject || isShadowTrickshotProject || isInvisibleWallProject || isTenFanProject || isHundredBallProject || isLongestRulerProject || isGiantSlinkyProject || isImpossibleKeyholeProject || isImpossibleLaserProject || isImpossiblePinballProject || isHotShotProject || isMagneticMazeProject || isSpiralStaircaseProject || isGiantScissorProject || isTripleGravityProject || isInvisibleTubeProject || isGiantGearProject || isReverseBowlingProject || isGiantYoyoProject
                   ? 'bg-slate-950/50 border-slate-900 text-slate-600 cursor-not-allowed opacity-60'
                   : config.showCaptions
                   ? 'bg-slate-900 border-slate-700 text-white cursor-pointer'
@@ -1106,7 +1898,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
               <div className="text-left">
                 <div className="text-xs font-semibold">In-Video Captions</div>
                 <div className="text-[11px] text-slate-400">
-                  {(isPingPongProject || isDartProject || isCoinFlipProject || isRunawayCakeProject || isSelfBuildingRobotProject || isInfiniteGiftBoxProject || isLivingTrafficLightProject)
+                  {(isPingPongProject || isDartProject || isCoinFlipProject || isRunawayCakeProject || isSelfBuildingRobotProject || isInfiniteGiftBoxProject || isLivingTrafficLightProject || isCloneDisasterProject || isRubberBandTrapProject || isMysteryFloorHoleProject || isSuperBouncyShoesProject || isShadowTrickshotProject || isInvisibleWallProject || isTenFanProject || isHundredBallProject || isLongestRulerProject || isGiantSlinkyProject || isImpossibleKeyholeProject || isImpossibleLaserProject || isImpossiblePinballProject || isHotShotProject || isMagneticMazeProject || isSpiralStaircaseProject || isGiantScissorProject || isTripleGravityProject || isInvisibleTubeProject || isGiantGearProject || isReverseBowlingProject || isGiantYoyoProject)
                     ? 'Burned-in scene captions'
                     : isPopProject || isTrickShotProject
                     ? 'Burned-in narration captions'
@@ -1117,7 +1909,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
               </div>
               <span
                 className={`text-xs font-mono ${
-                  isPopProject || isTrickShotProject || isPingPongProject || isDartProject || isCoinFlipProject || isRunawayCakeProject || isSelfBuildingRobotProject || isInfiniteGiftBoxProject || isLivingTrafficLightProject
+                  isPopProject || isTrickShotProject || isPingPongProject || isDartProject || isCoinFlipProject || isRunawayCakeProject || isSelfBuildingRobotProject || isInfiniteGiftBoxProject || isLivingTrafficLightProject || isCloneDisasterProject || isRubberBandTrapProject || isMysteryFloorHoleProject || isSuperBouncyShoesProject || isShadowTrickshotProject || isInvisibleWallProject || isTenFanProject || isHundredBallProject || isLongestRulerProject || isGiantSlinkyProject || isImpossibleKeyholeProject || isImpossibleLaserProject || isImpossiblePinballProject || isHotShotProject || isMagneticMazeProject || isSpiralStaircaseProject || isGiantScissorProject || isTripleGravityProject || isInvisibleTubeProject || isGiantGearProject || isReverseBowlingProject || isGiantYoyoProject
                     ? 'text-emerald-400'
                     : !currentProject.hasCaptions
                     ? 'text-slate-600'
@@ -1126,7 +1918,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
                     : 'text-slate-600'
                 }`}
               >
-                {isPopProject || isTrickShotProject || isPingPongProject || isDartProject || isCoinFlipProject || isRunawayCakeProject || isSelfBuildingRobotProject || isInfiniteGiftBoxProject || isLivingTrafficLightProject
+                {isPopProject || isTrickShotProject || isPingPongProject || isDartProject || isCoinFlipProject || isRunawayCakeProject || isSelfBuildingRobotProject || isInfiniteGiftBoxProject || isLivingTrafficLightProject || isCloneDisasterProject || isRubberBandTrapProject || isMysteryFloorHoleProject || isSuperBouncyShoesProject || isShadowTrickshotProject || isInvisibleWallProject || isTenFanProject || isHundredBallProject || isLongestRulerProject || isGiantSlinkyProject || isImpossibleKeyholeProject || isImpossibleLaserProject || isImpossiblePinballProject || isHotShotProject || isMagneticMazeProject || isSpiralStaircaseProject || isGiantScissorProject || isTripleGravityProject || isInvisibleTubeProject || isGiantGearProject || isReverseBowlingProject || isGiantYoyoProject
                   ? 'ON'
                   : !currentProject.hasCaptions
                   ? 'NONE'

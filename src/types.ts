@@ -18,6 +18,28 @@ export interface SceneDef {
 export type CanvasTheme = 'black-on-white' | 'white-on-black';
 
 export type ProjectId =
+  | 'giant-yoyo-trickshot'
+  | 'reverse-bowling-trickshot'
+  | 'giant-gear-trickshot'
+  | 'invisible-tube-trickshot'
+  | 'triple-gravity-trickshot'
+  | 'giant-scissor-trickshot'
+  | 'spiral-staircase-shot'
+  | 'magnetic-maze-trickshot'
+  | 'thousand-degree-hot-shot'
+  | 'impossible-pinball-trickshot'
+  | 'impossible-laser-maze'
+  | 'impossible-keyhole-shot'
+  | 'giant-slinky-trickshot'
+  | 'longest-ruler-shot'
+  | 'hundred-ball-chain'
+  | 'ten-fan-trickshot'
+  | 'invisible-wall-challenge'
+  | 'shadow-trickshot'
+  | 'super-bouncy-shoes'
+  | 'mystery-floor-hole'
+  | 'rubber-band-trap'
+  | 'clone-button-disaster'
   | 'living-traffic-light'
   | 'infinite-gift-box'
   | 'self-building-robot'
@@ -1981,7 +2003,2583 @@ export const LIVING_TRAFFIC_LIGHT_SCENES: SceneDef[] = [
   },
 ];
 
+export const CLONE_BUTTON_DISASTER_PROMPT = `THE CLONE BUTTON DISASTER 🧍😂 — 30-SECOND VERTICAL POP COMEDY
+AI VIDEO PROMPT
+
+VISUAL STYLE
+Modern Pop 2D flat vector animation, vertical 9:16 (1080x1920), 24 fps, bright solid colors, thick smooth black outlines, clean geometric shapes, exaggerated cartoon comedy, smooth readable motion. No dialogue, no logos or watermarks.
+
+STRICT MAIN CHARACTER & CLONE DESIGN — ANGRY STICKMAN (LOCKED RIG)
+- Large circular white head (radius 70, 5px #17121f outline), two vertical black oval eyes (20x22 open), thick expressive black eyebrows, simple black mouth. No nose, ears, or hair.
+- Red knitted-style beanie (#e63946) with folded lower edge (#b3222e), 5 stitches, and pom (#ff6b6b).
+- Plain yellow short-sleeved T-shirt (#ffd166), thin black stick arms (118+118px two-bone IK) connected directly to sleeves, connected small white mitten hands (no fingers or detached hands).
+- Blue trousers (#2f5fa8), thin black legs, solid black shoes (#141414).
+- Every clone looks 100% identical to the original Stickman with slightly different funny facial expressions. Clones appear ONLY after a visible machine flash.
+
+SCENE FLOW
+0-6s (Scene 1 — THE BUTTON): Stickman discovers a mysterious red button on a machine labeled "CLONE". He grins and presses it. A bright flash appears beside him and an identical Stickman suddenly appears. Caption: "ONE MORE ME?!"
+6-12s (Scene 2 — TOO MANY!): The original presses the button repeatedly. Each press creates another identical clone until five Stickmen crowd the room looking confused and annoyed. Caption: "STOP MAKING COPIES!"
+12-18s (Scene 3 — CLONE CHAOS): The clones begin copying everything the original does — raising one hand, raising both hands, jumping — as the room packs with dozens of identical Stickmen. Caption: "THEY COPY EVERYTHING!"
+18-24s (Scene 4 — WHO IS THE REAL ONE?): The original tries escaping left and right exits, but clones block every exit and argue. He points at himself and every clone points right back. Caption: "WHO'S THE REAL ME?!"
+24-30s (Scene 5 — ONE BUTTON TOO MANY): The original spots the machine's red RESET button, squeezes through the crowd, and presses it. All clones vanish in a bright flash. He celebrates — until one tiny clone flashes onto his shoulder and waves. Stickman screams. Caption: "THERE'S STILL ONE?!"
+
+YOUTUBE METADATA
+- Title: He Pressed the CLONE BUTTON… BIG MISTAKE! 🧍😂
+- Thumbnail text: 100 OF ME?!
+- Hashtags: #AngryStickman #CloneDisaster #FunnyAnimation #StickmanAnimation #2DAnimation #YouTubeShorts`;
+
+export const CLONE_BUTTON_DISASTER_SCENES: SceneDef[] = [
+  {
+    id: 1,
+    name: "Scene 1",
+    title: "The Button",
+    timeRange: [0.0, 6.0],
+    videoPrompt:
+      'Angry Stickman discovers a mysterious red button on a machine labeled "CLONE". He grins mischievously and presses it — a bright flash erupts beside him and an identical Stickman pops into existence.',
+    animationDesc:
+      'Notices "CLONE" machine & grins (0.0-1.6s), presses glowing red CLONE button (1.6-2.8s), bright starburst flash spawns Clone #1 (2.8-3.6s), both stare in wide-eyed shock (3.6-6.0s).',
+    soundDesc: "Machine hum, chunky red button press, bright cloning flash pop, shocked comedic sting.",
+    captionText: "ONE MORE ME?!",
+    punchline: "Curiosity didn't kill the Stickman. It multiplied him.",
+    characterAction: "Walks up to machine, grins and slams the red button, recoils in disbelief at his own twin.",
+    propAction: 'Machine console labeled "CLONE" flashes bright white-cyan starburst and ticks counter from 00 to 01.',
+  },
+  {
+    id: 2,
+    name: "Scene 2",
+    title: "Too Many!",
+    timeRange: [6.0, 12.0],
+    videoPrompt:
+      "The original Stickman mashes the CLONE button repeatedly! Each press triggers a flash and creates another identical clone until five Stickmen crowd the room, all looking confused and annoyed.",
+    animationDesc:
+      "Frantically presses button 4 more times (6.1-10.3s), sequential flashes spawn Clones #2–#5 across the floor, all five glare at each other annoyed and confused (10.3-12.0s).",
+    soundDesc: "Rapid button clicks, four ascending clone spawn pops, grumpy room murmur.",
+    captionText: "STOP MAKING COPIES!",
+    punchline: "Five Angry Stickmen in one room is four too many.",
+    characterAction: "Mashes red button four times in panic, then crosses arms glaring at his four annoyed copies.",
+    propAction: "Machine counter climbs 02 → 05 with four bright spawn flashes lighting the room.",
+  },
+  {
+    id: 3,
+    name: "Scene 3",
+    title: "Clone Chaos",
+    timeRange: [12.0, 18.0],
+    videoPrompt:
+      "The clones start mimicking every move the original Stickman makes! He raises one hand, they all raise one hand; he jumps, everyone jumps — while more flashes pack the room with dozens of identical Stickmen.",
+    animationDesc:
+      "Original tests raising one arm -> all clones mirror (12.2-13.7s), raises both arms -> all mirror + flash wave packs 20 clones (13.7-15.6s), Stickman jumps -> whole crowd jumps in unison (15.6-18.0s).",
+    soundDesc: "Mimic chimes, synchronized jump boings, massive crowd clone burst.",
+    captionText: "THEY COPY EVERYTHING!",
+    punchline: "Simon Says, except Simon is losing his mind.",
+    characterAction: "Tests raising left arm, both arms, then leaps — horrified as 20 identical clones mirror every beat.",
+    propAction: "Machine overloads to counter 20 with rapid flash bursts filling the room wall-to-wall.",
+  },
+  {
+    id: 4,
+    name: "Scene 4",
+    title: "Who Is The Real One?",
+    timeRange: [18.0, 24.0],
+    videoPrompt:
+      "Original Stickman tries escaping through the left and right exits, but clones block every door! Everyone argues with wild gestures — the original points at his chest, and every clone points right back at him.",
+    animationDesc:
+      "Dashes to right EXIT -> blocked by wall of clones (18.0-19.6s), dashes to left EXIT -> blocked again (19.6-21.0s), chaotic pointing argument -> original points at himself & all 20 clones point back (21.0-24.0s).",
+    soundDesc: "Fast dashes, door block thuds, escalating cartoon bickering & accusation sting.",
+    captionText: "WHO'S THE REAL ME?!",
+    punchline: "Even his own clones don't believe he's the original.",
+    characterAction: "Sprints right and left trying both exits, waves arms arguing, points dramatically at himself.",
+    propAction: "Left and right green EXIT signs loom above blocked doorways as 20 identical clones point accusingly.",
+  },
+  {
+    id: 5,
+    name: "Scene 5",
+    title: "One Button Too Many",
+    timeRange: [24.0, 30.0],
+    videoPrompt:
+      "Spotting the red RESET button on the machine, Stickman squeezes through the crowd and slams it! A massive flash vanishes all clones. He celebrates — until one tiny clone flashes onto his shoulder and waves. Stickman screams!",
+    animationDesc:
+      "Spots glowing red RESET button & squeezes through crowd (24.0-25.4s), slams RESET -> bright full-screen flash erases all 20 clones (25.4-26.6s), dances in victory (26.6-27.7s), tiny flash spawns mini clone waving on his shoulder -> Stickman freezes screaming (27.7-30.0s).",
+    soundDesc: "Squeeze squeaks, heavy RESET slam, huge vanish sweep, tiny victory chime cut short by mini pop & comedic shock scream.",
+    captionText: "THERE'S STILL ONE?!",
+    punchline: "Never trust a 99% effective RESET button.",
+    characterAction: "Dives through clones to hit RESET, celebrates victory, then shrieks at the tiny waving clone on his shoulder.",
+    propAction: "Machine RESET panel opens, screen flashes pure white erasing clones, counter resets 00 -> 01 for tiny shoulder clone.",
+  },
+];
+
+export const RUBBER_BAND_TRAP_PROMPT = `THE GIANT RUBBER BAND TRAP 🪢😂 — 30-SECOND VERTICAL POP COMEDY
+AI VIDEO PROMPT
+
+VISUAL STYLE
+Modern Pop 2D flat vector animation, vertical 9:16 (1080x1920), 24 fps, vibrant colors, thick smooth black outlines, exaggerated physical comedy, smooth readable motion. No dialogue, no logos or watermarks.
+
+STRICT MAIN CHARACTER DESIGN — ANGRY STICKMAN (LOCKED RIG)
+- Large circular white head (radius 70, 5px #17121f outline), two vertical black oval eyes (20x22 open), thick expressive black eyebrows, simple black mouth. No nose, ears, or hair.
+- Red knitted-style beanie (#e63946) with folded lower edge (#b3222e), 5 stitches, and pom (#ff6b6b).
+- Plain yellow short-sleeved T-shirt (#ffd166), thin black stick arms (118+118px two-bone IK) connected directly to sleeves, connected small white mitten hands (no fingers or detached hands).
+- Blue trousers (#2f5fa8), thin black legs, solid black shoes (#141414). Keep identical in every scene.
+
+MAIN PROP
+One enormous stretchy red rubber band (#ef233c) wrapped around two heavy bolted wooden posts, stretching, vibrating, snapping back, and recoiling realistically.
+
+SCENE FLOW
+0-6s (Scene 1 — THE DISCOVERY): Stickman finds a giant red rubber band around two heavy wooden posts. He grabs it with both hands and pulls; it stretches surprisingly far. Caption: "HOW STRONG IS THIS THING?!"
+6-12s (Scene 2 — BAD IDEA): He stretches the band farther and accidentally loops it around his waist. He tries letting go, but the band stays taut between the posts. His eyes widen. Caption: "UH-OH…"
+12-18s (Scene 3 — THE LAUNCH): One wooden post bends and suddenly breaks loose. The rubber band snaps back, launching Stickman spinning across the room with flailing arms and legs. Caption: "AAAAAAAA!"
+18-24s (Scene 4 — BOUNCING EVERYWHERE): Stickman lands on a giant sofa cushion, bounces into a pile of pillows, then gets caught by the same rubber band stretching again like a giant elastic slingshot. Caption: "MAKE IT STOP!"
+24-30s (Scene 5 — FINAL SNAP): Stickman grabs the loose end and carefully releases it. The band snaps back harmlessly. He celebrates — until the loose rubber band flicks his red beanie off his head. He stares angrily at the camera. Caption: "NEVER TOUCH THAT AGAIN!"
+
+YOUTUBE METADATA
+- Title: He Pulled a GIANT Rubber Band… BIG MISTAKE! 🪢😂
+- Thumbnail: IT SNAPPED!
+- Hashtags: #AngryStickman #RubberBand #FunnyAnimation #StickmanAnimation #2DAnimation #YouTubeShorts`;
+
+export const RUBBER_BAND_TRAP_SCENES: SceneDef[] = [
+  {
+    id: 1,
+    name: "Scene 1",
+    title: "The Discovery",
+    timeRange: [0.0, 6.0],
+    videoPrompt:
+      "Stickman discovers an enormous stretchy red rubber band looped around two heavy wooden posts. He grabs it with both white mitten hands and pulls back — it stretches surprisingly far and vibrates.",
+    animationDesc:
+      "Walks up to wooden posts (0.0-1.4s), grabs giant red band with both hands (2.1s), leans back stretching it into a tight vibrating V (2.3-6.0s).",
+    soundDesc: "Footsteps, grip click, creaking rising elastic stretch groans.",
+    captionText: "HOW STRONG IS THIS THING?!",
+    punchline: "If it stretches that easily, let go immediately.",
+    characterAction: "Leans backward pulling the giant red rubber band with clenched teeth and squinting effort.",
+    propAction: "Giant red rubber band stretches tightly between the two heavy bolted wooden posts and vibrates.",
+  },
+  {
+    id: 2,
+    name: "Scene 2",
+    title: "Bad Idea",
+    timeRange: [6.0, 12.0],
+    videoPrompt:
+      "Pulling even farther, Stickman slips and loops the stretched red rubber band around his own waist! He lets go with both hands, realizing in horror the band stays locked taut between the posts.",
+    animationDesc:
+      "Strains backward (6.0-7.2s), slips backward looping band around his waist (7.4-8.2s), releases both hands defensively with wide eyes (8.2-12.0s).",
+    soundDesc: "Deep strained elastic stretch, waist-loop boing, panicky squeak.",
+    captionText: "UH-OH…",
+    punchline: "Congratulating yourself early is optional when trapped in a giant slingshot.",
+    characterAction: "Releases hands in panic while stuck wrapped inside the stretched red rubber band.",
+    propAction: "Red rubber band cinches cleanly around his waist while both wooden posts groan inward.",
+  },
+  {
+    id: 3,
+    name: "Scene 3",
+    title: "The Launch",
+    timeRange: [12.0, 18.0],
+    videoPrompt:
+      "The left wooden post bends dangerously inward, cracks, and breaks loose off its floor bolts! Freed from the post, the rubber band snaps back, launching Stickman spinning through the air across the room.",
+    animationDesc:
+      "Left post bends & cracks (12.0-13.25s), post snaps free & topples (13.3s), band launches Stickman spinning end-over-end across the room as camera pans right (13.5-18.1s).",
+    soundDesc: "Wood crack & bolt snap, booming elastic twang launch, fast air whooshes.",
+    captionText: "AAAAAAAA!",
+    punchline: "Physics always collects its debt with interest.",
+    characterAction: "Flails arms and legs spinning head-over-heels in mid-air across the room.",
+    propAction: "Left wooden post breaks off its steel bracket; giant red band whips forward from the right post.",
+  },
+  {
+    id: 4,
+    name: "Scene 4",
+    title: "Bouncing Everywhere",
+    timeRange: [18.0, 24.0],
+    videoPrompt:
+      "Stickman crashes onto a giant teal sofa cushion, bounces high into a colorful pile of pillows, then rebounds right back into the same red rubber band, which catches him and bounces him like a giant elastic slingshot!",
+    animationDesc:
+      "Squashes giant sofa cushion (18.25s), arcs into pillow pile (19.75s), rebounds into red rubber band anchored on right post and yo-yos back and forth (21.15-24.0s).",
+    soundDesc: "Puffy sofa boing, soft pillow bounce, elastic slingshot stretch & twin recoil twangs.",
+    captionText: "MAKE IT STOP!",
+    punchline: "Soft cushions only guarantee a softer second launch.",
+    characterAction: "Ricochets from sofa to pillows, then dizzily oscillates back and forth strapped in the red slingshot.",
+    propAction: "Sofa cushion and pillows squash deeply on impact; red rubber band stretches taut from Post 2.",
+  },
+  {
+    id: 5,
+    name: "Scene 5",
+    title: "Final Snap",
+    timeRange: [24.0, 30.0],
+    videoPrompt:
+      "Stickman carefully grabs the loose end and slips the band free. It snaps harmlessly back onto the post. He celebrates proudly — until the dangling tail whips out and flicks his red beanie clean off! He stares angrily at the camera.",
+    animationDesc:
+      "Carefully grabs & unhooks band (24.4-26.05s), band snaps safely to post (26.05-26.8s), fist-pumping victory dance (26.8-28.1s), band tail flicks beanie off (28.25s), beanie-less angry camera glare (28.65-30.0s).",
+    soundDesc: "Grip click, gentle rubber recoil, victory chime, crisp elastic beanie flick, sad trombone sting.",
+    captionText: "NEVER TOUCH THAT AGAIN!",
+    punchline: "Never celebrate while the rubber band still has momentum.",
+    characterAction: "Unhooks band gingerly, dances in victory, then freezes bare-headed glaring angrily at the lens.",
+    propAction: "Rubber band coils on Post 2, flicks up to knock the red beanie onto the floor, then hangs innocently.",
+  },
+];
+
+export const MYSTERY_FLOOR_HOLE_PROMPT = `THE MYSTERY HOLE IN THE FLOOR 🕳️😂 — 30-SECOND VERTICAL POP COMEDY
+AI VIDEO PROMPT
+
+VISUAL STYLE
+Modern Pop 2D flat vector animation, vertical 9:16 (1080x1920), 24 fps, vibrant colors, thick smooth black outlines, smooth movement, exaggerated physical comedy. No dialogue, no logos or watermarks.
+
+STRICT MAIN CHARACTER DESIGN — ANGRY STICKMAN (LOCKED RIG)
+- Large circular white head (radius 70, 5px #17121f outline), two vertical black oval eyes (20x22 open), thick expressive black eyebrows, simple black mouth. No nose, ears, or hair.
+- Red knitted-style beanie (#e63946) with folded lower edge (#b3222e), 5 stitches, and pom (#ff6b6b).
+- Plain yellow short-sleeved T-shirt (#ffd166), thin black stick arms (118+118px two-bone IK) connected directly to sleeves, connected small white mitten hands (no fingers or detached hands).
+- Blue trousers (#2f5fa8), thin black legs, solid black shoes (#141414). Keep identical throughout.
+
+MAIN PROP
+A perfectly circular mysterious hole in the wooden floor, glowing purple around its edge. Anything dropped inside returns as an oversized version of itself.
+
+SCENE FLOW
+0-6s (Scene 1 — THE DISCOVERY): Stickman discovers a small glowing purple hole in his living-room floor. He drops a tiny coin inside. A giant coin suddenly shoots upward and crashes onto the floor beside him. Caption: "WHAT IS THIS HOLE?!"
+6-12s (Scene 2 — BIGGER!): Curious, Stickman drops a small rubber duck inside. A giant yellow rubber duck bursts out, bouncing across the room and knocking over a chair. Stickman jumps back. Caption: "IT MAKES EVERYTHING HUGE!"
+12-18s (Scene 3 — BAD EXPERIMENT): Stickman drops a tiny toy car into the hole. A gigantic toy car emerges, smashing through the living-room furniture. Stickman runs away as it rolls toward him. Caption: "THAT'S TOO BIG!"
+18-24s (Scene 4 — THE WORST IDEA): Stickman leans over the hole with a mischievous grin and drops his tiny red beanie inside by accident. A gigantic red beanie bursts out and covers the entire room like a giant blanket while Stickman struggles underneath. Caption: "NOT MY BEANIE!"
+24-30s (Scene 5 — ONE LAST SURPRISE): Stickman pulls the giant beanie off and covers the mysterious hole with a wooden floorboard. He celebrates. Suddenly, the hole glows through the floorboard and launches a giant white version of his own head upward. He stares at the camera in disbelief. Caption: "I'M NEVER TOUCHING THAT AGAIN!"
+
+YOUTUBE METADATA
+- Title: He Found a MYSTERY HOLE… EVERYTHING GREW HUGE! 🕳️😂
+- Thumbnail: IT MAKES THINGS HUGE!
+- Hashtags: #AngryStickman #MysteryHole #FunnyAnimation #StickmanAnimation #2DAnimation #YouTubeShorts`;
+
+export const MYSTERY_FLOOR_HOLE_SCENES: SceneDef[] = [
+  {
+    id: 1,
+    name: "Scene 1",
+    title: "The Discovery",
+    timeRange: [0.0, 6.0],
+    videoPrompt:
+      "Stickman discovers a small glowing purple hole in his living-room floor. He leans down and drops a tiny gold coin inside — seconds later a giant coin shoots upward and slams beside him.",
+    animationDesc:
+      "Walks to glowing purple hole (0.0-1.4s), drops tiny gold coin in (2.2-2.7s), giant gold coin erupts upward & crashes onto floor (3.3-4.15s) before rolling off right.",
+    soundDesc: "Footsteps, portal drop bloop, giant purple eruption boom, floor crash.",
+    captionText: "WHAT IS THIS HOLE?!",
+    punchline: "Rule one of mysterious glowing floor holes: stop feeding them.",
+    characterAction: "Drops a tiny coin into the hole, leaps back in shock, points at the giant coin.",
+    propAction: "Circular purple-glowing floor hole shoots out a gigantic matching gold coin.",
+  },
+  {
+    id: 2,
+    name: "Scene 2",
+    title: "Bigger!",
+    timeRange: [6.0, 12.0],
+    videoPrompt:
+      "Curious, Stickman drops a small yellow rubber duck into the purple hole. A giant yellow rubber duck bursts out, bouncing across the room and knocking over a wooden chair as Stickman jumps back!",
+    animationDesc:
+      "Holds small yellow duck & drops it in (6.2-7.5s), giant rubber duck erupts & squeaks (7.85-8.55s), bounces onto wooden chair knocking it over (9.25s) & hops out right.",
+    soundDesc: "Portal bloop, eruption boom, deep giant duck squeak-honk, furniture crash.",
+    captionText: "IT MAKES EVERYTHING HUGE!",
+    punchline: "A bath toy shouldn't have the kinetic energy of a wrecking ball.",
+    characterAction: "Drops small duck smugly, then jumps backward hands-up as the giant duck crushes the chair.",
+    propAction: "Giant rubber duck bounces across the room, knocking the chair flat onto the floor.",
+  },
+  {
+    id: 3,
+    name: "Scene 3",
+    title: "Bad Experiment",
+    timeRange: [12.0, 18.0],
+    videoPrompt:
+      "Stickman drops a tiny toy car into the glowing hole. A gigantic toy car bursts upward, smashes right through the living-room table, and rolls rapidly toward Stickman as he sprints away!",
+    animationDesc:
+      "Drops tiny red/blue toy car (12.2-13.4s), giant toy car erupts (13.75s), smashes side table (14.5s), rolls left chasing Stickman who sprints & leaps clear (15.1-17.9s).",
+    soundDesc: "Drop bloop, eruption boom, table smash crash, fast chase whoosh.",
+    captionText: "THAT'S TOO BIG!",
+    punchline: "At least it didn't need parallel parking.",
+    characterAction: "Drops tiny car, sprints left in sheer panic, leaps sky-high as the giant car speeds past.",
+    propAction: "Giant toy car smashes wooden table apart and rolls aggressively toward the left wall.",
+  },
+  {
+    id: 4,
+    name: "Scene 4",
+    title: "The Worst Idea",
+    timeRange: [18.0, 24.0],
+    videoPrompt:
+      "Stickman leans over the glowing hole with a mischievous grin and accidentally drops his own red beanie inside! A gigantic red knitted beanie erupts and drapes over the entire room like a blanket as he struggles underneath.",
+    animationDesc:
+      "Leans smugly over hole (18.2-19.6s), red beanie slips off into hole (19.65-20.3s), colossal red beanie erupts (20.75s) and blankets Stickman squirming underneath (21.3-24.0s).",
+    soundDesc: "Beanie drop bloop, colossal eruption boom, muffled squirm squeaks.",
+    captionText: "NOT MY BEANIE!",
+    punchline: "One size fits the whole living room.",
+    characterAction: "Loses beanie into hole, squirms & kicks violently trapped under the giant knitted blanket.",
+    propAction: "Gigantic matching red beanie (band, 5 stitches, pom) blankets Stickman on the floor.",
+  },
+  {
+    id: 5,
+    name: "Scene 5",
+    title: "One Last Surprise",
+    timeRange: [24.0, 30.0],
+    videoPrompt:
+      "Stickman pulls the giant beanie off, covers the hole with a wooden floorboard, and celebrates! Suddenly purple light shines straight through the board and launches a giant white version of his own head upward!",
+    animationDesc:
+      "Yanks giant beanie aside (24.0-25.0s), slams wooden floorboard over hole (25.2-25.8s), fist-pumping celebration (26.15-27.1s), hole blasts board off & launches giant Stickman head (27.65s), stunned camera glare (28.65-30.0s).",
+    soundDesc: "Cloth yank, board thump, victory chime, rising glow charge, huge eruption, sad trombone sting.",
+    captionText: "I'M NEVER TOUCHING THAT AGAIN!",
+    punchline: "Even a wooden plank can't stop a plot twist this big.",
+    characterAction: "Covers hole, celebrates triumphantly, then freezes bare-headed staring dead at the camera.",
+    propAction: "Wooden board shakes & flies off as a giant round white Stickman head rockets upward.",
+  },
+];
+
+export const SUPER_BOUNCY_SHOES_PROMPT = `THE SUPER BOUNCY SHOES 👟😂 — 30-SECOND VERTICAL POP COMEDY
+AI VIDEO PROMPT
+
+VISUAL STYLE
+Modern Pop 2D flat vector animation, vertical 9:16 (1080x1920), 24 fps, vibrant colors, thick smooth black outlines, smooth movement, exaggerated physical comedy. No dialogue, no logos or watermarks.
+
+STRICT MAIN CHARACTER DESIGN — ANGRY STICKMAN (LOCKED RIG)
+- Large circular white head (radius 70, 5px #17121f outline), two vertical black oval eyes (20x22 open), thick expressive black eyebrows, simple black mouth. No nose, ears, or hair.
+- Red knitted-style beanie (#e63946) with folded lower edge (#b3222e), 5 stitches, and pom (#ff6b6b).
+- Plain yellow short-sleeved T-shirt (#ffd166), thin black stick arms (118+118px two-bone IK) connected directly to sleeves, connected small white mitten hands (no fingers or detached hands).
+- Blue trousers (#2f5fa8), thin black legs, solid black shoes (#141414). Keep identical throughout.
+
+MAGIC SHOES
+Bright red oversized sneakers with white rubber toe caps/soles and shiny silver coil springs underneath. Always visibly compress the silver springs right before every bounce and upward launch. Keep the exact same shoe design throughout.
+
+SCENE FLOW
+0-6s (Scene 1 — THE DISCOVERY): Stickman discovers a pair of strange red sneakers with springs underneath. He puts them on and takes one test step. BOING! He jumps unexpectedly high and lands back on the floor. Caption: "THESE SHOES ARE AMAZING!"
+6-12s (Scene 2 — TOO MUCH POWER): He takes another step. The springs compress deeply and launch him right above his house. He lands in his garden, bouncing again before he can even stand up. Caption: "I CAN'T CONTROL THEM!"
+12-18s (Scene 3 — SUPER BOUNCE): Stickman bounces over rooftops, a tall tree, and a streetlight. Each landing compresses the springs and launches him even higher while his face shifts from excitement to sheer panic. Caption: "SOMEONE STOP ME!"
+18-24s (Scene 4 — THE TRAP): He spots a giant trampoline in a park and aims for it. He lands dead center, and the trampoline rockets him straight upward spinning head-over-heels in mid-air. Caption: "WRONG LANDING!"
+24-30s (Scene 5 — FINAL BOING): Stickman lands safely on a huge soft pile of pillows, pulls the shoes off, and celebrates — until one loose spring pops out and launches a red sneaker into the air, landing squarely on his head and knocking his red beanie off! Caption: "NEVER AGAIN!"
+
+YOUTUBE METADATA
+- Title: He Wore SUPER BOUNCY SHOES… BIG MISTAKE! 👟😂
+- Thumbnail: CAN'T STOP BOUNCING!
+- Hashtags: #AngryStickman #BouncyShoes #FunnyAnimation #StickmanAnimation #2DAnimation #YouTubeShorts`;
+
+export const SUPER_BOUNCY_SHOES_SCENES: SceneDef[] = [
+  {
+    id: 1,
+    name: "Scene 1",
+    title: "The Discovery",
+    timeRange: [0.0, 6.0],
+    videoPrompt:
+      "Stickman discovers a pair of bright red oversized sneakers with shiny silver springs underneath. He puts them on and takes one test step — BOING! He launches unexpectedly high inside his house and lands on the floor.",
+    animationDesc:
+      "Walks to red spring sneakers (0.0-1.35s), puts them on (1.4-2.1s), crouches compressing springs (2.9-3.25s), shoots upward to ceiling height & lands safely (3.25-4.85s).",
+    soundDesc: "Footsteps, sneaker latch clicks, crisp spring boing, floor thump.",
+    captionText: "THESE SHOES ARE AMAZING!",
+    punchline: "Rule one of spring-loaded footwear: never test them under a ceiling fan.",
+    characterAction: "Discovers the spring sneakers, straps them on eagerly, takes one test bounce high into the air.",
+    propAction: "Red oversized sneakers with silver springs visibly compress before firing Stickman upward.",
+  },
+  {
+    id: 2,
+    name: "Scene 2",
+    title: "Too Much Power",
+    timeRange: [6.0, 12.0],
+    videoPrompt:
+      "Stickman takes another step. The silver springs compress completely and launch him straight out above his house! He lands in his garden, bouncing right back into the sky before he can stand.",
+    animationDesc:
+      "Crouches compressing springs deeply (6.0-6.45s), rockets high above house roof (6.45-8.8s), slams onto garden grass & instantly rebounds before standing (8.8-12.0s).",
+    soundDesc: "Deep spring coil compression, high power boing, garden turf thump, instant rebound boing.",
+    captionText: "I CAN'T CONTROL THEM!",
+    punchline: "Zero brakes, maximum vertical clearance.",
+    characterAction: "Gets launched over his own roof, lands squashed in the garden, and rebounds involuntarily.",
+    propAction: "House roof passes underneath while the sneaker springs coil and snap back on contact.",
+  },
+  {
+    id: 3,
+    name: "Scene 3",
+    title: "Super Bounce",
+    timeRange: [12.0, 18.0],
+    videoPrompt:
+      "Stickman bounces across town over rooftops, a tall tree, and a streetlight. Every landing squashes the silver springs and launches him even higher as his face shifts from excitement to sheer panic!",
+    animationDesc:
+      "Sequential escalating bounces: over town rooftops (12.25s), over giant oak tree (14.35s), over tall streetlight (16.35s) with panicked flailing arms.",
+    soundDesc: "Escalating higher-pitched spring boings on every rooftop, tree, and curb rebound.",
+    captionText: "SOMEONE STOP ME!",
+    punchline: "Physics didn't read the warranty on those springs.",
+    characterAction: "Flails arms helplessly as each landing fires him higher than the last.",
+    propAction: "Rooftops, oak tree, and glowing streetlight scroll underneath across the panoramic town skyline.",
+  },
+  {
+    id: 4,
+    name: "Scene 4",
+    title: "The Trap",
+    timeRange: [18.0, 24.0],
+    videoPrompt:
+      "Spotting a giant trampoline in the park, Stickman aims straight for the center — only for the trampoline plus his spring shoes to rocket him straight upward, spinning wildly in mid-air!",
+    animationDesc:
+      "Dives toward park trampoline (18.0-19.65s), trampoline mat dips deeply then rockets him sky-high (19.65-24.0s) spinning 3 full rotations in mid-air.",
+    soundDesc: "Massive dual trampoline + sneaker spring rocket boing, rapid mid-air spin whooshes.",
+    captionText: "WRONG LANDING!",
+    punchline: "Multiplying springs by a trampoline was a math error.",
+    characterAction: "Aims proudly for the trampoline, then spins end-over-end near the clouds.",
+    propAction: "Giant blue-and-yellow park trampoline flexes downward and fires Stickman into orbit.",
+  },
+  {
+    id: 5,
+    name: "Scene 5",
+    title: "Final Boing",
+    timeRange: [24.0, 30.0],
+    videoPrompt:
+      "Stickman lands safely on a huge soft pile of pillows, rips the bouncy shoes off, and celebrates — until one loose spring pops out and launches a red sneaker onto his head, knocking his red beanie off!",
+    animationDesc:
+      "Drops safely into huge pillow pile (24.0-24.75s), yanks spring sneakers off (25.0-25.85s), fist-pumps in triumph (26.15-27.55s), loose spring pops launching right sneaker onto his head knocking beanie off (27.6-28.45s), deadpan angry camera glare (28.5-30.0s).",
+    soundDesc: "Soft pillow thud, shoe release clicks, victory chime, metallic spring pop, sneaker head bonk, sad trombone sting.",
+    captionText: "NEVER AGAIN!",
+    punchline: "Even taken off, those shoes still got the last bounce.",
+    characterAction: "Tears off the spring shoes, celebrates victory, gets bonked bare-headed and glares angrily at the lens.",
+    propAction: "One silver spring pops off the discarded right sneaker, shooting the shoe onto Stickman's head and knocking his red beanie aside.",
+  },
+];
+
+export const SHADOW_TRICKSHOT_PROMPT = `THE IMPOSSIBLE SHADOW TRICKSHOT 🌑 — 30-SECOND VERTICAL POP COMEDY
+AI VIDEO PROMPT
+
+VISUAL STYLE
+Modern Pop 2D flat vector animation, vertical 9:16 (1080x1920), 24 fps, vibrant colors, thick smooth black outlines, smooth motion, exaggerated cartoon reactions. No dialogue, no logos or watermarks.
+
+STRICT MAIN CHARACTER DESIGN — ANGRY STICKMAN (LOCKED RIG)
+- Large circular white head (radius 70, 5px #17121f outline), two vertical black oval eyes (20x22 open), thick expressive black eyebrows, simple black mouth. No nose, ears, or hair.
+- Red knitted-style beanie (#e63946) with folded lower edge (#b3222e), 5 stitches, and pom (#ff6b6b).
+- Plain yellow short-sleeved T-shirt (#ffd166), thin black stick arms (118+118px two-bone IK) connected directly to sleeves, connected small white mitten hands (no fingers or detached hands).
+- Blue trousers (#2f5fa8), thin black legs, solid black shoes (#141414). Keep identical throughout.
+
+PROPS & SHADOW RULES
+- Small bright orange ball (#f97316), bright pivoting spotlight on a tripod stand, corner divider wall, and a large white target cup (#ffffff).
+- Stickman's dark silhouette shadow matches his exact silhouette and movement (except during the special corner trickshot), controlled by spotlight angle and length.
+
+SCENE FLOW
+0-6s (Scene 1 — THE DISCOVERY): Stickman places an orange ball under a bright spotlight. His shadow stretches across the floor. He throws the ball toward a distant white cup, but misses badly. He notices the shadow's shape and gets an idea. Caption: "WHAT IF MY SHADOW COULD SHOOT?!"
+6-12s (Scene 2 — FIRST ATTEMPT): Stickman moves his arm and swings. His shadow copies the movement and appears to kick the ball. The real ball rolls forward and hits a wall. Stickman looks frustrated. Caption: "IT ACTUALLY WORKS?!"
+12-18s (Scene 3 — IMPOSSIBLE TRICK): He adjusts the spotlight. His shadow stretches around a corner. Stickman throws the ball toward the wall, and the shadow catches and kicks it around the corner toward the cup. Caption: "AROUND THE CORNER!"
+18-24s (Scene 4 — FINAL SETUP): The ball approaches the cup but stops just short. Stickman panics and moves the spotlight lower. His giant shadow stretches across the entire room, raising one enormous shadow foot. Caption: "ONE LAST SHOT!"
+24-30s (Scene 5 — UNEXPECTED ENDING): The shadow kicks the ball perfectly into the cup. Stickman celebrates wildly. Suddenly, the spotlight flickers off. His shadow disappears—and the ball pops out of the cup and hits his beanie off his head. Caption: "PERFECT SHOT... BAD LUCK!"
+
+YOUTUBE METADATA
+- Title: He Used His SHADOW to Make an IMPOSSIBLE Trickshot! 🌑😂
+- Thumbnail: MY SHADOW DID THAT?!
+- Hashtags: #AngryStickman #Trickshot #ShadowTrickshot #FunnyAnimation #StickmanAnimation #2DAnimation #YouTubeShorts`;
+
+export const SHADOW_TRICKSHOT_SCENES: SceneDef[] = [
+  {
+    id: 1,
+    name: "Scene 1",
+    title: "The Discovery",
+    timeRange: [0.0, 6.0],
+    videoPrompt:
+      "Stickman places a small orange ball under a bright spotlight while his dark silhouette stretches across the floor. He throws the ball toward a distant white cup and misses badly, then notices his shadow and gets a wild idea!",
+    animationDesc:
+      "Places orange ball (0.95s), throws & misses cup short (1.95-3.25s), stares down at his shadow & waves (3.65-4.7s), points excitedly at his shadow.",
+    soundDesc: "Footsteps, ball drop, miss whoosh, floor thump, idea spark chime.",
+    captionText: "WHAT IF MY SHADOW COULD SHOOT?!",
+    punchline: "When your aim fails, outsource the trickshot to physics.",
+    characterAction: "Places the ball, whiffs the throw, waves at his shadow, and points with an excited grin.",
+    propAction: "Spotlight casts Stickman's exact silhouette across the floor beside the orange ball.",
+  },
+  {
+    id: 2,
+    name: "Scene 2",
+    title: "First Attempt",
+    timeRange: [6.0, 12.0],
+    videoPrompt:
+      "Stickman swings his arm and steps forward. His shadow mirrors the movement and kicks the orange ball cleanly, sending it straight into a corner wall! Stickman stares shocked, then frustrated.",
+    animationDesc:
+      "Tests arm movement (6.1-7.5s), swings hard (8.2s) as shadow kicks ball into corner divider wall (8.85s), rebounds back, Stickman gasps then scowls.",
+    soundDesc: "Shadow swoosh kick, crisp wall bonk, rebound roll.",
+    captionText: "IT ACTUALLY WORKS?!",
+    punchline: "The shadow has great power, zero GPS.",
+    characterAction: "Swings arm forward, gasps in amazement, then glares angrily at the blocking corner wall.",
+    propAction: "Ball slams against the corner wall face and rebounds onto the floor.",
+  },
+  {
+    id: 3,
+    name: "Scene 3",
+    title: "Impossible Trick",
+    timeRange: [12.0, 18.0],
+    videoPrompt:
+      "Stickman adjusts the spotlight angle, stretching his shadow around the corner wall! He throws the ball toward the corner, and the shadow catches and kicks it cleanly around the corner toward the white cup.",
+    animationDesc:
+      "Swivels spotlight head (12.4-13.4s), throws ball toward corner (14.3s), stretched shadow catches (14.75s) and kicks around the corner (15.4s) rolling toward cup.",
+    soundDesc: "Spotlight swivel click, throw whoosh, shadow catch swoosh, corner kick swoosh.",
+    captionText: "AROUND THE CORNER!",
+    punchline: "Angle of incidence equals comedy of reflection.",
+    characterAction: "Rotates the spotlight, tosses the ball toward the wall, and watches open-mouthed.",
+    propAction: "Spotlight lengthens the shadow around the corner wall to intercept and kick the orange ball.",
+  },
+  {
+    id: 4,
+    name: "Scene 4",
+    title: "Final Setup",
+    timeRange: [18.0, 24.0],
+    videoPrompt:
+      "The ball slows down and stops inches short of the white cup! Panicking, Stickman drags the spotlight low behind him—stretching a giant room-wide shadow that raises one enormous shadow foot behind the ball.",
+    animationDesc:
+      "Ball stops short at x=836 (18.4s), Stickman panics (18.6-19.6s), drags/lowers spotlight (19.9-21.5s), steps up and raises right foot (22.8s) casting a giant shadow foot.",
+    soundDesc: "Ball stop thump, spotlight drag click, deep giant shadow rise whoosh.",
+    captionText: "ONE LAST SHOT!",
+    punchline: "Sometimes you just need a bigger shadow.",
+    characterAction: "Panics, lowers the spotlight stand, and raises one leg dramatically to ready the giant shadow kick.",
+    propAction: "Low spotlight projects an enormous room-spanning shadow across the floor right behind the ball.",
+  },
+  {
+    id: 5,
+    name: "Scene 5",
+    title: "Unexpected Ending",
+    timeRange: [24.0, 30.0],
+    videoPrompt:
+      "The giant shadow kicks the orange ball cleanly into the white cup! Stickman celebrates wildly—until the spotlight flickers off, his shadow vanishes, and the ball pops straight out of the cup to knock his red beanie off!",
+    animationDesc:
+      "Giant shadow kicks ball into cup (24.15-24.85s), Stickman jumps celebrating (25.3-26.9s), spotlight flickers out (26.95-27.3s), shadow vanishes, ball pops out & bonks his beanie off (27.55-28.25s), bare-headed angry stare (28.75-30.0s).",
+    soundDesc: "Giant shadow swoosh, cup drop clink, victory chime, spotlight flicker-off buzz, spring pop, head bonk, sad trombone sting.",
+    captionText: "PERFECT SHOT... BAD LUCK!",
+    punchline: "Never celebrate while standing in range of a rebound.",
+    characterAction: "Kicks, leaps in triumph, freezes as lights die, gets bonked bare-headed, and glares angrily at the camera.",
+    propAction: "Spotlight bulb sputters dead, shadow disappears, cup shudders and ejects the orange ball straight into Stickman's beanie.",
+  },
+];
+
+export const INVISIBLE_WALL_PROMPT = `THE INVISIBLE WALL CHALLENGE 👻 — 30-SECOND VERTICAL POP COMEDY
+AI VIDEO PROMPT
+
+VISUAL STYLE
+Modern Pop 2D flat vector animation, vertical 9:16 (1080x1920), 24 fps, vibrant colors, thick smooth black outlines, smooth animation, exaggerated expressions. No dialogue, no logos or watermarks.
+
+STRICT MAIN CHARACTER DESIGN — ANGRY STICKMAN (LOCKED RIG)
+- Large circular white head (radius 70, 5px #17121f outline), two vertical black oval eyes (20x22 open), thick expressive black eyebrows, simple black mouth. No nose, ears, or hair.
+- Red knitted-style beanie (#e63946) with folded lower edge (#b3222e), 5 stitches, and pom (#ff6b6b).
+- Plain yellow short-sleeved T-shirt (#ffd166), thin black stick arms (118+118px two-bone IK) connected directly to sleeves, connected small white mitten hands (no fingers or detached hands).
+- Blue trousers (#2f5fa8), thin black legs, solid black shoes (#141414). Keep identical throughout.
+
+PROPS
+- Orange basketball (#f97316), invisible glass walls (fully transparent except brief glowing blue outlines #38bdf8 on impact/touch), basketball hoop (always visible on the right), and trash can.
+
+SCENE FLOW
+0-6s (Scene 1 — THE DISCOVERY): Stickman prepares a basketball trickshot toward a hoop. He throws the ball, but it suddenly bounces backward in midair. He looks confused and touches the empty space. A faint blue outline flashes. Caption: "INVISIBLE WALL?!"
+6-12s (Scene 2 — FIRST TRICKSHOT): He throws the ball from another angle. It hits an invisible wall and bounces sideways into a trash can. Stickman celebrates too early, then looks at the trash can in disbelief. Caption: "WAIT... I CAN USE IT!"
+12-18s (Scene 3 — THE MASTER PLAN): Stickman discovers several invisible walls. He carefully throws the ball, bouncing it between three hidden surfaces. The ball narrowly misses the hoop. Caption: "THREE WALL BOUNCES!"
+18-24s (Scene 4 — IMPOSSIBLE SETUP): He moves farther away and aims at the hoop. The ball bounces off five invisible walls, flying around the room at crazy angles. Stickman follows it with wide eyes. Caption: "FIVE BOUNCES!"
+24-30s (Scene 5 — THE TWIST): The ball makes one final bounce and drops perfectly into the hoop. Stickman celebrates wildly. Suddenly, he runs forward and smacks face-first into a huge invisible wall. Its blue outline flashes as he slides down. Caption: "I FORGOT THE WALL! 😂"
+
+YOUTUBE METADATA
+- Title: He Discovered INVISIBLE WALLS… Then Tried a Trickshot! 👻😂
+- Thumbnail: THE WALL IS INVISIBLE?!
+- Hashtags: #AngryStickman #InvisibleWall #Trickshot #FunnyAnimation #StickmanAnimation #YouTubeShorts`;
+
+export const INVISIBLE_WALL_SCENES: SceneDef[] = [
+  {
+    id: 1,
+    name: "Scene 1",
+    title: "The Discovery",
+    timeRange: [0.0, 6.0],
+    videoPrompt:
+      "Stickman prepares a basketball trickshot toward the hoop on the right. He shoots, and the orange basketball slams against empty midair and bounces backward! Confused, he reaches out to touch the space as a glowing blue glass outline flashes.",
+    animationDesc:
+      "Dribbles & shoots basketball (0.55-1.85s), hits invisible Wall A & bounces back (1.85-2.65s), steps forward & taps empty air triggering glowing blue flash (4.35s).",
+    soundDesc: "Basketball dribble, shot whoosh, crystalline glass ping, confused touch ping.",
+    captionText: "INVISIBLE WALL?!",
+    punchline: "Nothing ruins a clean jumper like invisible architecture.",
+    characterAction: "Shoots toward the hoop, stares confused at the rebound, and pokes the invisible glass wall.",
+    propAction: "Basketball rebounds backward off Wall A; blue outline glows briefly on hit and hand touch.",
+  },
+  {
+    id: 2,
+    name: "Scene 2",
+    title: "First Trickshot",
+    timeRange: [6.0, 12.0],
+    videoPrompt:
+      "Stickman shoots steeply from another angle. The basketball hits an angled invisible wall, flashing glowing blue, and deflects sideways straight into a trash can! Stickman celebrates too early before staring at the trash can in disbelief.",
+    animationDesc:
+      "Shoots high angle (7.4s), hits angled invisible Wall B (8.05s) and drops into trash can (8.95s), fist-pumps early (9.0-10.1s), then drops jaw staring at bin (10.25s).",
+    soundDesc: "Shot whoosh, glass ping, trash can crash, early victory chime.",
+    captionText: "WAIT... I CAN USE IT!",
+    punchline: "Two points in the wrong container.",
+    characterAction: "Throws steep shot, cheers prematurely with eyes shut, then stares shocked at the trash can.",
+    propAction: "Angled invisible wall flashes blue and banks the ball cleanly inside the trash can.",
+  },
+  {
+    id: 3,
+    name: "Scene 3",
+    title: "The Master Plan",
+    timeRange: [12.0, 18.0],
+    videoPrompt:
+      "Stickman retrieves the ball, taps hidden surfaces to map his angles, and launches a careful shot that pinballs off three invisible walls in sequence—narrowly clipping the hoop rim!",
+    animationDesc:
+      "Grabs ball from bin (12.6s), taps hidden surface (13.2s), throws 3-wall combo (14.25s -> 14.75s -> 15.35s -> 15.95s) clipping front rim (16.65s).",
+    soundDesc: "Tap ping, shot whoosh, ascending 3-wall glass pings, metallic rim clink.",
+    captionText: "THREE WALL BOUNCES!",
+    punchline: "Geometry: 99%. Luck: 1% short.",
+    characterAction: "Maps hidden glass surfaces, aims intently, and gasps at the narrow rim-out.",
+    propAction: "Three invisible glass panels flash glowing blue one after another as the ball ricochets toward the rim.",
+  },
+  {
+    id: 4,
+    name: "Scene 4",
+    title: "Impossible Setup",
+    timeRange: [18.0, 24.0],
+    videoPrompt:
+      "Stickman retreats to the far left side and launches an impossible shot. The basketball rockets across the room off five invisible walls at wild angles while Stickman tracks every bounce with wide eyes!",
+    animationDesc:
+      "Runs to far left (18.25-19.0s), launches blistering shot (19.45s), ricochets off five invisible walls (19.95s, 20.65s, 21.35s, 22.1s, 22.9s) as head/eyes track the ball.",
+    soundDesc: "Power shot whoosh, five rapid escalating glass wall pings.",
+    captionText: "FIVE BOUNCES!",
+    punchline: "Pinball wizardry with a basketball.",
+    characterAction: "Squats far left, hurls the ball hard, and whips his gaze back and forth tracking five wild bounces.",
+    propAction: "Five transparent walls across the room briefly flash glowing blue on each sharp direction change.",
+  },
+  {
+    id: 5,
+    name: "Scene 5",
+    title: "The Twist",
+    timeRange: [24.0, 30.0],
+    videoPrompt:
+      "The basketball makes one final bounce and drops straight through the hoop! Stickman celebrates wildly and sprints forward toward the basket—only to slam face-first into the huge invisible wall and slide slowly to the floor!",
+    animationDesc:
+      "Final bounce (24.1s) -> clean hoop swish (24.7s), celebrates wildly (24.75-25.85s), sprints forward (25.85-26.85s), SMACKS face-first into huge Wall A flashing glowing blue (26.85s) & slides down seated (27.35-28.6s).",
+    soundDesc: "Final glass ping, crisp net swish, victory chime, heavy glass face-slam thud, rubber-on-glass squeak slide, sad trombone sting.",
+    captionText: "I FORGOT THE WALL! 😂",
+    punchline: "Great trickshot. Terrible spatial memory.",
+    characterAction: "Jumps in triumph, sprints toward the hoop, flattens against invisible glass, and slides down glaring angrily.",
+    propAction: "Final wall flashes blue into a clean net swish; huge Wall A flashes bright blue on Stickman's face-slam.",
+  },
+];
+
+export const TEN_FAN_PROMPT = `THE 10-FAN IMPOSSIBLE TRICKSHOT 🌀 — 30-SECOND VERTICAL POP COMEDY
+AI VIDEO PROMPT
+
+VISUAL STYLE
+Modern Pop 2D flat vector animation, vertical 9:16 (1080x1920), 24 fps, vibrant colors, thick smooth black outlines, smooth physics, exaggerated comedy. No dialogue, no logos or watermarks.
+
+STRICT MAIN CHARACTER DESIGN — ANGRY STICKMAN (LOCKED RIG)
+- Large circular white head (radius 70, 5px #17121f outline), two vertical black oval eyes (20x22 open), thick expressive black eyebrows, simple black mouth. No nose, ears, or hair.
+- Red knitted-style beanie (#e63946) with folded lower edge (#b3222e), 5 stitches, and pom (#ff6b6b).
+- Plain yellow short-sleeved T-shirt (#ffd166), thin black stick arms (118+118px two-bone IK) connected directly to sleeves, connected small white mitten hands (no fingers or detached hands).
+- Blue trousers (#2f5fa8), thin black legs, solid black shoes (#141414). Keep identical throughout.
+
+PROPS
+- Orange ping-pong ball (#f97316, radius 18).
+- 10 identical gray desk fans (#94a3b8 / #64748b) with spinning blue blades (#38bdf8).
+- Ceiling lamp, right studio wall, two studio obstacle blocks, and a tiny red target cup (#ef4444).
+
+SCENE FLOW
+0-6s (Scene 1 — THE CHALLENGE): Stickman places a ping-pong ball in front of a desk fan. He switches it on. The ball shoots backward and hits his forehead. He gets an idea and points at the fan. Caption: "WHAT IF I USE MORE FANS?!"
+6-12s (Scene 2 — THE EXPERIMENT): He lines up three fans. The ball flies between their air streams, making two sharp turns before landing on his head. He looks furious. Caption: "THREE FANS... NOT ENOUGH!"
+12-18s (Scene 3 — THE UPGRADE): Stickman adds seven more fans, making a winding air tunnel. He releases the ball. It flies through all ten fans, spiraling around obstacles. Caption: "10 FANS ACTIVATED!"
+18-24s (Scene 4 — THE IMPOSSIBLE SHOT): The ball travels through the final fan, loops around a ceiling lamp, bounces off a wall, and heads toward a tiny red cup. Stickman holds his breath. Caption: "DON'T MISS!"
+24-30s (Scene 5 — THE PERFECT DISASTER): The ball drops perfectly into the cup. Stickman celebrates like a champion. Suddenly all 10 fans turn toward him and blow one gigantic gust. Stickman flies backward as his red beanie sails across the room into the cup. Caption: "PERFECT SHOT... WRONG TARGET! 😂"
+
+YOUTUBE METADATA
+- Title: He Used 10 FANS for an IMPOSSIBLE Trickshot! 🌀😂
+- Thumbnail: 10 FANS?!
+- Hashtags: #AngryStickman #FanTrickshot #ImpossibleTrickshot #FunnyAnimation #StickmanAnimation #YouTubeShorts`;
+
+export const TEN_FAN_SCENES: SceneDef[] = [
+  {
+    id: 1,
+    name: "Scene 1",
+    title: "The Challenge",
+    timeRange: [0.0, 6.0],
+    videoPrompt:
+      "Stickman sets an orange ping-pong ball in front of a gray desk fan with blue blades and clicks it on. The gust shoots the ball straight back into his forehead! Rubbing his brow, an idea clicks and he points smugly at the fan.",
+    animationDesc:
+      "Places ping-pong ball (0.9s), switches fan on (1.75s), ball rockets back into forehead (2.35s), lightbulb idea pops & Stickman points at fan (4.15s).",
+    soundDesc: "Ball placement thump, fan switch click, air whoosh, forehead bonk, idea chime.",
+    captionText: "WHAT IF I USE MORE FANS?!",
+    punchline: "Step one of engineering: double down on wind power.",
+    characterAction: "Crouches to set the ball, recoils from a forehead bonk, then points with a bright idea.",
+    propAction: "Gray desk fan spins up blue blades and blasts the ping-pong ball backward into Stickman.",
+  },
+  {
+    id: 2,
+    name: "Scene 2",
+    title: "The Experiment",
+    timeRange: [6.0, 12.0],
+    videoPrompt:
+      "Stickman sets up three identical gray desk fans with blue blades on stepped studio shelves. The ping-pong ball rides their air streams, whipping through two sharp turns before blasting straight onto his head!",
+    animationDesc:
+      "Lines up 3 fans (6.05-6.8s), turns them on (7.55s), ball whips through two sharp turns (8.35s, 9.2s) and bonks top of head (10.15s), triggering furious fist shake.",
+    soundDesc: "Switch click, dual air whooshes on sharp turns, crisp head bonk.",
+    captionText: "THREE FANS... NOT ENOUGH!",
+    punchline: "More wind, twice the trajectory, exact same target.",
+    characterAction: "Steers the test launch, tracks the sharp turns wide-eyed, then shakes furious fists.",
+    propAction: "Three gray fans whip the orange ping-pong ball across two sharp corners back onto his head.",
+  },
+  {
+    id: 3,
+    name: "Scene 3",
+    title: "The Upgrade",
+    timeRange: [12.0, 18.0],
+    videoPrompt:
+      "Stickman adds seven more identical gray fans to build a massive 10-fan winding air tunnel around obstacles! He drops the ball in and watches in awe as it spirals smoothly past every single fan.",
+    animationDesc:
+      "Fans F4..F10 pop onto studio shelves (12.15-13.4s), master switch activates all 10 (14.1s), ball weaves cleanly through the entire 10-fan tunnel around blocks (14.3-18.0s).",
+    soundDesc: "Master switch click, rapid rising sequence of airflow whooshes across fans.",
+    captionText: "10 FANS ACTIVATED!",
+    punchline: "Over-engineered wind tunnel perfection.",
+    characterAction: "Activating all 10 fans and watching the S-curve spiral climb higher in amazement.",
+    propAction: "Ten identical gray desk fans with spinning blue blades channel the ball seamlessly around obstacles.",
+  },
+  {
+    id: 4,
+    name: "Scene 4",
+    title: "The Impossible Shot",
+    timeRange: [18.0, 24.0],
+    videoPrompt:
+      "Out of the 10th fan, the ping-pong ball loops 360 degrees around the hanging ceiling lamp, ricochets sharply off the right studio wall, and arcs down toward the tiny red target cup while Stickman holds his breath!",
+    animationDesc:
+      "360° lamp loop (18.55-19.65s), right wall bounce (21.25s), suspenseful high arc descending over the tiny red cup while Stickman clenches fists holding his breath (22.4-24.0s).",
+    soundDesc: "High spiral air whoosh, sharp studio wall bounce, rising suspense groove.",
+    captionText: "DON'T MISS!",
+    punchline: "Zero margin for error.",
+    characterAction: "Tracks the ceiling lamp orbit and freezes clutching his breath as the ball descends.",
+    propAction: "Ball orbits the swinging ceiling lamp, ricochets off the wall, and drops straight toward the red cup.",
+  },
+  {
+    id: 5,
+    name: "Scene 5",
+    title: "The Perfect Disaster",
+    timeRange: [24.0, 30.0],
+    videoPrompt:
+      "The orange ping-pong ball drops dead-center into the tiny red cup! Stickman celebrates like a champion—until all 10 fans swivel simultaneously toward him and unleash one gigantic gust, blasting Stickman backward while his red beanie sails across the room right into the cup!",
+    animationDesc:
+      "Ball drops into cup (24.45s), champion celebration (24.55-26.2s), all 10 fans swivel left (26.2-26.65s), massive gust blasts Stickman backward & blows beanie across frame into cup (26.95-28.15s).",
+    soundDesc: "Cup drop clink, victory chime, synchronized fan swivel click, huge gale gust, beanie cup plop, sad trombone.",
+    captionText: "PERFECT SHOT... WRONG TARGET! 😂",
+    punchline: "Ten fans, two targets in one cup.",
+    characterAction: "Leaps in victory, gets blown backward to the far wall, and glares bare-headed at the camera.",
+    propAction: "All 10 fans pivot toward Stickman and blow his red beanie neatly into the tiny red cup beside the ball.",
+  },
+];
+
+export const IMPOSSIBLE_LASER_PROMPT = `THE IMPOSSIBLE LASER MAZE 🔴😂 — 30-SECOND VERTICAL POP COMEDY
+AI VIDEO PROMPT
+
+VISUAL STYLE
+Modern Pop 2D flat vector animation, vertical 9:16 (1080x1920), 24 fps, vibrant colors, thick smooth black outlines, smooth animation, exaggerated comedy. No dialogue, no logos or watermarks.
+
+STRICT MAIN CHARACTER DESIGN — ANGRY STICKMAN (LOCKED RIG)
+- Large circular white head (radius 70, 5px #17121f outline), two vertical black oval eyes (20x22 open), thick expressive black eyebrows, simple black mouth. No nose, ears, or hair.
+- Red knitted-style beanie (#e63946) with folded lower edge (#b3222e), 5 stitches, and pom (#ff6b6b).
+- Plain yellow short-sleeved T-shirt (#ffd166), thin black stick arms (118+118px two-bone IK) connected directly to sleeves, connected small white mitten hands (no fingers or detached hands).
+- Blue trousers (#2f5fa8), thin black legs, solid black shoes (#141414). Keep identical throughout.
+
+PROPS
+- Red laser emitters (#334155 housings with glowing red #ef4444 beams), small angled mirrors on floor/wall brackets, orange ping-pong ball (radius 16, #f97316), translucent cyan glass wall dividers, teal launch ramp, and golden target cup (#facc15) on a vault pedestal.
+
+SCENE FLOW
+0-6s (Scene 1 — THE CHALLENGE): Stickman discovers a room filled with red laser beams guarding a golden cup on a pedestal. He throws an orange ball, but a vertical red laser barrier deflects it back. He gets an idea. Caption: "IMPOSSIBLE LASER MAZE?!"
+6-12s (Scene 2 — FIRST REFLECTION): He places a small mirror in front of the primary laser emitter. The beam reflects cleanly upward to a ceiling absorber, opening a corridor. Stickman smiles and positions the orange ball on a ramp. Caption: "CONTROL THE LASERS!"
+12-18s (Scene 3 — THE TRICKSHOT): Stickman places three mirrors at different angles and rolls the orange ball down the ramp. It bounces cleanly off the mirrors along the open path between beams. Caption: "THREE PERFECT ANGLES!"
+18-24s (Scene 4 — FINAL CHALLENGE): The ball travels through the narrow gap between glass walls and two crossing laser beams without touching any beam, bounces off the final mirror, and arcs toward the golden cup while Stickman watches nervously. Caption: "DON'T TOUCH THE LASERS!"
+24-30s (Scene 5 — THE FUNNY ENDING): The ball drops cleanly into the golden cup! Stickman celebrates with a victory dance. Suddenly, the cup depresses a hidden pedestal switch—every laser turns on at once, locking a glowing red laser cage around him. He freezes, then slowly raises both hands in surrender. Caption: "I WON... BUT I'M TRAPPED! 😂"
+
+YOUTUBE METADATA
+- Title: He Solved the IMPOSSIBLE LASER MAZE with a Trickshot! 🔴😂
+- Thumbnail: ONE WRONG MOVE!
+- Hashtags: #AngryStickman #LaserMaze #ImpossibleTrickshot #FunnyAnimation #StickmanAnimation #YouTubeShorts`;
+
+export const IMPOSSIBLE_LASER_SCENES: SceneDef[] = [
+  {
+    id: 1,
+    name: "Scene 1",
+    title: "The Challenge",
+    timeRange: [0.0, 6.0],
+    videoPrompt:
+      "Stickman discovers a spy-vault room guarded by red laser beams with a golden cup on a pedestal at the far end. He throws an orange ping-pong ball, which zaps off the laser barrier and bounces back before an idea strikes.",
+    animationDesc:
+      "Winds up & throws orange ball (1.75-2.1s), blocked by vertical laser barrier at x=450 (2.75s), bounces back onto floor (3.6s), lightbulb idea pose (4.5s).",
+    soundDesc: "Throw whoosh, sharp laser barrier zap, idea confidence ding.",
+    captionText: "IMPOSSIBLE LASER MAZE?!",
+    punchline: "Even a ping-pong ball can't sneak past that barrier.",
+    characterAction: "Throws the ball hopefully, recoils at the laser zap, then points upward with a bright idea.",
+    propAction: "Red laser beam blocks the orange ball cleanly without letting it pass through.",
+  },
+  {
+    id: 2,
+    name: "Scene 2",
+    title: "First Reflection",
+    timeRange: [6.0, 12.0],
+    videoPrompt:
+      "Stickman walks forward and places a small angled mirror directly in front of the main ceiling laser emitter, reflecting the red beam upward into the upper wall and clearing the path before setting the orange ball on a ramp.",
+    animationDesc:
+      "Walks to emitter line (6.0-7.2s), places laser-deflector mirror at (450, 860) reflecting beam upward (6.9s), smiles broadly and places launch ramp & ball (8.6-11.8s).",
+    soundDesc: "Mirror placement ping, satisfying smile cue, ramp setup.",
+    captionText: "CONTROL THE LASERS!",
+    punchline: "If you can't dodge the laser, steer it.",
+    characterAction: "Places the mirror accurately, grins proudly, and walks back to set the ball on the ramp.",
+    propAction: "Mirror redirects the primary red laser beam cleanly up toward the ceiling.",
+  },
+  {
+    id: 3,
+    name: "Scene 3",
+    title: "The Trickshot",
+    timeRange: [12.0, 18.0],
+    videoPrompt:
+      "Stickman positions three mirrors at calculated angles and rolls the orange ball down the ramp, bouncing cleanly off the first two mirrors along the laser-free path.",
+    animationDesc:
+      "Places three trickshot mirrors (12.2-14.2s), releases ball down ramp (15.2s), bounces cleanly off Mirror 1 (16.6s) and angles up toward Mirror 2.",
+    soundDesc: "Mechanical mirror lock clicks, ramp roll whoosh, crisp glass mirror bounce pings.",
+    captionText: "THREE PERFECT ANGLES!",
+    punchline: "Geometry is finally paying off.",
+    characterAction: "Locks the three mirrors into place and points excitedly as the ball begins its run.",
+    propAction: "Ball rolls down the ramp and ricochets off Mirror 1 toward the laser corridor.",
+  },
+  {
+    id: 4,
+    name: "Scene 4",
+    title: "Final Challenge",
+    timeRange: [18.0, 24.0],
+    videoPrompt:
+      "The orange ball bounces off Mirror 2, threads the narrow gap between glass walls and two angled crossing laser beams without touching a single beam, hits Mirror 3, and arcs toward the golden cup as Stickman watches nervously.",
+    animationDesc:
+      "Mirror 2 bounce (18.1s), glides cleanly through narrow laser-free gap between glass walls & beams (18.1-21.0s), bounces off Mirror 3 (21.0s) and arcs toward golden cup (21.0-24.25s).",
+    soundDesc: "Mirror bounce pings, tense mid-gap air whoosh, rising synth climb.",
+    captionText: "DON'T TOUCH THE LASERS!",
+    punchline: "Millimeters of clearance between beams and glass.",
+    characterAction: "Crouches forward clenching his fists nervously watching the final arc.",
+    propAction: "Orange ball threads the narrow corridor safely and rebounds off Mirror 3 toward the golden cup.",
+  },
+  {
+    id: 5,
+    name: "Scene 5",
+    title: "The Funny Ending",
+    timeRange: [24.0, 30.0],
+    videoPrompt:
+      "Bullseye! The orange ball drops straight into the golden cup. Stickman dances in victory—until the cup depresses a hidden pedestal switch, turning on every laser at once into a glowing red cage around him! He freezes, then slowly raises his hands.",
+    animationDesc:
+      "Ball lands in golden cup (24.3s), victory dance (24.3-26.15s), cup triggers hidden switch (26.15s), red laser cage snaps around Stickman (26.35-26.75s), Stickman freezes wide-eyed and slowly raises both hands in surrender (27.3-29.8s).",
+    soundDesc: "Victory chime, hidden switch click, red laser cage alarm, sad trombone sting.",
+    captionText: "I WON... BUT I'M TRAPPED! 😂",
+    punchline: "Solved the maze. Forgot about the pressure plate.",
+    characterAction: "Celebrates with a victory dance, freezes in shock as the laser cage drops, and raises both mitten hands.",
+    propAction: "Golden cup triggers a hidden pedestal switch activating a full red laser cage around Stickman.",
+  },
+];
+
+export const IMPOSSIBLE_KEYHOLE_PROMPT = `THE IMPOSSIBLE KEYHOLE SHOT 🔑😂 — 30-SECOND VERTICAL POP COMEDY
+AI VIDEO PROMPT
+
+VISUAL STYLE
+Modern Pop 2D flat vector animation, vertical 9:16 (1080x1920), 24 fps, vibrant colors, thick smooth black outlines, smooth animation, exaggerated comedy. No dialogue, no logos or watermarks.
+
+STRICT MAIN CHARACTER DESIGN — ANGRY STICKMAN (LOCKED RIG)
+- Large circular white head (radius 70, 5px #17121f outline), two vertical black oval eyes (20x22 open), thick expressive black eyebrows, simple black mouth. No nose, ears, or hair.
+- Red knitted-style beanie (#e63946) with folded lower edge (#b3222e), 5 stitches, and pom (#ff6b6b).
+- Plain yellow short-sleeved T-shirt (#ffd166), thin black stick arms (118+118px two-bone IK) connected directly to sleeves, connected small white mitten hands (no fingers or detached hands).
+- Blue trousers (#2f5fa8), thin black legs, solid black shoes (#141414). Keep identical throughout.
+
+PROPS
+- Tiny golden key hanging by the door frame, orange ping-pong ball (radius 16, #f97316), giant wooden door with a small brass keyhole, hardcover book ramp, two angled mirrors on stands, curved teal ramp, and red target cup (#ef4444) on the other side of the door.
+
+SCENE FLOW
+0-6s (Scene 1 — THE CHALLENGE): Stickman stands far from a giant wooden door, points at its small brass keyhole, and throws an orange ping-pong ball. It misses, hits the wood door, and bounces right back into his forehead. Caption: "THROUGH THAT TINY HOLE?!"
+6-12s (Scene 2 — FIRST ATTEMPT): He builds a small book ramp and launches the ball toward the keyhole—it clips the brass rim edge and drops. Stickman furiously kicks the ramp apart. Caption: "SO CLOSE!"
+12-18s (Scene 3 — THE PERFECT ANGLE): Stickman sets up two angled mirrors and a curved teal ramp, adjusts the angles carefully, and releases the ball into Mirror 1 toward the door. Caption: "CALCULATED PERFECTLY!"
+18-24s (Scene 4 — THE IMPOSSIBLE SHOT): The ball bounces off Mirror 2, glides up the curved ramp, and shoots straight through the tiny keyhole while Stickman stares open-mouthed. Caption: "IT WENT THROUGH!"
+24-30s (Scene 5 — THE TWIST): The cutaway reveals the ball landing cleanly inside the red target cup on the other side! Stickman celebrates wildly—until the giant door suddenly swings open, knocks him backward onto the floor, and sends his red beanie flying right through the keyhole! Caption: "THE DOOR GOT REVENGE! 😂"
+
+YOUTUBE METADATA
+- Title: He Made an IMPOSSIBLE Keyhole Trickshot! 🔑😂
+- Thumbnail: THROUGH THAT HOLE?!
+- Hashtags: #AngryStickman #KeyholeTrickshot #ImpossibleTrickshot #FunnyAnimation #StickmanAnimation #YouTubeShorts`;
+
+export const IMPOSSIBLE_KEYHOLE_SCENES: SceneDef[] = [
+  {
+    id: 1,
+    name: "Scene 1",
+    title: "The Challenge",
+    timeRange: [0.0, 6.0],
+    videoPrompt:
+      "Stickman stands far left pointing at the tiny brass keyhole in a giant wooden door, winds up, and throws the orange ping-pong ball—only for it to smack the wood panel and ricochet into his forehead.",
+    animationDesc:
+      "Points at keyhole (0.4-1.4s), throws ball (2.0s), hits wood door (2.85s), rebounds straight into forehead (3.7s) and glares angrily.",
+    soundDesc: "Throw whoosh, wood door thud, forehead bonk.",
+    captionText: "THROUGH THAT TINY HOLE?!",
+    punchline: "Target size: keyhole. Aim accuracy: forehead.",
+    characterAction: "Points at the keyhole, throws hard, and stumbles back from the forehead rebound.",
+    propAction: "Orange ball misses the keyhole, thuds off the giant door, and bounces back.",
+  },
+  {
+    id: 2,
+    name: "Scene 2",
+    title: "First Attempt",
+    timeRange: [6.0, 12.0],
+    videoPrompt:
+      "Stickman stacks books into a small launch ramp and sends the orange ball flying toward the keyhole—it clips the brass keyhole rim edge and falls! Stickman kicks the book ramp across the floor.",
+    animationDesc:
+      "Builds book ramp (6.2-7.8s), launches ball (8.0s), clips brass keyhole edge (9.35s), angrily kicks ramp scattering books (10.45-11.3s).",
+    soundDesc: "Book placement click, launch whoosh, brass rim clink, angry ramp kick thump.",
+    captionText: "SO CLOSE!",
+    punchline: "Half an inch off the brass rim.",
+    characterAction: "Builds the book ramp, watches eagerly, then kicks it flying in frustration.",
+    propAction: "Ball launches off the book ramp and clinks off the brass keyhole edge.",
+  },
+  {
+    id: 3,
+    name: "Scene 3",
+    title: "The Perfect Angle",
+    timeRange: [12.0, 18.0],
+    videoPrompt:
+      "Stickman places two angled mirrors on stands and a curved teal ramp, tweaks the angles carefully, and releases the orange ball onto Mirror 1 to redirect across the room.",
+    animationDesc:
+      "Positions Mirror 1, Mirror 2 & curved ramp (12.0-14.8s), releases ball (15.8s), ricochets sharply off Mirror 1 (16.95s) toward Mirror 2.",
+    soundDesc: "Mirror adjustment clicks, launch whoosh, crystalline Mirror 1 bounce ping.",
+    captionText: "CALCULATED PERFECTLY!",
+    punchline: "Two mirrors, one curved ramp, zero margin for error.",
+    characterAction: "Fine-tunes the mirror angles and releases the ball smoothly.",
+    propAction: "Mirror 1 cleanly redirects the orange ball across the room toward Mirror 2.",
+  },
+  {
+    id: 4,
+    name: "Scene 4",
+    title: "The Impossible Shot",
+    timeRange: [18.0, 24.0],
+    videoPrompt:
+      "The ball bounces off Mirror 2, glides cleanly along the curved ramp, and threads straight through the small brass keyhole as the camera pans to reveal the other side while Stickman watches open-mouthed.",
+    animationDesc:
+      "Mirror 2 bounce (18.65s), curves up teal ramp (19.55-21.5s), camera pans to cutaway view (21.8-23.8s), ball threads cleanly through the keyhole (22.85-23.4s).",
+    soundDesc: "Mirror 2 ping, curved ramp swoosh, clean keyhole thread swish.",
+    captionText: "IT WENT THROUGH!",
+    punchline: "Nothing but brass and air.",
+    characterAction: "Walks closer and stares with jaw dropped wide open.",
+    propAction: "Ball rebounds off Mirror 2, accelerates up the curved ramp, and passes straight through the keyhole.",
+  },
+  {
+    id: 5,
+    name: "Scene 5",
+    title: "The Twist",
+    timeRange: [24.0, 30.0],
+    videoPrompt:
+      "On the other side of the door, the orange ball drops cleanly inside the red target cup! Stickman leaps in celebration—until the giant wooden door violently swings open, knocks him backward to the floor, and sends his red beanie flying right through the keyhole!",
+    animationDesc:
+      "Ball lands in red cup (24.3s), Stickman celebrates (24.3-26.1s), giant door swings open (26.15-26.7s) knocking Stickman backward while his red beanie flies cleanly through the keyhole onto the other side (26.2-27.9s).",
+    soundDesc: "Cup score ding, heavy wooden door slam, beanie flight whoosh, sad trombone sting.",
+    captionText: "THE DOOR GOT REVENGE! 😂",
+    punchline: "Shot went through the keyhole. So did his beanie.",
+    characterAction: "Cheers wildly, gets knocked backward onto the floor by the door, and glares minus his beanie.",
+    propAction: "Red cup catches the ball, then the giant door swings open and launches Stickman's red beanie through the keyhole.",
+  },
+];
+
+export const GIANT_SLINKY_PROMPT = `THE GIANT SLINKY TRICKSHOT 🌀😂 — 30-SECOND VERTICAL POP COMEDY
+AI VIDEO PROMPT
+
+VISUAL STYLE
+Modern Pop 2D flat vector animation, vertical 9:16 (1080x1920), 24 fps, vibrant colors, thick smooth black outlines, smooth physics, exaggerated comedy. No dialogue, no logos or watermarks.
+
+STRICT MAIN CHARACTER DESIGN — ANGRY STICKMAN (LOCKED RIG)
+- Large circular white head (radius 70, 5px #17121f outline), two vertical black oval eyes (20x22 open), thick expressive black eyebrows, simple black mouth. No nose, ears, or hair.
+- Red knitted-style beanie (#e63946) with folded lower edge (#b3222e), 5 stitches, and pom (#ff6b6b).
+- Plain yellow short-sleeved T-shirt (#ffd166), thin black stick arms (118+118px two-bone IK) connected directly to sleeves, connected small white mitten hands (no fingers or detached hands).
+- Blue trousers (#2f5fa8), thin black legs, solid black shoes (#141414). Keep identical throughout.
+
+PROPS
+- Giant metallic rainbow slinky with clearly visible gleaming coils, small orange ball (radius 18, #f97316), two wooden tables, wooden staircase ramp, plush living-room sofa, wooden coffee table, and red target cup (#ef4444).
+
+SCENE FLOW
+0-6s (Scene 1 — THE DISCOVERY): Stickman finds a giant metallic rainbow slinky on the floor. He stretches it wide between his hands and releases one end. The spring snaps back violently, launching the orange ball across the room off the wall and right into his forehead. Caption: "THIS SPRING IS CRAZY!"
+6-12s (Scene 2 — FIRST TRICKSHOT): He stretches the slinky between two wooden tables and places the orange ball inside its coils. He releases it. The spring launches the ball high upward, misses the red cup, and drops straight into his shoe. Caption: "MORE POWER!"
+12-18s (Scene 3 — THE GIANT LAUNCHER): Stickman carries the red cup to the coffee table, climbs the stairs, and stretches the giant slinky down a wooden staircase ramp into a huge coil launcher. He places the ball at the starting point and pulls the spring tight. Caption: "MAXIMUM SPRING POWER!"
+18-24s (Scene 4 — IMPOSSIBLE LAUNCH): He releases the spring. The ball rockets down the ramp, loops 360° through a coil loop made from the stretched rainbow coils, bounces off the right wall, flies over the sofa, and drops toward the tiny red target cup. Caption: "THE PERFECT SHOT?!"
+24-30s (Scene 5 — THE SPRING REVENGE): The orange ball lands cleanly inside the red cup! Stickman celebrates wildly—until the giant slinky recoils loose, whips across the room, wraps around him like a rainbow spring cage, and bounces him up and down while flinging his red beanie right off his head. Caption: "THE SPRING WON! 😂"
+
+YOUTUBE METADATA
+- Title: He Built a GIANT SLINKY Launcher… BIG MISTAKE! 🌀😂
+- Thumbnail: SPRING POWER!
+- Hashtags: #AngryStickman #SlinkyTrickshot #ImpossibleTrickshot #FunnyAnimation #StickmanAnimation #YouTubeShorts`;
+
+export const GIANT_SLINKY_SCENES: SceneDef[] = [
+  {
+    id: 1,
+    name: "Scene 1",
+    title: "The Discovery",
+    timeRange: [0.0, 6.0],
+    videoPrompt:
+      "Stickman discovers a giant metallic rainbow slinky coiled on the living-room floor, stretches it wide between his hands, and snaps it—launching the orange ball off the wall straight into his forehead.",
+    animationDesc:
+      "Picks up slinky (0.9-1.65s), stretches wide between hands (1.65-2.95s), snap release (2.95s) launches orange ball off right wall (3.42s) back into forehead (3.85s).",
+    soundDesc: "Metallic slinky stretch twang, snap release, wall bounce, forehead bonk.",
+    captionText: "THIS SPRING IS CRAZY!",
+    punchline: "Newton's third law, now in metallic rainbow.",
+    characterAction: "Stretches the giant rainbow slinky between his hands, gasps on snap, and recoils from the forehead bonk.",
+    propAction: "Rainbow slinky snaps shut and ricochets the orange ball off the wall into Stickman's forehead.",
+  },
+  {
+    id: 2,
+    name: "Scene 2",
+    title: "First Trickshot",
+    timeRange: [6.0, 12.0],
+    videoPrompt:
+      "Stickman stretches the giant slinky tightly between two wooden tables, pockets the orange ball into its coils, and releases—launching it high past the red cup and straight into his lifted shoe.",
+    animationDesc:
+      "Stretches slinky across two tables (6.3-7.5s), pulls center coils down with orange ball (7.5-8.8s), launches high upward (8.8-9.7s), misses red cup and drops straight into lifted right shoe (10.55s).",
+    soundDesc: "Table-to-table coil stretch, spring launch twang, upward whoosh, shoe plop thump.",
+    captionText: "MORE POWER!",
+    punchline: "Great height. Wrong target.",
+    characterAction: "Pulls the table-mounted slinky back like a slingshot, watches hopefully, then scowls at his shoe.",
+    propAction: "Stretched rainbow coils catapult the ball past the red cup and into Stickman's shoe.",
+  },
+  {
+    id: 3,
+    name: "Scene 3",
+    title: "The Giant Launcher",
+    timeRange: [12.0, 18.0],
+    videoPrompt:
+      "Stickman sets the red cup on the coffee table, climbs the stairs, stretches the giant metallic rainbow slinky all the way down a wooden ramp with a 360-degree coil loop, loads the orange ball, and pulls the spring back to maximum tension.",
+    animationDesc:
+      "Carries red cup to coffee table (12.1-13.2s), climbs stairs & anchors slinky down wooden ramp with coil loop (13.8-15.8s), loads ball (16.0s) and pulls spring coils tight (16.3-17.95s).",
+    soundDesc: "Running footsteps, cup placement click, deep giant spring stretch, high-tension coil groan.",
+    captionText: "MAXIMUM SPRING POWER!",
+    punchline: "Staircase + wooden ramp + full coil loop = pure chaos.",
+    characterAction: "Sets up the cup, sprints up the stairs, places the ball, and braces hard pulling the coils back.",
+    propAction: "Rainbow slinky stretches down the wooden stair ramp into a circular coil loop.",
+  },
+  {
+    id: 4,
+    name: "Scene 4",
+    title: "Impossible Launch",
+    timeRange: [18.0, 24.0],
+    videoPrompt:
+      "Stickman releases the giant slinky! The orange ball rockets down the ramp, zooms 360 degrees through the stretched rainbow coil loop, bounces off the living-room wall, flies cleanly over the sofa, and arcs toward the tiny red target cup.",
+    animationDesc:
+      "Mega release (18.0s) shoots ball down ramp (18.0-18.85s), loops 360° inside rainbow coils (18.85-19.95s), bounces off right wall (21.05s), arcs over plush sofa (21.05-22.8s), descends toward red cup (22.8-24.25s).",
+    soundDesc: "Explosive slinky launch twang, fast coil-loop whoosh, crisp wall bounce, rising suspense tempo.",
+    captionText: "THE PERFECT SHOT?!",
+    punchline: "Through the coils, off the wall, over the sofa—could it actually go in?!",
+    characterAction: "Releases the spring, sprints down the stairs to watch, and leans forward holding his breath.",
+    propAction: "Ball whips through the 360° rainbow coil loop, wall-bounces, clears the sofa, and targets the red cup.",
+  },
+  {
+    id: 5,
+    name: "Scene 5",
+    title: "The Spring Revenge",
+    timeRange: [24.0, 30.0],
+    videoPrompt:
+      "Swish! The orange ball drops straight into the red cup. Stickman leaps in victory—until the giant rainbow slinky snaps loose, whips across the room, wraps around him like a spring cage, bounces him up and down, and flings his red beanie right off his head!",
+    animationDesc:
+      "Ball lands inside red cup (24.25s), Stickman celebrates (24.3-26.0s), slinky recoils loose (26.0-26.55s) and wraps him in a rainbow spring cage, bouncing him 3 times (26.65-29.5s) while flinging his red beanie off his head (26.65-27.8s).",
+    soundDesc: "Cup victory chime, sudden spring recoil snap, spring-cage wrap, beanie fly whoosh, heavy spring boings, sad trombone sting.",
+    captionText: "THE SPRING WON! 😂",
+    punchline: "Cup scored. Beanie lost. Slinky undefeated.",
+    characterAction: "Jumps cheering, gasps as the coils whip toward him, and bounces helplessly bald-headed inside the spring cage.",
+    propAction: "Giant rainbow slinky wraps around Stickman as a bouncing spring cage and launches his red beanie across the floor.",
+  },
+];
+
+export const LONGEST_RULER_PROMPT = `THE WORLD'S LONGEST RULER SHOT 📏😂 — 30-SECOND VERTICAL POP COMEDY
+AI VIDEO PROMPT
+
+VISUAL STYLE
+Modern Pop 2D flat vector animation, vertical 9:16 (1080x1920), 24 fps, vibrant colors, thick smooth black outlines, smooth physics, exaggerated comedy. No dialogue, no logos or watermarks.
+
+STRICT MAIN CHARACTER DESIGN — ANGRY STICKMAN (LOCKED RIG)
+- Large circular white head (radius 70, 5px #17121f outline), two vertical black oval eyes (20x22 open), thick expressive black eyebrows, simple black mouth. No nose, ears, or hair.
+- Red knitted-style beanie (#e63946) with folded lower edge (#b3222e), 5 stitches, and pom (#ff6b6b).
+- Plain yellow short-sleeved T-shirt (#ffd166), thin black stick arms (118+118px two-bone IK) connected directly to sleeves, connected small white mitten hands (no fingers or detached hands).
+- Blue trousers (#2f5fa8), thin black legs, solid black shoes (#141414). Keep identical throughout.
+
+PROPS
+- Small classroom ruler (#facc15), giant bright yellow rulers (#facc15) with black centimeter/inch tick marks, small orange ball (radius 18, #f97316), red target cup, stacked books supporting every ramp, wooden picket fence, blue garden trampoline, and backyard basketball hoop.
+
+SCENE FLOW
+0-6s (Scene 1 — THE CRAZY IDEA): Stickman holds a normal small ruler and tries to flick an orange ball into a cup on the table. It barely rolls a few inches. An idea hits him—he pulls out an enormous bright yellow ruler. Caption: "I NEED A LONGER RULER!"
+6-12s (Scene 2 — THE MEGA RAMP): He connects several giant yellow rulers into one huge sloping ramp supported on book stacks across the living room. He places the orange ball at the top and lets go; it rolls faster and faster. Caption: "THE LONGEST RULER EVER!"
+12-18s (Scene 3 — THE TRICKSHOT BEGINS): The ball flies off the living-room ramp, bounces off a stack of books onto the doorway ruler, and shoots straight through the open garden door while Stickman sprints after it. Caption: "DON'T STOP NOW!"
+18-24s (Scene 4 — THE IMPOSSIBLE DISTANCE): Outside, the ball speeds down the garden ruler, launches over the picket fence, bounces high off a trampoline, and arcs toward the basketball hoop. Caption: "THE FINAL SHOT!"
+24-30s (Scene 5 — THE UNEXPECTED ENDING): The orange ball drops cleanly through the hoop! Stickman celebrates—until the entire ruler structure collapses behind him like dominoes, flicks the final ruler upward, and catapults Stickman straight into the empty basketball hoop basket where he sits wedged looking grumpy. Caption: "I BECAME THE FINAL SHOT! 😂"
+
+YOUTUBE METADATA
+- Title: He Built the LONGEST RULER… for ONE IMPOSSIBLE SHOT! 📏😂
+- Thumbnail: HOW LONG IS THIS?!
+- Hashtags: #AngryStickman #RulerTrickshot #ImpossibleTrickshot #FunnyAnimation #StickmanAnimation #YouTubeShorts`;
+
+export const LONGEST_RULER_SCENES: SceneDef[] = [
+  {
+    id: 1,
+    name: "Scene 1",
+    title: "The Crazy Idea",
+    timeRange: [0.0, 6.0],
+    videoPrompt:
+      "Stickman flicks a tiny orange ball with a normal school ruler toward a red cup on his table, watches it stall inches short, gets a lightbulb idea, and hauls out a giant bright yellow ruler.",
+    animationDesc:
+      "Flicks normal ruler (1.25s), ball rolls slightly and stops (1.4-2.5s), lightbulb idea spark (3.65s), pulls out giant 600px yellow ruler (4.15-5.8s).",
+    soundDesc: "Tiny ruler twang, idea ding, big ruler pull whoosh.",
+    captionText: "I NEED A LONGER RULER!",
+    punchline: "Small ruler, tiny roll. Big ruler, big trouble.",
+    characterAction: "Flicks the ball impatiently, scowls, then grins wide holding an oversized yellow ruler.",
+    propAction: "Small orange ball stalls mid-table; giant yellow ruler enters frame.",
+  },
+  {
+    id: 2,
+    name: "Scene 2",
+    title: "The Mega Ramp",
+    timeRange: [6.0, 12.0],
+    videoPrompt:
+      "Stickman snaps multiple giant yellow rulers together onto sturdy book stacks across the living room, climbs up, sets the orange ball at the top, and lets it accelerate down the mega ramp.",
+    animationDesc:
+      "Snaps giant rulers A->B->C onto book stacks (6.4s, 7.2s), places orange ball at top (8.4s), ball accelerates smoothly along the sloping yellow mega ramp (8.8-12.0s).",
+    soundDesc: "Mechanical ruler snap clicks, ball placement thump, accelerating ramp whoosh.",
+    captionText: "THE LONGEST RULER EVER!",
+    punchline: "Why walk to the hoop when you can build a highway?",
+    characterAction: "Locks the giant rulers onto book stacks, places the ball cleanly, and pumps his fist.",
+    propAction: "Three connected yellow rulers span the living room on book stacks as the orange ball picks up speed.",
+  },
+  {
+    id: 3,
+    name: "Scene 3",
+    title: "The Trickshot Begins",
+    timeRange: [12.0, 18.0],
+    videoPrompt:
+      "The orange ball launches off the living-room ramp, bounces cleanly off a stack of hardcover books onto the doorway ruler, and rockets outside into the garden while Stickman chases it.",
+    animationDesc:
+      "Ball clears Ruler C onto book stack bounce (12.85s), glides onto doorway Ruler D (13.45-15.6s), shoots cleanly through the open doorway while Stickman sprints past (13.4-17.8s).",
+    soundDesc: "Hardcover book bounce thump, running footsteps, doorway air whoosh.",
+    captionText: "DON'T STOP NOW!",
+    punchline: "From the living room straight out the back door!",
+    characterAction: "Sprints rapidly alongside the rolling ball with wide excited eyes.",
+    propAction: "Ball ricochets off a book stack and rockets down the doorway ruler into the garden.",
+  },
+  {
+    id: 4,
+    name: "Scene 4",
+    title: "The Impossible Distance",
+    timeRange: [18.0, 24.0],
+    videoPrompt:
+      "In the sunny backyard garden, the orange ball blazes down the final yellow ruler, arcs cleanly over the wooden picket fence, bounces high off a trampoline, and flies straight toward the basketball hoop!",
+    animationDesc:
+      "Ball speeds down Garden Ruler E (18.85s), arcs over picket fence, hits blue trampoline center (21.25s), and launches high toward the backyard basketball hoop.",
+    soundDesc: "Garden ramp whoosh, stretched spring trampoline boing, rising suspense build.",
+    captionText: "THE FINAL SHOT!",
+    punchline: "Fence cleared. Trampoline primed. Eyes on the rim.",
+    characterAction: "Skids to a stop in the garden watching the high arc with clenched fists.",
+    propAction: "Final ruler launches the ball off the garden trampoline toward the hoop.",
+  },
+  {
+    id: 5,
+    name: "Scene 5",
+    title: "The Unexpected Ending",
+    timeRange: [24.0, 30.0],
+    videoPrompt:
+      "The tiny orange ball swishes cleanly through the basketball hoop! Stickman leaps in celebration—then hears the connected rulers collapse like dominoes behind him, flicking the final giant ruler upward to catapult Stickman straight into the empty hoop basket where he hangs wedged staring angrily!",
+    animationDesc:
+      "Orange ball swishes hoop (24.35s), Stickman celebrates (24.45-26.0s), rulers collapse like dominoes (26.05-26.85s), final ruler catapults Stickman (27.15-28.35s) cleanly into the empty basketball hoop basket where he sits wedged glaring angrily.",
+    soundDesc: "Clean net swish, victory chime, collapsing domino clacks, giant ruler catapult flick, basket plop, sad trombone sting.",
+    captionText: "I BECAME THE FINAL SHOT! 😂",
+    punchline: "Perfect trickshot. Slightly cramped landing.",
+    characterAction: "Celebrates wildly, gasps at the collapsing rulers, rockets through the air, and glares angrily wedged inside the basketball net.",
+    propAction: "Collapsing ruler ramp catapults Stickman cleanly into the hoop net.",
+  },
+];
+
+export const HUNDRED_BALL_PROMPT = `THE 100-BALL CHAIN REACTION ⚽😂 — 30-SECOND VERTICAL POP COMEDY
+AI VIDEO PROMPT
+
+VISUAL STYLE
+Modern Pop 2D flat vector animation, vertical 9:16 (1080x1920), 24 fps, vibrant colors, thick smooth black outlines, smooth physics, exaggerated comedy. No dialogue, no logos or watermarks.
+
+STRICT MAIN CHARACTER DESIGN — ANGRY STICKMAN (LOCKED RIG)
+- Large circular white head (radius 70, 5px #17121f outline), two vertical black oval eyes (20x22 open), thick expressive black eyebrows, simple black mouth. No nose, ears, or hair.
+- Red knitted-style beanie (#e63946) with folded lower edge (#b3222e), 5 stitches, and pom (#ff6b6b).
+- Plain yellow short-sleeved T-shirt (#ffd166), thin black stick arms (118+118px two-bone IK) connected directly to sleeves, connected small white mitten hands (no fingers or detached hands).
+- Blue trousers (#2f5fa8), thin black legs, solid black shoes (#141414). Keep identical throughout.
+
+PROPS
+- 100 colorful balls (orange #f97316, blue #3b82f6, green #22c55e, pink #ec4899, yellow #eab308, purple #a855f7, cyan #06b6d4, red #ef4444), domino rows, teal ramps, amber seesaw, spring bumpers, purple circular loop track, giant bottom funnel, giant ceiling basketball hoop, and giant red target button.
+
+SCENE FLOW
+0-6s (Scene 1 — THE FIRST BALL): Stickman places one tiny orange ball at the top of a long ramp. He flicks it. It rolls down and knocks over the first domino. Stickman grins confidently. Caption: "JUST ONE BALL..."
+6-12s (Scene 2 — THE CHAIN BEGINS): The dominoes fall into a seesaw. The seesaw launches a blue ball into a row of balls. Ten colorful balls roll down different ramps, triggering more dominoes. Caption: "IT'S STARTING!"
+12-18s (Scene 3 — TOTAL CHAOS): Dozens of balls roll through tunnels, bounce off springs, spin around circular tracks, and knock over more dominoes. Stickman watches with excitement. Caption: "100 BALLS ACTIVATED!"
+18-24s (Scene 4 — THE FINAL SHOT): All the balls funnel into one giant ramp. The last ball launches upward, bounces off a wall, and flies toward a tiny red target button. Stickman holds his breath. Caption: "THE FINAL SHOT!"
+24-30s (Scene 5 — THE SURPRISE): The ball hits the red button perfectly. A giant basketball hoop drops from the ceiling. The final ball shoots through it and scores. Stickman celebrates, but the remaining balls suddenly spill out of the machine and bury him in a colorful pile. Only his red beanie remains visible. Caption: "100 BALLS... 1 VICTIM! 😂"
+
+YOUTUBE METADATA
+- Title: He Started ONE Ball… Then 100 BALLS Went Crazy! ⚽😂
+- Thumbnail: 100 BALLS?!
+- Hashtags: #AngryStickman #ChainReaction #100Balls #Trickshot #FunnyAnimation #StickmanAnimation #YouTubeShorts`;
+
+export const HUNDRED_BALL_SCENES: SceneDef[] = [
+  {
+    id: 1,
+    name: "Scene 1",
+    title: "The First Ball",
+    timeRange: [0.0, 6.0],
+    videoPrompt:
+      "Stickman sets one tiny orange ball at the top of a long ramp, flicks it cleanly, and grins smugly as it rolls down to tip over the first row of ivory dominoes.",
+    animationDesc:
+      "Places orange ball (0.85s), flicks down Ramp 1 (1.25s), Domino Row A cascades sequentially (2.95-4.3s), Stickman puts fists on hips grinning smugly.",
+    soundDesc: "Placement thump, flick whoosh, ascending domino clacks.",
+    captionText: "JUST ONE BALL...",
+    punchline: "Small flick, massive chain reaction.",
+    characterAction: "Places one ball carefully, flicks it, and stands grinning confidently.",
+    propAction: "Orange ball rolls down Ramp 1 and tips all six dominoes toward the seesaw.",
+  },
+  {
+    id: 2,
+    name: "Scene 2",
+    title: "The Chain Begins",
+    timeRange: [6.0, 12.0],
+    videoPrompt:
+      "The last domino slams the seesaw, launching a blue ball upward into a 10-ball rack. Ten colorful balls pour down double ramps and crash through Domino Row B to trip the overhead 100-ball hopper latch!",
+    animationDesc:
+      "Domino #6 hits seesaw (6.25s), seesaw launches blue ball into rack (6.55-7.6s), 10 colorful balls race down Ramp 2A/2B into Domino Row B (7.6-11.5s), pulling trigger cable.",
+    soundDesc: "Seesaw thump, spring launch boing, rack latch click, Domino Row B clacks.",
+    captionText: "IT'S STARTING!",
+    punchline: "From 1 ball to 10—now the dominoes hit the master latch.",
+    characterAction: "Watches the seesaw launch wide-eyed and points excitedly as 10 balls race down.",
+    propAction: "Seesaw flings blue ball up to release 10 balls across two ramps into the overhead trigger.",
+  },
+  {
+    id: 3,
+    name: "Scene 3",
+    title: "Total Chaos",
+    timeRange: [12.0, 18.0],
+    videoPrompt:
+      "The overhead glass hopper snaps open and unleashes all remaining colorful balls! Wave after wave rushes through translucent glass tunnels, bounces off golden springs, zips around a 360-degree loop track, and knocks down Domino Row C!",
+    animationDesc:
+      "Hopper gate opens (12.0s), 88 balls cascade through S-tunnel, Spring Bumpers 1 & 2, 360° circular loop track, and Domino Row C (12.0-18.0s) as Stickman cheers excitedly.",
+    soundDesc: "Hopper latch click, escalating spring boings, tunnel loop whoosh, Domino Row C clacks.",
+    captionText: "100 BALLS ACTIVATED!",
+    punchline: "Pure colorful kinetic overload.",
+    characterAction: "Jumps and pumps fists with wide-eyed excitement watching all 100 balls fly.",
+    propAction: "100 colorful balls fill the S-tunnel, loop-de-loop, spring bumpers, and bottom funnel.",
+  },
+  {
+    id: 4,
+    name: "Scene 4",
+    title: "The Final Shot",
+    timeRange: [18.0, 24.0],
+    videoPrompt:
+      "All 100 balls funnel down the giant ramp into the holding chamber while the last hero ball rockets off the launch kicker, ricochets off the upper wall bumper, and streaks toward the red target button while Stickman holds his breath!",
+    animationDesc:
+      "Balls fill holding chamber (18.0-20.4s), hero ball launches off orange kicker (20.65s), bounces off upper-left yellow bumper (21.85s), and arcs toward the red wall button as Stickman clutches his breath.",
+    soundDesc: "Kicker spring launch boing, sharp wall bounce, rising suspense tempo.",
+    captionText: "THE FINAL SHOT!",
+    punchline: "Ninety-nine balls banked. One ball left for glory.",
+    characterAction: "Crouches forward clenching both fists and holding his breath.",
+    propAction: "Hero ball launches off the funnel kicker, bounces off the upper bumper, and targets the red button.",
+  },
+  {
+    id: 5,
+    name: "Scene 5",
+    title: "The Surprise",
+    timeRange: [24.0, 30.0],
+    videoPrompt:
+      "Bullseye on the red target button! A giant basketball hoop drops smoothly from the ceiling and the final ball swishes right through it! Stickman leaps in celebration—until the bottom machine hatch bursts open, spilling all remaining balls across the room to bury him completely until only his red beanie sticks out!",
+    animationDesc:
+      "Red button hit (24.35s) drops ceiling basketball hoop (24.35-25.0s), hero ball swishes net (25.45s), Stickman celebrates (25.6-26.9s), holding-chamber hatch bursts open spilling 99 balls to bury Stickman under a mountain leaving only his red beanie visible (26.95-28.5s).",
+    soundDesc: "Button chime + hydraulic hoop drop, clean net swish, victory chime, roaring 100-ball avalanche clatter, sad trombone.",
+    captionText: "100 BALLS... 1 VICTIM! 😂",
+    punchline: "Great trickshot. Unfortunate ball storage.",
+    characterAction: "Celebrates wildly, gasps as the avalanche rushes toward him, and gets buried with only his red beanie poking out.",
+    propAction: "Red button drops ceiling hoop for a swish, then chamber hatch unleashes a colorful 100-ball pile over Stickman.",
+  },
+];
+
+export const IMPOSSIBLE_PINBALL_PROMPT = `THE IMPOSSIBLE PINBALL TRICKSHOT 🎮😂 — 30-SECOND VERTICAL POP COMEDY
+AI VIDEO PROMPT
+
+VISUAL STYLE
+Modern Pop 2D flat vector animation, vertical 9:16 (1080x1920), 24 fps, vibrant colors, thick smooth black outlines, smooth physics, exaggerated comedy. No dialogue, no logos or watermarks.
+
+STRICT MAIN CHARACTER DESIGN — ANGRY STICKMAN (LOCKED RIG)
+- Large circular white head (radius 70, 5px #17121f outline), two vertical black oval eyes, thick expressive black eyebrows, simple black mouth. No nose, ears, or hair.
+- Red knitted-style beanie (#e63946) with folded lower edge (#b3222e), 5 stitches, and pom (#ff6b6b).
+- Plain yellow short-sleeved T-shirt (#ffd166), thin black stick arms connected directly to sleeves, connected small white rounded mitten hands (no fingers or detached hands).
+- Blue trousers (#2f5fa8), thin black legs, solid black shoes (#141414). Keep identical throughout.
+
+PROPS
+- Giant arcade pinball machine, shiny silver ball, three red bumpers, yellow flippers, giant spinning obstacles, moving platforms, spinning bonus ring, glowing target hole, and bottom-right PRIZE slot.
+
+SCENE FLOW
+0-6s (Scene 1 — THE CHALLENGE): Stickman discovers a giant pinball machine, drops a silver ball into the launcher, and pulls the lever. The ball shoots out, misses every target, escapes the return chute, and hits his forehead. Caption: "LET'S MAKE THE IMPOSSIBLE SHOT!"
+6-12s (Scene 2 — FIRST COMBO): He launches another ball. It hits three red bumpers, bounces off a wall, and narrowly misses the glowing target hole. Caption: "THREE PERFECT BOUNCES!"
+12-18s (Scene 3 — ULTIMATE UPGRADE): Stickman activates giant spinning bumpers and moving platforms. The silver ball races through the machine, bouncing faster with every hit. Caption: "MAXIMUM PINBALL POWER!"
+18-24s (Scene 4 — THE FINAL SHOT): The ball hits a yellow flipper, launches into the air, passes through a spinning ring, bounces off the top red bumper, and drops toward the tiny glowing target hole. Caption: "ONE LAST BOUNCE!"
+24-30s (Scene 5 — THE TWIST): The ball lands perfectly in the glowing target hole. The machine flashes a huge WIN sign. Stickman celebrates—then the machine launches him like a pinball! He bounces off three giant bumpers and lands inside the PRIZE slot. Caption: "I'M THE JACKPOT! 😂"
+
+YOUTUBE METADATA
+- Title: He Built an IMPOSSIBLE Pinball Trickshot! 🎮😂
+- Thumbnail: PINBALL CHAOS!
+- Hashtags: #AngryStickman #Pinball #ImpossibleTrickshot #FunnyAnimation #StickmanAnimation #YouTubeShorts`;
+
+export const IMPOSSIBLE_PINBALL_SCENES: SceneDef[] = [
+  {
+    id: 1,
+    name: "Scene 1",
+    title: "The Challenge",
+    timeRange: [0.0, 6.0],
+    videoPrompt:
+      "Stickman discovers a giant arcade pinball machine, drops a shiny silver ball into the launcher, and pulls the red plunger lever. The ball shoots over the arch, misses every bumper, exits the return chute, and bonks his forehead!",
+    animationDesc:
+      "Drops ball into feed (1.5s), pulls red lever (1.75-2.35s), launches ball over arch (2.35-3.45s), exits side chute and bonks forehead (3.78s), reacts dazed and angry.",
+    soundDesc: "Mechanical drop click, plunger spring twang, forehead cartoon bonk.",
+    captionText: "LET'S MAKE THE IMPOSSIBLE SHOT!",
+    punchline: "Every target missed. Forehead squarely hit.",
+    characterAction: "Drops ball in launcher, pulls lever, gets bonked on the forehead, and scowls.",
+    propAction: "Silver ball shoots over the top arch and out the return chute into his head.",
+  },
+  {
+    id: 2,
+    name: "Scene 2",
+    title: "First Combo",
+    timeRange: [6.0, 12.0],
+    videoPrompt:
+      "Stickman loads another silver ball and launches! It ricochets cleanly off all three red bumpers, bounces off the right wall rail, and narrowly grazes past the glowing target hole.",
+    animationDesc:
+      "Picks up ball and loads (6.0-6.85s), pulls & fires (7.45s), hits Red Bumper 1 (8.55s), Bumper 2 (9.15s), Bumper 3 (9.75s), wall rail (10.30s), narrowly misses glowing target hole rim (10.85s).",
+    soundDesc: "Plunger launch, ascending three bumper chimes, wall bounce, rim clink.",
+    captionText: "THREE PERFECT BOUNCES!",
+    punchline: "Three red bumpers down—missed the hole by an inch.",
+    characterAction: "Loads ball, watches eagerly, and clenches fists furiously on the rim miss.",
+    propAction: "Silver ball bounces cleanly across B1, B2, B3, and right wall before draining.",
+  },
+  {
+    id: 3,
+    name: "Scene 3",
+    title: "Ultimate Upgrade",
+    timeRange: [12.0, 18.0],
+    videoPrompt:
+      "Stickman slams the glowing UPGRADE button! Giant spinning obstacles and sliding neon platforms power on as the silver ball accelerates across every bumper, spinner, and moving platform.",
+    animationDesc:
+      "Hits upgrade button (12.40s) activating spinners & moving platforms, launches ball (13.20s), speeds through Bumper 1 (14.05s), Spinner 1 (14.55s), Bumper 3 (15.05s), Platform 1 (15.60s), Spinner 2 (16.15s), Platform 2 (16.70s), and Right Wall (17.25s).",
+    soundDesc: "Power-up surge, turbo plunger launch, rapid ascending bumper & ping hits.",
+    captionText: "MAXIMUM PINBALL POWER!",
+    punchline: "Spinning blades, sliding platforms, full arcade overdrive.",
+    characterAction: "Slams upgrade button, fires plunger, and cheers wildly as speed ramps up.",
+    propAction: "Ball ricochets across all active bumpers, spinners, and moving platforms toward the yellow flipper.",
+  },
+  {
+    id: 4,
+    name: "Scene 4",
+    title: "The Final Shot",
+    timeRange: [18.0, 24.0],
+    videoPrompt:
+      "Stickman hits the yellow flipper button! The left yellow flipper launches the silver ball skyward cleanly through the spinning bonus ring, bounces once off the upper red bumper, and drops toward the tiny glowing target hole!",
+    animationDesc:
+      "Slams yellow flipper button (18.42s), flipper blasts ball up through center of Spinning Ring (19.65s), bounces off Bumper 2 (21.35s), descends in slow motion toward Glowing Target Hole (21.35-24.15s).",
+    soundDesc: "Flipper solenoid snap, bonus ring swish, top bumper chime, suspense tempo.",
+    captionText: "ONE LAST BOUNCE!",
+    punchline: "Through the spinning ring—straight for the glowing hole.",
+    characterAction: "Slams flipper button, then crouches gripping fists holding his breath.",
+    propAction: "Yellow flipper sends silver ball through spinning ring into final slow-motion descent.",
+  },
+  {
+    id: 5,
+    name: "Scene 5",
+    title: "The Twist",
+    timeRange: [24.0, 30.0],
+    videoPrompt:
+      "BULLSEYE! The silver ball drops straight into the glowing target hole! The giant marquee flashes WIN and confetti bursts as Stickman celebrates—until a hidden spring pad launches HIM into the machine, bouncing off all three giant bumpers straight into the PRIZE slot!",
+    animationDesc:
+      "Ball locks into target hole (24.15s), WIN marquee flashes & Stickman dances (24.15-25.80s), floor spring pad launches Stickman (25.85s) off Bumper 1 (26.55s), Bumper 2 (27.15s), Bumper 3 (27.75s), landing head-visible inside the PRIZE slot (28.55s).",
+    soundDesc: "Jackpot fanfare, spring launch boing, three giant bumper chimes, slot thud, sad trombone sting.",
+    captionText: "I'M THE JACKPOT! 😂",
+    punchline: "Beat the pinball machine. Became the grand prize.",
+    characterAction: "Dances in triumph, gets catapulted like a pinball across 3 bumpers, and glares wedged in the PRIZE slot.",
+    propAction: "Machine flashes WIN & JACKPOT while three red bumpers ping Stickman straight into the PRIZE compartment.",
+  },
+];
+
+export const HOT_SHOT_PROMPT = `THE 1,000-DEGREE HOT SHOT 🔥😂 — 30-SECOND VERTICAL POP COMEDY
+AI VIDEO PROMPT
+
+VISUAL STYLE
+Modern Pop 2D flat vector animation, vertical 9:16 (1080x1920), 24 fps, vibrant colors, thick smooth black outlines, smooth physics, exaggerated comedy. No dialogue, no logos or watermarks.
+
+STRICT MAIN CHARACTER DESIGN — ANGRY STICKMAN (LOCKED RIG)
+- Large circular white head (radius 70, 5px #17121f outline), two vertical black oval eyes, thick expressive black eyebrows, simple black mouth. No nose, ears, or hair.
+- Red knitted-style beanie (#e63946) with folded lower edge (#b3222e), 5 stitches, and pom (#ff6b6b).
+- Plain yellow short-sleeved T-shirt (#ffd166), thin black stick arms connected directly to sleeves, connected small white rounded mitten hands (no fingers or detached hands).
+- Blue trousers (#2f5fa8), thin black legs, solid black shoes (#141414). Keep identical throughout.
+- Oversized translucent cyan safety goggles worn over his eyes from 4.15s onward (eyes and eyebrows remain 100% readable).
+
+PROPS
+- Glowing 1,000-degree orange trickshot ball (yellow core + cartoon wavy heat shimmer lines, no realistic fire), heat-resistant metal ramps, springboard, three spinning metal rings, ice blocks (nearby ice cube, thin ice obstacle, giant ice wall, ice pit), narrow metal hoop, and golden target cup.
+
+SCENE FLOW
+0-6s (Scene 1 — THE HOT EXPERIMENT): Stickman places the glowing orange ball on a metal ramp. Heat radiates and melts a nearby ice cube into a puddle. He puts on oversized safety goggles and grins. Caption: "1,000-DEGREE BALL?!"
+6-12s (Scene 2 — FIRST LAUNCH): He releases the ball. It races down the heat-resistant metal ramp, melts cleanly through a thin ice obstacle, and launches off a springboard as Stickman cheers. Caption: "TOO HOT TO STOP!"
+12-18s (Scene 3 — THE HOT MAZE): The ball passes through three spinning metal rings, melts a clean hole straight through a giant ice wall, and bounces off another metal ramp. Caption: "ULTIMATE HEAT TRICKSHOT!"
+18-24s (Scene 4 — FINAL TARGET): The ball flies over an ice pit, threads through a narrow metal hoop, and dives straight toward a tiny golden target cup. Caption: "PERFECT LANDING!"
+24-30s (Scene 5 — THE TWIST): The ball drops into the golden cup! Stickman leaps over the ice pit to celebrate—until the cup glows red-hot and rockets the ball upward onto his beanie! His beanie puffs cartoon smoke while Stickman frantically pats it out with both hands. Caption: "MY BEANIE!!! 😂"
+
+YOUTUBE METADATA
+- Title: He Tried a 1,000-DEGREE Trickshot… BIG MISTAKE! 🔥😂
+- Thumbnail: TOO HOT!!!
+- Hashtags: #AngryStickman #HotShot #Trickshot #FunnyAnimation #StickmanAnimation #YouTubeShorts`;
+
+export const HOT_SHOT_SCENES: SceneDef[] = [
+  {
+    id: 1,
+    name: "Scene 1",
+    title: "The Hot Experiment",
+    timeRange: [0.0, 6.0],
+    videoPrompt:
+      "Stickman places a glowing 1,000-degree orange ball on top of a heat-resistant metal ramp. Heat shimmer melts a nearby ice cube into a puddle as Stickman puts on oversized safety goggles and grins.",
+    animationDesc:
+      "Places glowing ball at top of Metal Ramp 1 (1.35s), heat radiates melting nearby ice cube (1.6-4.0s), slips on oversized cyan safety goggles and grins (4.15s).",
+    soundDesc: "Mechanical click, steam heat sizzle, confidence ding.",
+    captionText: "1,000-DEGREE BALL?!",
+    punchline: "Ice melts on contact. Safety goggles activated.",
+    characterAction: "Places glowing ball on ramp, watches ice melt, puts on oversized goggles and grins.",
+    propAction: "Glowing orange ball radiates wavy heat lines and melts the nearby ice cube.",
+  },
+  {
+    id: 2,
+    name: "Scene 2",
+    title: "First Launch",
+    timeRange: [6.0, 12.0],
+    videoPrompt:
+      "Stickman releases the glowing ball! It races down the metal ramp, melts cleanly through a thin ice obstacle, and launches high off a springboard while Stickman cheers.",
+    animationDesc:
+      "Releases ball down Metal Ramp 1 (6.65s), slices through thin ice obstacle (8.45s), hits springboard pad (9.90s) and rockets into Scene 3 while Stickman cheers.",
+    soundDesc: "Launch whoosh, crisp ice-melt sizzle, springboard boing.",
+    captionText: "TOO HOT TO STOP!",
+    punchline: "Thin ice stands zero chance against 1,000 degrees.",
+    characterAction: "Releases ball and cheers wildly with raised fists.",
+    propAction: "Ball speeds down metal ramp, melts thin ice obstacle, and bounces off springboard.",
+  },
+  {
+    id: 3,
+    name: "Scene 3",
+    title: "The Hot Maze",
+    timeRange: [12.0, 18.0],
+    videoPrompt:
+      "The camera tracks the ball through three spinning metal rings, straight through the middle of a giant ice wall, and off a heat-resistant metal bounce ramp.",
+    animationDesc:
+      "Passes spinning Ring 1 (12.65s), Ring 2 (13.55s), Ring 3 (14.45s), melts clean circular tunnel through Giant Ice Wall (15.55s), bounces off Metal Ramp 2 (16.65s).",
+    soundDesc: "Three rising ring chimes, giant ice-wall steam hiss, metallic rim clink.",
+    captionText: "ULTIMATE HEAT TRICKSHOT!",
+    punchline: "Three spinning rings and a solid wall of ice—melted clean through.",
+    characterAction: "Runs enthusiastically behind the action wearing his oversized safety goggles.",
+    propAction: "Ball threads spinning metal rings, tunnels through giant ice wall, and rebounds off metal ramp.",
+  },
+  {
+    id: 4,
+    name: "Scene 4",
+    title: "Final Target",
+    timeRange: [18.0, 24.0],
+    videoPrompt:
+      "The glowing ball arcs high over a steaming ice pit, threads cleanly through a narrow metal hoop, and dives straight toward the tiny golden target cup!",
+    animationDesc:
+      "Flies high over Ice Pit (18.0-20.8s), passes cleanly through narrow metal hoop (20.85s), dives toward golden target cup rim (21.0-24.15s).",
+    soundDesc: "Hoop swish, suspenseful tempo build toward the cup.",
+    captionText: "PERFECT LANDING!",
+    punchline: "Over the ice pit, through the narrow hoop, locked on gold.",
+    characterAction: "Stops at the edge of the ice pit, clasping both hands in suspense.",
+    propAction: "Glowing orange ball soars across the ice pit through the narrow hoop toward the golden cup.",
+  },
+  {
+    id: 5,
+    name: "Scene 5",
+    title: "The Twist",
+    timeRange: [24.0, 30.0],
+    videoPrompt:
+      "BULLSEYE! The glowing ball drops into the golden cup! Stickman leaps over the ice pit to celebrate—then the cup glows red-hot, rockets the ball onto his red beanie, and puffs cartoon smoke as Stickman frantically pats his head!",
+    animationDesc:
+      "Ball scores in golden cup (24.15s), Stickman leaps over Ice Pit to celebrate (24.2-25.8s), cup overheats bright red (25.85s) and rockets ball upward (26.15s) onto Stickman's beanie (27.15s); beanie puffs cartoon smoke as he frantically pats with both hands (27.25-30.0s).",
+    soundDesc: "Victory ding, overheat sizzle, red-hot cup launch pop, head bonk, rapid pats, sad trombone sting.",
+    captionText: "MY BEANIE!!! 😂",
+    punchline: "Made the 1,000-degree shot. Paid the fashion price.",
+    characterAction: "Celebrates beside the cup, freezes in shock, then frantically pats his smoking beanie.",
+    propAction: "Golden cup turns red-hot and ejects the glowing ball straight onto Stickman's beanie.",
+  },
+];
+
+export const MAGNETIC_MAZE_PROMPT = `THE MAGNETIC MAZE TRICKSHOT 🧲😂 — 30-SECOND VERTICAL POP COMEDY
+AI VIDEO PROMPT
+
+VISUAL STYLE
+Modern Pop 2D flat vector animation, vertical 9:16 (1080x1920), 24 fps, vibrant colors, thick smooth black outlines, smooth physics, exaggerated comedy. No dialogue, no logos or watermarks.
+
+STRICT MAIN CHARACTER DESIGN — ANGRY STICKMAN (LOCKED RIG)
+- Large circular white head (radius 70, 5px #17121f outline), two vertical black oval eyes, thick expressive black eyebrows, simple black mouth. No nose, ears, or hair.
+- Red knitted-style beanie (#e63946) with folded lower edge (#b3222e), 5 stitches, and pom (#ff6b6b).
+- Plain yellow short-sleeved T-shirt (#ffd166), thin black stick arms connected directly to sleeves, connected small white rounded mitten hands (no fingers or detached hands).
+- Blue trousers (#2f5fa8), thin black legs, solid black shoes (#141414). Keep identical throughout.
+
+PROPS
+- Shiny silver metal ball, giant red and blue horseshoe magnets, transparent maze, curved magnetic tunnel, vertical wall, metal ramps, spinning obstacle, golden target cup, and a giant metal chair.
+
+SCENE FLOW
+0-6s (Scene 1 — THE DISCOVERY): Stickman places a shiny silver ball on a table beside a giant red horseshoe magnet. The ball suddenly flies toward the magnet and snaps onto it! Stickman gets an idea and grins. Caption: "I CAN CONTROL THE BALL!"
+6-12s (Scene 2 — FIRST ATTEMPT): He places two horseshoe magnets on opposite sides of a transparent maze. Moving the magnets pulls the ball through the maze—until overpowered repulsion blasts the ball backward straight onto his forehead! Caption: "TOO MUCH POWER!"
+12-18s (Scene 3 — THE MAGNETIC UPGRADE): Stickman adds four magnets beneath the maze. He moves them carefully, guiding the silver ball around sharp corners, through a curved tunnel, and straight up a vertical wall. Caption: "MAGNETIC CONTROL!"
+18-24s (Scene 4 — IMPOSSIBLE SHOT): He positions the final blue magnet above a tiny golden cup. The ball climbs the wall, flies across a gap, circles a spinning obstacle, and drops toward the target. Caption: "DON'T LOSE CONTROL!"
+24-30s (Scene 5 — THE TWIST): The ball lands perfectly in the golden cup! Stickman celebrates. Suddenly, all the magnets activate together and pull every metal object in the room toward him—his red beanie flies off onto the overhead magnet, and a giant metal chair sticks to his back! Caption: "EVERYTHING IS MAGNETIC! 😂"
+
+YOUTUBE METADATA
+- Title: He Built a MAGNETIC Maze… The Ball Went CRAZY! 🧲😂
+- Thumbnail: MAGNET POWER!
+- Hashtags: #AngryStickman #MagneticMaze #ImpossibleTrickshot #FunnyAnimation #StickmanAnimation #YouTubeShorts`;
+
+export const MAGNETIC_MAZE_SCENES: SceneDef[] = [
+  {
+    id: 1,
+    name: "Scene 1",
+    title: "The Discovery",
+    timeRange: [0.0, 6.0],
+    videoPrompt:
+      "Stickman places a shiny silver metal ball on a lab table beside a giant red horseshoe magnet. The ball suddenly zooms across the table and snaps onto the magnet as Stickman gets a bright idea.",
+    animationDesc:
+      "Places silver ball on table (1.15s), red magnet pulses with field waves (1.95s), ball rockets and snaps onto magnet poles (2.75s), Stickman reacts in shock then grins and points (3.85s).",
+    soundDesc: "Metal placement clink, electromagnetic pull hum, snap clank, idea ding.",
+    captionText: "I CAN CONTROL THE BALL!",
+    punchline: "Silver ball meets giant magnet. Instant inspiration.",
+    characterAction: "Places silver ball, jumps back in surprise, then points excitedly with a grin.",
+    propAction: "Shiny silver ball flies across the table and sticks onto the red horseshoe magnet.",
+  },
+  {
+    id: 2,
+    name: "Scene 2",
+    title: "First Attempt",
+    timeRange: [6.0, 12.0],
+    videoPrompt:
+      "Stickman positions blue and red horseshoe magnets on opposite sides of a transparent maze. Pulling the ball inside works briefly—until overloaded magnetic power blasts it straight back into his forehead!",
+    animationDesc:
+      "Moves side magnets pulling ball across maze tracks (6.85-8.8s), magnets surge overpowered (9.0-9.45s), ball shoots backward out of the maze and bonks his forehead (9.95s).",
+    soundDesc: "Escalating magnet hums, power surge whoosh, forehead cartoon bonk.",
+    captionText: "TOO MUCH POWER!",
+    punchline: "Overloaded the magnets. Took a metal ball to the forehead.",
+    characterAction: "Steers opposite magnets, strains with effort, gets bonked on the forehead, and scowls.",
+    propAction: "Silver ball zigzags through transparent maze before firing backward onto his head.",
+  },
+  {
+    id: 3,
+    name: "Scene 3",
+    title: "The Magnetic Upgrade",
+    timeRange: [12.0, 18.0],
+    videoPrompt:
+      "Stickman slots four alternating red and blue magnets beneath the transparent maze! Guiding them smoothly, the silver ball rounds sharp corners, zips through a curved tunnel, and climbs a vertical wall.",
+    animationDesc:
+      "Slots 4 bottom magnets (12.35s), guides ball around sharp corners (12.9-14.7s), sweeps through curved U-tunnel (14.7-15.85s), and climbs straight up the vertical wall (15.85-18.0s).",
+    soundDesc: "Mechanical slot click, smooth rising electromagnetic attraction hums.",
+    captionText: "MAGNETIC CONTROL!",
+    punchline: "Four bottom magnets turn chaos into precision.",
+    characterAction: "Steers confidently with a mini handheld magnet while trotting alongside the course.",
+    propAction: "Ball follows bottom magnets around corners, through tunnel, and up the vertical wall.",
+  },
+  {
+    id: 4,
+    name: "Scene 4",
+    title: "Impossible Shot",
+    timeRange: [18.0, 24.0],
+    videoPrompt:
+      "With the final blue horseshoe magnet positioned directly above the tiny golden cup, the silver ball clears the top metal ramp, flies across the gap, orbits a spinning obstacle, and drops toward the target!",
+    animationDesc:
+      "Clears top wall ramp (18.0-19.05s), leaps gap (19.05-20.55s), orbits spinning cross obstacle (20.55-22.55s), pulls to overhead magnet (22.55-23.35s), and drops straight toward golden cup (23.35-24.15s).",
+    soundDesc: "Launch whoosh, high-pitched orbital magnet hum, suspense build.",
+    captionText: "DON'T LOSE CONTROL!",
+    punchline: "Over the gap, around the spinner, locked above gold.",
+    characterAction: "Points toward overhead magnet, then crouches gripping both fists in suspense.",
+    propAction: "Silver ball orbits spinning obstacle and descends straight toward the golden target cup.",
+  },
+  {
+    id: 5,
+    name: "Scene 5",
+    title: "The Twist",
+    timeRange: [24.0, 30.0],
+    videoPrompt:
+      "BULLSEYE! The silver ball drops straight into the golden cup! Stickman dances in triumph—then ALL magnets activate at once, yanking his red beanie off and slamming a giant metal chair onto his back!",
+    animationDesc:
+      "Ball scores in cup & confetti pops (24.15s), Stickman celebrates (24.15-25.75s), all magnets overload (25.80s), red beanie flies off onto overhead magnet (26.35-27.15s), wrench/bolts & giant metal chair slam onto his back (27.65s).",
+    soundDesc: "Victory ding, all-magnets overload surge, zip whoosh, heavy chair metal clank, sad trombone sting.",
+    captionText: "EVERYTHING IS MAGNETIC! 😂",
+    punchline: "Nailed the magnetic trickshot. Became a human magnet.",
+    characterAction: "Dances in triumph, freezes in shock as his beanie flies off, and hunches with a giant metal chair stuck to his back.",
+    propAction: "All magnets flare cyan, red beanie sticks to the overhead magnet, and metal objects + giant chair stick to Stickman.",
+  },
+];
+
+export const SPIRAL_STAIRCASE_PROMPT = `THE IMPOSSIBLE SPIRAL STAIRCASE SHOT 🌀😂 — 30-SECOND VERTICAL POP COMEDY
+AI VIDEO PROMPT
+
+VISUAL STYLE
+Modern Pop 2D flat vector animation, vertical 9:16 (1080x1920), 24 fps, vibrant colors, thick smooth black outlines, smooth physics, exaggerated comedy. No dialogue, no logos or watermarks.
+
+STRICT MAIN CHARACTER DESIGN — ANGRY STICKMAN (LOCKED RIG)
+- Large circular white head (radius 70, 5px #17121f outline), two vertical black oval eyes, thick expressive black eyebrows, simple black mouth. No nose, ears, or hair.
+- Red knitted-style beanie (#e63946) with folded lower edge (#b3222e), 5 stitches, and pom (#ff6b6b).
+- Plain yellow short-sleeved T-shirt (#ffd166), thin black stick arms connected directly to sleeves, connected small white rounded mitten hands (no fingers or detached hands).
+- Blue trousers (#2f5fa8), thin black legs, solid black shoes (#141414). Keep identical throughout.
+
+PROPS
+- Orange basketball, giant spiral staircase (consistent clockwise-descending helix), curved cyan safety rails, pile of colorful cushions, three rotating platforms, bottom curved launch ramp, circular bonus hoop, and basketball hoop on the opposite wall.
+
+SCENE FLOW
+0-6s (Scene 1 — THE CHALLENGE): Stickman stands at the top of a giant spiral staircase. He places an orange basketball on the first step and pushes it. It rolls down two steps, flies off the unrailed edge, and bonks his head! Caption: "ONE STAIRCASE. ONE SHOT!"
+6-12s (Scene 2 — FIRST ATTEMPT): He adds curved rails along the staircase. The ball speeds smoothly around the spiral curve—then flies off an open corner and crashes into a pile of cushions! Caption: "CONTROL THE CURVE!"
+12-18s (Scene 3 — THE UPGRADE): Stickman installs three rotating platforms between staircase levels and launches the ball again. It rolls down the spiral, bounces cleanly across all three spinning platforms, and exits downward! Caption: "PERFECT SPIRAL!"
+18-24s (Scene 4 — THE FINAL SHOT): Reaching the bottom, the ball rolls onto a curved ramp, launches upward cleanly through a circular hoop, and flies toward the basketball basket on the opposite wall! Caption: "DON'T MISS!"
+24-30s (Scene 5 — THE TWIST): The ball drops perfectly through the basket! Stickman celebrates at the top—then the staircase suddenly starts rotating like a giant carousel! He loses his balance, slides down every step, launches up the ramp, and lands wedged inside the basketball basket! Caption: "I BECAME THE BALL! 😂"
+
+YOUTUBE METADATA
+- Title: He Made a SPIRAL STAIRCASE Trickshot… INSANE! 🌀😂
+- Thumbnail: THE CRAZY SPIRAL!
+- Hashtags: #AngryStickman #SpiralStaircase #ImpossibleTrickshot #FunnyAnimation #StickmanAnimation #YouTubeShorts`;
+
+export const SPIRAL_STAIRCASE_SCENES: SceneDef[] = [
+  {
+    id: 1,
+    name: "Scene 1",
+    title: "The Challenge",
+    timeRange: [0.0, 6.0],
+    videoPrompt:
+      "Stickman stands at the top of a giant spiral staircase, places an orange basketball on the first step, and pushes it. It rolls down two steps, flies off the edge, and hits his head!",
+    animationDesc:
+      "Places basketball on Step 1 (1.15s), pushes it (1.65s), rolls down two steps (1.65-2.35s), flies off open edge and bonks Stickman on the head (3.05s), sparks rail idea (4.20s).",
+    soundDesc: "Ball placement bounce, push whoosh, step roll ticks, forehead bonk, idea ding.",
+    captionText: "ONE STAIRCASE. ONE SHOT!",
+    punchline: "No rails yet. Immediate boomerang bonk.",
+    characterAction: "Places basketball on top step, pushes it, gets bonked on the head, and gets an idea.",
+    propAction: "Orange basketball rolls two spiral steps before flying off into Stickman's head.",
+  },
+  {
+    id: 2,
+    name: "Scene 2",
+    title: "First Attempt",
+    timeRange: [6.0, 12.0],
+    videoPrompt:
+      "Stickman adds curved cyan safety rails along the spiral staircase and pushes the ball again. It gains speed around the helix before shooting off an open corner straight into a pile of cushions!",
+    animationDesc:
+      "Snaps curved rails onto staircase (6.15s), pushes ball (6.85s), speeds around spiral (6.85-9.45s), flies off corner gap into cushion pile (10.15s).",
+    soundDesc: "Rail latch click, accelerating spiral step ticks, soft cushion crash.",
+    captionText: "CONTROL THE CURVE!",
+    punchline: "Half the curve controlled. Straight into the cushions.",
+    characterAction: "Installs curved rails, watches excitedly, then clenches fists in frustration.",
+    propAction: "Ball hugs the upper spiral rail before flying off the lower corner into cushions.",
+  },
+  {
+    id: 3,
+    name: "Scene 3",
+    title: "The Upgrade",
+    timeRange: [12.0, 18.0],
+    videoPrompt:
+      "Stickman installs three rotating platforms between the lower staircase levels! He launches the ball again—it zips down the spiral, hops cleanly across every spinning platform, and exits at the bottom!",
+    animationDesc:
+      "Installs 3 rotating platforms & finishes lower rails (12.15s), launches ball (12.95s), jumps onto Platform 1 (14.35s), Platform 2 (15.25s), Platform 3 (16.25s), exits bottom (18.0s).",
+    soundDesc: "Platform clicks, springy platform bounce boings, crisp spiral ticks.",
+    captionText: "PERFECT SPIRAL!",
+    punchline: "Three spinning platforms bridge the gap to the bottom.",
+    characterAction: "Installs spinning platforms, launches ball, and cheers wildly from the top.",
+    propAction: "Orange basketball rolls the spiral and hops cleanly between three rotating platforms.",
+  },
+  {
+    id: 4,
+    name: "Scene 4",
+    title: "The Final Shot",
+    timeRange: [18.0, 24.0],
+    videoPrompt:
+      "At the bottom of the spiral staircase, the basketball rolls smoothly onto a curved steel ramp, rockets upward through a circular bonus hoop, and arcs across the room toward the basketball basket!",
+    animationDesc:
+      "Hits curved bottom ramp (18.0-19.35s), launches upward cleanly through circular hoop (20.85s), arcs across room toward opposite wall basketball basket (20.85-24.0s).",
+    soundDesc: "Ramp launch whoosh, circular hoop ping, dramatic rising arc.",
+    captionText: "DON'T MISS!",
+    punchline: "Up the ramp, through the ring, aimed straight at the hoop.",
+    characterAction: "Leans over top landing gripping both fists in breathless suspense.",
+    propAction: "Basketball launches up curved ramp, threads circular hoop, and flies toward the wall basket.",
+  },
+  {
+    id: 5,
+    name: "Scene 5",
+    title: "The Twist",
+    timeRange: [24.0, 30.0],
+    videoPrompt:
+      "SWISH! The basketball drops through the basket! Stickman celebrates—until the spiral staircase begins spinning like a giant carousel! He slides down every step, launches up the ramp, and lands wedged inside the basketball basket!",
+    animationDesc:
+      "Ball swishes through net & confetti bursts (24.15s), Stickman dances (24.15-25.75s), staircase spins like a carousel (25.80s), Stickman slides down spiral (26.35-28.15s), flies through hoop and lands inside the basket (29.10s).",
+    soundDesc: "Clean net swish, victory ding, carousel motor spin-up, rapid slide ticks, whoosh, net swish, sad trombone sting.",
+    captionText: "I BECAME THE BALL! 😂",
+    punchline: "First the ball scored. Then Stickman followed it right through the hoop.",
+    characterAction: "Celebrates at top, loses balance on carousel staircase, slides every step, and glares wedged in the basket.",
+    propAction: "Entire spiral staircase rotates like a carousel while Stickman rides the trickshot path into the hoop.",
+  },
+];
+
+export const GIANT_SCISSOR_PROMPT = `THE GIANT SCISSOR TRICKSHOT ✂️😂 — 30-SECOND VERTICAL POP COMEDY
+AI VIDEO PROMPT
+
+VISUAL STYLE
+Modern Pop 2D flat vector animation, vertical 9:16 (1080x1920), 24 fps, vibrant colors, thick smooth black outlines, smooth physics, exaggerated comedy. No dialogue, no logos or watermarks.
+
+STRICT MAIN CHARACTER DESIGN — ANGRY STICKMAN (LOCKED RIG)
+- Large circular white head (radius 70, 5px #17121f outline), two vertical black oval eyes, thick expressive black eyebrows, simple black mouth. No nose, ears, or hair.
+- Red knitted-style beanie (#e63946) with folded lower edge (#b3222e), 5 stitches, and pom (#ff6b6b).
+- Plain yellow short-sleeved T-shirt (#ffd166), thin black stick arms connected directly to sleeves, connected small white rounded mitten hands (no fingers or detached hands).
+- Blue trousers (#2f5fa8), thin black legs, solid black shoes (#141414). Keep identical throughout.
+
+PROPS
+- Giant silver scissors with large red handles, colorful strings visibly connected to overhead pulleys and triggers, orange ball, seesaw, 5 colorful dominoes, elevated ramp, giant pendulum ball, spring launcher, and red target cup.
+
+SCENE FLOW
+0-6s (Scene 1 — THE DISCOVERY): Stickman finds enormous silver scissors on a table. He cuts a hanging string. A small orange ball drops, rolls down a ramp, and lands inside a red cup. His eyes widen! Caption: "SCISSORS CAN MAKE TRICKSHOTS?!"
+6-12s (Scene 2 — THE SETUP): He connects colorful strings to suspended balls, dominoes, and a seesaw, then carefully positions the giant scissors beside the first string. Caption: "ONE CUT STARTS EVERYTHING!"
+12-18s (Scene 3 — CHAIN REACTION): SNIP! He cuts the first string. A ball drops onto the seesaw, launching another ball into dominoes, which pull a pulley string that releases a ball down an elevated ramp! Caption: "THE CHAIN REACTION!"
+18-24s (Scene 4 — THE FINAL CUT): Stickman cuts the final string holding a giant pendulum ball. The pendulum swings down, hits a spring launcher, and rockets the orange ball toward a tiny red target cup! Caption: "THE PERFECT CUT!"
+24-30s (Scene 5 — THE TWIST): The orange ball drops cleanly inside the cup! Stickman celebrates—then the last loose string snaps, swinging the giant scissors shut and cutting his red beanie right off his head! Caption: "SNIP! THERE GOES MY HAT! 😂"
+
+YOUTUBE METADATA
+- Title: He Used GIANT SCISSORS for an IMPOSSIBLE Trickshot! ✂️😂
+- Thumbnail: ONE CUT = CHAOS!
+- Hashtags: #AngryStickman #ScissorTrickshot #ChainReaction #FunnyAnimation #StickmanAnimation #YouTubeShorts`;
+
+export const GIANT_SCISSOR_SCENES: SceneDef[] = [
+  {
+    id: 1,
+    name: "Scene 1",
+    title: "The Discovery",
+    timeRange: [0.0, 6.0],
+    videoPrompt:
+      "Stickman finds enormous silver scissors with bright red handles on a table. He snips a hanging string—a small orange ball drops, rolls down a ramp, and lands inside a red cup! His eyes widen in awe.",
+    animationDesc:
+      "Picks up giant scissors (1.25s), snips String 0 (2.15s), orange ball rolls down mini ramp (2.55s) and lands in red cup (3.35s), eyes widen & grins (3.35-5.75s).",
+    soundDesc: "Scissor snip, ramp thump, cup drop clink, discovery ding.",
+    captionText: "SCISSORS CAN MAKE TRICKSHOTS?!",
+    punchline: "One snip drops the ball straight into the red cup.",
+    characterAction: "Picks up giant scissors, snips the string, and gasps wide-eyed with a huge grin.",
+    propAction: "Silver scissors cut cyan string; suspended orange ball rolls down ramp into red cup.",
+  },
+  {
+    id: 2,
+    name: "Scene 2",
+    title: "The Setup",
+    timeRange: [6.0, 12.0],
+    videoPrompt:
+      "Stickman connects colorful cyan, purple, and gold strings to suspended balls, five dominoes, pulleys, and a seesaw—then carefully positions the giant scissors right beside the first string!",
+    animationDesc:
+      "Camera pans to rig & Stickman connects colorful strings (6.0-10.2s), carefully lines up giant scissors beside Cyan String 1 (10.25s).",
+    soundDesc: "Mechanical setup clicks as strings latch onto pulleys and triggers.",
+    captionText: "ONE CUT STARTS EVERYTHING!",
+    punchline: "Every pulley, domino, and seesaw is rigged by string.",
+    characterAction: "Ties colorful strings and aims the giant scissors beside the first trigger string.",
+    propAction: "Colorful strings connect suspended balls, seesaw, 5 dominoes, and overhead pulleys.",
+  },
+  {
+    id: 3,
+    name: "Scene 3",
+    title: "Chain Reaction",
+    timeRange: [12.0, 18.0],
+    videoPrompt:
+      "SNIP! Stickman cuts the first string! A ball drops onto the seesaw, launching a green ball into five dominoes—which pull a purple pulley string releasing Ball B down an elevated ramp!",
+    animationDesc:
+      "Snips String 1 (12.25s), Ball A drops onto seesaw (13.15s), green ball topples 5 dominoes (14.10-15.10s), Purple String 2 pulls over Pulley 2 releasing Ball B down elevated ramp (15.25-17.2s).",
+    soundDesc: "Scissor snip, seesaw spring boing, 5 escalating domino clacks, pulley release whoosh, floor thump.",
+    captionText: "THE CHAIN REACTION!",
+    punchline: "One snip triggers seesaw, dominoes, pulley, and ramp.",
+    characterAction: "Snips the first string and trots forward cheering on the chain reaction.",
+    propAction: "Ball drops onto seesaw, dominoes topple, and pulley releases elevated ramp ball.",
+  },
+  {
+    id: 4,
+    name: "Scene 4",
+    title: "The Final Cut",
+    timeRange: [18.0, 24.0],
+    videoPrompt:
+      "Stickman cuts the final gold string holding a giant pendulum ball! The pendulum swings down, slams the spring launcher, and rockets the orange ball in a high arc toward the tiny red target cup!",
+    animationDesc:
+      "Cuts Gold String 3 (18.35s), giant indigo pendulum swings down (18.35-20.35s), hits yellow spring launcher (20.35s), orange ball rockets toward tiny red cup (20.4-24.0s).",
+    soundDesc: "Final scissor snip, pendulum whoosh, heavy spring launcher boing.",
+    captionText: "THE PERFECT CUT!",
+    punchline: "Final cut unleashes the pendulum and rockets the orange ball.",
+    characterAction: "Snips the final overhead string and crouches gripping both fists in suspense.",
+    propAction: "Pendulum strikes spring launcher, rocketing the orange ball toward the red target cup.",
+  },
+  {
+    id: 5,
+    name: "Scene 5",
+    title: "The Twist",
+    timeRange: [24.0, 30.0],
+    videoPrompt:
+      "BULLSEYE! The orange ball lands inside the red cup! Stickman celebrates—then the last loose string snaps, swinging the giant scissors shut and snipping his red beanie right off his head!",
+    animationDesc:
+      "Orange ball lands in red cup & confetti pops (24.15s), Stickman celebrates (24.15-25.8s), last loose string snaps (25.85s), mounted scissors swing shut & snag his red beanie on the upper silver blade (26.55-30.0s).",
+    soundDesc: "Cup drop clink, victory ding, taut string snap, heavy scissor snip, whoosh, sad trombone sting.",
+    captionText: "SNIP! THERE GOES MY HAT! 😂",
+    punchline: "Made the impossible scissor shot. Lost his beanie to the blade.",
+    characterAction: "Celebrates wildly, leaps backward in shock as his hat gets snipped, then glares at the scissors.",
+    propAction: "Orange ball scores in cup; loose string snaps giant scissors shut with red beanie caught on the upper blade.",
+  },
+];
+
+export const TRIPLE_GRAVITY_PROMPT = `THE TRIPLE GRAVITY TRICKSHOT 🌍😂 — 30-SECOND VERTICAL POP COMEDY
+AI VIDEO PROMPT
+
+VISUAL STYLE
+Modern Pop 2D flat vector animation, vertical 9:16 (1080x1920), 24 fps, vibrant colors, thick smooth black outlines, smooth animation, exaggerated comedy. No dialogue, no logos or watermarks.
+
+STRICT MAIN CHARACTER DESIGN — ANGRY STICKMAN (LOCKED RIG)
+- Large circular white head (radius 70, 5px #17121f outline), two vertical black oval eyes, thick expressive black eyebrows, simple black mouth. No nose, ears, or hair.
+- Red knitted-style beanie (#e63946) with folded lower edge (#b3222e), 5 stitches, and pom (#ff6b6b).
+- Plain yellow short-sleeved T-shirt (#ffd166), thin black stick arms connected directly to sleeves, connected small white rounded mitten hands (no fingers or detached hands).
+- Blue trousers (#2f5fa8), thin black legs, solid black shoes (#141414). Keep identical throughout.
+
+PROPS
+- Orange basketball, three glowing gravity zones (blue = sideways >>>, purple = upward ^^^, green = downward vvv), vertical climb wall, floating platforms with narrow gap, normal hoop, and golden target hoop.
+
+SCENE FLOW
+0-6s (Scene 1 — THE DISCOVERY): Stickman throws an orange basketball toward a normal hoop. Entering a glowing blue gravity zone on the floor, the ball suddenly falls sideways instead of down and smashes into the vertical wall. He discovers the glowing blue zone! Caption: "GRAVITY IS BROKEN?!"
+6-12s (Scene 2 — FIRST GRAVITY): He rolls the ball into the blue zone. Sideways gravity pulls it against the vertical wall, making it roll upward along the wall. Stickman gets excited and points toward the golden target hoop. Caption: "SIDEWAYS GRAVITY!"
+12-18s (Scene 3 — THREE GRAVITY ZONES): Stickman flips switches activating the purple (upward) and green (downward) gravity zones. The ball travels sideways up the wall, lifts upward through purple, then drops suddenly in green onto a floating platform. He grins confidently! Caption: "THREE GRAVITIES!"
+18-24s (Scene 4 — THE IMPOSSIBLE SHOT): He releases the ball through all three zones. It climbs the vertical wall (blue), crosses the ceiling (purple), drops straight through the narrow gap (green), bounces off the lower floating platform, and flies toward the golden hoop! Caption: "IMPOSSIBLE TRAJECTORY!"
+24-30s (Scene 5 — THE TWIST): The ball scores cleanly through the golden hoop! Stickman celebrates—then all three gravity zones activate beneath him! He gets pulled sideways, floats upside down, and sticks flat to the ceiling with his red beanie hanging down! Caption: "I FORGOT ABOUT GRAVITY! 😂"
+
+YOUTUBE METADATA
+- Title: He BROKE GRAVITY for an IMPOSSIBLE Trickshot! 🌍😂
+- Thumbnail: GRAVITY IS BROKEN!
+- Hashtags: #AngryStickman #GravityTrickshot #ImpossibleTrickshot #FunnyAnimation #StickmanAnimation #YouTubeShorts`;
+
+export const TRIPLE_GRAVITY_SCENES: SceneDef[] = [
+  {
+    id: 1,
+    name: "Scene 1",
+    title: "The Discovery",
+    timeRange: [0.0, 6.0],
+    videoPrompt:
+      "Stickman throws an orange basketball toward a normal hoop—then the ball suddenly swerves sideways into a vertical wall! He walks closer and discovers a glowing blue gravity zone on the floor.",
+    animationDesc:
+      "Throws basketball toward normal hoop (1.65s), enters glowing Blue Zone (2.35s) and swerves sideways into vertical wall (2.90s), leans down inspecting the blue gravity field (4.15-5.75s).",
+    soundDesc: "Dribble bounce, throw whoosh, gravity hum, wall bounce, discovery ding.",
+    captionText: "GRAVITY IS BROKEN?!",
+    punchline: "The ball went sideways instead of down.",
+    characterAction: "Throws basketball toward the normal hoop, gasps in shock, and points at the glowing blue zone.",
+    propAction: "Blue gravity zone activates and pulls the basketball sideways into the vertical wall.",
+  },
+  {
+    id: 2,
+    name: "Scene 2",
+    title: "First Gravity",
+    timeRange: [6.0, 12.0],
+    videoPrompt:
+      "Stickman rolls the basketball into the glowing blue zone. Sideways gravity pins it to the vertical wall, making it roll right up the wall! He cheers excitedly and points toward the golden target hoop.",
+    animationDesc:
+      "Picks up ball and rolls into Blue Zone (7.65s), ball climbs vertical wall under sideways gravity (8.15-10.25s), Stickman points excitedly toward the golden hoop (10.20s).",
+    soundDesc: "Roll whoosh, sideways gravity hum, excited chime, floor bounce.",
+    captionText: "SIDEWAYS GRAVITY!",
+    punchline: "Rolling straight up a vertical wall.",
+    characterAction: "Rolls basketball into the blue zone, cheers wide-eyed, and points toward the golden hoop.",
+    propAction: "Sideways blue gravity keeps the basketball rolling vertically along the wall.",
+  },
+  {
+    id: 3,
+    name: "Scene 3",
+    title: "Three Gravity Zones",
+    timeRange: [12.0, 18.0],
+    videoPrompt:
+      "Stickman flips switches activating the purple (upward) and green (downward) zones! The ball travels sideways up the wall, lifts upward through purple, and drops straight onto a floating platform. He grins confidently.",
+    animationDesc:
+      "Flips Purple (12.35s) & Green (12.95s) switches, launches ball (13.65s), enters Blue -> Purple lift (14.85s) -> Green downward drop onto upper floating platform (16.45s), confident grin (16.85s).",
+    soundDesc: "Switch clicks, rising/falling gravity hums, platform land thump, confidence ding.",
+    captionText: "THREE GRAVITIES!",
+    punchline: "Sideways, upward, then downward onto a floating platform.",
+    characterAction: "Flips both gravity switches, watches all three zones chain cleanly, and grins confidently.",
+    propAction: "Basketball transitions across Blue, Purple, and Green zones onto the floating platform.",
+  },
+  {
+    id: 4,
+    name: "Scene 4",
+    title: "The Impossible Shot",
+    timeRange: [18.0, 24.0],
+    videoPrompt:
+      "Stickman releases the ball through all three zones! It climbs the vertical wall, crosses the ceiling upside-down, drops cleanly through the narrow gap, bounces off the lower floating platform, and flies toward the golden hoop!",
+    animationDesc:
+      "Releases shot (18.65s), climbs wall in Blue (19.05-20.3s), crosses ceiling in Purple (20.3-21.85s), shoots down through narrow gap in Green (21.85-22.7s), bounces off angled platform toward golden hoop (22.7-24.15s).",
+    soundDesc: "Release whoosh, triple gravity direction hums, floating bounce pad boing.",
+    captionText: "IMPOSSIBLE TRAJECTORY!",
+    punchline: "Wall climb, ceiling run, narrow-gap drop toward gold.",
+    characterAction: "Releases the basketball cleanly and crouches gripping both fists in suspense.",
+    propAction: "Ball climbs wall, crosses ceiling, threads narrow gap, and launches toward the golden hoop.",
+  },
+  {
+    id: 5,
+    name: "Scene 5",
+    title: "The Twist",
+    timeRange: [24.0, 30.0],
+    videoPrompt:
+      "SWISH! The ball drops straight through the golden hoop! Stickman celebrates—then all three gravity zones activate beneath him! He gets pulled sideways, floats upside down, and sticks to the ceiling with his red beanie hanging down!",
+    animationDesc:
+      "Ball swishes through golden hoop & confetti pops (24.15s), celebrates (24.2-25.75s), triple gravity overload activates (25.80s), pulled sideways (25.85-26.6s), floats upside down (26.6-27.55s) and sticks to ceiling with red beanie dangling downward (27.55-30.0s).",
+    soundDesc: "Clean swish, victory ding, triple gravity overload surge, slide whoosh, upward hum, ceiling thump, sad trombone sting.",
+    captionText: "I FORGOT ABOUT GRAVITY! 😂",
+    punchline: "Broke gravity to score. Ended up stuck upside down on the ceiling.",
+    characterAction: "Celebrates triumphantly, gets yanked sideways, flips upside down, and glares stuck to the ceiling.",
+    propAction: "All three gravity zones activate together, pinning Stickman upside down to the ceiling with his beanie hanging down.",
+  },
+];
+
+export const INVISIBLE_TUBE_PROMPT = `MODERN POP 2D STICKMAN SHORT — "THE INVISIBLE TUBE TRICKSHOT" (9:16 VERTICAL · 30 SECONDS · 5 SCENES · 24 FPS · NO DIALOGUE)
+
+CHARACTER (LOCKED ANGRY STICKMAN RIG):
+- White round head (r=70) with thick black outline (#17121f), small vertical oval eyes, expressive eyebrows, red knitted beanie (#e63946), yellow T-shirt (#ffd166), blue trousers (#2f5fa8), thin black limbs, connected small rounded white mitten hands, black shoes.
+- Identical character rig throughout all 5 scenes (red beanie gets knocked cleanly off his head onto the Air Pump at 27.15s).
+
+PROPS & WORLD CONTINUITY:
+- Orange ping-pong ball (always crisp & visible even inside transparent tubes), transparent tubes with faint blue outlines (connected U-bend, 360 upside-down loop, spiral coils, vertical climb, ceiling loop, vertical drop), floor Air Pump with cyan forward (>>>) and red reverse (<<<) gauge/chevrons, and persistent Red Target Cup on right pedestal.
+
+5-SCENE TIMELINE (30 SECONDS):
+- Scene 1 (0-6s) The Mystery ("WHERE DID IT GO?!"): Throws orange ball toward cup; it vanishes into an invisible U-tube, zips behind him, and shoots out behind his back. Turns left in shock and spots faint blue transparent outline.
+- Scene 2 (6-12s) The Discovery ("INVISIBLE BALL TRACK!"): Connects giant transparent bend + 360 upside-down loop tube, drops ball inside; rolls through loop upside down and shoots out other end.
+- Scene 3 (12-18s) The Upgrade ("THE ULTIMATE TUBE!"): Connects twisting spiral coils, vertical climb, ceiling loop, and drop chute; releases ball, loses momentum and drops just short of cup.
+- Scene 4 (18-24s) The Final Shot ("FULL SPEED!"): Drops ball into Air Pump inlet and slams pump ON (cyan >>>); ball accelerates through coils, vertical climb, ceiling loop, and rockets down toward tiny red cup!
+- Scene 5 (24-30s) The Twist ("THE BALL CAME BACK! 😂"): Ball lands in red cup! Stickman celebrates, then Air Pump reverses (red <<<), sucking ball backward through entire track until it shoots out the inlet and knocks his red beanie onto the Air Pump!`;
+
+export const INVISIBLE_TUBE_SCENES: SceneDef[] = [
+  {
+    id: 1,
+    name: "Scene 1",
+    title: "The Mystery",
+    timeRange: [0.0, 6.0],
+    videoPrompt:
+      "Stickman throws an orange ping-pong ball toward the red cup. It enters a transparent U-tube with faint blue outlines, zips behind him, and shoots out behind his back! He spins around in shock and spots the invisible tube.",
+    animationDesc:
+      "Throws orange ball right (1.55s), ball enters faint transparent U-tube (1.95s), zips behind him and pops out behind his back (2.85s), turns left in shock and points at tube (4.35s).",
+    soundDesc: "Toss whoosh, hollow tube enter pop, pneumatic travel whoosh, exit whoosh, floor thump, discovery ding.",
+    captionText: "WHERE DID IT GO?!",
+    punchline: "Thought the room was haunted. It was an invisible U-tube.",
+    characterAction: "Confidently throws ball toward cup, spins around startled when it exits behind him.",
+    propAction: "Transparent U-tube guides orange ball behind Stickman and pops it out behind his back.",
+  },
+  {
+    id: 2,
+    name: "Scene 2",
+    title: "The Discovery",
+    timeRange: [6.0, 12.0],
+    videoPrompt:
+      "He discovers a giant transparent tube with curved bends and a full 360-degree upside-down loop! He drops the ball inside—it rolls smoothly through the bends, loops upside down, and shoots out the other end!",
+    animationDesc:
+      "Connects giant loop tube (6.35s), drops orange ball into inlet (7.65s), ball completes full 360 upside-down loop (8.6-9.8s) and shoots out right nozzle (10.3s).",
+    soundDesc: "Setup click, hollow tube enter pop, loop travel whoosh, exit whoosh, floor bounce.",
+    captionText: "INVISIBLE BALL TRACK!",
+    punchline: "Zero friction, full visibility, 360-degree loop.",
+    characterAction: "Drops the orange ball into the raised inlet and watches excitedly as it loops upside down.",
+    propAction: "Orange ping-pong ball visibly loops 360 degrees inside the faint-blue transparent track.",
+  },
+  {
+    id: 3,
+    name: "Scene 3",
+    title: "The Upgrade",
+    timeRange: [12.0, 18.0],
+    videoPrompt:
+      "He connects transparent tubes into the Ultimate Track: two spiral coils, a vertical climb, a ceiling loop, and a vertical drop! He drops the ball in, watches it zoom upward, then drop just short of the cup.",
+    animationDesc:
+      "Clips ultimate tube track together (12.35-12.95s), drops ball in (13.65s), zooms through coils and vertical drop before rolling slightly short of the red cup (16.75-17.35s).",
+    soundDesc: "Twin assembly clicks, tube enter pop, loop rush whoosh, vertical drop whoosh, floor thump.",
+    captionText: "THE ULTIMATE TUBE!",
+    punchline: "Built the whole skyline track—just needs more air power.",
+    characterAction: "Assembles the multi-loop track, drops the ball, and grimaces slightly when it stops short.",
+    propAction: "Connected transparent tube track with spiral coils, vertical climb, ceiling loop, and drop chute.",
+  },
+  {
+    id: 4,
+    name: "Scene 4",
+    title: "The Final Shot",
+    timeRange: [18.0, 24.0],
+    videoPrompt:
+      "He connects the floor Air Pump and slams it ON! Cyan airflow blasts the orange ball at full speed through the spiral coils, straight up the vertical climb, around the ceiling loop, and down toward the tiny red cup!",
+    animationDesc:
+      "Drops ball at pump inlet (18.65s), slams Air Pump ON with cyan >>> gauge (18.85s), ball rockets through twin coils (19.0-20.1s), ceiling loop (20.6-21.6s), and fires down chute toward red cup (22.9-24.15s).",
+    soundDesc: "Tube enter pop, Air Pump pneumatic turbo blast, high-speed coil & ceiling loop whooshes, nozzle rocket shot.",
+    captionText: "FULL SPEED!",
+    punchline: "Maximum air pressure engaged.",
+    characterAction: "Slams the Air Pump switch down, points upward tracking the turbo ball, and crouches for impact.",
+    propAction: "Air Pump blasts cyan forward >>> airflow, rocketing the ball through every connected transparent loop.",
+  },
+  {
+    id: 5,
+    name: "Scene 5",
+    title: "The Twist",
+    timeRange: [24.0, 30.0],
+    videoPrompt:
+      "DING! The orange ball lands cleanly inside the red cup! Stickman celebrates—then the Air Pump flips into REVERSE! It sucks the ball backward through every tube until it shoots out the inlet and knocks off his red beanie!",
+    animationDesc:
+      "Ball drops inside red cup & confetti bursts (24.15s), celebrates (24.2-25.8s), Air Pump flips to red <<< REVERSE (25.85s), ball zooms backward through track (26.15-27.15s) and knocks Stickman's red beanie onto the Air Pump (27.15-30.0s).",
+    soundDesc: "Cup drop clink, victory ding, Air Pump reverse vacuum surge, backward zoom whoosh, beanie head bonk, floor thump, sad trombone sting.",
+    captionText: "THE BALL CAME BACK! 😂",
+    punchline: "Scored the impossible shot—and got robbed by the reverse switch.",
+    characterAction: "Celebrates hands high, gasps as suction reverses, gets his red beanie knocked off, and glares deadpan.",
+    propAction: "Air Pump switches to red <<< reverse, sucking ball out of the cup backward through every loop to knock off his beanie.",
+  },
+];
+
+export const GIANT_GEAR_PROMPT = `MODERN POP 2D STICKMAN SHORT — "THE GIANT GEAR TRICKSHOT" (9:16 VERTICAL · 30 SECONDS · 5 SCENES · 24 FPS · NO DIALOGUE)
+
+CHARACTER (LOCKED ANGRY STICKMAN RIG):
+- White round head (r=70) with thick black outline (#17121f), small vertical oval eyes, expressive eyebrows, red knitted beanie (#e63946), yellow T-shirt (#ffd166), blue trousers (#2f5fa8), thin black limbs, connected small rounded white mitten hands, black shoes.
+- Identical character rig throughout all 5 scenes (red beanie gets pulled into the reversing gears at 26.10s and snaps back onto his head stretched like a spring at 28.25s).
+
+PROPS & CONTINUITY:
+- Metallic silver gears with clearly visible teeth rotating in strictly opposite interlocking directions, silver metal ball, spring launcher, rotating ramp, spinning circular track, metal ring, small bounce ramp, and persistent golden target cup.
+
+5-SCENE TIMELINE (30 SECONDS):
+- Scene 1 (0-6s) The Discovery ("GEARS CAN LAUNCH BALLS?!"): Drops silver ball between two giant interlocking gears; they launch it straight upward onto his head.
+- Scene 2 (6-12s) First Attempt ("MORE GEARS, MORE POWER!"): Connects three different-sized interlocking gears; ball transfers through all three before the final small gear launches it backward over him.
+- Scene 3 (12-18s) The Mega Machine ("SIX GEARS ACTIVATED!"): Builds six interlocking gear wheels feeding a rotating ramp and spinning circular track; silver ball travels cleanly through every stage.
+- Scene 4 (18-24s) The Impossible Shot ("THE PERFECT LAUNCH!"): Final gear accelerates faster, launching the silver ball through a metal ring, bouncing off a small ramp directly toward the golden target cup.
+- Scene 5 (24-30s) The Twist ("THE GEARS STOLE MY HAT! 😂"): Ball lands perfectly inside the golden cup! Celebrates, then gears reverse direction and pull his red beanie through the machine—emerging stretched like a giant spring that snaps onto his head!`;
+
+export const GIANT_GEAR_SCENES: SceneDef[] = [
+  {
+    id: 1,
+    name: "Scene 1",
+    title: "The Discovery",
+    timeRange: [0.0, 6.0],
+    videoPrompt:
+      "Stickman finds two giant interlocking silver gears spinning in opposite directions. He drops a silver metal ball between their teeth—the gears launch it straight upward, and it lands right on his head!",
+    animationDesc:
+      "Steps right & drops silver ball between 2 interlocking gears (1.65s), gears launch ball straight up (2.15-2.85s), lands on his red beanie (3.45s), bounces onto floor (4.25s).",
+    soundDesc: "Gear whir, toss whoosh, spring launch boing, head bonk, floor bounce, idea ding.",
+    captionText: "GEARS CAN LAUNCH BALLS?!",
+    punchline: "Discovered vertical gear propulsion. Tested it with his own forehead.",
+    characterAction: "Drops the silver ball into the meshing gears, beams with pride, gets bonked on the head, and gets an idea.",
+    propAction: "Two equal silver gears rotate in opposite directions, pinching and launching the silver ball straight upward.",
+  },
+  {
+    id: 2,
+    name: "Scene 2",
+    title: "First Attempt",
+    timeRange: [6.0, 12.0],
+    videoPrompt:
+      "He connects three interlocking gears of different sizes and drops the silver ball onto the first large gear. Each gear transfers the ball to the next—until the fast final gear launches it backward over his head!",
+    animationDesc:
+      "Connects 3 different-sized gears (6.3s), drops ball onto Gear 1 (7.55s), transfers G1 -> G2 -> G3 (7.9-9.8s), launches backward over ducking Stickman (9.8-10.75s).",
+    soundDesc: "Gear assembly click, metal tooth clinks, rising gear train whir, backward launch whoosh, floor crash.",
+    captionText: "MORE GEARS, MORE POWER!",
+    punchline: "Three gears multiplied the speed—in the completely wrong direction.",
+    characterAction: "Drops the ball onto Gear 1, pumps his fists excitedly, then ducks in shock as it rockets backward over him.",
+    propAction: "Large, medium, and small interlocking silver gears spin at inverse tooth ratios, firing the ball backward.",
+  },
+  {
+    id: 3,
+    name: "Scene 3",
+    title: "The Mega Machine",
+    timeRange: [12.0, 18.0],
+    videoPrompt:
+      "Stickman builds a giant six-gear mega machine! The silver ball travels cleanly across all six interlocking gears, climbs a rotating ramp, and enters a spinning circular track.",
+    animationDesc:
+      "Activates 6-gear machine (12.35s), ball travels step-by-step across Gears 1-6 (13.35-15.45s), climbs rotating ramp (15.45-16.55s), orbits spinning circular track (16.55-18.0s).",
+    soundDesc: "Machine click, six ascending metallic gear clinks, rotating ramp whir, circular track whoosh.",
+    captionText: "SIX GEARS ACTIVATED!",
+    punchline: "Six interlocking gears running like clockwork.",
+    characterAction: "Releases the silver ball onto Gear 1 and watches proudly as it climbs the ramp into the circular track.",
+    propAction: "Six opposite-spinning silver gears feed the ball up a rotating ramp into a spinning circular track.",
+  },
+  {
+    id: 4,
+    name: "Scene 4",
+    title: "The Impossible Shot",
+    timeRange: [18.0, 24.0],
+    videoPrompt:
+      "He cranks the spring launcher! The final gear spins faster and launches the silver ball cleanly through a metal ring! It bounces off a small ramp and flies directly toward the golden target cup!",
+    animationDesc:
+      "Fires spring launcher (18.45s), turbo Gear 6 accelerates (19.15s) and launches ball (20.05s) through the metal ring (20.9s) onto small bounce ramp (22.15s) arcing toward the golden cup.",
+    soundDesc: "Spring launcher boing, turbo gear whir, high-speed launch whoosh, metal ring chime, small ramp bounce.",
+    captionText: "THE PERFECT LAUNCH!",
+    punchline: "Calculated to the millimeter.",
+    characterAction: "Pulls the spring launcher lever, points along the ball's arc, and crouches in suspense.",
+    propAction: "Turbo Gear 6 shoots the silver ball through the orange metal ring onto the angled ramp toward the golden cup.",
+  },
+  {
+    id: 5,
+    name: "Scene 5",
+    title: "The Twist",
+    timeRange: [24.0, 30.0],
+    videoPrompt:
+      "DING! The silver ball lands perfectly inside the golden cup! Stickman celebrates—then the giant gears reverse direction and pull his red beanie into the machine! It emerges stretched like a giant spring and snaps onto his head!",
+    animationDesc:
+      "Ball lands in golden cup & confetti pops (24.15s), celebrates (24.2-25.8s), gears reverse direction (25.8s), yanks red beanie through all 6 gears (26.1-27.55s), shoots out stretched like a spring and snaps onto head (28.25-30.0s).",
+    soundDesc: "Golden cup clink, victory ding, mechanical reverse clutch, hat yank whoosh, gear grind, spring stretch boing, head snap, trombone sting.",
+    captionText: "THE GEARS STOLE MY HAT! 😂",
+    punchline: "Won the trickshot. Now his beanie has coil suspension.",
+    characterAction: "Celebrates victory, gasps as his hat gets pulled into the gears, recoils as the spring-beanie snaps back, and glares deadpan.",
+    propAction: "All six gears reverse direction, threading Stickman's red beanie through the teeth and shooting it out as a giant bouncy spring.",
+  },
+];
+
+export const REVERSE_BOWLING_PROMPT = `MODERN POP 2D STICKMAN SHORT — "THE REVERSE BOWLING TRICKSHOT" (9:16 VERTICAL · 30 SECONDS · 5 SCENES · 24 FPS · NO DIALOGUE)
+
+CHARACTER (LOCKED ANGRY STICKMAN RIG):
+- White round head (r=70) with thick black outline (#17121f), small vertical oval eyes, expressive eyebrows, red knitted beanie (#e63946), yellow T-shirt (#ffd166), blue trousers (#2f5fa8), thin black limbs, connected small rounded white mitten hands, black shoes.
+- Identical character rig throughout all 5 scenes.
+
+PROPS & CONTINUITY:
+- Purple bowling ball (consistent size r=30, vibrant purple #9333ea with three finger holes), 10 white bowling pins with consistent dual red stripes, curved orange ramp, spinning blue platform, two angled cyan mirrors, arched teal curved tunnel, and orange/red spring ramp.
+
+5-SCENE TIMELINE (30 SECONDS):
+- Scene 1 (0-6s) The Crazy Challenge ("BOWLING... BACKWARDS?!"): Stickman stands behind ten bowling pins, throws the purple bowling ball backward (left), where it rolls back behind him and hits his foot.
+- Scene 2 (6-12s) First Attempt ("WRONG DIRECTION!"): Places a curved ramp behind him; ball rolls backward down ramp, bounces off left wall, changes direction, and knocks down only one pin.
+- Scene 3 (12-18s) The Upgrade ("MASTER THE ANGLES!"): Adds two mirrors and a spinning platform; ball travels backward, bounces off the spinning platform and both mirrors, returning toward the pins from the opposite side.
+- Scene 4 (18-24s) The Perfect Strike ("BACKWARDS STRIKE!"): Ball rolls through a curved tunnel, launches off a spring ramp, flies behind the bowling pins, and smashes the center pin—knocking all 10 pins down in one perfect strike!
+- Scene 5 (24-30s) The Twist ("STRIKE... ON ME! 😂"): Celebrates with a victory dance, then the purple ball rolls back along the same route, hits his feet, flips him backward into the bowling lane, and a final pin drops squarely onto his head!`;
+
+export const REVERSE_BOWLING_SCENES: SceneDef[] = [
+  {
+    id: 1,
+    name: "Scene 1",
+    title: "The Crazy Challenge",
+    timeRange: [0.0, 6.0],
+    videoPrompt:
+      "Stickman stands before 10 red-striped bowling pins—but throws the purple bowling ball BACKWARD! It bounces behind him and rolls right into his foot!",
+    animationDesc:
+      "Points at 10 pins, turns left & throws purple bowling ball backward (1.9s), bounces off left wall (2.8s) and rolls right into his foot (3.65s).",
+    soundDesc: "Throw whoosh, wall thump, bowling roll rumble, foot bonk.",
+    captionText: "BOWLING... BACKWARDS?!",
+    punchline: "Refused to bowl forward. Bowled his own heel instead.",
+    characterAction: "Points confidently at the pins, flings the purple ball backward, and hops holding his foot.",
+    propAction: "Purple bowling ball rolls backward, rebounds off the left baseboard, and hits his foot.",
+  },
+  {
+    id: 2,
+    name: "Scene 2",
+    title: "First Attempt",
+    timeRange: [6.0, 12.0],
+    videoPrompt:
+      "He places a curved ramp behind him and rolls the ball backward down the ramp! It bounces off the left wall, changes direction over his head, and knocks down ONLY ONE pin!",
+    animationDesc:
+      "Places curved ramp (6.1s), rolls ball backward down ramp (7.55s), bounces off left wall (8.45s), arcs onto lane (9.55s) and topples 1 pin (10.15s).",
+    soundDesc: "Setup click, wooden lane rumble, wall thump, single pin wood knock.",
+    captionText: "WRONG DIRECTION!",
+    punchline: "1 out of 10 pins. Backwards progress.",
+    characterAction: "Sets up the curved ramp, rolls backward, points excitedly, then crosses fists annoyed.",
+    propAction: "Curved ramp launches ball off left wall onto the lane, knocking down only front pin #0.",
+  },
+  {
+    id: 3,
+    name: "Scene 3",
+    title: "The Upgrade",
+    timeRange: [12.0, 18.0],
+    videoPrompt:
+      "Stickman adds two mirrors and a spinning platform! He rolls the ball backward—it rockets off the spinning platform, bounces between both mirrors, and drops toward the pins from the opposite side!",
+    animationDesc:
+      "Adds 2 mirrors & spinning platform (12.15s), rolls backward (13.55s), spinning platform flings ball (14.35s) to Mirror 1 (15.1s) -> Mirror 2 (16.05s) -> opposite side approach.",
+    soundDesc: "Setup click, roll rumble, spring platform boing, twin crystalline mirror pings, lane thump.",
+    captionText: "MASTER THE ANGLES!",
+    punchline: "Geometry meets bowling.",
+    characterAction: "Positions the mirrors and spinning platform, rolls backward, and tracks the ball overhead.",
+    propAction: "Spinning platform and dual angled mirrors redirect the purple ball around the room.",
+  },
+  {
+    id: 4,
+    name: "Scene 4",
+    title: "The Perfect Strike",
+    timeRange: [18.0, 24.0],
+    videoPrompt:
+      "The purple ball rolls through a curved tunnel, launches off a spring ramp, and flies behind the bowling pins! It hits the center pin—sending ALL TEN pins crashing down in one perfect backwards strike!",
+    animationDesc:
+      "Releases ball (18.65s), spinning platform -> curved tunnel (19.85-20.75s) -> spring ramp (21.35s) -> flies behind pins (22.1s) -> smashes center pin at 22.45s knocking all 10 pins down!",
+    soundDesc: "Roll rumble, tunnel whoosh, spring ramp boing, massive 10-pin bowling strike crash, victory ding.",
+    captionText: "BACKWARDS STRIKE!",
+    punchline: "Zero forward throws. 10 pins down.",
+    characterAction: "Releases backward, watches overhead, then pumps both fists as all 10 pins explode.",
+    propAction: "Curved tunnel and spring ramp launch the ball behind the rack, collapsing all 10 pins in one strike.",
+  },
+  {
+    id: 5,
+    name: "Scene 5",
+    title: "The Twist",
+    timeRange: [24.0, 30.0],
+    videoPrompt:
+      "Stickman celebrates with a victory dance! Suddenly, the purple bowling ball rolls back along the same route and hits his feet! He falls backward into the bowling lane—and a final pin drops straight onto his head!",
+    animationDesc:
+      "Victory dance (24.0-26.8s), ball races back through spring ramp & curved tunnel (25.85-27.15s), slams Stickman's feet (27.15s), flips him backward into lane (27.75s), final pin lands on his head (28.25s).",
+    soundDesc: "Reverse roll rumble, spring boing, tunnel whoosh, feet slam, lane thump, final pin head knock, sad trombone.",
+    captionText: "STRIKE... ON ME! 😂",
+    punchline: "Picked up the spare on himself.",
+    characterAction: "Dances triumphantly, gets swept off his feet, tumbles into the lane, and glares deadpan with a pin on his head.",
+    propAction: "Purple bowling ball reverses through the tunnel to trip him, followed by the final pin dropping onto his head.",
+  },
+];
+
+export const GIANT_YOYO_PROMPT = `MODERN POP 2D STICKMAN SHORT — "THE GIANT YO-YO TRICKSHOT" (9:16 VERTICAL · 30 SECONDS · 5 SCENES · 24 FPS · NO DIALOGUE)
+
+CHARACTER (LOCKED ANGRY STICKMAN RIG):
+- White round head (r=70) with thick black outline (#17121f), small vertical oval eyes, expressive eyebrows, red knitted beanie (#e63946), yellow T-shirt (#ffd166), blue trousers (#2f5fa8), thin black limbs, connected small rounded white mitten hands, black shoes.
+- Identical character rig throughout all 5 scenes.
+
+PROPS & CONTINUITY:
+- Giant red-and-blue yo-yo (r=62) connected continuously to a strong white string throughout all 30 seconds, orange ping-pong ball (r=20), three vibrant spinning hoops along the swing path, ceiling pulley rig (Scenes 3-5), and a tiny golden target cup perched on the far-right pedestal.
+
+5-SCENE TIMELINE (30 SECONDS):
+- Scene 1 (0-6s) The Discovery ("THIS YO-YO IS HUGE!"): Finds the giant red-and-blue yo-yo, drops it on its white string, pulls it upward, and gets bonked squarely on the forehead.
+- Scene 2 (6-12s) First Trickshot ("SPIN POWER!"): Places the orange ping-pong ball onto the yo-yo's spinning surface, whips it forward, and launches the ball toward the tiny golden cup—missing the rim by an inch.
+- Scene 3 (12-18s) The Upgrade ("THREE HOOPS!"): Stretches the strong white string through a ceiling pulley, adds three spinning hoops along its path, and glides the yo-yo smoothly through all three while carrying the ball.
+- Scene 4 (18-24s) The Impossible Shot ("PERFECT RELEASE!"): Pulls the string back hard and releases—the giant yo-yo rockets cleanly through all three spinning hoops and launches the orange ball toward the tiny golden cup.
+- Scene 5 (24-30s) The Twist ("I'M THE YO-YO NOW! 😂"): The orange ball lands cleanly inside the cup! Stickman celebrates—then the giant yo-yo whips back along its string, wraps around his waist, and hoists him upward like a human yo-yo while his red beanie spins on the floor.`;
+
+export const GIANT_YOYO_SCENES: SceneDef[] = [
+  {
+    id: 1,
+    name: "Scene 1",
+    title: "The Discovery",
+    timeRange: [0.0, 6.0],
+    videoPrompt:
+      "Stickman discovers a giant red-and-blue yo-yo! He drops it on its white string, yanks upward, and the giant yo-yo swings right into his forehead!",
+    animationDesc:
+      "Lifts giant yo-yo (1.0-1.55s), drops spinning down to floor (1.55-2.45s), tugs upward and gets bonked on the forehead (3.25s).",
+    soundDesc: "Spinning yo-yo whir, upward string whoosh, hollow forehead bonk.",
+    captionText: "THIS YO-YO IS HUGE!",
+    punchline: "Gravity always remembers the return swing.",
+    characterAction: "Inspects the giant yo-yo, drops and yanks the string, recoils from the forehead bonk, then spots the golden cup.",
+    propAction: "Giant red-and-blue yo-yo unwinds down its connected white string and whips back into his forehead.",
+  },
+  {
+    id: 2,
+    name: "Scene 2",
+    title: "First Trickshot",
+    timeRange: [6.0, 12.0],
+    videoPrompt:
+      "Stickman places an orange ping-pong ball onto the spinning yo-yo and whips it forward! The ball arcs cleanly toward the tiny golden cup—and misses by just an inch!",
+    animationDesc:
+      "Places orange ball on spinning yo-yo (6.0-7.75s), whips yo-yo forward (7.75-8.85s), ball arcs toward cup and clips outer rim at 10.35s before bouncing to the floor.",
+    soundDesc: "Yo-yo spin whir, whip whoosh, metallic cup rim clink.",
+    captionText: "SPIN POWER!",
+    punchline: "Missed by one millimeter.",
+    characterAction: "Balances the orange ball on top, swings the yo-yo forward, watches wide-eyed, then clenches fists in frustration.",
+    propAction: "Spinning yo-yo flicks the orange ball across the room toward the golden cup, grazing the rim.",
+  },
+  {
+    id: 3,
+    name: "Scene 3",
+    title: "The Upgrade",
+    timeRange: [12.0, 18.0],
+    videoPrompt:
+      "He stretches the strong white string up through a ceiling pulley and hangs three vibrant spinning hoops along the swing path—testing a smooth pass right through all three!",
+    animationDesc:
+      "Mounts ceiling pulley & 3 spinning hoops (12.0-13.85s), sets orange ball on yo-yo, test-glides cleanly through Hoops 1, 2, and 3 (14.5-16.95s).",
+    soundDesc: "Mechanical setup click, smooth pendulum whir, three ascending hoop-pass chimes.",
+    captionText: "THREE HOOPS!",
+    punchline: "Aligned through every spinning ring.",
+    characterAction: "Rigs the string through the ceiling pulley, places the ball, and points proudly at the test pass.",
+    propAction: "Yo-yo glides smoothly along the taut white pendulum string through three rotating hoops while carrying the orange ball.",
+  },
+  {
+    id: 4,
+    name: "Scene 4",
+    title: "The Impossible Shot",
+    timeRange: [18.0, 24.0],
+    videoPrompt:
+      "Stickman pulls the white string all the way back and snaps a PERFECT RELEASE! The giant yo-yo rockets through all three spinning hoops and launches the orange ball straight toward the tiny golden cup!",
+    animationDesc:
+      "Pulls string taut left (18.0-19.45s), releases at 19.45s—yo-yo blasts through Hoop 1 (20.15s), Hoop 2 (20.8s), Hoop 3 (21.45s) and launches ball (21.85s) arcing toward the cup.",
+    soundDesc: "Tension click, turbo yo-yo whir, three rising hoop chimes, launch whoosh.",
+    captionText: "PERFECT RELEASE!",
+    punchline: "Three spinning hoops, zero margin for error.",
+    characterAction: "Leans far back pulling the string tight, snaps a release, and crouches in suspense as the ball descends.",
+    propAction: "High-speed red-and-blue yo-yo slices through all three spinning hoops and fires the orange ball toward the cup.",
+  },
+  {
+    id: 5,
+    name: "Scene 5",
+    title: "The Twist",
+    timeRange: [24.0, 30.0],
+    videoPrompt:
+      "DING! The orange ball lands perfectly inside the tiny golden cup! Stickman celebrates—then the giant yo-yo zips back along its string, wraps his waist, and hoists him up like a human yo-yo while his red beanie spins on the floor!",
+    animationDesc:
+      "Ball lands in cup & confetti bursts (24.05s), victory dance (24.1-25.75s), yo-yo recoils along string (25.75-26.65s), wraps waist and hoists him mid-air (26.85-30.0s) while red beanie spins on floor.",
+    soundDesc: "Golden cup drop clink, victory ding, recoil zip, waist thump, elastic hoist snap, floor beanie spin, sad trombone.",
+    captionText: "I'M THE YO-YO NOW! 😂",
+    punchline: "Landed the shot. Became the counterweight.",
+    characterAction: "Dances wildly, gets wrapped at the waist, and dangles upside-down mid-air like a human yo-yo with a deadpan glare.",
+    propAction: "Giant yo-yo recoils along its connected string, loops Stickman's waist, and lifts him upward while his beanie spins below.",
+  },
+];
+
 export const PROJECTS: Record<ProjectId, ProjectDef> = {
+  'giant-yoyo-trickshot': {
+    id: 'giant-yoyo-trickshot',
+    title: 'The Giant Yo-Yo Trickshot 🪀😂',
+    subtitle: '30-Second Three-Hoop Pendulum & Human Yo-Yo Comedy',
+    tagline: 'Modern Pop 2D Flat Vector · 24 FPS · Locked Angry Stickman Rig',
+    duration: 30,
+    hasAudioDialogue: false,
+    hasCaptions: true,
+    youtubeTitle: 'He Built a GIANT YO-YO for an IMPOSSIBLE Trickshot! 🪀😂',
+    youtubeThumbnail: 'HUMAN YO-YO?!',
+    youtubeHashtags: '#AngryStickman #GiantYoYo #Trickshot #FunnyAnimation #StickmanAnimation #YouTubeShorts',
+    masterPrompt: GIANT_YOYO_PROMPT,
+    scenes: GIANT_YOYO_SCENES,
+  },
+  'reverse-bowling-trickshot': {
+    id: 'reverse-bowling-trickshot',
+    title: 'The Reverse Bowling Trickshot 🎳😂',
+    subtitle: '30-Second Backwards 10-Pin Bowling & Final Pin Drop Comedy',
+    tagline: 'Modern Pop 2D Flat Vector · 24 FPS · Locked Angry Stickman Rig',
+    duration: 30,
+    hasAudioDialogue: false,
+    hasCaptions: true,
+    youtubeTitle: 'He Invented BACKWARDS BOWLING… IMPOSSIBLE STRIKE! 🎳😂',
+    youtubeThumbnail: 'BACKWARDS STRIKE?!',
+    youtubeHashtags: '#AngryStickman #ReverseBowling #BowlingTrickshot #ImpossibleTrickshot #FunnyAnimation #YouTubeShorts',
+    masterPrompt: REVERSE_BOWLING_PROMPT,
+    scenes: REVERSE_BOWLING_SCENES,
+  },
+  'giant-gear-trickshot': {
+    id: 'giant-gear-trickshot',
+    title: 'The Giant Gear Trickshot ⚙️😂',
+    subtitle: '30-Second 6-Gear Clockwork Machine & Spring-Beanie Comedy',
+    tagline: 'Modern Pop 2D Flat Vector · 24 FPS · Locked Angry Stickman Rig',
+    duration: 30,
+    hasAudioDialogue: false,
+    hasCaptions: true,
+    youtubeTitle: 'He Built a GIANT Gear Machine for an IMPOSSIBLE Trickshot! ⚙️😂',
+    youtubeThumbnail: 'GEAR POWER!',
+    youtubeHashtags: '#AngryStickman #GearTrickshot #ImpossibleTrickshot #FunnyAnimation #StickmanAnimation #YouTubeShorts',
+    masterPrompt: GIANT_GEAR_PROMPT,
+    scenes: GIANT_GEAR_SCENES,
+  },
+  'invisible-tube-trickshot': {
+    id: 'invisible-tube-trickshot',
+    title: 'The Invisible Tube Trickshot 👻😂',
+    subtitle: '30-Second Transparent Loop Track & Air-Pump Reverse Comedy',
+    tagline: 'Modern Pop 2D Flat Vector · 24 FPS · Locked Angry Stickman Rig',
+    duration: 30,
+    hasAudioDialogue: false,
+    hasCaptions: true,
+    youtubeTitle: 'He Built an INVISIBLE Tube Trickshot… BIG MISTAKE! 👻😂',
+    youtubeThumbnail: 'WHERE DID IT GO?!',
+    youtubeHashtags: '#AngryStickman #InvisibleTube #ImpossibleTrickshot #FunnyAnimation #StickmanAnimation #YouTubeShorts',
+    masterPrompt: INVISIBLE_TUBE_PROMPT,
+    scenes: INVISIBLE_TUBE_SCENES,
+  },
+  'triple-gravity-trickshot': {
+    id: 'triple-gravity-trickshot',
+    title: 'The Triple Gravity Trickshot 🌍😂',
+    subtitle: '30-Second Blue/Purple/Green Gravity Lab Trickshot Comedy',
+    tagline: 'Modern Pop 2D Flat Vector · 24 FPS · Locked Angry Stickman Rig',
+    duration: 30,
+    hasAudioDialogue: false,
+    hasCaptions: true,
+    youtubeTitle: 'He BROKE GRAVITY for an IMPOSSIBLE Trickshot! 🌍😂',
+    youtubeThumbnail: 'GRAVITY IS BROKEN!',
+    youtubeHashtags: '#AngryStickman #GravityTrickshot #ImpossibleTrickshot #FunnyAnimation #StickmanAnimation #YouTubeShorts',
+    masterPrompt: TRIPLE_GRAVITY_PROMPT,
+    scenes: TRIPLE_GRAVITY_SCENES,
+  },
+  'giant-scissor-trickshot': {
+    id: 'giant-scissor-trickshot',
+    title: 'The Giant Scissor Trickshot ✂️😂',
+    subtitle: '30-Second String-Pulley Chain-Reaction Scissor Comedy',
+    tagline: 'Modern Pop 2D Flat Vector · 24 FPS · Locked Angry Stickman Rig',
+    duration: 30,
+    hasAudioDialogue: false,
+    hasCaptions: true,
+    youtubeTitle: 'He Used GIANT SCISSORS for an IMPOSSIBLE Trickshot! ✂️😂',
+    youtubeThumbnail: 'ONE CUT = CHAOS!',
+    youtubeHashtags: '#AngryStickman #ScissorTrickshot #ChainReaction #FunnyAnimation #StickmanAnimation #YouTubeShorts',
+    masterPrompt: GIANT_SCISSOR_PROMPT,
+    scenes: GIANT_SCISSOR_SCENES,
+  },
+  'spiral-staircase-shot': {
+    id: 'spiral-staircase-shot',
+    title: 'The Impossible Spiral Staircase Shot 🌀😂',
+    subtitle: '30-Second Giant Carousel Staircase Trickshot Comedy',
+    tagline: 'Modern Pop 2D Flat Vector · 24 FPS · Locked Angry Stickman Rig',
+    duration: 30,
+    hasAudioDialogue: false,
+    hasCaptions: true,
+    youtubeTitle: 'He Made a SPIRAL STAIRCASE Trickshot… INSANE! 🌀😂',
+    youtubeThumbnail: 'THE CRAZY SPIRAL!',
+    youtubeHashtags: '#AngryStickman #SpiralStaircase #ImpossibleTrickshot #FunnyAnimation #StickmanAnimation #YouTubeShorts',
+    masterPrompt: SPIRAL_STAIRCASE_PROMPT,
+    scenes: SPIRAL_STAIRCASE_SCENES,
+  },
+  'magnetic-maze-trickshot': {
+    id: 'magnetic-maze-trickshot',
+    title: 'The Magnetic Maze Trickshot 🧲😂',
+    subtitle: '30-Second Horseshoe Magnet & Transparent Maze Comedy',
+    tagline: 'Modern Pop 2D Flat Vector · 24 FPS · Locked Angry Stickman Rig',
+    duration: 30,
+    hasAudioDialogue: false,
+    hasCaptions: true,
+    youtubeTitle: 'He Built a MAGNETIC Maze… The Ball Went CRAZY! 🧲😂',
+    youtubeThumbnail: 'MAGNET POWER!',
+    youtubeHashtags: '#AngryStickman #MagneticMaze #ImpossibleTrickshot #FunnyAnimation #StickmanAnimation #YouTubeShorts',
+    masterPrompt: MAGNETIC_MAZE_PROMPT,
+    scenes: MAGNETIC_MAZE_SCENES,
+  },
+  'thousand-degree-hot-shot': {
+    id: 'thousand-degree-hot-shot',
+    title: 'The 1,000-Degree Hot Shot 🔥😂',
+    subtitle: '30-Second Superheated Heat-Lab Trickshot Comedy',
+    tagline: 'Modern Pop 2D Flat Vector · 24 FPS · Locked Angry Stickman Rig',
+    duration: 30,
+    hasAudioDialogue: false,
+    hasCaptions: true,
+    youtubeTitle: 'He Tried a 1,000-DEGREE Trickshot… BIG MISTAKE! 🔥😂',
+    youtubeThumbnail: 'TOO HOT!!!',
+    youtubeHashtags: '#AngryStickman #HotShot #Trickshot #FunnyAnimation #StickmanAnimation #YouTubeShorts',
+    masterPrompt: HOT_SHOT_PROMPT,
+    scenes: HOT_SHOT_SCENES,
+  },
+  'impossible-pinball-trickshot': {
+    id: 'impossible-pinball-trickshot',
+    title: 'The Impossible Pinball Trickshot 🎮😂',
+    subtitle: '30-Second Giant Arcade Pinball Comedy',
+    tagline: 'Modern Pop 2D Flat Vector · 24 FPS · Locked Angry Stickman Rig',
+    duration: 30,
+    hasAudioDialogue: false,
+    hasCaptions: true,
+    youtubeTitle: 'He Built an IMPOSSIBLE Pinball Trickshot! 🎮😂',
+    youtubeThumbnail: 'PINBALL CHAOS!',
+    youtubeHashtags: '#AngryStickman #Pinball #ImpossibleTrickshot #FunnyAnimation #StickmanAnimation #YouTubeShorts',
+    masterPrompt: IMPOSSIBLE_PINBALL_PROMPT,
+    scenes: IMPOSSIBLE_PINBALL_SCENES,
+  },
+  'impossible-laser-maze': {
+    id: 'impossible-laser-maze',
+    title: 'The Impossible Laser Maze 🔴😂',
+    subtitle: '30-Second Spy-Vault Laser Trickshot Comedy',
+    tagline: 'Modern Pop 2D Flat Vector · 24 FPS · Locked Angry Stickman Rig',
+    duration: 30,
+    hasAudioDialogue: false,
+    hasCaptions: true,
+    youtubeTitle: 'He Solved the IMPOSSIBLE LASER MAZE with a Trickshot! 🔴😂',
+    youtubeThumbnail: 'ONE WRONG MOVE!',
+    youtubeHashtags: '#AngryStickman #LaserMaze #ImpossibleTrickshot #FunnyAnimation #StickmanAnimation #YouTubeShorts',
+    masterPrompt: IMPOSSIBLE_LASER_PROMPT,
+    scenes: IMPOSSIBLE_LASER_SCENES,
+  },
+  'impossible-keyhole-shot': {
+    id: 'impossible-keyhole-shot',
+    title: 'The Impossible Keyhole Shot 🔑😂',
+    subtitle: '30-Second Doorway Keyhole Trickshot Comedy',
+    tagline: 'Modern Pop 2D Flat Vector · 24 FPS · Locked Angry Stickman Rig',
+    duration: 30,
+    hasAudioDialogue: false,
+    hasCaptions: true,
+    youtubeTitle: 'He Made an IMPOSSIBLE Keyhole Trickshot! 🔑😂',
+    youtubeThumbnail: 'THROUGH THAT HOLE?!',
+    youtubeHashtags: '#AngryStickman #KeyholeTrickshot #ImpossibleTrickshot #FunnyAnimation #StickmanAnimation #YouTubeShorts',
+    masterPrompt: IMPOSSIBLE_KEYHOLE_PROMPT,
+    scenes: IMPOSSIBLE_KEYHOLE_SCENES,
+  },
+  'giant-slinky-trickshot': {
+    id: 'giant-slinky-trickshot',
+    title: 'The Giant Slinky Trickshot 🌀😂',
+    subtitle: '30-Second Metallic Rainbow Spring Trickshot Comedy',
+    tagline: 'Modern Pop 2D Flat Vector · 24 FPS · Locked Angry Stickman Rig',
+    duration: 30,
+    hasAudioDialogue: false,
+    hasCaptions: true,
+    youtubeTitle: 'He Built a GIANT SLINKY Launcher… BIG MISTAKE! 🌀😂',
+    youtubeThumbnail: 'SPRING POWER!',
+    youtubeHashtags: '#AngryStickman #SlinkyTrickshot #ImpossibleTrickshot #FunnyAnimation #StickmanAnimation #YouTubeShorts',
+    masterPrompt: GIANT_SLINKY_PROMPT,
+    scenes: GIANT_SLINKY_SCENES,
+  },
+  'longest-ruler-shot': {
+    id: 'longest-ruler-shot',
+    title: "The World's Longest Ruler Shot 📏😂",
+    subtitle: '30-Second Backyard Mega-Ramp Trickshot Comedy',
+    tagline: 'Modern Pop 2D Flat Vector · 24 FPS · Locked Angry Stickman Rig',
+    duration: 30,
+    hasAudioDialogue: false,
+    hasCaptions: true,
+    youtubeTitle: 'He Built the LONGEST RULER… for ONE IMPOSSIBLE SHOT! 📏😂',
+    youtubeThumbnail: 'HOW LONG IS THIS?!',
+    youtubeHashtags: '#AngryStickman #RulerTrickshot #ImpossibleTrickshot #FunnyAnimation #StickmanAnimation #YouTubeShorts',
+    masterPrompt: LONGEST_RULER_PROMPT,
+    scenes: LONGEST_RULER_SCENES,
+  },
+  'hundred-ball-chain': {
+    id: 'hundred-ball-chain',
+    title: 'The 100-Ball Chain Reaction ⚽😂',
+    subtitle: '30-Second Rube Goldberg Chain-Reaction Comedy',
+    tagline: 'Modern Pop 2D Flat Vector · 24 FPS · Locked Angry Stickman Rig',
+    duration: 30,
+    hasAudioDialogue: false,
+    hasCaptions: true,
+    youtubeTitle: 'He Started ONE Ball… Then 100 BALLS Went Crazy! ⚽😂',
+    youtubeThumbnail: '100 BALLS?!',
+    youtubeHashtags: '#AngryStickman #ChainReaction #100Balls #Trickshot #FunnyAnimation #StickmanAnimation #YouTubeShorts',
+    masterPrompt: HUNDRED_BALL_PROMPT,
+    scenes: HUNDRED_BALL_SCENES,
+  },
+  'ten-fan-trickshot': {
+    id: 'ten-fan-trickshot',
+    title: 'The 10-Fan Impossible Trickshot 🌀',
+    subtitle: '30-Second Wind-Tunnel Trickshot Comedy',
+    tagline: 'Modern Pop 2D Flat Vector · 24 FPS · Locked Angry Stickman Rig',
+    duration: 30,
+    hasAudioDialogue: false,
+    hasCaptions: true,
+    youtubeTitle: 'He Used 10 FANS for an IMPOSSIBLE Trickshot! 🌀😂',
+    youtubeThumbnail: '10 FANS?!',
+    youtubeHashtags: '#AngryStickman #FanTrickshot #ImpossibleTrickshot #FunnyAnimation #StickmanAnimation #YouTubeShorts',
+    masterPrompt: TEN_FAN_PROMPT,
+    scenes: TEN_FAN_SCENES,
+  },
+  'invisible-wall-challenge': {
+    id: 'invisible-wall-challenge',
+    title: 'The Invisible Wall Challenge 👻',
+    subtitle: '30-Second Glass Trickshot Slapstick Comedy',
+    tagline: 'Modern Pop 2D Flat Vector · 24 FPS · Locked Angry Stickman Rig',
+    duration: 30,
+    hasAudioDialogue: false,
+    hasCaptions: true,
+    youtubeTitle: 'He Discovered INVISIBLE WALLS… Then Tried a Trickshot! 👻😂',
+    youtubeThumbnail: 'THE WALL IS INVISIBLE?!',
+    youtubeHashtags: '#AngryStickman #InvisibleWall #Trickshot #FunnyAnimation #StickmanAnimation #YouTubeShorts',
+    masterPrompt: INVISIBLE_WALL_PROMPT,
+    scenes: INVISIBLE_WALL_SCENES,
+  },
+  'shadow-trickshot': {
+    id: 'shadow-trickshot',
+    title: 'The Impossible Shadow Trickshot 🌑',
+    subtitle: '30-Second Spotlight Shadow Slapstick Comedy',
+    tagline: 'Modern Pop 2D Flat Vector · 24 FPS · Locked Angry Stickman Rig',
+    duration: 30,
+    hasAudioDialogue: false,
+    hasCaptions: true,
+    youtubeTitle: 'He Used His SHADOW to Make an IMPOSSIBLE Trickshot! 🌑😂',
+    youtubeThumbnail: 'MY SHADOW DID THAT?!',
+    youtubeHashtags: '#AngryStickman #Trickshot #ShadowTrickshot #FunnyAnimation #StickmanAnimation #2DAnimation #YouTubeShorts',
+    masterPrompt: SHADOW_TRICKSHOT_PROMPT,
+    scenes: SHADOW_TRICKSHOT_SCENES,
+  },
+  'super-bouncy-shoes': {
+    id: 'super-bouncy-shoes',
+    title: 'The Super Bouncy Shoes 👟😂',
+    subtitle: '30-Second Spring-Sneaker Slapstick Comedy',
+    tagline: 'Modern Pop 2D Flat Vector · 24 FPS · Locked Angry Stickman Rig',
+    duration: 30,
+    hasAudioDialogue: false,
+    hasCaptions: true,
+    youtubeTitle: 'He Wore SUPER BOUNCY SHOES… BIG MISTAKE! 👟😂',
+    youtubeThumbnail: "CAN'T STOP BOUNCING!",
+    youtubeHashtags: '#AngryStickman #BouncyShoes #FunnyAnimation #StickmanAnimation #2DAnimation #YouTubeShorts',
+    masterPrompt: SUPER_BOUNCY_SHOES_PROMPT,
+    scenes: SUPER_BOUNCY_SHOES_SCENES,
+  },
+  'mystery-floor-hole': {
+    id: 'mystery-floor-hole',
+    title: 'The Mystery Hole in the Floor 🕳️😂',
+    subtitle: '30-Second Oversized Portal Slapstick Comedy',
+    tagline: 'Modern Pop 2D Flat Vector · 24 FPS · Locked Angry Stickman Rig',
+    duration: 30,
+    hasAudioDialogue: false,
+    hasCaptions: true,
+    youtubeTitle: 'He Found a MYSTERY HOLE… EVERYTHING GREW HUGE! 🕳️😂',
+    youtubeThumbnail: 'IT MAKES THINGS HUGE!',
+    youtubeHashtags: '#AngryStickman #MysteryHole #FunnyAnimation #StickmanAnimation #2DAnimation #YouTubeShorts',
+    masterPrompt: MYSTERY_FLOOR_HOLE_PROMPT,
+    scenes: MYSTERY_FLOOR_HOLE_SCENES,
+  },
+  'rubber-band-trap': {
+    id: 'rubber-band-trap',
+    title: 'The Giant Rubber Band Trap 🪢😂',
+    subtitle: '30-Second Elastic Slingshot Slapstick Comedy',
+    tagline: 'Modern Pop 2D Flat Vector · 24 FPS · Locked Angry Stickman Rig',
+    duration: 30,
+    hasAudioDialogue: false,
+    hasCaptions: true,
+    youtubeTitle: 'He Pulled a GIANT Rubber Band… BIG MISTAKE! 🪢😂',
+    youtubeThumbnail: 'IT SNAPPED!',
+    youtubeHashtags: '#AngryStickman #RubberBand #FunnyAnimation #StickmanAnimation #2DAnimation #YouTubeShorts',
+    masterPrompt: RUBBER_BAND_TRAP_PROMPT,
+    scenes: RUBBER_BAND_TRAP_SCENES,
+  },
+  'clone-button-disaster': {
+    id: 'clone-button-disaster',
+    title: 'The Clone Button Disaster 🧍😂',
+    subtitle: '30-Second Cloning Chaos Slapstick Comedy',
+    tagline: 'Modern Pop 2D Flat Vector · 24 FPS · Locked Angry Stickman Rig',
+    duration: 30,
+    hasAudioDialogue: false,
+    hasCaptions: true,
+    youtubeTitle: 'He Pressed the CLONE BUTTON… BIG MISTAKE! 🧍😂',
+    youtubeThumbnail: '100 OF ME?!',
+    youtubeHashtags: '#AngryStickman #CloneDisaster #FunnyAnimation #StickmanAnimation #2DAnimation #YouTubeShorts',
+    masterPrompt: CLONE_BUTTON_DISASTER_PROMPT,
+    scenes: CLONE_BUTTON_DISASTER_SCENES,
+  },
   'living-traffic-light': {
     id: 'living-traffic-light',
     title: 'The Living Traffic Light 🚦😂',
@@ -2227,7 +4825,7 @@ export interface StudioConfig {
 }
 
 export const DEFAULT_CONFIG: StudioConfig = {
-  activeProject: 'living-traffic-light', // The Living Traffic Light 30s Short
+  activeProject: 'giant-yoyo-trickshot', // The Giant Yo-Yo Trickshot 30s Short
   canvasTheme: 'black-on-white', // Style 1A: Black on White (toggleable to Style 1B: White on Black)
   vividAccent: '#ef4444', // Vivid Red as seen in reference image for emotions, risks & cages
   accentColor: '#000000', // Minimalist Monochrome

@@ -22,6 +22,28 @@ export const AudioLab: React.FC<AudioLabProps> = ({ config, setConfig }) => {
   const isSelfBuildingRobot = config.activeProject === 'self-building-robot';
   const isInfiniteGiftBox = config.activeProject === 'infinite-gift-box';
   const isLivingTrafficLight = config.activeProject === 'living-traffic-light';
+  const isCloneDisaster = config.activeProject === 'clone-button-disaster';
+  const isRubberBandTrap = config.activeProject === 'rubber-band-trap';
+  const isMysteryFloorHole = config.activeProject === 'mystery-floor-hole';
+  const isSuperBouncyShoes = config.activeProject === 'super-bouncy-shoes';
+  const isShadowTrickshot = config.activeProject === 'shadow-trickshot';
+  const isInvisibleWall = config.activeProject === 'invisible-wall-challenge';
+  const isTenFan = config.activeProject === 'ten-fan-trickshot';
+  const isHundredBall = config.activeProject === 'hundred-ball-chain';
+  const isLongestRuler = config.activeProject === 'longest-ruler-shot';
+  const isGiantSlinky = config.activeProject === 'giant-slinky-trickshot';
+  const isImpossibleKeyhole = config.activeProject === 'impossible-keyhole-shot';
+  const isImpossibleLaser = config.activeProject === 'impossible-laser-maze';
+  const isImpossiblePinball = config.activeProject === 'impossible-pinball-trickshot';
+  const isHotShot = config.activeProject === 'thousand-degree-hot-shot';
+  const isMagneticMaze = config.activeProject === 'magnetic-maze-trickshot';
+  const isSpiralStaircase = config.activeProject === 'spiral-staircase-shot';
+  const isGiantScissor = config.activeProject === 'giant-scissor-trickshot';
+  const isTripleGravity = config.activeProject === 'triple-gravity-trickshot';
+  const isInvisibleTube = config.activeProject === 'invisible-tube-trickshot';
+  const isGiantGear = config.activeProject === 'giant-gear-trickshot';
+  const isReverseBowling = config.activeProject === 'reverse-bowling-trickshot';
+  const isGiantYoyo = config.activeProject === 'giant-yoyo-trickshot';
   const soundEffects = [
     // Paper Ball Ricochet Effects
     {
@@ -914,6 +936,737 @@ export const AudioLab: React.FC<AudioLabProps> = ({ config, setConfig }) => {
       desc: 'Upbeat 130 BPM street-crossing synth comedy groove with blackout & freeze silences.',
       trigger: () => soundEngine.playTrafficLightScoreSection(undefined, 0, 7.5),
     },
+    {
+      project: 'clone-button-disaster' as const,
+      name: 'CLONE Machine Button Press',
+      time: 'Clone Button (2.2s / 6.3s–10.1s)',
+      desc: 'Chunky mechanical red button click + spring release when Stickman mashes the CLONE panel.',
+      trigger: () => soundEngine.playCloneButtonPress(),
+    },
+    {
+      project: 'clone-button-disaster' as const,
+      name: 'Clone Flash & Pop',
+      time: 'Clone Button (2.9s / 6.75s–16.0s)',
+      desc: 'Bright synth pop-in sparkle as an identical Stickman materializes from the machine flash.',
+      trigger: () => soundEngine.playClonePop(undefined, 1),
+    },
+    {
+      project: 'clone-button-disaster' as const,
+      name: 'RESET Button & Crowd Vanish',
+      time: 'Clone Button (25.45s)',
+      desc: 'Downward sci-fi vanish sweep as the bright full-screen RESET flash erases all 20 floor clones.',
+      trigger: () => soundEngine.playResetFlashVanish(),
+    },
+    {
+      project: 'clone-button-disaster' as const,
+      name: 'Mini Shoulder Clone Shock Sting',
+      time: 'Clone Button (28.45s)',
+      desc: 'Tiny high-pitched squeak pop followed by a sharp comedic shock chord when the mini clone waves.',
+      trigger: () => {
+        soundEngine.playClonePop(undefined, 1.65);
+        setTimeout(() => soundEngine.playCloneShockSting(), 350);
+      },
+    },
+    {
+      project: 'clone-button-disaster' as const,
+      name: 'Clone Chaos Score (Part 1)',
+      time: 'Clone Button (0.0s - 7.5s)',
+      desc: 'Upbeat 136 BPM comedy synth groove with brief silence windows for the reset vanish and ending shock.',
+      trigger: () => soundEngine.playCloneDisasterScoreSection(undefined, 0, 7.5),
+    },
+    {
+      project: 'rubber-band-trap' as const,
+      name: 'Giant Band Elastic Stretch',
+      time: 'Rubber Band (2.8s / 4.4s / 6.4s)',
+      desc: 'Strained rubber-band creak rising in tension as Stickman pulls the giant band back.',
+      trigger: () => soundEngine.playRubberStretch(undefined, 1.15),
+    },
+    {
+      project: 'rubber-band-trap' as const,
+      name: 'Wooden Post Crack & Snap',
+      time: 'Rubber Band (13.25s)',
+      desc: 'Dry splintering wood crack and bolt pop right before the band launches Stickman.',
+      trigger: () => soundEngine.playWoodCrackSnap(),
+    },
+    {
+      project: 'rubber-band-trap' as const,
+      name: 'Giant Slingshot Launch Twang',
+      time: 'Rubber Band (13.55s / 22.05s / 26.05s)',
+      desc: 'Heavy oscillating rubber recoil twang as the giant red band snaps Stickman airborne.',
+      trigger: () => soundEngine.playRubberTwangSnap(undefined, 1.05),
+    },
+    {
+      project: 'rubber-band-trap' as const,
+      name: 'Sofa & Pillow Cushion Boing',
+      time: 'Rubber Band (18.25s / 19.75s)',
+      desc: 'Puffy elastic cushion bounce as Stickman ricochets off the giant sofa and pillow pile.',
+      trigger: () => soundEngine.playCushionBounce(undefined, 1.0),
+    },
+    {
+      project: 'rubber-band-trap' as const,
+      name: 'Beanie Whip Flick',
+      time: 'Rubber Band (28.15s)',
+      desc: 'Crisp high-speed elastic snap as the loose rubber tail flicks Stickman’s red beanie off.',
+      trigger: () => soundEngine.playBeanieFlick(),
+    },
+    {
+      project: 'rubber-band-trap' as const,
+      name: 'Slapstick Rubber Band Score (Part 1)',
+      time: 'Rubber Band (0.0s - 7.5s)',
+      desc: 'Upbeat 134 BPM pop comedy score with brief silence windows for the post snap and final glare.',
+      trigger: () => soundEngine.playRubberBandScoreSection(undefined, 0, 7.5),
+    },
+    {
+      project: 'mystery-floor-hole' as const,
+      name: 'Purple Portal Drop Bloop',
+      time: 'Mystery Hole (2.35s / 7.15s / 13.05s / 19.75s)',
+      desc: 'Descending mysterious bloop as a small coin, duck, car, or red beanie drops into the glowing floor hole.',
+      trigger: () => soundEngine.playHoleDropBloop(undefined, 1.05),
+    },
+    {
+      project: 'mystery-floor-hole' as const,
+      name: 'Giant Portal Eruption Boom',
+      time: 'Mystery Hole (3.3s / 7.85s / 13.75s / 20.75s / 27.8s)',
+      desc: 'Heavy low boom + rising shimmer as an oversized version rockets out of the purple floor hole.',
+      trigger: () => soundEngine.playHoleGiantErupt(undefined, 1.0),
+    },
+    {
+      project: 'mystery-floor-hole' as const,
+      name: 'Giant Rubber Duck Squeak-Honk',
+      time: 'Mystery Hole (8.35s)',
+      desc: 'Comically oversized double rubber-ducky squeak before the giant duck flattens the chair.',
+      trigger: () => soundEngine.playGiantDuckSqueak(),
+    },
+    {
+      project: 'mystery-floor-hole' as const,
+      name: 'Living-Room Furniture Smash',
+      time: 'Mystery Hole (9.25s / 14.5s)',
+      desc: 'Splintering wood impact as the giant rubber duck and giant toy car wreck the chair and side table.',
+      trigger: () => soundEngine.playFurnitureSmash(),
+    },
+    {
+      project: 'mystery-floor-hole' as const,
+      name: 'Mystery Portal Score (Part 1)',
+      time: 'Mystery Hole (0.0s - 7.5s)',
+      desc: 'Playful 132 BPM comedy mystery synth score with a suspense drop before the giant Stickman head reveal.',
+      trigger: () => soundEngine.playMysteryHoleScoreSection(undefined, 0, 7.5),
+    },
+    {
+      project: 'super-bouncy-shoes' as const,
+      name: 'Sneaker Silver Spring Boing',
+      time: 'Bouncy Shoes (3.25s / 6.45s / 9.25s / 12.25s / 14.35s / 16.35s)',
+      desc: 'Elastic upward pitch-sweep spring boing triggered each time the silver sneaker springs coil and snap open.',
+      trigger: () => soundEngine.playSpringBoing(undefined, 1.15),
+    },
+    {
+      project: 'super-bouncy-shoes' as const,
+      name: 'Trampoline Rocket Launch Boing',
+      time: 'Bouncy Shoes (19.65s)',
+      desc: 'Massive dual trampoline + sneaker spring launch blast sending Stickman spinning sky-high.',
+      trigger: () => soundEngine.playRocketLaunchBoing(),
+    },
+    {
+      project: 'super-bouncy-shoes' as const,
+      name: 'Pillow Pile Cushion Landing',
+      time: 'Bouncy Shoes (8.8s / 24.3s)',
+      desc: 'Soft bouncy thud as Stickman lands in the garden grass and later into the huge pile of pillows.',
+      trigger: () => soundEngine.playCushionBounce(undefined, 0.9),
+    },
+    {
+      project: 'super-bouncy-shoes' as const,
+      name: 'Loose Spring Pop & Head Bonk',
+      time: 'Bouncy Shoes (27.6s / 28.25s)',
+      desc: 'Crisp metallic spring pop launching the discarded red sneaker onto Stickman’s head and knocking off his beanie.',
+      trigger: () => soundEngine.playSpringPopOut(),
+    },
+    {
+      project: 'super-bouncy-shoes' as const,
+      name: 'Super Bouncy Comedy Score (Part 1)',
+      time: 'Bouncy Shoes (0.0s - 7.5s)',
+      desc: 'Upbeat 136 BPM pop cartoon synth score with brief silence windows for the final shoe bonk and angry glare.',
+      trigger: () => soundEngine.playSuperBouncyScoreSection(undefined, 0, 7.5),
+    },
+    {
+      project: 'shadow-trickshot' as const,
+      name: 'Shadow Kick & Catch Swoosh',
+      time: 'Shadow Trickshot (8.2s / 14.75s / 15.4s / 24.15s)',
+      desc: 'Magical shadow swoosh triggered when Stickman’s projected silhouette kicks, catches around the corner, or delivers the giant final shot.',
+      trigger: () => soundEngine.playShadowWhoosh(undefined, 1.15),
+    },
+    {
+      project: 'shadow-trickshot' as const,
+      name: 'Spotlight Swivel Click & Flicker-Off',
+      time: 'Shadow Trickshot (12.6s / 20.1s / 26.95s)',
+      desc: 'Mechanical tripod swivel click and the electric bulb sputter blackout that vanishes the shadow right before the cup pops.',
+      trigger: () => soundEngine.playSpotlightClick(undefined, false),
+    },
+    {
+      project: 'shadow-trickshot' as const,
+      name: 'White Cup Drop & Rattle',
+      time: 'Shadow Trickshot (24.85s)',
+      desc: 'Hollow ceramic cup drop & ring when the orange ball lands cleanly inside the target cup.',
+      trigger: () => soundEngine.playCupDropClink(),
+    },
+    {
+      project: 'shadow-trickshot' as const,
+      name: 'Cup Pop-Out & Beanie Bonk',
+      time: 'Shadow Trickshot (27.55s / 28.25s)',
+      desc: 'Sudden spring pop ejecting the orange ball out of the cup straight onto Stickman’s head to knock his red beanie off.',
+      trigger: () => soundEngine.playHeadBonk(),
+    },
+    {
+      project: 'shadow-trickshot' as const,
+      name: 'Spy Trickshot Comedy Score (Part 1)',
+      time: 'Shadow Trickshot (0.0s - 7.5s)',
+      desc: 'Playful 134 BPM spy-comedy synth score that cuts dead when the spotlight flickers out at 26.95s.',
+      trigger: () => soundEngine.playShadowTrickshotScoreSection(undefined, 0, 7.5),
+    },
+    {
+      project: 'invisible-wall-challenge' as const,
+      name: 'Invisible Glass Wall Ping',
+      time: 'Invisible Wall (1.85s / 8.05s / 14.75s..24.1s)',
+      desc: 'Crystalline glass forcefield ping + basketball bounce thud heard every time a hidden wall flashes glowing blue.',
+      trigger: () => soundEngine.playInvisibleWallPing(undefined, 1.2),
+    },
+    {
+      project: 'invisible-wall-challenge' as const,
+      name: 'Trash Can & Rim Clank',
+      time: 'Invisible Wall (8.95s / 16.65s / 24.7s)',
+      desc: 'Metallic bin drop, near-miss hoop rim clink, and the final clean basketball net swish.',
+      trigger: () => soundEngine.playSwish(),
+    },
+    {
+      project: 'invisible-wall-challenge' as const,
+      name: 'Glass Face-Slam Thud',
+      time: 'Invisible Wall (26.85s)',
+      desc: 'Heavy cartoon impact thud + glass shimmer when Stickman sprints face-first into the huge invisible wall.',
+      trigger: () => soundEngine.playGlassFaceSlam(),
+    },
+    {
+      project: 'invisible-wall-challenge' as const,
+      name: 'Rubber-on-Glass Slide Squeak',
+      time: 'Invisible Wall (27.35s)',
+      desc: 'Descending squeak-squeak-squeak as Stickman slides slowly down the invisible glass wall.',
+      trigger: () => soundEngine.playGlassSqueakSlide(),
+    },
+    {
+      project: 'invisible-wall-challenge' as const,
+      name: 'Invisible Wall Trickshot Score (Part 1)',
+      time: 'Invisible Wall (0.0s - 7.5s)',
+      desc: 'Energetic 136 BPM pop arcade score that cuts dead right before Stickman runs into the wall at 26.85s.',
+      trigger: () => soundEngine.playInvisibleWallScoreSection(undefined, 0, 7.5),
+    },
+    {
+      project: 'ten-fan-trickshot' as const,
+      name: 'Desk Fan Switch Click',
+      time: '10-Fan Trickshot (1.75s / 7.55s / 14.1s / 26.25s)',
+      desc: 'Crisp mechanical snap + motor spin-up hum as Stickman switches on fans or all 10 swivel toward him.',
+      trigger: () => soundEngine.playFanSwitchClick(undefined, 1.2),
+    },
+    {
+      project: 'ten-fan-trickshot' as const,
+      name: 'Fan Tunnel Air Whoosh',
+      time: '10-Fan Trickshot (1.9s / 8.35s / 14.55s..18.85s)',
+      desc: 'Rising airy rush as the orange ping-pong ball whips through the desk fans and loops around the ceiling lamp.',
+      trigger: () => soundEngine.playFanAirWhoosh(undefined, 1.25),
+    },
+    {
+      project: 'ten-fan-trickshot' as const,
+      name: 'Tiny Red Cup Drop Clink',
+      time: '10-Fan Trickshot (24.45s / 28.15s)',
+      desc: 'Crisp hollow cup drop clink when the ping-pong ball (and later Stickman’s red beanie) lands inside the cup.',
+      trigger: () => soundEngine.playCupDropClink(),
+    },
+    {
+      project: 'ten-fan-trickshot' as const,
+      name: 'Giant 10-Fan Gust Blast',
+      time: '10-Fan Trickshot (26.75s)',
+      desc: 'Massive rushing windstorm roar + whistling beanie flight sweep as all 10 fans turn and blow Stickman backward.',
+      trigger: () => soundEngine.playGiantFanGust(),
+    },
+    {
+      project: 'ten-fan-trickshot' as const,
+      name: '10-Fan Trickshot Comedy Score (Part 1)',
+      time: '10-Fan Trickshot (0.0s - 7.5s)',
+      desc: 'Peppy 138 BPM synth comedy score that cuts dead right as all 10 fans swivel toward Stickman at 26.15s.',
+      trigger: () => soundEngine.playTenFanScoreSection(undefined, 0, 7.5),
+    },
+    {
+      project: 'hundred-ball-chain' as const,
+      name: 'Domino Cascade Clack',
+      time: '100-Ball Chain (2.95s..4.15s / 10.1s / 15.1s)',
+      desc: 'Crisp rising wooden domino tip clacks as each row triggers the next stage of the Rube Goldberg machine.',
+      trigger: () => soundEngine.playDominoClack(undefined, 1.15),
+    },
+    {
+      project: 'hundred-ball-chain' as const,
+      name: 'Spring Bumper Boing',
+      time: '100-Ball Chain (6.55s / 12.9s / 14.55s / 20.65s)',
+      desc: 'Bouncy metallic coil boing as the seesaw, spring bumpers, and launch kicker fling colorful balls.',
+      trigger: () => soundEngine.playSpringBoing(undefined, 1.3),
+    },
+    {
+      project: 'hundred-ball-chain' as const,
+      name: 'Red Button & Ceiling Hoop Drop',
+      time: '100-Ball Chain (24.35s)',
+      desc: 'Bright target chime + hydraulic ceiling hoop deployment when the final shot slams the giant red button.',
+      trigger: () => soundEngine.playChainButtonSlam(),
+    },
+    {
+      project: 'hundred-ball-chain' as const,
+      name: '100-Ball Avalanche Bury Rumble',
+      time: '100-Ball Chain (26.95s)',
+      desc: 'Roaring cascade of 100 colorful balls bursting out of the bottom chamber and burying Stickman up to his beanie.',
+      trigger: () => soundEngine.playBallAvalancheRumble(),
+    },
+    {
+      project: 'hundred-ball-chain' as const,
+      name: '100-Ball Chain Comedy Score (Part 1)',
+      time: '100-Ball Chain (0.0s - 7.5s)',
+      desc: 'Upbeat 140 BPM arcade comedy score that cuts right before the 100-ball avalanche buries Stickman.',
+      trigger: () => soundEngine.playHundredBallScoreSection(undefined, 0, 7.5),
+    },
+    {
+      project: 'longest-ruler-shot' as const,
+      name: 'Ruler Flick Twang',
+      time: 'Longest Ruler Shot (1.25s / 27.15s)',
+      desc: 'Elastic springy plastic ruler twang—high-pitched for the tiny table flick and deep booming catapult for the giant ruler finale.',
+      trigger: () => soundEngine.playRulerFlick(undefined, 0.72),
+    },
+    {
+      project: 'longest-ruler-shot' as const,
+      name: 'Giant Ruler Snap Click',
+      time: 'Longest Ruler Shot (6.4s / 7.2s)',
+      desc: 'Crisp interlocking snap click as Stickman locks three giant yellow rulers together onto hardcover book stacks.',
+      trigger: () => soundEngine.playMechanicalClick(),
+    },
+    {
+      project: 'longest-ruler-shot' as const,
+      name: 'Garden Trampoline Rocket Boing',
+      time: 'Longest Ruler Shot (21.25s)',
+      desc: 'High-tension spring trampoline bounce launching the tiny orange ball skyward toward the backyard basketball hoop.',
+      trigger: () => soundEngine.playSpringBoing(undefined, 1.15),
+    },
+    {
+      project: 'longest-ruler-shot' as const,
+      name: 'Ruler Collapse Dominoes & Catapult',
+      time: 'Longest Ruler Shot (26.05s - 28.75s)',
+      desc: 'Sequential collapsing ruler clacks followed by the giant catapult flick, net plop, and sad trombone sting.',
+      trigger: () => soundEngine.playDominoClack(undefined, 0.9),
+    },
+    {
+      project: 'longest-ruler-shot' as const,
+      name: 'Longest Ruler Comedy Score (Part 1)',
+      time: 'Longest Ruler Shot (0.0s - 7.5s)',
+      desc: 'Bouncy 138 BPM synth comedy score that cuts dead at 26.85s right before the ruler ramp catapults Stickman into the hoop.',
+      trigger: () => soundEngine.playLongestRulerScoreSection(undefined, 0, 7.5),
+    },
+    {
+      project: 'giant-slinky-trickshot' as const,
+      name: 'Metallic Slinky Twang',
+      time: 'Giant Slinky (1.65s / 2.95s / 8.8s / 18.0s / 26.0s)',
+      desc: 'Shimmering metallic rainbow coil stretch, snap recoil, and mega-launcher release resonance.',
+      trigger: () => soundEngine.playSlinkyTwang(undefined, 1.15),
+    },
+    {
+      project: 'giant-slinky-trickshot' as const,
+      name: 'Wall Bounce & Forehead Bonk',
+      time: 'Giant Slinky (3.42s / 3.85s / 21.05s)',
+      desc: 'Sharp living-room wall rebound followed by an orange ball bonk straight onto Stickman’s forehead.',
+      trigger: () => soundEngine.playHeadBonk(),
+    },
+    {
+      project: 'giant-slinky-trickshot' as const,
+      name: 'Tiny Red Cup Swish Ding',
+      time: 'Giant Slinky (24.25s)',
+      desc: 'Bright celebratory target chime right as the orange ball drops cleanly inside the tiny red cup.',
+      trigger: () => soundEngine.playConfidenceDing(),
+    },
+    {
+      project: 'giant-slinky-trickshot' as const,
+      name: 'Spring-Cage Bounce & Beanie Fly',
+      time: 'Giant Slinky (26.55s - 28.75s)',
+      desc: 'Heavy rainbow spring-cage pogo bounces accompanied by a beanie launch whoosh and sad trombone sting.',
+      trigger: () => soundEngine.playSpringBoing(undefined, 1.1),
+    },
+    {
+      project: 'giant-slinky-trickshot' as const,
+      name: 'Giant Slinky Comedy Score (Part 1)',
+      time: 'Giant Slinky (0.0s - 7.5s)',
+      desc: 'Energetic 138 BPM Modern Pop synth comedy score that cuts dead at 26.0s right before the slinky cages Stickman.',
+      trigger: () => soundEngine.playGiantSlinkyScoreSection(undefined, 0, 7.5),
+    },
+    {
+      project: 'impossible-keyhole-shot' as const,
+      name: 'Brass Keyhole Rim Clink & Mirror Ping',
+      time: 'Impossible Keyhole (9.35s / 16.95s / 18.65s)',
+      desc: 'Crisp metallic keyhole rim miss followed by dual mirror reflection pings guiding the orange ball through the hole.',
+      trigger: () => soundEngine.playRimClink(),
+    },
+    {
+      project: 'impossible-keyhole-shot' as const,
+      name: 'Keyhole Thread & Red Cup Ding',
+      time: 'Impossible Keyhole (22.8s / 24.3s)',
+      desc: 'Clean keyhole pass swish and bright target chime as the ball lands inside the red cup on the other side.',
+      trigger: () => soundEngine.playConfidenceDing(),
+    },
+    {
+      project: 'impossible-keyhole-shot' as const,
+      name: 'Giant Door Slam & Beanie Through Keyhole',
+      time: 'Impossible Keyhole (26.15s - 28.5s)',
+      desc: 'Heavy wooden door swing slam that knocks Stickman backward and launches his red beanie through the keyhole.',
+      trigger: () => soundEngine.playDoorSlam(),
+    },
+    {
+      project: 'impossible-keyhole-shot' as const,
+      name: 'Keyhole Trickshot Score (Part 1)',
+      time: 'Impossible Keyhole (0.0s - 7.5s)',
+      desc: 'Mischievous 134 BPM trickshot synth score that cuts dead right at 26.05s before the door slams Stickman.',
+      trigger: () => soundEngine.playKeyholeScoreSection(undefined, 0, 7.5),
+    },
+    {
+      project: 'impossible-laser-maze' as const,
+      name: 'Red Laser Barrier Deflect Zap',
+      time: 'Impossible Laser Maze (2.75s)',
+      desc: 'Sharp sci-fi sawtooth zap as the vertical red laser barrier deflects Stickman’s opening throw.',
+      trigger: () => soundEngine.playLaserZap(),
+    },
+    {
+      project: 'impossible-laser-maze' as const,
+      name: 'Mirror Reflection Ping',
+      time: 'Impossible Laser Maze (6.9s / 16.6s / 18.1s / 21.0s)',
+      desc: 'Escalating crystalline glass mirror reflection pings as Stickman steers the lasers and bounces the ball.',
+      trigger: () => soundEngine.playInvisibleWallPing(undefined, 1.25),
+    },
+    {
+      project: 'impossible-laser-maze' as const,
+      name: 'Hidden Switch & Red Laser Cage Alarm',
+      time: 'Impossible Laser Maze (26.15s - 28.5s)',
+      desc: 'Pedestal pressure-plate click followed by the vault laser-cage alarm and a final sad trombone sting.',
+      trigger: () => soundEngine.playLaserCageAlarm(),
+    },
+    {
+      project: 'impossible-laser-maze' as const,
+      name: 'Laser Maze Spy-Heist Score (Part 1)',
+      time: 'Impossible Laser Maze (0.0s - 7.5s)',
+      desc: 'Tense 136 BPM spy-heist synth score that cuts silent at 26.15s right as the laser cage activates.',
+      trigger: () => soundEngine.playLaserMazeScoreSection(undefined, 0, 7.5),
+    },
+    {
+      project: 'impossible-pinball-trickshot' as const,
+      name: 'Pinball Plunger Twang',
+      time: 'Impossible Pinball (2.35s / 7.45s / 13.2s)',
+      desc: 'Spring-loaded mechanical lever recoil twang launching the silver ball up the arcade chute.',
+      trigger: () => soundEngine.playPinballPlunger(),
+    },
+    {
+      project: 'impossible-pinball-trickshot' as const,
+      name: 'Red Bumper Solenoid Chime',
+      time: 'Impossible Pinball (8.55s - 9.75s / 26.55s - 27.75s)',
+      desc: 'Classic arcade bumper solenoid thump + dual bell ding on every ball and Stickman collision.',
+      trigger: () => soundEngine.playPinballBumper(undefined, 1.15),
+    },
+    {
+      project: 'impossible-pinball-trickshot' as const,
+      name: 'Yellow Flipper Snap & WIN Fanfare',
+      time: 'Impossible Pinball (18.42s / 24.15s)',
+      desc: 'Punchy flipper solenoid snap and ascending 6-note arcade jackpot arpeggio when the ball hits the hole.',
+      trigger: () => soundEngine.playPinballJackpot(),
+    },
+    {
+      project: 'impossible-pinball-trickshot' as const,
+      name: 'Arcade Pinball Score (Part 1)',
+      time: 'Impossible Pinball (0.0s - 7.5s)',
+      desc: 'High-energy 142 BPM arcade pinball score that cuts silent at 25.75s right as the machine launches Stickman.',
+      trigger: () => soundEngine.playPinballScoreSection(undefined, 0, 7.5),
+    },
+    {
+      project: 'thousand-degree-hot-shot' as const,
+      name: '1,000-Degree Ice Melt Sizzle',
+      time: '1,000-Degree Hot Shot (2.1s / 8.45s / 15.55s)',
+      desc: 'Crisp steam-and-sizzle noise burst as the glowing orange ball melts ice cubes, thin barriers, and the giant ice wall.',
+      trigger: () => soundEngine.playHeatSizzle(),
+    },
+    {
+      project: 'thousand-degree-hot-shot' as const,
+      name: 'Spinning Metal Ring Chime',
+      time: '1,000-Degree Hot Shot (12.65s - 14.45s)',
+      desc: 'Escalating crystalline metallic chime as the superheated ball zips through three spinning metal rings.',
+      trigger: () => soundEngine.playInvisibleWallPing(undefined, 1.2),
+    },
+    {
+      project: 'thousand-degree-hot-shot' as const,
+      name: 'Red-Hot Golden Cup Launch',
+      time: '1,000-Degree Hot Shot (26.15s)',
+      desc: 'Sharp metallic pressure pop and upward steam-rocket sweep launching the ball straight onto his beanie.',
+      trigger: () => soundEngine.playHotCupLaunch(),
+    },
+    {
+      project: 'thousand-degree-hot-shot' as const,
+      name: 'Heat-Lab Action Score (Part 1)',
+      time: '1,000-Degree Hot Shot (0.0s - 7.5s)',
+      desc: 'Punchy 138 BPM synth score that cuts silent at 25.85s right as the golden cup overheats.',
+      trigger: () => soundEngine.playHotShotScoreSection(undefined, 0, 7.5),
+    },
+    {
+      project: 'magnetic-maze-trickshot' as const,
+      name: 'Electromagnetic Pull Hum',
+      time: 'Magnetic Maze (1.95s / 6.95s - 20.65s)',
+      desc: 'Wobbly cartoon electromagnetic shimmer as red and blue horseshoe magnets pull the silver ball through the maze and vertical wall.',
+      trigger: () => soundEngine.playMagnetHum(undefined, 1.15),
+    },
+    {
+      project: 'magnetic-maze-trickshot' as const,
+      name: 'Silver Ball & Metal Chair Clank',
+      time: 'Magnetic Maze (2.75s / 27.65s)',
+      desc: 'Metallic impact ring when the silver ball snaps onto the magnet or when the giant metal chair slams onto Stickman.',
+      trigger: () => soundEngine.playMetalClank(undefined, 0.85),
+    },
+    {
+      project: 'magnetic-maze-trickshot' as const,
+      name: 'All-Magnets Overload Surge',
+      time: 'Magnetic Maze (25.8s)',
+      desc: 'Escalating dual-oscillator electromagnetic surge when every magnet fires together and pulls all metal objects across the room.',
+      trigger: () => soundEngine.playMagnetOverload(),
+    },
+    {
+      project: 'magnetic-maze-trickshot' as const,
+      name: 'Magnetic Maze Sci-Fi Score (Part 1)',
+      time: 'Magnetic Maze (0.0s - 7.5s)',
+      desc: 'Playful 136 BPM sci-fi comedy synth score that cuts silent at 25.75s right as the magnets overload.',
+      trigger: () => soundEngine.playMagneticMazeScoreSection(undefined, 0, 7.5),
+    },
+    {
+      project: 'spiral-staircase-shot' as const,
+      name: 'Spiral Step Roll Tick',
+      time: 'Spiral Staircase (1.9s / 7.45s - 8.85s)',
+      desc: 'Crisp wooden-and-steel step tick as the orange basketball accelerates down the curved spiral staircase.',
+      trigger: () => soundEngine.playSpiralRollTick(undefined, 1.15),
+    },
+    {
+      project: 'spiral-staircase-shot' as const,
+      name: 'Rotating Platform Spring Boing',
+      time: 'Spiral Staircase (14.35s - 16.25s)',
+      desc: 'Ascending cartoon bounce as the basketball hops cleanly across all three spinning platforms.',
+      trigger: () => soundEngine.playSpringBoing(undefined, 1.2),
+    },
+    {
+      project: 'spiral-staircase-shot' as const,
+      name: 'Carousel Staircase Motor Spin-Up',
+      time: 'Spiral Staircase (25.8s)',
+      desc: 'Whirring mechanical motor spin-up when the entire spiral staircase turns into a giant carousel.',
+      trigger: () => soundEngine.playCarouselMotorSpin(),
+    },
+    {
+      project: 'spiral-staircase-shot' as const,
+      name: 'Spiral Staircase Arcade Score (Part 1)',
+      time: 'Spiral Staircase (0.0s - 7.5s)',
+      desc: 'Lively 138 BPM pop-arcade score that cuts silent at 25.8s right as the staircase begins spinning.',
+      trigger: () => soundEngine.playSpiralStaircaseScoreSection(undefined, 0, 7.5),
+    },
+    {
+      project: 'giant-scissor-trickshot' as const,
+      name: 'Giant Silver Scissor Snip',
+      time: 'Giant Scissor (2.15s / 12.25s / 18.35s / 26.55s)',
+      desc: 'Metallic double-blade steel snip with sharp latch snap when cutting hanging strings — and snagging his red beanie.',
+      trigger: () => soundEngine.playScissorSnip(undefined, 1.05),
+    },
+    {
+      project: 'giant-scissor-trickshot' as const,
+      name: 'Domino Cascade & Seesaw Boing',
+      time: 'Giant Scissor (13.15s / 14.1s - 15.1s / 20.35s)',
+      desc: 'Seesaw bounce followed by five rising colorful domino clacks and a heavy spring-launcher rocket boing.',
+      trigger: () => {
+        soundEngine.playDominoClack(undefined, 1.0);
+        setTimeout(() => soundEngine.playDominoClack(undefined, 1.15), 180);
+        setTimeout(() => soundEngine.playSpringBoing(undefined, 1.3), 380);
+      },
+    },
+    {
+      project: 'giant-scissor-trickshot' as const,
+      name: 'Loose String Snap Recoil',
+      time: 'Giant Scissor (25.85s)',
+      desc: 'Taut cyan string recoil twang & snap right before the mounted giant scissors swing shut onto his red beanie.',
+      trigger: () => soundEngine.playStringSnap(),
+    },
+    {
+      project: 'giant-scissor-trickshot' as const,
+      name: 'Giant Scissor Comedy Score (Part 1)',
+      time: 'Giant Scissor (0.0s - 7.5s)',
+      desc: 'Energetic 136 BPM trickshot synth score that cuts silent at 25.8s right before the loose string snaps.',
+      trigger: () => soundEngine.playGiantScissorScoreSection(undefined, 0, 7.5),
+    },
+    {
+      project: 'triple-gravity-trickshot' as const,
+      name: 'Gravity Zone Directional Hum',
+      time: 'Triple Gravity (2.35s / 8.35s / 14.85s - 21.85s)',
+      desc: 'Shimmering sci-fi gravity field modulation whenever the basketball enters Blue (sideways), Purple (upward), or Green (downward).',
+      trigger: () => soundEngine.playGravityHum(undefined, 1.2),
+    },
+    {
+      project: 'triple-gravity-trickshot' as const,
+      name: 'Floating Bounce Pad & Golden Swish',
+      time: 'Triple Gravity (22.7s / 24.15s)',
+      desc: 'Angled hover-platform spring rebound launching the ball cleanly into a crisp golden basketball hoop swish.',
+      trigger: () => {
+        soundEngine.playSpringBoing(undefined, 1.25);
+        setTimeout(() => soundEngine.playSwish(), 500);
+      },
+    },
+    {
+      project: 'triple-gravity-trickshot' as const,
+      name: 'All-3-Zones Overload Surge',
+      time: 'Triple Gravity (25.8s)',
+      desc: 'Three-voice harmonic overload surge as Blue, Purple, and Green gravity zones fire beneath Stickman at once.',
+      trigger: () => soundEngine.playTripleGravityOverload(),
+    },
+    {
+      project: 'triple-gravity-trickshot' as const,
+      name: 'Triple Gravity Sci-Fi Score (Part 1)',
+      time: 'Triple Gravity (0.0s - 7.5s)',
+      desc: 'Bouncy 136 BPM sci-fi comedy synth score that cuts silent at 25.8s right as all three zones activate.',
+      trigger: () => soundEngine.playTripleGravityScoreSection(undefined, 0, 7.5),
+    },
+    {
+      project: 'invisible-tube-trickshot' as const,
+      name: 'Hollow Tube Suction Pop & Loop Whoosh',
+      time: 'Invisible Tube (1.95s / 2.35s / 8.85s / 14.55s)',
+      desc: 'Crisp pneumatic tube entry pop followed by resonant transparent-loop airflow whoosh as the orange ball zooms around bends.',
+      trigger: () => {
+        soundEngine.playTubeEnterPop();
+        setTimeout(() => soundEngine.playAirTubeWhoosh(undefined, 1.25), 140);
+      },
+    },
+    {
+      project: 'invisible-tube-trickshot' as const,
+      name: 'Air Pump Turbo Forward Blast',
+      time: 'Invisible Tube (18.85s)',
+      desc: 'Mechanical switch thump into pressurized cyan pneumatic turbo blast as the ball rockets through the ultimate tube track.',
+      trigger: () => soundEngine.playAirPumpBlast(),
+    },
+    {
+      project: 'invisible-tube-trickshot' as const,
+      name: 'Air Pump Reverse Vacuum & Beanie Bonk',
+      time: 'Invisible Tube (25.85s / 27.15s)',
+      desc: 'Descending red <<< vacuum suction surge that pulls the ball backward through every tube to knock off Stickman’s red beanie.',
+      trigger: () => {
+        soundEngine.playAirPumpReverse();
+        setTimeout(() => soundEngine.playHeadBonk(), 700);
+      },
+    },
+    {
+      project: 'invisible-tube-trickshot' as const,
+      name: 'Invisible Tube Comedy Score (Part 1)',
+      time: 'Invisible Tube (0.0s - 7.5s)',
+      desc: 'Bouncy 136 BPM Modern Pop synth score that cuts silent at 25.8s right as the Air Pump flips into REVERSE.',
+      trigger: () => soundEngine.playInvisibleTubeScoreSection(undefined, 0, 7.5),
+    },
+    {
+      project: 'giant-gear-trickshot' as const,
+      name: 'Interlocking Gear Whir & Tooth Clink',
+      time: 'Giant Gear (1.2s / 7.55s / 13.7s - 15.05s / 19.15s)',
+      desc: 'Rhythmic metallic clockwork gear whirring paired with ascending steel tooth clinks as the silver ball transfers across gears.',
+      trigger: () => {
+        soundEngine.playGearWhir(undefined, 1.15);
+        setTimeout(() => soundEngine.playGearToothClink(undefined, 1.25), 220);
+      },
+    },
+    {
+      project: 'giant-gear-trickshot' as const,
+      name: 'Spring Launcher & Small Ramp Boing',
+      time: 'Giant Gear (2.15s / 18.45s / 22.15s)',
+      desc: 'Punchy red-coil spring launch and ramp bounce driving the silver ball through the metal ring toward the golden cup.',
+      trigger: () => soundEngine.playSpringBoing(undefined, 1.28),
+    },
+    {
+      project: 'giant-gear-trickshot' as const,
+      name: 'Reverse Gear Clutch & Spring-Hat Snap',
+      time: 'Giant Gear (25.8s / 27.55s / 28.25s)',
+      desc: 'Heavy mechanical reverse clutch clank pulling the red beanie into the gears before snapping back onto his head like a giant spring.',
+      trigger: () => {
+        soundEngine.playGearReverse();
+        setTimeout(() => soundEngine.playSpringBoing(undefined, 1.35), 680);
+      },
+    },
+    {
+      project: 'giant-gear-trickshot' as const,
+      name: 'Giant Gear Clockwork Score (Part 1)',
+      time: 'Giant Gear (0.0s - 7.5s)',
+      desc: 'Upbeat 138 BPM clockwork-arcade synth score that cuts silent at 25.8s right before all six gears reverse direction.',
+      trigger: () => soundEngine.playGiantGearScoreSection(undefined, 0, 7.5),
+    },
+    {
+      project: 'reverse-bowling-trickshot' as const,
+      name: 'Wooden Lane Roll & Mirror Ricochet Ping',
+      time: 'Reverse Bowling (2.85s / 7.55s / 15.1s / 16.05s)',
+      desc: 'Warm wooden bowling alley lane rumble paired with crystalline mirror pings as the purple bowling ball bounces around the room.',
+      trigger: () => {
+        soundEngine.playBowlingRoll(undefined, 1.05);
+        setTimeout(() => soundEngine.playMirrorPing(undefined, 1.15), 260);
+      },
+    },
+    {
+      project: 'reverse-bowling-trickshot' as const,
+      name: 'Single Pin Knock vs. 10-Pin Backwards Strike',
+      time: 'Reverse Bowling (10.15s / 22.45s)',
+      desc: 'Cascading maple bowling pin crash knocking down all 10 red-striped pins in one perfect backwards strike.',
+      trigger: () => soundEngine.playPinHit(undefined, 10),
+    },
+    {
+      project: 'reverse-bowling-trickshot' as const,
+      name: 'Reverse Ball Trip & Final Pin Head Bonk',
+      time: 'Reverse Bowling (27.15s / 28.25s)',
+      desc: 'Purple ball trips Stickman backward into the lane right before the final stray pin drops squarely onto his head.',
+      trigger: () => {
+        soundEngine.playHeadBonk();
+        setTimeout(() => soundEngine.playPinHit(undefined, 1), 450);
+      },
+    },
+    {
+      project: 'reverse-bowling-trickshot' as const,
+      name: 'Reverse Bowling Arcade Score (Part 1)',
+      time: 'Reverse Bowling (0.0s - 7.5s)',
+      desc: 'Bouncy 136 BPM bowling-alley comedy synth score that cuts silent at 25.8s right before the ball rolls back.',
+      trigger: () => soundEngine.playReverseBowlingScoreSection(undefined, 0, 7.5),
+    },
+    {
+      project: 'giant-yoyo-trickshot' as const,
+      name: 'Giant Yo-Yo Whir & Forehead Bonk',
+      time: 'Giant Yo-Yo (1.55s / 3.25s / 6.65s)',
+      desc: 'Spinning red-and-blue yo-yo string whir paired with the cartoon forehead bonk when it whips back up.',
+      trigger: () => {
+        soundEngine.playYoyoWhir(undefined, 1.0);
+        setTimeout(() => soundEngine.playHeadBonk(), 460);
+      },
+    },
+    {
+      project: 'giant-yoyo-trickshot' as const,
+      name: 'Triple Spinning Hoop Chimes',
+      time: 'Giant Yo-Yo (20.15s / 20.8s / 21.45s)',
+      desc: 'Three ascending triangle-wave chimes as the spinning giant yo-yo slices cleanly through all three hoops.',
+      trigger: () => {
+        soundEngine.playHoopPassDing(undefined, 1.05);
+        setTimeout(() => soundEngine.playHoopPassDing(undefined, 1.2), 180);
+        setTimeout(() => soundEngine.playHoopPassDing(undefined, 1.38), 360);
+      },
+    },
+    {
+      project: 'giant-yoyo-trickshot' as const,
+      name: 'Waist Recoil Snap & Floor Beanie Spin',
+      time: 'Giant Yo-Yo (26.65s / 26.85s / 27.4s)',
+      desc: 'Yo-yo whips back to wrap Stickman’s waist and yank him skyward while his red beanie spins like a top on the floor.',
+      trigger: () => {
+        soundEngine.playYoyoRecoilSnap();
+        setTimeout(() => soundEngine.playYoyoWhir(undefined, 1.55), 500);
+      },
+    },
+    {
+      project: 'giant-yoyo-trickshot' as const,
+      name: 'Giant Yo-Yo Arcade Score (Part 1)',
+      time: 'Giant Yo-Yo (0.0s - 7.5s)',
+      desc: 'Upbeat 138 BPM trickshot synth score that cuts silent at 25.75s right before the yo-yo recoils.',
+      trigger: () => soundEngine.playGiantYoyoScoreSection(undefined, 0, 7.5),
+    },
   ];
   const visibleEffects = soundEffects.filter((effect) => effect.project === config.activeProject);
 
@@ -933,7 +1686,51 @@ export const AudioLab: React.FC<AudioLabProps> = ({ config, setConfig }) => {
           {isPaperBall ? 'Sound Design Studio' : 'Sound & Voice Design Studio'}
         </h2>
         <p className="text-sm text-slate-400 max-w-2xl mt-1">
-          {isLivingTrafficLight
+          {isGiantYoyo
+            ? 'The Giant Yo-Yo Trickshot is a 30-second dialogue-free comedy short with a 138 BPM synth score, spinning yo-yo whirs, a forehead bonk, a cup rim miss clink, ascending triple-hoop chimes, a golden cup victory drop, a waist-wrap hoist snap, a floor-spinning beanie whir, and a sad trombone sting — all synthesized live via Web Audio.'
+            : isReverseBowling
+            ? 'The Reverse Bowling Trickshot is a 30-second dialogue-free comedy short with a 136 BPM synth score, wooden bowling lane roll rumbles, crystalline mirror ricochet pings, curved tunnel whooshes, spring ramp boings, a 10-pin backwards strike crash, a feet-trip thump, a final stray pin head knock, and a sad trombone sting — all synthesized live via Web Audio.'
+            : isGiantGear
+            ? 'The Giant Gear Trickshot is a 30-second dialogue-free clockwork comedy with a 138 BPM synth score, rhythmic interlocking metallic gear whirs, ascending tooth & metal-ring clinks, spring-launcher & ramp boings, a golden cup clink, a heavy reverse-gear clutch, a spring-hat snap, and a final sad trombone sting — all synthesized live via Web Audio.'
+            : isInvisibleTube
+            ? 'The Invisible Tube Trickshot is a 30-second dialogue-free comedy short with a 136 BPM synth score, hollow pneumatic tube entry pops, ascending loop & spiral whooshes, a pressurized Air Pump turbo blast, a red cup clink, a descending reverse-vacuum suction surge, a red-beanie bonk, and a final sad trombone sting — all synthesized live via Web Audio.'
+            : isTripleGravity
+            ? 'The Triple Gravity Trickshot is a 30-second dialogue-free sci-fi comedy with a 136 BPM synth score, directional gravity-zone hums, mechanical switch clicks, floating-platform spring boings, a golden hoop swish, a triple-zone overload surge, a ceiling thump, and a final sad trombone sting — all synthesized live via Web Audio.'
+            : isGiantScissor
+            ? 'The Giant Scissor Trickshot is a 30-second dialogue-free chain-reaction comedy with a 136 BPM synth score, metallic double-blade scissor snips, mechanical string setup clicks, seesaw & spring-launcher boings, rising domino clacks, a red cup victory ding, a loose string snap, and a final sad trombone sting — all synthesized live via Web Audio.'
+            : isSpiralStaircase
+            ? 'The Impossible Spiral Staircase Shot is a 30-second dialogue-free trickshot comedy with a 138 BPM arcade score, spiral step roll ticks, soft cushion crashes, rotating platform spring boings, circular hoop pings, a clean basketball swish, a carousel motor spin-up, and a final sad trombone sting — all synthesized live via Web Audio.'
+            : isMagneticMaze
+            ? 'The Magnetic Maze Trickshot is a 30-second dialogue-free physics comedy with a 136 BPM sci-fi synth score, electromagnetic attraction hums, metallic ball-snap and chair-slam clanks, a forehead bonk, an all-magnets overload surge, beanie zip whooshes, and a final sad trombone sting — all synthesized live via Web Audio.'
+            : isHotShot
+            ? 'The 1,000-Degree Hot Shot is a 30-second dialogue-free heat-lab comedy with a 138 BPM synth score, sizzling ice-melt steam bursts, a springboard boing, escalating spinning metal ring chimes, a narrow-hoop swish, a golden-cup overheat pop launch, frantic beanie pats, and a sad trombone sting — all synthesized live via Web Audio.'
+            : isImpossiblePinball
+            ? 'The Impossible Pinball Trickshot is a 30-second dialogue-free arcade comedy with a 142 BPM pinball score, spring plunger launches, escalating red bumper solenoid chimes, spinning-blade & sliding-platform pings, a yellow flipper snap, a bonus ring swish, a WIN jackpot arpeggio, a floor spring launch, and a sad trombone sting — all synthesized live via Web Audio.'
+            : isImpossibleLaser
+            ? 'The Impossible Laser Maze is a 30-second dialogue-free spy-vault comedy with a 136 BPM synth score, red laser barrier zaps, ascending glass mirror reflection pings, a golden-cup victory chime, a hidden pedestal switch click, a red laser-cage alarm, and a sad trombone sting — all synthesized live via Web Audio.'
+            : isImpossibleKeyhole
+            ? 'The Impossible Keyhole Shot is a 30-second dialogue-free doorway comedy with a 134 BPM synth score, forehead & wood-door thuds, brass keyhole rim clinks, dual mirror reflection pings, a keyhole pass swish, a heavy door slam, and a sad trombone sting — all synthesized live via Web Audio.'
+            : isGiantSlinky
+            ? 'The Giant Slinky Trickshot is a 30-second dialogue-free physics comedy with a 138 BPM Modern Pop synth score, shimmering metallic rainbow coil twangs, wall bounces, forehead & shoe thumps, 360-degree coil-loop whooshes, a tiny red-cup victory chime, heavy spring-cage bounces, and a sad trombone sting — all synthesized live via Web Audio.'
+            : isLongestRuler
+            ? "The World's Longest Ruler Shot is a 30-second dialogue-free trickshot comedy with a 138 BPM arcade synth score, crisp plastic ruler flicks, interlocking ruler snap clicks, hardcover book bounces, doorway air whooshes, a garden trampoline boing, a clean net swish, collapsing domino ruler clacks, a giant ruler catapult flick, and a final sad trombone sting — all synthesized live via Web Audio."
+            : isHundredBall
+            ? 'The 100-Ball Chain Reaction is a 30-second dialogue-free Rube Goldberg comedy with a 140 BPM arcade synth score, rising domino cascade clacks, seesaw & spring bumper boings, loop-de-loop whooshes, red button & ceiling-hoop deployment, net swish, roaring 100-ball avalanche rumble, and a final sad trombone sting — all synthesized live via Web Audio.'
+            : isTenFan
+            ? 'The 10-Fan Impossible Trickshot is a 30-second dialogue-free comedy short with a 138 BPM arcade synth score, mechanical fan switch clicks, escalating airflow whooshes across all 10 fans and ceiling lamp loop, studio wall bounce, tiny cup drop clinks, a massive 10-fan gale blast, and a final sad trombone sting — all synthesized live via Web Audio.'
+            : isInvisibleWall
+            ? 'The Invisible Wall Challenge is a 30-second dialogue-free basketball trickshot comedy with a procedural 136 BPM arcade synth score, escalating crystalline glass wall pings, trash can & rim clinks, a clean net swish, a heavy face-slam thud, descending glass slide squeaks, and a final sad trombone sting — all synthesized live via Web Audio.'
+            : isShadowTrickshot
+            ? 'The Impossible Shadow Trickshot is a 30-second dialogue-free spy-comedy with a procedural 134 BPM synth score, magical shadow kick swooshes, spotlight swivel clicks and bulb blackout flicker, corner-wall ball bonks, a white-cup drop clink, a sudden cup pop-out, a beanie head bonk, and a sad trombone sting — all synthesized live via Web Audio.'
+            : isSuperBouncyShoes
+            ? 'The Super Bouncy Shoes is a 30-second dialogue-free slapstick comedy with a procedural 136 BPM synth score, escalating silver-spring sneaker boings, a huge trampoline rocket launch, spinning mid-air whooshes, a soft pillow-pile cushion thud, a loose spring pop, a head bonk, and a final trombone sting — all synthesized live via Web Audio.'
+            : isMysteryFloorHole
+            ? 'The Mystery Hole in the Floor is a 30-second dialogue-free sci-fi comedy with a procedural 132 BPM synth score, descending portal bloops, oversized eruption booms, a giant rubber duck squeak-honk, living-room furniture crashes, purple surge charges, and a final trombone sting — all synthesized live via Web Audio.'
+            : isRubberBandTrap
+            ? 'The Giant Rubber Band Trap is a 30-second dialogue-free slapstick comedy with a procedural 134 BPM synth score, creaky rising elastic stretches, a splintering wooden post snap, booming rubber-band recoil twangs, puffy sofa & pillow cushion bounces, a crisp beanie-flick whip, and a final trombone sting — all synthesized live via Web Audio.'
+            : isCloneDisaster
+            ? 'The Clone Button Disaster is a 30-second dialogue-free cloning comedy with a procedural 136 BPM synth score, chunky CLONE/RESET button clicks, ascending clone-spawn flash pops, synchronized crowd jumps, a full-crowd vanish sweep, and a comedic shock scream sting — all synthesized live via Web Audio.'
+            : isLivingTrafficLight
             ? 'The Living Traffic Light is a 30-second dialogue-free street comedy with a procedural 130 BPM synth score, electronic blink chirps, mechanical STOP-sign arm snaps, squeaky rolling wheels, a power-box blackout drop, a rising backup battery hum, and flashing crimson alarm blasts — all synthesized live via Web Audio.'
             : isInfiniteGiftBox
             ? 'The Infinite Gift Box is a 30-second dialogue-free living-room comedy with a procedural 134 BPM synth score, elastic golden ribbon pulls, escalating nested-box reveal pops, cardboard unfold/retract sweeps, doorway tug squeaks, a 100-box fountain eruption, a beanie-knocking head bonk, and a final trombone sting — all synthesized live via Web Audio.'
